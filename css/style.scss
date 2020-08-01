@@ -10,12 +10,8 @@ $twitter:        #6dabda;
 $dev-to:         #020e18;
 $linkedin:       #2b77b1;
 $xing:           #006567;
-$google-plus:    #c95644;
-$facebook:       #365899;
 $github:         #f6c2a4;
 $stack-overflow: #c98b3b;
-$instagram:      #cd486b;
-$reddit:         #cee3f8;
 $rss:            #eea33a;
 
 $darker:         #21211E;
@@ -182,53 +178,91 @@ ul {
 		transition: 0.3s;
 	}
 
+	.fa-envelope-o {
+		animation : updown 1s;
+		animation-delay: 0ms;
+	}
+
 	.fa-envelope-o:hover {
 		color: $email;
 	}
+
+	.fa-twitter {
+		animation : updown 1s;
+		animation-delay: 250ms;
+	}
 	.fa-twitter:hover {
 		color: $twitter;
+	}
+
+	.fa-dev-to {
+		animation : updown 1s;
+		animation-delay: 500ms;
 	}
 
 	.fa-dev-to:hover {
 		color: $dev-to;
 	}
 
+	.fa-linkedin {
+		animation : updown 1s;
+		animation-delay: 750ms;
+	}
+
 	.fa-linkedin:hover {
 		color: $linkedin;
+	}
+
+	.fa-xing {
+		animation : updown 1s;
+		animation-delay: 1000ms;
 	}
 	
 	.fa-xing:hover {
 		color: $xing;
 	}
 
-	.fa-google-plus:hover {
-		color: $google-plus;
-	}
-	
-	.fa-facebook:hover {
-		color: $facebook;
+	.fa-github-alt {
+		animation : updown 1s;
+		animation-delay: 1250ms;
 	}
 
 	.fa-github-alt:hover {
 		color: $github;
 	}
+	
+	.fa-stack-overflow {
+		animation : updown 1s;
+		animation-delay: 1500ms;
+	}
 
 	.fa-stack-overflow:hover {
 		color: $stack-overflow;
 	}
-	
-	.fa-instagram:hover {
-		color: $instagram;
+
+	.fa-rss {
+		animation : updown 1s;
+		animation-delay: 1750ms;
 	}
-	
-	.fa-reddit-alien:hover {
-		color: $reddit;
-	}
-	
+		
 	.fa-rss:hover {
 		color: $rss;
 	}
 }
+
+@keyframes updown {
+	0% {
+	  transform: translateY(-50%);
+	}
+  
+	50% {
+	  transform: translateY(50%);
+	}
+  
+	100% {
+	  transform: translateY(-50%);
+	}
+  }
 
 /* Index */
 
