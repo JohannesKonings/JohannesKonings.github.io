@@ -10,7 +10,7 @@ layout: default
 {% endif %}
 
 <div class="container-fluid single">
-  <div class="row">
+  <div class="row d-block">
 
     <div itemscope itemtype="http://schema.org/Article" class="col-md-12 article">
       {% if site.data.thumbnail[page.thumbnail] %}
@@ -86,8 +86,8 @@ layout: default
 
         {% if site.addthis_id %}
         <div class="share">
-          <!-- Go to www.addthis.com/dashboard to customize your tools -->
-          <div class="addthis_sharing_toolbox"></div>
+                <!-- Go to www.addthis.com/dashboard to customize your tools -->
+                <div class="addthis_inline_share_toolbox"></div>
         </div>
         {% endif %}
 
