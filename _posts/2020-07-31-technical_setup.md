@@ -16,15 +16,15 @@ Disclaimer: This articel contains my current technical setup and will be updated
 
 ## WSL 2
 
-https://chocolatey.org/packages/wsl2/
+[https://chocolatey.org/packages/wsl2/](https://chocolatey.org/packages/wsl2/)
 
-https://docs.microsoft.com/en-us/windows/wsl/wsl2-kernel
+[https://docs.microsoft.com/en-us/windows/wsl/wsl2-kernel](https://docs.microsoft.com/en-us/windows/wsl/wsl2-kernel)
 
 `wsl --list --verbose`
 
 ### ubuntu
 
-https://chocolatey.org/packages/wsl-ubuntu-1804
+[https://chocolatey.org/packages/wsl-ubuntu-1804](https://chocolatey.org/packages/wsl-ubuntu-1804)
 
 `apt install zsh`
 
