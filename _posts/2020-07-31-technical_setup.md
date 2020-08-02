@@ -14,6 +14,20 @@ tags:
 
 Disclaimer: This articel contains my current technical setup and will be updated from time to time
 
+## WSL 2
+
+https://chocolatey.org/packages/wsl2/
+
+https://docs.microsoft.com/en-us/windows/wsl/wsl2-kernel
+
+`wsl --list --verbose`
+
+### ubuntu
+
+https://chocolatey.org/packages/wsl-ubuntu-1804
+
+`apt install zsh`
+
 ## Chocolatey packages
 
 [GoogleChrome](https://chocolatey.org/packages/GoogleChrome)
