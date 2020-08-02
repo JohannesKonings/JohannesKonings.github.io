@@ -20,3 +20,7 @@ Disclaimer: This article contains web development tools that I "encountered".
 ## cookies consent
 
 [legalmonster](https://www.legalmonster.com/)
+
+## emails for tests
+
+[10minutemail](https://10minutemail.com/)
