@@ -73,3 +73,5 @@ Disclaimer: This articel contains my current technical setup and will be updated
 [openssl](https://chocolatey.org/packages/openssl)
 
 [ruby](https://chocolatey.org/packages/ruby)
+
+[Shotcut](https://chocolatey.org/packages/Shotcut)
