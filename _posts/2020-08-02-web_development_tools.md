@@ -16,3 +16,7 @@ Disclaimer: This article contains web development tools that I "encountered".
 ## Logos and Design
 
 [Figma](https://www.figma.com/)
+
+## cookies consent
+
+[legalmonster](https://www.legalmonster.com/)
