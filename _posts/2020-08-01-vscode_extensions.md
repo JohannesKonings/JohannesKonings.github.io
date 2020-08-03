@@ -28,3 +28,7 @@ Disclaimer: This articel contains my VS Code Extensions and will be updated from
 [terraform](https://marketplace.visualstudio.com/items?itemName=HashiCorp.terraform)
 
 [aws-toolkit-vscode](https://marketplace.visualstudio.com/items?itemName=AmazonWebServices.aws-toolkit-vscode)
+
+[Error Lens](https://marketplace.visualstudio.com/items?itemName=usernamehw.errorlens)
+
+
