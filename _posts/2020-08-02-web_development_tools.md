@@ -21,6 +21,12 @@ Disclaimer: This article contains web development tools that I "encountered".
 
 [legalmonster](https://www.legalmonster.com/)
 
+
 ## domains
 
 [namecheap](namecheap.com)
+
+## emails for tests
+
+[10minutemail](https://10minutemail.com/)
+
