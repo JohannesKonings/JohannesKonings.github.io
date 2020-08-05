@@ -17,6 +17,8 @@ Disclaimer: This article contains helper tools for AWS and will be updated from 
 
 [awsgeek](https://www.awsgeek.com/)
 
+[A History of Amazon Web Services (AWS)](https://www.awsgeek.com/AWS-History/)
+
 [AWS Security Documentation](https://docs.aws.amazon.com/security/)
 
 ## Chrome extension
