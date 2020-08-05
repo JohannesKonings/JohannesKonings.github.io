@@ -13,6 +13,10 @@ tags:
 
 Disclaimer: This article contains web development tools that I "encountered".
 
+## Infos
+
+[State of Javascript](https://stateofjs.com/)
+
 ## Logos and Design
 
 [Figma](https://www.figma.com/)
