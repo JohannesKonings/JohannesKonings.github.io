@@ -17,6 +17,8 @@ Disclaimer: This article contains helper tools for AWS and will be updated from 
 
 [awsgeek](https://www.awsgeek.com/)
 
+[AWS Security Documentation](https://docs.aws.amazon.com/security/)
+
 ## Chrome extension
 
 [AWS console regions color](https://chrome.google.com/webstore/detail/aws-console-regions-color/gfeaclafcmbiakopneapkbaiifnhbkng)
