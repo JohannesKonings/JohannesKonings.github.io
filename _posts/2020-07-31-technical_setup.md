@@ -75,3 +75,5 @@ Disclaimer: This articel contains my current technical setup and will be updated
 [ruby](https://chocolatey.org/packages/ruby)
 
 [Shotcut](https://chocolatey.org/packages/Shotcut)
+
+[Brave](https://chocolatey.org/packages/brave)
