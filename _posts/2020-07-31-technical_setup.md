@@ -1,6 +1,6 @@
 ---
 layout:     post
-title:      technical setup
+title:      Technical setup
 date:       2020-07-31 16:15:18
 summary:    installed software
 categories: settings
@@ -77,3 +77,5 @@ Disclaimer: This articel contains my current technical setup and will be updated
 [Shotcut](https://chocolatey.org/packages/Shotcut)
 
 [Brave](https://chocolatey.org/packages/brave)
+
+[Cascadia Code PL Font](https://chocolatey.org/packages/cascadiacodepl)
