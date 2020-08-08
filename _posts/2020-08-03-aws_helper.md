@@ -21,6 +21,11 @@ Disclaimer: This article contains helper tools for AWS and will be updated from 
 
 [AWS Security Documentation](https://docs.aws.amazon.com/security/)
 
+## Learning
+
+[a cloud guru](https://acloud.guru/)
+[ExamPro](https://www.exampro.co/)
+
 ## Chrome extension
 
 [AWS console regions color](https://chrome.google.com/webstore/detail/aws-console-regions-color/gfeaclafcmbiakopneapkbaiifnhbkng)
