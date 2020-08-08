@@ -24,6 +24,7 @@ Disclaimer: This article contains helper tools for AWS and will be updated from 
 ## Learning
 
 [a cloud guru](https://acloud.guru/)
+
 [ExamPro](https://www.exampro.co/)
 
 ## Chrome extension
