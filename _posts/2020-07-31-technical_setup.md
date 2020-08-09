@@ -14,6 +14,10 @@ tags:
 
 Disclaimer: This articel contains my current technical setup and will be updated from time to time
 
+## Hardware
+
+[Microsoft Surface Pro 7](https://www.microsoft.com/en-us/p/surface-pro-7/8n17j0m5zzqs?activetab=overview)
+
 ## WSL 2
 
 [https://chocolatey.org/packages/wsl2/](https://chocolatey.org/packages/wsl2/)
