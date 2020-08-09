@@ -21,6 +21,10 @@ Disclaimer: This article contains helper tools for AWS and will be updated from 
 
 [AWS Security Documentation](https://docs.aws.amazon.com/security/)
 
+[AWS Quick Starts](https://aws.amazon.com/quickstart)
+
+[The Amazon Builders' Library](https://aws.amazon.com/builders-library)
+
 ## Learning
 
 [a cloud guru](https://acloud.guru/)
