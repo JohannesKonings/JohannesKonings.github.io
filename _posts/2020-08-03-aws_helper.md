@@ -31,6 +31,8 @@ Disclaimer: This article contains helper tools for AWS and will be updated from 
 
 [ExamPro](https://www.exampro.co/)
 
+[Tutorials Dojo](https://portal.tutorialsdojo.com/)
+
 ## Chrome extension
 
 [AWS console regions color](https://chrome.google.com/webstore/detail/aws-console-regions-color/gfeaclafcmbiakopneapkbaiifnhbkng)
