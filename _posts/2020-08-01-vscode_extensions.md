@@ -31,4 +31,6 @@ Disclaimer: This articel contains my VS Code Extensions and will be updated from
 
 [Error Lens](https://marketplace.visualstudio.com/items?itemName=usernamehw.errorlens)
 
+[indent-rainbow](https://marketplace.visualstudio.com/items?itemName=oderwat.indent-rainbow)
+
 
