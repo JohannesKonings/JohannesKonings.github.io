@@ -32,6 +32,40 @@ Disclaimer: This articel contains my current technical setup and will be updated
 
 `apt install zsh`
 
+## Terminals
+
+### oh-my-posh
+
+https://github.com/JanDeDobbeleer/oh-my-posh
+
+https://chocolatey.org/packages/oh-my-posh
+
+https://chocolatey.org/packages/poshgit
+
+https://go.microsoft.com/fwlink/?LinkID=135170
+
+https://www.hanselman.com/blog/HowToMakeAPrettyPromptInWindowsTerminalWithPowerlineNerdFontsCascadiaCodeWSLAndOhmyposh.aspx
+
+`code $PROFILE`
+
+https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_execution_policies?view=powershell-7
+
+`Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser`
+
+https://chocolatey.org/packages/cascadiacodepl
+
+`"fontFace": "Cascadia Code PL"`
+
+### oh-my-bash
+
+https://ohmybash.github.io/
+
+### oh-my-zsh
+
+`apt install zsh`
+
+https://ohmyz.sh/
+
 ## Chocolatey packages
 
 [GoogleChrome](https://chocolatey.org/packages/GoogleChrome)
