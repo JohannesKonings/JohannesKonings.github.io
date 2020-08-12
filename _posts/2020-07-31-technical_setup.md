@@ -32,7 +32,7 @@ Disclaimer: This articel contains my current technical setup and will be updated
 
 `apt install zsh`
 
-## [Terminals](#terminals)
+## Terminals
 
 ### oh-my-posh
 
