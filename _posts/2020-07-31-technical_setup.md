@@ -119,3 +119,4 @@ https://ohmyz.sh/
 [Cascadia Code PL Font](https://chocolatey.org/packages/cascadiacodepl)
 
 [Python](https://chocolatey.org/packages/python)
+⚠ https://stackoverflow.com/questions/56974927/permission-denied-trying-to-run-python-on-windows-10/5744761 
