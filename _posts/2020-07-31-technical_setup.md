@@ -66,6 +66,14 @@ https://ohmybash.github.io/
 
 https://ohmyz.sh/
 
+## Python
+
+[Python](https://chocolatey.org/packages/python)
+
+⚠ https://stackoverflow.com/questions/56974927/permission-denied-trying-to-run-python-on-windows-10/5744761 
+
+`python -m pip install --upgrade pip`
+
 ## Chocolatey packages
 
 [GoogleChrome](https://chocolatey.org/packages/GoogleChrome)
@@ -117,6 +125,3 @@ https://ohmyz.sh/
 [Brave](https://chocolatey.org/packages/brave)
 
 [Cascadia Code PL Font](https://chocolatey.org/packages/cascadiacodepl)
-
-[Python](https://chocolatey.org/packages/python)
-⚠ https://stackoverflow.com/questions/56974927/permission-denied-trying-to-run-python-on-windows-10/5744761 
