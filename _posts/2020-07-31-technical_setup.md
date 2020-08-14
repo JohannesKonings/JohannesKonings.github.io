@@ -74,6 +74,12 @@ https://ohmyz.sh/
 
 `python -m pip install --upgrade pip`
 
+### pipenv
+
+https://python-docs.readthedocs.io/en/latest/dev/virtualenvs.html#virtualenvironments-ref
+
+`pip install --user pipenv`
+
 ## Chocolatey packages
 
 [GoogleChrome](https://chocolatey.org/packages/GoogleChrome)
