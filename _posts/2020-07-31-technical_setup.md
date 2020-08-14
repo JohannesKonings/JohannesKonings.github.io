@@ -117,3 +117,5 @@ https://ohmyz.sh/
 [Brave](https://chocolatey.org/packages/brave)
 
 [Cascadia Code PL Font](https://chocolatey.org/packages/cascadiacodepl)
+
+[Python](https://chocolatey.org/packages/python)
