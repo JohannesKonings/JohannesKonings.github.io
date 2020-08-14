@@ -18,7 +18,6 @@ jobs:
     - name: Publish articles on dev.to
       uses: sinedied/publish-devto@v1
       with:
-        files_glob: '_posts/**/*.md'
         files: '_posts/**/*.md'
         devto_key: ${{ secrets.DEVTO_TOKEN }}
         github_token: ${{ secrets.GITHUB_TOKEN }}
