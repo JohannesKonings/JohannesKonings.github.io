@@ -26,6 +26,8 @@ Disclaimer: This articel contains my current technical setup and will be updated
 
 `wsl --list --verbose`
 
+[WSL Tips and Tricks](https://craigloewen-msft.github.io/WSLTipsAndTricks/)
+
 ### ubuntu
 
 [https://chocolatey.org/packages/wsl-ubuntu-1804](https://chocolatey.org/packages/wsl-ubuntu-1804)
