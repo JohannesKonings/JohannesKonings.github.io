@@ -133,3 +133,5 @@ https://python-docs.readthedocs.io/en/latest/dev/virtualenvs.html#virtualenviron
 [Brave](https://chocolatey.org/packages/brave)
 
 [Cascadia Code PL Font](https://chocolatey.org/packages/cascadiacodepl)
+
+[jq](https://chocolatey.org/packages/jq)
