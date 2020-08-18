@@ -25,6 +25,12 @@ Disclaimer: This article contains helper tools for AWS and will be updated from 
 
 [The Amazon Builders' Library](https://aws.amazon.com/builders-library)
 
+### DynamoDb
+
+[Amazon DynamoDB Labs](https://amazon-dynamodb-labs.com/)
+
+[DynamoDb Guide](https://www.dynamodbguide.com/)
+
 ## Learning
 
 [a cloud guru](https://acloud.guru/)
