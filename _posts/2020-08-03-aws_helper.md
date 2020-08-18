@@ -31,6 +31,8 @@ Disclaimer: This article contains helper tools for AWS and will be updated from 
 
 [DynamoDb Guide](https://www.dynamodbguide.com/)
 
+[awesome-dynamodb](https://github.com/alexdebrie/awesome-dynamodb)
+
 ## Learning
 
 [a cloud guru](https://acloud.guru/)
