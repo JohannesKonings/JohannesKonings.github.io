@@ -1,6 +1,7 @@
 ---
 layout:     post
 title:      "AWS Amplify Console: How I changed master branch and env to main"
+published:  true
 date:       2020-08-18 08:15:18
 summary:    Change of the master branch end amplfiy env to main and migration of the env data
 categories: aws
