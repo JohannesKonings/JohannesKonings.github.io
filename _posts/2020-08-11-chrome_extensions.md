@@ -25,6 +25,8 @@ Disclaimer: This articel contains my Chrome Extensions and will be updated from 
 
 [SessionBox](https://chrome.google.com/webstore/detail/sessionbox-free-multi-log/megbklhjamjbcafknkgmokldgolkdfig)
 
+[Grammarly for Chrome](https://chrome.google.com/webstore/detail/grammarly-for-chrome/kbfnbcaeplbcioakkpcpgfkobkghlhen)
+
 
 
 
