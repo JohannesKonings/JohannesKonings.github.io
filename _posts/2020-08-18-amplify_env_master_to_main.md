@@ -39,7 +39,7 @@ Afterwards the production branch must be changed to main.
 
 # Migration
 
-The new env main is now ready to use, but the data is missing. That must be migrated from the master env to the main env. In my case it was Cognito users, DynamoDB data and S3 profile photos.
+The new env main is now ready to use, but the data is missing. That must be migrated from the master env to the main env. In my case, it was Cognito users, DynamoDB data and S3 profile photos.
 
 ## Cognito
 
@@ -61,10 +61,9 @@ The DynamoDB data is more important. The easiest way to migrate the data was wit
 ## S3
 
 As described here the users can upload new profile pictures:
-[AWS Amplify Storage: React example for Avatar pictures](https://dev.to/johanneskonings/aws-amplify-api-graphql-queries-49b)
+[AWS Amplify Storage: React example for Avatar pictures](https://dev.to/johanneskonings/aws-amplify-storage-react-example-for-avatar-pictures-273o)
 
-That profile pictures can also copied by a script [s3-migration.sh](https://github.com/JohannesKonings/fff-badminton/blob/main/AmplifyEnvMigration/s3-migration.sh).
-But it's necassary to rename the folder name to the new identity pool identity browser id, that the pictures will be found.
+That profile pictures can also be copied by a script [s3-migration.sh](https://github.com/JohannesKonings/fff-badminton/blob/main/AmplifyEnvMigration/s3-migration.sh). But it's necessary to rename the folder name to the new identity pool identity browser id, that the pictures will be found.
 
 ![identity brwoser]({{ site.baseurl }}/img/2020-08-18-amplify_env_master_to_main/identity_browser.png)
 
