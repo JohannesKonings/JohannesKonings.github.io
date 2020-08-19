@@ -45,6 +45,10 @@ Disclaimer: This article contains helper tools for AWS and will be updated from 
 
 [AWS console regions color](https://chrome.google.com/webstore/detail/aws-console-regions-color/gfeaclafcmbiakopneapkbaiifnhbkng)
 
+## Windows
+
+[AWS Tools for Windows PowerShell](https://chocolatey.org/packages/AWSTools.Powershell)
+
 
 
 
