@@ -139,3 +139,7 @@ https://python-docs.readthedocs.io/en/latest/dev/virtualenvs.html#virtualenviron
 [grammarly](https://chocolatey.org/packages/grammarly)
 
 [AWS Tools for Windows PowerShell](https://chocolatey.org/packages/AWSTools.Powershell)
+
+[mysql](https://chocolatey.org/packages/mysql)
+
+[MySQL Workbench](https://chocolatey.org/packages/mysql.workbench)
