@@ -35,4 +35,6 @@ Disclaimer: This articel contains my VS Code Extensions and will be updated from
 
 [Markdown All in One](https://marketplace.visualstudio.com/items?itemName=yzhang.markdown-all-in-one)
 
+[Prettier - Code formatter](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)
+
 
