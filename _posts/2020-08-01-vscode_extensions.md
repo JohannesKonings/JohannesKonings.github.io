@@ -33,4 +33,6 @@ Disclaimer: This articel contains my VS Code Extensions and will be updated from
 
 [indent-rainbow](https://marketplace.visualstudio.com/items?itemName=oderwat.indent-rainbow)
 
+[Markdown All in One](https://marketplace.visualstudio.com/items?itemName=yzhang.markdown-all-in-one)
+
 
