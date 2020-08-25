@@ -10,6 +10,19 @@ tags:
  - chocolatey
 ---
 
+- [technical setup](#technical-setup)
+  - [Hardware](#hardware)
+  - [WSL 2](#wsl-2)
+    - [ubuntu](#ubuntu)
+  - [Terminals](#terminals)
+    - [oh-my-posh](#oh-my-posh)
+    - [oh-my-bash](#oh-my-bash)
+    - [oh-my-zsh](#oh-my-zsh)
+  - [Python](#python)
+    - [pipenv](#pipenv)
+  - [npm global](#npm-global)
+  - [Chocolatey packages](#chocolatey-packages)
+
 # technical setup
 
 Disclaimer: This articel contains my current technical setup and will be updated from time to time
@@ -81,6 +94,12 @@ https://ohmyz.sh/
 https://python-docs.readthedocs.io/en/latest/dev/virtualenvs.html#virtualenvironments-ref
 
 `pip install --user pipenv`
+
+## npm global
+
+`npm install -g serverless` 
+
+`npm install -g @aws-amplify/cli`
 
 ## Chocolatey packages
 
