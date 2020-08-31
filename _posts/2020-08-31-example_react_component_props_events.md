@@ -1,7 +1,6 @@
 ---
 layout:     post
 title:      Quick example to pass data to a React component and get the changed value back
-published:  false
 date:       2020-08-31 08:15:18
 summary:    An quick example how to pass data to componenents and get data from components
 categories: react
