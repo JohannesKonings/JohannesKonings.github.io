@@ -3,11 +3,11 @@ layout:     post
 title:      Technical setup
 date:       2020-07-31 16:15:18
 summary:    installed software
-categories: settings
+categories: react
 thumbnail: chocolatey
 tags:
- - technical setup
- - chocolatey
+ - react
+ - react components
 ---
 
 - [technical setup](#technical-setup)
