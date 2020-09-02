@@ -164,3 +164,5 @@ https://python-docs.readthedocs.io/en/latest/dev/virtualenvs.html#virtualenviron
 [MySQL Workbench](https://chocolatey.org/packages/mysql.workbench)
 
 [Screen To Gif](https://chocolatey.org/packages/screentogif)
+
+[Gradle](https://chocolatey.org/packages/gradle)
