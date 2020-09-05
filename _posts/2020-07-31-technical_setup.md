@@ -166,3 +166,5 @@ https://python-docs.readthedocs.io/en/latest/dev/virtualenvs.html#virtualenviron
 [Screen To Gif](https://chocolatey.org/packages/screentogif)
 
 [Gradle](https://chocolatey.org/packages/gradle)
+
+[Postman for Windows](https://chocolatey.org/packages/postman)
