@@ -27,6 +27,14 @@ Disclaimer: This article contains helper tools for AWS and will be updated from 
 
 [AWS infrastructure](https://infrastructure.aws/)
 
+[all Products](https://aws.amazon.com/products/)
+
+### Serverless
+
+[Serverless Cost Calculator](http://serverlesscalc.com/)
+
+[Servers. LOL](https://servers.lol/)
+
 ### DynamoDb
 
 [Amazon DynamoDB Labs](https://amazon-dynamodb-labs.com/)

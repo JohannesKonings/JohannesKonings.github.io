@@ -37,4 +37,6 @@ Disclaimer: This articel contains my VS Code Extensions and will be updated from
 
 [Prettier - Code formatter](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)
 
+[Java Extension Pack](https://marketplace.visualstudio.com/items?itemName=vscjava.vscode-java-pack)
 
+[Shell](https://marketplace.visualstudio.com/items?itemName=bbenoist.shell)
