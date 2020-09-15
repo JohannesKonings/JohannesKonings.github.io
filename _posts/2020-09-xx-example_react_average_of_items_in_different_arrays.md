@@ -140,9 +140,9 @@ Button.propTypes = {
 
 See the Coding on GitHub or StackBlitz:
 
-[GitHub](https://github.com/JohannesKonings/example-react-component-props-events)
+[GitHub](https://github.com/JohannesKonings/example-react-average-of-items-in-different-arrays)
 
-[StackBlitz](https://stackblitz.com/edit/example-react-component-props-events)
+[StackBlitz](https://stackblitz.com/edit/example-react-average-of-items-in-different-arrays)
 
 
 
