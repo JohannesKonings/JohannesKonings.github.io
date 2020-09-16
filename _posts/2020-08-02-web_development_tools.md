@@ -21,6 +21,8 @@ Disclaimer: This article contains web development tools that I "encountered".
 
 [Figma](https://www.figma.com/)
 
+[Clean PNG](https://www.cleanpng.com/)
+
 ## cookies consent
 
 [legalmonster](https://www.legalmonster.com/)
