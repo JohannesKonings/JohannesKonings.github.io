@@ -29,6 +29,8 @@ Disclaimer: This article contains helper tools for AWS and will be updated from 
 
 [all Products](https://aws.amazon.com/products/)
 
+[AWS Video Catalog](https://awsvideocatalog.com/)
+
 ### Serverless
 
 [Serverless Cost Calculator](http://serverlesscalc.com/)
