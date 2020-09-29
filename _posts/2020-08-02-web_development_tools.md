@@ -17,6 +17,8 @@ Disclaimer: This article contains web development tools that I "encountered".
 
 [State of Javascript](https://stateofjs.com/)
 
+[Tiny helpers](https://tiny-helpers.dev/)
+
 ## Logos and Design
 
 [Figma](https://www.figma.com/)
