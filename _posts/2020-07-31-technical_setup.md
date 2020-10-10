@@ -33,6 +33,8 @@ Disclaimer: This articel contains my current technical setup and will be updated
 
 ## WSL 2
 
+`Enable-WindowsOptionalFeature -Online -FeatureName $("VirtualMachinePlatform", "Microsoft-Windows-Subsystem-Linux")`
+
 [https://chocolatey.org/packages/wsl2/](https://chocolatey.org/packages/wsl2/)
 
 [https://docs.microsoft.com/en-us/windows/wsl/wsl2-kernel](https://docs.microsoft.com/en-us/windows/wsl/wsl2-kernel)
