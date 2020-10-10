@@ -107,6 +107,14 @@ https://python-docs.readthedocs.io/en/latest/dev/virtualenvs.html#virtualenviron
 
 `npm install -g @aws-amplify/cli`
 
+## winget
+
+[Windows Terminal Preview](https://winget.run/pkg/Microsoft/WindowsTerminalPreview)
+
+[Google Chrome](https://winget.run/pkg/Google/Chrome)
+
+[Spotify](https://winget.run/pkg/Spotify/Spotify)
+
 ## Chocolatey packages
 
 [GoogleChrome](https://chocolatey.org/packages/GoogleChrome)
@@ -174,3 +182,7 @@ https://python-docs.readthedocs.io/en/latest/dev/virtualenvs.html#virtualenviron
 [Gradle](https://chocolatey.org/packages/gradle)
 
 [Postman for Windows](https://chocolatey.org/packages/postman)
+
+## Windows Surface Recovery
+
+[Windows Device Recovery Tool](https://support.microsoft.com/en-us/windows/windows-device-recovery-tool-faq-2b186f06-7178-ed11-4cb6-5ed437f0855b)
