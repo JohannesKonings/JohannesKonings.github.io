@@ -113,6 +113,8 @@ https://python-docs.readthedocs.io/en/latest/dev/virtualenvs.html#virtualenviron
 
 [Google Chrome](https://winget.run/pkg/Google/Chrome)
 
+[Docker Desktop Edge](https://winget.run/pkg/Docker/DockerDesktopEdge)
+
 [Spotify](https://winget.run/pkg/Spotify/Spotify)
 
 ## Chocolatey packages
