@@ -121,6 +121,8 @@ https://python-docs.readthedocs.io/en/latest/dev/virtualenvs.html#virtualenviron
 
 [Microsoft Teams](https://winget.run/pkg/Microsoft/Teams)
 
+[Greenshot](https://winget.run/pkg/Greenshot/Greenshot)
+
 ## Chocolatey packages
 
 [GoogleChrome](https://chocolatey.org/packages/GoogleChrome)
