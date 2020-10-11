@@ -119,6 +119,8 @@ https://python-docs.readthedocs.io/en/latest/dev/virtualenvs.html#virtualenviron
 
 [Spotify](https://winget.run/pkg/Spotify/Spotify)
 
+[Microsoft Teams](https://winget.run/pkg/Microsoft/Teams)
+
 ## Chocolatey packages
 
 [GoogleChrome](https://chocolatey.org/packages/GoogleChrome)
