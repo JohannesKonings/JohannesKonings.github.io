@@ -111,6 +111,12 @@ https://python-docs.readthedocs.io/en/latest/dev/virtualenvs.html#virtualenviron
 
 `npm install -g @aws-amplify/cli`
 
+## ssh git
+
+https://dev.to/bdbch/setting-up-ssh-and-git-on-windows-10-2khk?signin=true
+
+https://chocolatey.org/packages/gnupg
+
 ## winget
 
 [Windows Terminal Preview](https://winget.run/pkg/Microsoft/WindowsTerminalPreview)
