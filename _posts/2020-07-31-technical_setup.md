@@ -67,7 +67,7 @@ https://chocolatey.org/packages/poshgit
 
 https://go.microsoft.com/fwlink/?LinkID=135170
 
-https://www.hanselman.com/blog/HowToMakeAPrettyPromptInWindowsTerminalWithPowerlineNerdFontsCascadiaCodeWSLAndOhmyposh.aspx
+[How to make a pretty prompt in Windows Terminal with Powerline, Nerd Fonts, Cascadia Code, WSL, and oh-my-posh](https://www.hanselman.com/blog/HowToMakeAPrettyPromptInWindowsTerminalWithPowerlineNerdFontsCascadiaCodeWSLAndOhmyposh.aspx)
 
 `code $PROFILE`
 
@@ -76,6 +76,8 @@ https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/abo
 `Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser`
 
 https://chocolatey.org/packages/cascadiacodepl
+
+https://github.com/microsoft/cascadia-code/releases
 
 `"fontFace": "Cascadia Code PL"`
 
@@ -122,6 +124,8 @@ https://python-docs.readthedocs.io/en/latest/dev/virtualenvs.html#virtualenviron
 [Microsoft Teams](https://winget.run/pkg/Microsoft/Teams)
 
 [Greenshot](https://winget.run/pkg/Greenshot/Greenshot)
+
+[Visual Studio Code](https://winget.run/pkg/Microsoft/VisualStudioCode)
 
 ## Chocolatey packages
 
