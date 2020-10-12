@@ -129,6 +129,8 @@ https://python-docs.readthedocs.io/en/latest/dev/virtualenvs.html#virtualenviron
 
 [Git](https://winget.run/pkg/Git/Git)
 
+[Node.js](https://winget.run/pkg/OpenJS/NodeJS)
+
 ## Chocolatey packages
 
 [GoogleChrome](https://chocolatey.org/packages/GoogleChrome)
