@@ -139,6 +139,8 @@ https://chocolatey.org/packages/gnupg
 
 [Node.js](https://winget.run/pkg/OpenJS/NodeJS)
 
+[AWS Command Line Interface v2](https://winget.run/pkg/Amazon/AWSCLI)
+
 ## Chocolatey packages
 
 [GoogleChrome](https://chocolatey.org/packages/GoogleChrome)
