@@ -85,6 +85,8 @@ https://github.com/microsoft/cascadia-code/releases
 
 https://ohmybash.github.io/
 
+https://stackoverflow.com/questions/56839307/adding-git-bash-to-the-new-windows-terminal
+
 ### oh-my-zsh
 
 `apt install zsh`
