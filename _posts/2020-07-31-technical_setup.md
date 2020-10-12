@@ -127,6 +127,8 @@ https://python-docs.readthedocs.io/en/latest/dev/virtualenvs.html#virtualenviron
 
 [Visual Studio Code](https://winget.run/pkg/Microsoft/VisualStudioCode)
 
+[Git](https://winget.run/pkg/Git/Git)
+
 ## Chocolatey packages
 
 [GoogleChrome](https://chocolatey.org/packages/GoogleChrome)
