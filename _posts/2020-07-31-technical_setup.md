@@ -209,6 +209,8 @@ https://chocolatey.org/packages/gnupg
 
 [Postman for Windows](https://chocolatey.org/packages/postman)
 
+[Graphviz - Graph Visualization Software](https://chocolatey.org/packages/Graphviz)
+
 ## Windows Surface Recovery
 
 [Windows Device Recovery Tool](https://support.microsoft.com/en-us/windows/windows-device-recovery-tool-faq-2b186f06-7178-ed11-4cb6-5ed437f0855b)
