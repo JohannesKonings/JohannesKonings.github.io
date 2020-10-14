@@ -40,3 +40,5 @@ Disclaimer: This articel contains my VS Code Extensions and will be updated from
 [Java Extension Pack](https://marketplace.visualstudio.com/items?itemName=vscjava.vscode-java-pack)
 
 [Shell](https://marketplace.visualstudio.com/items?itemName=bbenoist.shell)
+
+[Python](https://marketplace.visualstudio.com/items?itemName=ms-python.python)
