@@ -42,3 +42,5 @@ Disclaimer: This articel contains my VS Code Extensions and will be updated from
 [Shell](https://marketplace.visualstudio.com/items?itemName=bbenoist.shell)
 
 [Python](https://marketplace.visualstudio.com/items?itemName=ms-python.python)
+
+[PlantUML](https://marketplace.visualstudio.com/items?itemName=jebbs.plantuml)
