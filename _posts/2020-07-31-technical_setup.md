@@ -141,6 +141,8 @@ https://chocolatey.org/packages/gnupg
 
 [AWS Command Line Interface v2](https://winget.run/pkg/Amazon/AWSCLI)
 
+[Notepad++](https://winget.run/pkg/Notepad++/Notepad++)
+
 ## Chocolatey packages
 
 [GoogleChrome](https://chocolatey.org/packages/GoogleChrome)
