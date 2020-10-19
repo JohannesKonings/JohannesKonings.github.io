@@ -117,6 +117,8 @@ https://python-docs.readthedocs.io/en/latest/dev/virtualenvs.html#virtualenviron
 
 https://dev.to/bdbch/setting-up-ssh-and-git-on-windows-10-2khk?signin=true
 
+`type C:\Users\<<username>>\.ssh\id_rsa.pub`
+
 https://chocolatey.org/packages/gnupg
 
 ## winget
