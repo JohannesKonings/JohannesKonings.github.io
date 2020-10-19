@@ -17,7 +17,7 @@ This is a quick example how to calculate the average of different items in diffe
 
 # Overview
 
-The data basis are three fruit baskets with different kinds of fruits an the number ot items in the basket. With a React webpage the severla baskets can be choosed and the average of the items will be calculated.
+The data basis are three fruit baskets with different kinds of fruits an the number ot items in the basket. With a React webpage the several baskets can be choosed and the average of the items will be calculated.
 
 ```json
 const fruitBaskets = [
