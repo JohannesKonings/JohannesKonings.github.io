@@ -150,6 +150,8 @@ https://chocolatey.org/packages/gnupg
 
 [Notepad++](https://winget.run/pkg/Notepad++/Notepad++)
 
+[ScreenToGif](https://winget.run/pkg/NickeManarin/ScreenToGif)
+
 ## 1.8. Chocolatey packages
 
 [GoogleChrome](https://chocolatey.org/packages/GoogleChrome)
