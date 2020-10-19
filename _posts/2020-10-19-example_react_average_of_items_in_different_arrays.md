@@ -13,128 +13,70 @@ tags:
 
 # ⚠ Disclaimer
 
-This is a quick example how I pass data to a React component and get the changed data back. If there are better solutions, please let me know.
+This is a quick example how to calculate the average of different items in different arrays. If there are better solutions, please let me know.
 
 # Overview
 
-In different cases it's neccessary to pass data to a component and get the data back. In this quick example there are two child components. One is used to determine the height of increase in the count. The other one is used to increase the count via a button click with the height of increase from the other component.
+The data basis are three fruit baskets with different kinds of fruits an the number ot items in the basket. With a React webpage the severla baskets can be choosed and the average of the items will be calculated.
 
-![result]({{ site.baseurl }}/img/2020-08-31-example_react_component_props_events/components_overview.png)
+```json
+const fruitBaskets = [
+  {
+    name: "fruitBasket1",
+    fruitBasket: [
+      { fruitName: "Apple", count: 5 },
+      { fruitName: "Banana", count: 3 },
+      { fruitName: "Strawberry", count: 9 },
+      { fruitName: "Lemon", count: 7 }
+    ]
+  },
+  {
+    name: "fruitBasket2",
+    fruitBasket: [
+      { fruitName: "Apple", count: 5 },
+      { fruitName: "Banana", count: 8 },
+      { fruitName: "Lemon", count: 3 }
+    ]
+  },
+  {
+    name: "fruitBasket3",
+    fruitBasket: [
+      { fruitName: "Apple", count: 5 },
+      { fruitName: "Banana", count: 3 },
+      { fruitName: "Orange", count: 3 },
+      { fruitName: "Lemon", count: 9 },
+      { fruitName: "Strawberry", count: 5 }
+    ]
+  }
+];
+```
 
 # Implementation
 
 The implementation looks as follows:
 
-## App.js
+## The webpage - App.js
 
-The `App.js` contains the two child components `CounterSteps.js` and `Button.js`.
-From the `CounterSteps.js` the `App.js` get the height of the increase via a event and store it in the `counterSteps` state. The `counterSteps` value will be passed to `Button.js`. After each time the Button was pressed the `App.js` get the value back.
+The `App.js` contains the selection of the fruit baskets via a dropdown and a table for the results. The coding is [here](https://stackblitz.com/edit/example-react-average-of-items-in-different-arrays?file=src%2FApp.js).
 
-```javascript
-import React, { useState } from "react";
-import CounterSteps from "./CounterSteps";
-import Button from "./Button";
-import "./style.css";
+![app.js]({{ site.baseurl }}/img/2020-10-19-example_react_average_of_items_in_different_arrays/react_frui_basket_selection.png)
 
-export default function App() {
-  const [counterSteps, setCounterSteps] = useState(0);
-  const [count, setCount] = useState(0);
+## The calculation - data.js
 
-  const handleCurrentInput = currentInput => {
-    setCounterSteps(currentInput);
-  };
+The `data.js` contains the data of the fruit baskets and the calculation input data. The coding is [here](https://stackblitz.com/edit/example-react-average-of-items-in-different-arrays?file=src%2Fdata.js).
 
-  const handleCounterIncreased = counterSteps => {
-    const newCount = count + parseInt(counterSteps);
-    setCount(newCount);
-  };
+The calculation has three steps
 
-  return (
-    <div>
-      <h1>Hello StackBlitz!</h1>
-      <p>current counterStepsInput: {counterSteps}</p>
-      <p>current count: {count}</p>
-      <CounterSteps onCurrentInput={handleCurrentInput} />
-      <Button
-        counterSteps={counterSteps}
-        onCounterIncreased={handleCounterIncreased}
-      />
-    </div>
-  );
-}
-```
-## CounterSteps.js
+### merge
 
-In the `CounterSteps.js` is a input field. Every change of the value will be passed via a event to the parent component.
+### sum 
 
-```javascript
-import React, { useState } from "react";
-import PropTypes from "prop-types";
-import "./style.css";
+### average
 
-export default function CounterSteps(props) {
-  const [count, setCount] = useState(0);
-  const { onCurrentInput } = props;
-
-  const handleInput = event => {
-    onCurrentInput(event.target.value);
-  };
-
-  return (
-    <div>
-      <p>
-        <input
-          type="number"
-          name="counterSteps"
-          placeholder="counterSteps"
-          onKeyDown={e => /[\+\-\.\,]$/.test(e.key) && e.preventDefault()}
-          onInput={handleInput}
-        />
-      </p>
-    </div>
-  );
-}
-
-CounterSteps.propTypes = {
-  onCurrentInput: PropTypes.func
-};
-```
-## Button.js
-
-The `Button.js` receive the height of the inccrease from the parent component. A Button click calls the event and pass the height of increase back. In the `App.js` the total count is calculated.
-
-```javascript
-import React, { useState, useEffect } from "react";
-import PropTypes from "prop-types";
-import "./style.css";
-
-export default function Button(props) {
-  const [counterSteps, setCounterSteps] = useState(0);
-  const { onCounterIncreased } = props;
-
-  useEffect(() => {
-    setCounterSteps(props.counterSteps);
-  }, [props]);
-
-  const increaseCount = () => {
-    onCounterIncreased(counterSteps);
-  };
-
-  return (
-    <div>
-      <button onClick={increaseCount}>increase counter</button>
-    </div>
-  );
-}
-
-Button.propTypes = {
-  onCounterIncreased: PropTypes.func
-};
-```
 
 # Result
 
-![result]({{ site.baseurl }}/img/2020-08-31-example_react_component_props_events/result.gif)
+![result]({{ site.baseurl }}/img/2020-10-19-example_react_average_of_items_in_different_arrays/result.gif)
 
 # Coding
 
