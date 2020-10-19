@@ -1,6 +1,6 @@
 ---
 layout:     post
-title:      Quick example to get the average of items in different arrays
+title:      Quick example to get the average of items from different arrays
 published:  true
 date:       2020-10-19 08:15:18
 summary:    Example how to calculate the average of different arrays Javascript (map, reduce, concat, ...)
@@ -13,7 +13,7 @@ tags:
 
 # ⚠ Disclaimer
 
-This is a quick example how to calculate the average of different items in different arrays. If there are better solutions, please let me know.
+This is a quick example how to calculate the average of different items from different arrays. If there are better solutions, please let me know.
 
 # Overview
 
