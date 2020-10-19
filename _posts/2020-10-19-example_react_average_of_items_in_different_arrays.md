@@ -2,7 +2,7 @@
 layout:     post
 title:      Quick example to get the average of items in different arrays
 published:  false
-date:       2020-09-xx 08:15:18
+date:       2020-10-19 08:15:18
 summary:    Example how to calculate the average of different arrays Javascript (map, reduce, concat, ...)
 categories: react
 thumbnail: react
