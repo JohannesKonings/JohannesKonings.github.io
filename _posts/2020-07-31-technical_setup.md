@@ -54,6 +54,12 @@ https://admcpr.com/how-to-upgrade-wsl-1-to-wsl-2/
 
 `wsl --set-version Ubuntu 2`
 
+### uninstall 
+
+`wsl --unregister DistributionName`
+
+https://www.howtogeek.com/261188/how-to-uninstall-or-reinstall-windows-10s-ubuntu-bash-shell/
+
 ### 1.2.2. ubuntu
 
 [https://chocolatey.org/packages/wsl-ubuntu-1804](https://chocolatey.org/packages/wsl-ubuntu-1804)
