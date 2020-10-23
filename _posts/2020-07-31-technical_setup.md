@@ -228,6 +228,8 @@ https://chocolatey.org/packages/gnupg
 
 [Graphviz - Graph Visualization Software](https://chocolatey.org/packages/Graphviz)
 
+[nvm](https://chocolatey.org/packages/nvm)
+
 ## 1.9. Outlook sync
 
 https://caldavsynchronizer.org/
