@@ -160,6 +160,8 @@ https://chocolatey.org/packages/gnupg
 
 [Camtasia](https://winget.run/pkg/TechSmith/Camtasia)
 
+[OBS Studio](https://winget.run/pkg/OBSProject/OBSStudio)
+
 ## 1.8. Chocolatey packages
 
 [GoogleChrome](https://chocolatey.org/packages/GoogleChrome)
