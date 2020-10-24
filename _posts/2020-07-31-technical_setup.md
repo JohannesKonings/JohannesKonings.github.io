@@ -132,6 +132,10 @@ https://dev.to/bdbch/setting-up-ssh-and-git-on-windows-10-2khk?signin=true
 
 https://chocolatey.org/packages/gnupg
 
+## Video recording and editing
+
+OBS Studio and Shotcut
+
 ## 1.7. winget
 
 [Windows Terminal Preview](https://winget.run/pkg/Microsoft/WindowsTerminalPreview)
@@ -161,6 +165,8 @@ https://chocolatey.org/packages/gnupg
 [Camtasia](https://winget.run/pkg/TechSmith/Camtasia)
 
 [OBS Studio](https://winget.run/pkg/OBSProject/OBSStudio)
+
+[Shotcut](https://winget.run/pkg/Meltytech/Shotcut)
 
 ## 1.8. Chocolatey packages
 
