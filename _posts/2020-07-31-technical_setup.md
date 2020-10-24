@@ -158,6 +158,8 @@ https://chocolatey.org/packages/gnupg
 
 [ScreenToGif](https://winget.run/pkg/NickeManarin/ScreenToGif)
 
+[Camtasia](https://winget.run/pkg/TechSmith/Camtasia)
+
 ## 1.8. Chocolatey packages
 
 [GoogleChrome](https://chocolatey.org/packages/GoogleChrome)
