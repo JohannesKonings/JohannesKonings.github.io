@@ -170,6 +170,8 @@ OBS Studio and Shotcut
 
 [Adobe Acrobat Reader](https://winget.run/pkg/Adobe/AdobeAcrobatReaderDC)
 
+[Python](https://winget.run/pkg/Python/Python)
+
 ## 1.8. Chocolatey packages
 
 [GoogleChrome](https://chocolatey.org/packages/GoogleChrome)
