@@ -46,3 +46,5 @@ Disclaimer: This articel contains my VS Code Extensions and will be updated from
 [PlantUML](https://marketplace.visualstudio.com/items?itemName=jebbs.plantuml)
 
 [abaplint](https://marketplace.visualstudio.com/items?itemName=larshp.vscode-abaplint)
+
+[GraphQL for VSCode](https://marketplace.visualstudio.com/items?itemName=kumar-harsh.graphql-for-vscode)
