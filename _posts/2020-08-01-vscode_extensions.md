@@ -52,3 +52,5 @@ Disclaimer: This articel contains my VS Code Extensions and will be updated from
 [Serverless IDE](https://marketplace.visualstudio.com/items?itemName=ThreadHeap.serverless-ide-vscode)
 
 [Tailwind CSS IntelliSense](https://marketplace.visualstudio.com/items?itemName=bradlc.vscode-tailwindcss)
+
+[Velocity](https://marketplace.visualstudio.com/items?itemName=sodatea.velocity)
