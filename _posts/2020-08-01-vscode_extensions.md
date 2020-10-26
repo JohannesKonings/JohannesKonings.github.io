@@ -54,3 +54,5 @@ Disclaimer: This articel contains my VS Code Extensions and will be updated from
 [Tailwind CSS IntelliSense](https://marketplace.visualstudio.com/items?itemName=bradlc.vscode-tailwindcss)
 
 [Velocity](https://marketplace.visualstudio.com/items?itemName=sodatea.velocity)
+
+[Vetur](https://marketplace.visualstudio.com/items?itemName=octref.vetur)
