@@ -172,6 +172,8 @@ OBS Studio and Shotcut
 
 [Python](https://winget.run/pkg/Python/Python)
 
+[7Zip](https://winget.run/pkg/7zip/7zip)
+
 ## 1.8. Chocolatey packages
 
 [GoogleChrome](https://chocolatey.org/packages/GoogleChrome)
