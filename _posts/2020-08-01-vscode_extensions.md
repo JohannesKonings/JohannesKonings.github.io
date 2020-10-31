@@ -55,6 +55,8 @@ Disclaimer: This articel contains my VS Code Extensions and will be updated from
 
 [Vetur](https://marketplace.visualstudio.com/items?itemName=octref.vetur)
 
+[Excel Viewer](https://marketplace.visualstudio.com/items?itemName=GrapeCity.gc-excelviewer)
+
 ## programming languages
 
 ### ABAP
