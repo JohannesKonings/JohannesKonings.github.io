@@ -174,6 +174,8 @@ OBS Studio and Shotcut
 
 [7Zip](https://winget.run/pkg/7zip/7zip)
 
+[RStudio Desktop](https://winget.run/pkg/RStudio/RStudio)
+
 ## 1.8. Chocolatey packages
 
 [GoogleChrome](https://chocolatey.org/packages/GoogleChrome)
