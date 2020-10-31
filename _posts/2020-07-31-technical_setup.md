@@ -176,6 +176,8 @@ OBS Studio and Shotcut
 
 [RStudio Desktop](https://winget.run/pkg/RStudio/RStudio)
 
+[Ruby](https://winget.run/pkg/RubyInstallerTeam/Ruby)
+
 ## 1.8. Chocolatey packages
 
 [GoogleChrome](https://chocolatey.org/packages/GoogleChrome)
