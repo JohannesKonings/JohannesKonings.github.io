@@ -2,18 +2,19 @@
 layout:     post
 title:      Technical setup
 date:       2020-07-31 16:15:18
-summary:    installed software
-categories: react
+summary:    installed software and used hardware
+categories: settings
 thumbnail: chocolatey
 tags:
- - react
- - react components
+ - software
+ - hardware
 ---
 
 - [1. technical setup](#1-technical-setup)
   - [1.1. Hardware](#11-hardware)
   - [1.2. WSL 2](#12-wsl-2)
     - [1.2.1. Update WSL1 to WSL2](#121-update-wsl1-to-wsl2)
+    - [uninstall](#uninstall)
     - [1.2.2. ubuntu](#122-ubuntu)
   - [1.3. Terminals](#13-terminals)
     - [1.3.1. oh-my-posh](#131-oh-my-posh)
@@ -23,6 +24,7 @@ tags:
     - [1.4.1. pipenv](#141-pipenv)
   - [1.5. npm global](#15-npm-global)
   - [1.6. ssh git](#16-ssh-git)
+  - [Video recording and editing](#video-recording-and-editing)
   - [1.7. winget](#17-winget)
   - [1.8. Chocolatey packages](#18-chocolatey-packages)
   - [1.9. Outlook sync](#19-outlook-sync)
@@ -34,7 +36,19 @@ Disclaimer: This articel contains my current technical setup and will be updated
 
 ## 1.1. Hardware
 
-[Microsoft Surface Pro 7](https://www.microsoft.com/en-us/p/surface-pro-7/8n17j0m5zzqs?activetab=overview)
+The following are affiliate links.
+
+[Microsoft Surface Pro 7](https://amzn.to/352ktwM)
+{{< rawhtml >}}
+<iframe style="width:120px;height:240px;" marginwidth="0" marginheight="0" scrolling="no" frameborder="0" src="//ws-eu.amazon-adsystem.com/widgets/q?ServiceVersion=20070822&OneJS=1&Operation=GetAdHtml&MarketPlace=DE&source=ac&ref=tf_til&ad_type=product_link&tracking_id=johanneskonin-21&marketplace=amazon&region=DE&placement=B0725RLN7G&asins=B0725RLN7G&linkId=0d7c3c88bd6d1395251139e4bd9465b0&show_border=true&link_opens_in_new_window=true&price_color=333333&title_color=0066c0&bg_color=ffffff">
+    </iframe>
+{{< /rawhtml >}}
+
+[LG 32MP58HQ](https://amzn.to/3exn457)
+{{< rawhtml >}}
+<iframe style="width:120px;height:240px;" marginwidth="0" marginheight="0" scrolling="no" frameborder="0" src="//ws-eu.amazon-adsystem.com/widgets/q?ServiceVersion=20070822&OneJS=1&Operation=GetAdHtml&MarketPlace=DE&source=ac&ref=tf_til&ad_type=product_link&tracking_id=johanneskonin-21&marketplace=amazon&region=DE&placement=B01AWG5RDG&asins=B01AWG5RDG&linkId=d8cd744bc28e495c188657a38d6e1ad1&show_border=true&link_opens_in_new_window=true&price_color=333333&title_color=0066c0&bg_color=ffffff">
+    </iframe>
+{{< /rawhtml >}}    
 
 ## 1.2. WSL 2
 
