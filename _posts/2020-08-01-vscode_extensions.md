@@ -59,6 +59,10 @@ Disclaimer: This articel contains my VS Code Extensions and will be updated from
 
 ## programming languages
 
+### Javascript
+
+[ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint)
+
 ### ABAP
 
 [abaplint](https://marketplace.visualstudio.com/items?itemName=larshp.vscode-abaplint)
