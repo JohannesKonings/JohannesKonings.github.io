@@ -192,6 +192,8 @@ OBS Studio and Shotcut
 
 [Ruby](https://winget.run/pkg/RubyInstallerTeam/Ruby)
 
+[Carnac](https://winget.run/pkg/code52/Carnac)
+
 ## 1.8. Chocolatey packages
 
 [GoogleChrome](https://chocolatey.org/packages/GoogleChrome)
