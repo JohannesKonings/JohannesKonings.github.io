@@ -31,6 +31,8 @@ Disclaimer: This article contains helper tools for AWS and will be updated from 
 
 [AWS Video Catalog](https://awsvideocatalog.com/)
 
+[Servicelist](https://aws.servicelist.cloud/)
+
 ### Serverless
 
 [Serverless Cost Calculator](http://serverlesscalc.com/)
@@ -60,6 +62,10 @@ Disclaimer: This article contains helper tools for AWS and will be updated from 
 ## Windows
 
 [AWS Tools for Windows PowerShell](https://chocolatey.org/packages/AWSTools.Powershell)
+
+## diagramms
+
+[awsdiagrams.io](https://awsdiagrams.io/editor/)
 
 
 
