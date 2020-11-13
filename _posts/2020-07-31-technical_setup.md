@@ -50,6 +50,11 @@ The following are affiliate links.
     </iframe>
 {{< /rawhtml >}}    
 
+[Dierya DK63](https://amzn.to/2IEooHl)
+{{< rawhtml >}}
+<iframe style="width:120px;height:240px;" marginwidth="0" marginheight="0" scrolling="no" frameborder="0" src="//ws-eu.amazon-adsystem.com/widgets/q?ServiceVersion=20070822&OneJS=1&Operation=GetAdHtml&MarketPlace=DE&source=ss&ref=as_ss_li_til&ad_type=product_link&tracking_id=johanneskonin-21&language=de_DE&marketplace=amazon&region=DE&placement=B086C5LD5X&asins=B086C5LD5X&linkId=69556c5a5607df0fc8b63cd3279233c7&show_border=true&link_opens_in_new_window=true"></iframe>
+{{< /rawhtml >}}    
+
 ## 1.2. WSL 2
 
 `Enable-WindowsOptionalFeature -Online -FeatureName $("VirtualMachinePlatform", "Microsoft-Windows-Subsystem-Linux")`
