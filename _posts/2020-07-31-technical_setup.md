@@ -278,6 +278,8 @@ OBS Studio and Shotcut
 
 [nvm](https://chocolatey.org/packages/nvm)
 
+[PlantUML](https://chocolatey.org/packages/plantuml)
+
 
 ## 1.9. Outlook sync
 
