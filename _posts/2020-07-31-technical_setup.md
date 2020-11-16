@@ -204,6 +204,8 @@ OBS Studio and Shotcut
 
 [Liberica JDK 15 Full](https://winget.run/pkg/BellSoft/LibericaJDK15Full)
 
+[Graphviz](https://winget.run/pkg/Graphviz/Graphviz)
+
 ## 1.8. Chocolatey packages
 
 [GoogleChrome](https://chocolatey.org/packages/GoogleChrome)
@@ -275,6 +277,7 @@ OBS Studio and Shotcut
 [Graphviz - Graph Visualization Software](https://chocolatey.org/packages/Graphviz)
 
 [nvm](https://chocolatey.org/packages/nvm)
+
 
 ## 1.9. Outlook sync
 
