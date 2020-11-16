@@ -202,6 +202,8 @@ OBS Studio and Shotcut
 
 [Carnac](https://winget.run/pkg/code52/Carnac)
 
+[Liberica JDK 15 Full](https://winget.run/pkg/BellSoft/LibericaJDK15Full)
+
 ## 1.8. Chocolatey packages
 
 [GoogleChrome](https://chocolatey.org/packages/GoogleChrome)
