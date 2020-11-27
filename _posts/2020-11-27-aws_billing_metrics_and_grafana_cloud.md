@@ -77,7 +77,7 @@ And ready to go 🎉
 
 Here [https://grafana.com/grafana/dashboards](https://grafana.com/grafana/dashboards) is a big list of official and community dashboards you can import to Grafana.
 
-You can import a URL or ID from the list or, e.g., this [https://grafana.com/grafana/dashboards/13446](https://grafana.com/grafana/dashboards/13446) Dashboard in that way..
+You can import a URL or ID from the list or, e.g., this [https://grafana.com/grafana/dashboards/13446](https://grafana.com/grafana/dashboards/13446) Dashboard in that way.
 
 ![Grafana Cloud import dashboard]({{ site.baseurl }}/img/2020-11-27-aws_billing_metrics_and_grafana_cloud/grafana_cloud_import_dashboard.png)
 
