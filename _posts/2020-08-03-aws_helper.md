@@ -67,6 +67,10 @@ Disclaimer: This article contains helper tools for AWS and will be updated from 
 
 [awsdiagrams.io](https://awsdiagrams.io/editor/)
 
+## icons
+
+[AWS ICONS](https://awsicons.dev/)
+
 
 
 
