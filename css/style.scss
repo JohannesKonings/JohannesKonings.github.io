@@ -41,7 +41,7 @@ html {
 }
 
 body {
-	font-family: 'Open Sans', sans-serif;
+	font-family: 'Cascadia Code PL';
 	font-weight: 300;
 	background-color: $dark;
 	color: $white;
@@ -289,7 +289,7 @@ ul {
 	}
 
 	.author-header {
-		font-family: 'Montserrat', sans-serif;
+		font-family: 'Cascadia Code PL';
 		color: $light-blue;
 		margin-top: 0px;
 		padding-top: 15px;
@@ -509,7 +509,7 @@ ul {
 	max-height: 100%;
 
 	h1, h2, h3, h4, h5, h6 {
-		font-family: 'Montserrat', sans-serif;
+		font-family: 'Cascadia Code PL';
 		margin-bottom: 10px;
 	}
 
@@ -681,7 +681,7 @@ ul {
 				}
 
 				:before {
-    			font-family: "Times New Roman";
+    			font-family: 'Cascadia Code PL';
 					color: $light-medium;
 			    content: "“";
 			    position: absolute;
@@ -715,7 +715,7 @@ ul {
 
 				pre {
 					width: 100%;
-					font-family: 'Anonymous Pro';
+					font-family: 'Cascadia Code PL';
 					background-color: $darker;
 					color: $white;
 					font-size: 12px;
@@ -741,7 +741,7 @@ ul {
 			p, ul, ol {
 
 				code {
-					font-family: 'Anonymous Pro';
+					font-family: 'Cascadia Code PL';
 					font-size: 15px;
 					background-color: $darker;
 					color: $white;
