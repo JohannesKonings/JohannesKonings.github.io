@@ -44,6 +44,11 @@ The following are affiliate links.
     </iframe>
 {{< /rawhtml >}}
 
+[Microsoft Surface Pro 7](https://amzn.to/37odApN)
+{{< rawhtml >}}
+<iframe style="width:120px;height:240px;" marginwidth="0" marginheight="0" scrolling="no" frameborder="0" src="//ws-eu.amazon-adsystem.com/widgets/q?ServiceVersion=20070822&OneJS=1&Operation=GetAdHtml&MarketPlace=DE&source=ss&ref=as_ss_li_til&ad_type=product_link&tracking_id=johanneskonin-21&language=de_DE&marketplace=amazon&region=DE&placement=B073SC6V36&asins=B073SC6V36&linkId=b690e30ad2cf1dc7667171394e59857f&show_border=true&link_opens_in_new_window=true"></iframe>
+{{< /rawhtml >}}
+
 [LG 32MP58HQ](https://amzn.to/3exn457)
 {{< rawhtml >}}
 <iframe style="width:120px;height:240px;" marginwidth="0" marginheight="0" scrolling="no" frameborder="0" src="//ws-eu.amazon-adsystem.com/widgets/q?ServiceVersion=20070822&OneJS=1&Operation=GetAdHtml&MarketPlace=DE&source=ac&ref=tf_til&ad_type=product_link&tracking_id=johanneskonin-21&marketplace=amazon&region=DE&placement=B01AWG5RDG&asins=B01AWG5RDG&linkId=d8cd744bc28e495c188657a38d6e1ad1&show_border=true&link_opens_in_new_window=true&price_color=333333&title_color=0066c0&bg_color=ffffff">
