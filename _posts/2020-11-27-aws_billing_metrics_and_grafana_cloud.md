@@ -13,7 +13,9 @@ tags:
 # Why Grafana for AWS billing metrics?
 
 [Grafana](https://grafana.com/) is well known for observability dashboards, which can be composed of many data sources.
+
 With AWS CloudWatch metrics, it is possible to do more or less the same, but it is designed more for one account and more for the AWS metrics.
+
 In Grafana, it's easy to use different data sources so that you can have your billing metrics on the same dashboard as your other technical and business metrics from elsewhere.
 
 # Configuration of the Grafana Cloud instance

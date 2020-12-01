@@ -48,3 +48,19 @@ A full list ist here: [plugins list](https://www.serverless.com/plugins/)
 [https://github.com/kevinrambaud/serverless-functions-base-path](https://github.com/kevinrambaud/serverless-functions-base-path)
 
 [https://www.npmjs.com/package/serverless-functions-base-path](https://www.npmjs.com/package/serverless-functions-base-path)
+
+### Serverless Export Env 
+
+[https://www.serverless.com/plugins/serverless-export-env/](https://www.serverless.com/plugins/serverless-export-env/)
+
+[https://github.com/arabold/serverless-export-env](https://github.com/arabold/serverless-export-env)
+
+[https://www.npmjs.com/package/serverless-export-env](https://www.npmjs.com/package/serverless-export-env)
+
+### Serverless Manifest
+
+[https://www.serverless.com/plugins/serverless-manifest-plugin/](https://www.serverless.com/plugins/serverless-manifest-plugin/)
+
+[https://github.com/DavidWells/serverless-manifest-plugin](https://github.com/DavidWells/serverless-manifest-plugin)
+
+[https://www.npmjs.com/package/serverless-manifest-plugin](https://www.npmjs.com/package/serverless-manifest-plugin)
