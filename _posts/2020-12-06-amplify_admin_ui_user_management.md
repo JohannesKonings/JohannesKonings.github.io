@@ -1,8 +1,8 @@
 ---
 layout:     post
-title:      User management with the AWS Amplify Admin UI
+title:      User management with the AWS Amplify Admin UI instead as self sign up
 date:       2020-12-06 08:15:18
-summary:    Description of the change from a self sign up to a user management from a admin
+summary:    Description of the change from a self sign up to user management from an admin
 categories: aws
 thumbnail: amplify
 tags:
@@ -11,17 +11,18 @@ tags:
  - AWS Amplify Admin UI
 ---
 
-In my webapp I use the the authentification [UI Compontents](https://docs.amplify.aws/ui/auth/authenticator/q/framework/react) of Amplify. Without any configuration this UI component comes with a signup link, so that any person, who knows the URL can signup for themself. However this webapp is for a certain group of users. Thats why I want to create the users who is allowed to sign in.
-And this is now possible in a easy way via the new Amplify Admin UI. 
+In my web app, I use the authentification [UI Compontents](https://docs.amplify.aws/ui/auth/authenticator/q/framework/react) of Amplify. Without any configuration, this UI component comes with a signup link so that any person who knows the URL can signup for themself. However, this web app is for a certain group of users. That's why I want to create users who are allowed to sign in.
+
+And this is now possible in an easy way via the new Amplify Admin UI.
 
 # The Amplify Admin UI
 
-The Amplify Admin UI has a big set of function. You can check the [docs](https://docs.amplify.aws/console/adminui/intro) for more details or test it in a [sandbox](https://sandbox.amplifyapp.com/getting-started).
-This [post](https://dev.to/aws-builders/aws-amplify-admin-ui-45bm) gives also a nive overview.
+The Amplify Admin UI has a big set of functions. You can check the [docs](https://docs.amplify.aws/console/adminui/intro) for more details or test it in a [sandbox](https://sandbox.amplifyapp.com/getting-started).
+This [post](https://dev.to/aws-builders/aws-amplify-admin-ui-45bm) also gives an excellent overview.
 
 # Hide the signup link
 
-At first I had to hide the signup link to avoid that everyone can signup.
+At first, I had to hide the signup link to avoid that everyone can signup.
 
 ![signin with signup]({{ site.baseurl }}/img/2020-12-06-amplify_admin_ui_user_management/signin_with_signup.png)
 
@@ -34,18 +35,18 @@ To hide the signup link is just one line.
 ```
 More options are described in the [docs](https://docs.amplify.aws/ui/auth/authenticator/q/framework/react#sign-in)
 
-Than it looks like that.
+Then it looks like that.
 
 ![signin without signup]({{ site.baseurl }}/img/2020-12-06-amplify_admin_ui_user_management/signin_without_signup.png)
 
 # Create a new user via Amplify Admin UI
 
-If a new user is needed you can create on via the Amplify Admin UI. 
-That you can use it is just a click in the Amplify [Console](https://console.aws.amazon.com/amplify/home).
+If a new user is needed, you can create on via the Amplify Admin UI. 
+That you can use the Admin UI, it is just a click in the Amplify [Console](https://console.aws.amazon.com/amplify/home).
 
 ![enabled admin ui]({{ site.baseurl }}/img/2020-12-06-amplify_admin_ui_user_management/enabled_admin_ui.png)
 
-In the Admin UI it's in the section user management. Click on "create user".
+In the Admin UI, it's in the section user management. Click on "create user".
 
 ![user management create user]({{ site.baseurl }}/img/2020-12-06-amplify_admin_ui_user_management/user_management_create_user.png)
 
@@ -53,29 +54,29 @@ Type in the user data.
 
 ![user management user data]({{ site.baseurl }}/img/2020-12-06-amplify_admin_ui_user_management/user_management_user_data.png)
 
-Than the user can login with his username and tempory password.
+Then the user can log in with his username and temporary password.
 
 ![user signin tempory password]({{ site.baseurl }}/img/2020-12-06-amplify_admin_ui_user_management/user_signin_tempory_password.png)
 
-At the next screen the user has to create a new password.
+At the next screen, the user has to create a new password.
 
 ![user signin new password]({{ site.baseurl }}/img/2020-12-06-amplify_admin_ui_user_management/user_signin_new_password.png)
 
-Two screen left. One for the email verfication.
+Two screens are left. One for the email verification...
 
 ![user signin verify]({{ site.baseurl }}/img/2020-12-06-amplify_admin_ui_user_management/user_signin_verify.png)
 
-And the last one for the verification code.
+...and the last one for the verification code.
 
 ![user signin verification code]({{ site.baseurl }}/img/2020-12-06-amplify_admin_ui_user_management/user_signin_verification_code.png)
 
-Thats it 🎉
+That's it 🎉
 
 ![user after signin]({{ site.baseurl }}/img/2020-12-06-amplify_admin_ui_user_management/user_after_signin.png)
 
 # Invite User to the Admin UI
 
-Now with the Admin UI it is also possible to invite users as admins. Also without access to the AWS account.
+Now with the Admin UI, it is also possible to invite users as admins. Even without access to the AWS account.
 See details [here](https://docs.amplify.aws/console/adminui/access-management).
 
 # Code
