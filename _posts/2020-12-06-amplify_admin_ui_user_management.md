@@ -50,9 +50,11 @@ In the Admin UI, it's in the section user management. Click on "create user".
 
 ![user management create user]({{ site.baseurl }}/img/2020-12-06-amplify_admin_ui_user_management/user_management_create_user.png)
 
-Type in the user data.
+Type in the user data. The user will get an email with the username and temporary password.
 
 ![user management user data]({{ site.baseurl }}/img/2020-12-06-amplify_admin_ui_user_management/user_management_user_data.png)
+
+# User sign in process
 
 Then the user can log in with his username and temporary password.
 
@@ -69,6 +71,10 @@ Two screens are left. One for the email verification...
 ...and the last one for the verification code.
 
 ![user signin verification code]({{ site.baseurl }}/img/2020-12-06-amplify_admin_ui_user_management/user_signin_verification_code.png)
+
+The last step is not necessary if the admin marks the email as verified.
+
+![admin verify email]({{ site.baseurl }}/img/2020-12-06-amplify_admin_ui_user_management/admin_verify_email.png)
 
 That's it 🎉
 
