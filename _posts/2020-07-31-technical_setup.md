@@ -211,6 +211,8 @@ OBS Studio and Shotcut
 
 [Graphviz](https://winget.run/pkg/Graphviz/Graphviz)
 
+[Postman](https://winget.run/pkg/Postman/Postman)
+
 ## 1.8. Chocolatey packages
 
 [GoogleChrome](https://chocolatey.org/packages/GoogleChrome)
