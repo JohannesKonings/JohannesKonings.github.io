@@ -71,6 +71,14 @@ Disclaimer: This article contains helper tools for AWS and will be updated from 
 
 [AWS ICONS](https://awsicons.dev/)
 
+# Accounts
+
+## aws nuke 
+
+Remove all resources from an AWS account.
+
+[https://github.com/rebuy-de/aws-nuke](https://github.com/rebuy-de/aws-nuke)
+
 
 
 
