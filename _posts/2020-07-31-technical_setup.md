@@ -287,6 +287,10 @@ OBS Studio and Shotcut
 
 [PlantUML](https://chocolatey.org/packages/plantuml)
 
+### nvm
+
+⚠ [rename the node js folder](https://github.com/coreybutler/nvm-windows/issues/321#issuecomment-382396940)
+
 [nvm](https://chocolatey.org/packages/nvm)
 
 
