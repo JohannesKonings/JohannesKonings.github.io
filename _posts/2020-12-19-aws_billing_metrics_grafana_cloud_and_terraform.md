@@ -93,6 +93,10 @@ Navigate to this URL "https://<<Grafana instance>>/org/apikeys" and create on wi
 
 Put the API key into the .env file.
 
+# Usage of the env file
+
+Before the creation of the S3 Backend and the deployment run the command `source .env`.
+
 # Terraform AWS S3 backend
 
 This setup so far works for the first deployment. Changes and a redeployment lead to an error because the resource already exists.
