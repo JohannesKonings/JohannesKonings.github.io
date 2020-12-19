@@ -6,3 +6,4 @@ react:                "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy5
 serverless_framework: "https://www.serverless.com/static/serverless-framework-235f7e57983d270320cba8f86ec0ea65.svg"
 grafana:              "https://grafana.com/static/img/logos/grafana_logo_swirl.svg"
 amplify:              "https://pbs.twimg.com/profile_images/1114309924551417856/FKA4cm2x_400x400.png"
+terraform:            "https://www.terraform.io/assets/images/og-image-8b3e4f7d.png"
