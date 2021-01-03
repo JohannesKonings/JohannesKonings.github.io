@@ -43,8 +43,6 @@ Disclaimer: This articel contains my VS Code Extensions and will be updated from
 
 [Python](https://marketplace.visualstudio.com/items?itemName=ms-python.python)
 
-[PlantUML](https://marketplace.visualstudio.com/items?itemName=jebbs.plantuml)
-
 [GraphQL for VSCode](https://marketplace.visualstudio.com/items?itemName=kumar-harsh.graphql-for-vscode)
 
 [Serverless IDE](https://marketplace.visualstudio.com/items?itemName=ThreadHeap.serverless-ide-vscode)
@@ -56,6 +54,12 @@ Disclaimer: This articel contains my VS Code Extensions and will be updated from
 [Vetur](https://marketplace.visualstudio.com/items?itemName=octref.vetur)
 
 [Excel Viewer](https://marketplace.visualstudio.com/items?itemName=GrapeCity.gc-excelviewer)
+
+## diagramms
+
+[Draw.io Integration](https://marketplace.visualstudio.com/items?itemName=hediet.vscode-drawio)
+
+[PlantUML](https://marketplace.visualstudio.com/items?itemName=jebbs.plantuml)
 
 ## programming languages
 
