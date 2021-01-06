@@ -43,7 +43,9 @@ make-smaller-titles: true
 
                     <li>
                         <small class="hidden-xs">{{ post.date | date: "%B %-d, %Y" }}</small><br />
-                        <a href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a>
+                        <a href="{{ post.url | prepend: site.baseurl }}">
+                            <h3>{{ post.title }}</h3>
+                        </a>
                     </li>
 
                     {% endfor %}
