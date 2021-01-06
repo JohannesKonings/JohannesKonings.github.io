@@ -39,6 +39,10 @@ Disclaimer: This article contains helper tools for AWS and will be updated from 
 
 [Servers. LOL](https://servers.lol/)
 
+### Lambda
+
+[lumigo cli](https://www.npmjs.com/package/lumigo-cli)
+
 ### DynamoDb
 
 [Amazon DynamoDB Labs](https://amazon-dynamodb-labs.com/)
