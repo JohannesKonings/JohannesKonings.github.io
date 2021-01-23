@@ -27,6 +27,7 @@ tags:
   - [Video recording and editing](#video-recording-and-editing)
   - [1.7. winget](#17-winget)
   - [1.8. Chocolatey packages](#18-chocolatey-packages)
+    - [nvm](#nvm)
   - [1.9. Outlook sync](#19-outlook-sync)
   - [1.10. Windows Surface Recovery](#110-windows-surface-recovery)
 
@@ -59,6 +60,11 @@ The following are affiliate links.
 {{< rawhtml >}}
 <iframe style="width:120px;height:240px;" marginwidth="0" marginheight="0" scrolling="no" frameborder="0" src="//ws-eu.amazon-adsystem.com/widgets/q?ServiceVersion=20070822&OneJS=1&Operation=GetAdHtml&MarketPlace=DE&source=ss&ref=as_ss_li_til&ad_type=product_link&tracking_id=johanneskonin-21&language=de_DE&marketplace=amazon&region=DE&placement=B086C5LD5X&asins=B086C5LD5X&linkId=69556c5a5607df0fc8b63cd3279233c7&show_border=true&link_opens_in_new_window=true"></iframe>
 {{< /rawhtml >}}    
+
+[Logitech MX Keys](https://amzn.to/2YaaukI)
+{{< rawhtml >}}
+<iframe style="width:120px;height:240px;" marginwidth="0" marginheight="0" scrolling="no" frameborder="0" src="//ws-eu.amazon-adsystem.com/widgets/q?ServiceVersion=20070822&OneJS=1&Operation=GetAdHtml&MarketPlace=DE&source=ss&ref=as_ss_li_til&ad_type=product_link&tracking_id=johanneskonin-21&language=de_DE&marketplace=amazon&region=DE&placement=B07W7KRXDW&asins=B07W7KRXDW&linkId=dbce888e25a2588be6eecbb07a7f4f1a&show_border=true&link_opens_in_new_window=true"></iframe>
+{{< /rawhtml >}}  
 
 [ERGOTRON LX Monitor Arm in Schwarz](https://amzn.to/3kAdKih)
 <iframe style="width:120px;height:240px;" marginwidth="0" marginheight="0" scrolling="no" frameborder="0" src="//ws-eu.amazon-adsystem.com/widgets/q?ServiceVersion=20070822&OneJS=1&Operation=GetAdHtml&MarketPlace=DE&source=ss&ref=as_ss_li_til&ad_type=product_link&tracking_id=johanneskonin-21&language=de_DE&marketplace=amazon&region=DE&placement=B07Q8TJ2KL&asins=B07Q8TJ2KL&linkId=b2f9e00c80753ba9add84057ec252660&show_border=true&link_opens_in_new_window=true"></iframe>
