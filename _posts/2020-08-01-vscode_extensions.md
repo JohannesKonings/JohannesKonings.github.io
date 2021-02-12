@@ -55,6 +55,8 @@ Disclaimer: This articel contains my VS Code Extensions and will be updated from
 
 [Excel Viewer](https://marketplace.visualstudio.com/items?itemName=GrapeCity.gc-excelviewer)
 
+[Version Lens](https://marketplace.visualstudio.com/items?itemName=pflannery.vscode-versionlens)
+
 ## diagramms
 
 [Draw.io Integration](https://marketplace.visualstudio.com/items?itemName=hediet.vscode-drawio)
