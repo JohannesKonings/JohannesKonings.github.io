@@ -14,8 +14,8 @@ tags:
   - [1.1. Hardware](#11-hardware)
   - [1.2. WSL 2](#12-wsl-2)
     - [1.2.1. Update WSL1 to WSL2](#121-update-wsl1-to-wsl2)
-    - [uninstall](#uninstall)
-    - [1.2.2. ubuntu](#122-ubuntu)
+    - [1.2.2. uninstall](#122-uninstall)
+    - [1.2.3. ubuntu](#123-ubuntu)
   - [1.3. Terminals](#13-terminals)
     - [1.3.1. oh-my-posh](#131-oh-my-posh)
     - [1.3.2. oh-my-bash](#132-oh-my-bash)
@@ -24,12 +24,12 @@ tags:
     - [1.4.1. pipenv](#141-pipenv)
   - [1.5. npm global](#15-npm-global)
   - [1.6. ssh git](#16-ssh-git)
-  - [Video recording and editing](#video-recording-and-editing)
-  - [1.7. winget](#17-winget)
-  - [1.8. Chocolatey packages](#18-chocolatey-packages)
-    - [nvm](#nvm)
-  - [1.9. Outlook sync](#19-outlook-sync)
-  - [1.10. Windows Surface Recovery](#110-windows-surface-recovery)
+  - [1.7. Video recording and editing](#17-video-recording-and-editing)
+  - [1.8. winget](#18-winget)
+  - [1.9. Chocolatey packages](#19-chocolatey-packages)
+    - [1.9.1. nvm](#191-nvm)
+  - [1.10. Outlook sync](#110-outlook-sync)
+  - [1.11. Windows Surface Recovery](#111-windows-surface-recovery)
 
 # 1. technical setup
 
@@ -87,13 +87,13 @@ https://admcpr.com/how-to-upgrade-wsl-1-to-wsl-2/
 
 `wsl --set-version Ubuntu 2`
 
-### uninstall 
+### 1.2.2. uninstall 
 
 `wsl --unregister DistributionName`
 
 https://www.howtogeek.com/261188/how-to-uninstall-or-reinstall-windows-10s-ubuntu-bash-shell/
 
-### 1.2.2. ubuntu
+### 1.2.3. ubuntu
 
 [https://chocolatey.org/packages/wsl-ubuntu-1804](https://chocolatey.org/packages/wsl-ubuntu-1804)
 
@@ -165,11 +165,11 @@ https://dev.to/bdbch/setting-up-ssh-and-git-on-windows-10-2khk?signin=true
 
 https://chocolatey.org/packages/gnupg
 
-## Video recording and editing
+## 1.7. Video recording and editing
 
-OBS Studio and Shotcut
+[OBS Studio](https://obsproject.com/) and [Shotcut](https://shotcut.org/)
 
-## 1.7. winget
+## 1.8. winget
 
 [Windows Terminal Preview](https://winget.run/pkg/Microsoft/WindowsTerminalPreview)
 
@@ -219,7 +219,7 @@ OBS Studio and Shotcut
 
 [Postman](https://winget.run/pkg/Postman/Postman)
 
-## 1.8. Chocolatey packages
+## 1.9. Chocolatey packages
 
 [GoogleChrome](https://chocolatey.org/packages/GoogleChrome)
 
@@ -293,18 +293,18 @@ OBS Studio and Shotcut
 
 [PlantUML](https://chocolatey.org/packages/plantuml)
 
-### nvm
+### 1.9.1. nvm
 
 ⚠ [rename the node js folder](https://github.com/coreybutler/nvm-windows/issues/321#issuecomment-382396940)
 
 [nvm](https://chocolatey.org/packages/nvm)
 
 
-## 1.9. Outlook sync
+## 1.10. Outlook sync
 
 https://caldavsynchronizer.org/
 
 
-## 1.10. Windows Surface Recovery
+## 1.11. Windows Surface Recovery
 
 [Windows Device Recovery Tool](https://support.microsoft.com/en-us/windows/windows-device-recovery-tool-faq-2b186f06-7178-ed11-4cb6-5ed437f0855b)
