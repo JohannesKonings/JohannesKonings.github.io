@@ -29,6 +29,8 @@ Disclaimer: This articel contains my Chrome Extensions and will be updated from 
 
 [React Developer Tools](https://chrome.google.com/webstore/detail/react-developer-tools/fmkadmapgofadopljbjfkapdkoienihi)
 
+[OneTab](https://chrome.google.com/webstore/detail/onetab/chphlpgkkbolifaimnlloiipkdnihall/related?hl=de)
+
 
 
 
