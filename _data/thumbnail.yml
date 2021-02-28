@@ -7,3 +7,4 @@ serverless_framework: "https://www.serverless.com/static/serverless-framework-23
 grafana:              "https://grafana.com/static/img/logos/grafana_logo_swirl.svg"
 amplify:              "https://pbs.twimg.com/profile_images/1114309924551417856/FKA4cm2x_400x400.png"
 terraform:            "https://www.terraform.io/assets/images/og-image-8b3e4f7d.png"
+github:               "https://github.githubassets.com/images/modules/logos_page/Octocat.png"
