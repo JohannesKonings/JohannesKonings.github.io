@@ -19,8 +19,6 @@ Disclaimer: This articel contains my VS Code Extensions and will be updated from
 
 [PowerShell](https://marketplace.visualstudio.com/items?itemName=ms-vscode.PowerShell)
 
-[remote-wsl](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-wsl)
-
 [vscode-docker](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-docker)
 
 [vscode-ui5-language-assistant](https://marketplace.visualstudio.com/items?itemName=SAPOSS.vscode-ui5-language-assistant)
@@ -32,6 +30,8 @@ Disclaimer: This articel contains my VS Code Extensions and will be updated from
 [Error Lens](https://marketplace.visualstudio.com/items?itemName=usernamehw.errorlens)
 
 [indent-rainbow](https://marketplace.visualstudio.com/items?itemName=oderwat.indent-rainbow)
+
+[Trailing Spaces](https://marketplace.visualstudio.com/items?itemName=shardulm94.trailing-spaces)
 
 [Markdown All in One](https://marketplace.visualstudio.com/items?itemName=yzhang.markdown-all-in-one)
 
@@ -62,6 +62,15 @@ Disclaimer: This articel contains my VS Code Extensions and will be updated from
 [Draw.io Integration](https://marketplace.visualstudio.com/items?itemName=hediet.vscode-drawio)
 
 [PlantUML](https://marketplace.visualstudio.com/items?itemName=jebbs.plantuml)
+
+## remote
+
+[Remote Development](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.vscode-remote-extensionpack)
+
+>Remote - SSH - Work with source code in any location by opening folders on a remote machine/VM using SSH. Supports x86_64, ARMv7l (AArch32), and ARMv8l (AArch64) glibc-based >Linux, Windows 10/Server (1803+), and macOS 10.14+ (Mojave) SSH hosts.
+>Remote - Containers - Work with a sandboxed toolchain or container based application by opening any folder mounted into or inside a container.
+>Remote - WSL - Get a Linux-powered development experience from the comfort of Windows by opening any folder in the Windows Subsystem for Linux.
+
 
 ## programming languages
 

@@ -219,6 +219,10 @@ https://chocolatey.org/packages/gnupg
 
 [Postman](https://winget.run/pkg/Postman/Postman)
 
+[GitHub Desktop](https://winget.run/pkg/GitHub/GitHubDesktop)
+
+[Gpg4win](https://winget.run/pkg/gnupg/Gpg4win)
+
 ## 1.9. Chocolatey packages
 
 [GoogleChrome](https://chocolatey.org/packages/GoogleChrome)
