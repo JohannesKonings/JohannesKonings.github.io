@@ -14,7 +14,7 @@ tags:
 # What are GitHub actions?
 
 That is well described in this [post](https://dev.to/github/what-are-github-actions-3pml) by [Brian Douglas](https://dev.to/bdougieyo).
-He hast also a entire [post series](https://dev.to/github/28-days-of-github-action-tips-4opg) about tips around GitHub actions.
+He has also an entire [post series](https://dev.to/github/28-days-of-github-action-tips-4opg) about tips around GitHub actions.
 
 # Which problem should be solved?
 
