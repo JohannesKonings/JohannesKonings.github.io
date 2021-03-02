@@ -223,6 +223,8 @@ https://chocolatey.org/packages/gnupg
 
 [Gpg4win](https://winget.run/pkg/gnupg/Gpg4win)
 
+[Brave](https://winget.run/pkg/BraveSoftware/BraveBrowser)
+
 ## 1.9. Chocolatey packages
 
 [GoogleChrome](https://chocolatey.org/packages/GoogleChrome)
