@@ -80,6 +80,10 @@ Disclaimer: This articel contains my VS Code Extensions and will be updated from
 
 [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint)
 
+### Python
+
+[Pylance](https://marketplace.visualstudio.com/items?itemName=ms-python.vscode-pylance)
+
 ### ABAP
 
 [abaplint](https://marketplace.visualstudio.com/items?itemName=larshp.vscode-abaplint)
