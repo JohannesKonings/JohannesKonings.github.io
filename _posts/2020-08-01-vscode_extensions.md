@@ -59,6 +59,8 @@ Disclaimer: This articel contains my VS Code Extensions and will be updated from
 
 [GitLens — Git supercharged](https://marketplace.visualstudio.com/items?itemName=eamodio.gitlens)
 
+[YAML](https://marketplace.visualstudio.com/items?itemName=redhat.vscode-yaml)
+
 ## diagramms
 
 [Draw.io Integration](https://marketplace.visualstudio.com/items?itemName=hediet.vscode-drawio)
