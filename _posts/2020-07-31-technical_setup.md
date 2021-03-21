@@ -227,6 +227,8 @@ https://chocolatey.org/packages/gnupg
 
 [DisplayFusion](https://winget.run/pkg/BinaryFortress/DisplayFusion)
 
+[AWS Serverless Application Model (SAM)](https://winget.run/pkg/Amazon/SAM-CLI)
+
 ## 1.9. Chocolatey packages
 
 [GoogleChrome](https://chocolatey.org/packages/GoogleChrome)
