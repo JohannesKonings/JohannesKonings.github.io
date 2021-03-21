@@ -225,6 +225,8 @@ https://chocolatey.org/packages/gnupg
 
 [Brave](https://winget.run/pkg/BraveSoftware/BraveBrowser)
 
+[DisplayFusion](https://winget.run/pkg/BinaryFortress/DisplayFusion)
+
 ## 1.9. Chocolatey packages
 
 [GoogleChrome](https://chocolatey.org/packages/GoogleChrome)
