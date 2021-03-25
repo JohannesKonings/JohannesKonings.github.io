@@ -61,6 +61,8 @@ Disclaimer: This articel contains my VS Code Extensions and will be updated from
 
 [YAML](https://marketplace.visualstudio.com/items?itemName=redhat.vscode-yaml)
 
+[Live Share](https://marketplace.visualstudio.com/items?itemName=MS-vsliveshare.vsliveshare)
+
 ## diagramms
 
 [Draw.io Integration](https://marketplace.visualstudio.com/items?itemName=hediet.vscode-drawio)
