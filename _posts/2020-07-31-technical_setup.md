@@ -305,6 +305,8 @@ https://chocolatey.org/packages/gnupg
 
 [PlantUML](https://chocolatey.org/packages/plantuml)
 
+[tfsec](https://chocolatey.org/packages/tfsec)
+
 ### 1.9.1. nvm
 
 ⚠ [rename the node js folder](https://github.com/coreybutler/nvm-windows/issues/321#issuecomment-382396940)
