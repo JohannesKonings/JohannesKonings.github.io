@@ -63,6 +63,8 @@ Disclaimer: This articel contains my VS Code Extensions and will be updated from
 
 [Live Share](https://marketplace.visualstudio.com/items?itemName=MS-vsliveshare.vsliveshare)
 
+[tfsec](https://marketplace.visualstudio.com/items?itemName=tfsec.tfsec)
+
 ## diagramms
 
 [Draw.io Integration](https://marketplace.visualstudio.com/items?itemName=hediet.vscode-drawio)
