@@ -271,6 +271,8 @@ https://chocolatey.org/packages/gnupg
 
 [terraform](https://chocolatey.org/packages/terraform)
 
+[terraform-docs](https://community.chocolatey.org/packages/Terraform-Docs)
+
 [openjdk](https://chocolatey.org/packages/openjdk)
 
 [openssl](https://chocolatey.org/packages/openssl)
