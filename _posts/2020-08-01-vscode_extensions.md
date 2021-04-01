@@ -65,6 +65,8 @@ Disclaimer: This articel contains my VS Code Extensions and will be updated from
 
 [tfsec](https://marketplace.visualstudio.com/items?itemName=tfsec.tfsec)
 
+[Visual Studio IntelliCode](https://marketplace.visualstudio.com/items?itemName=VisualStudioExptTeam.vscodeintellicode)
+
 ## diagramms
 
 [Draw.io Integration](https://marketplace.visualstudio.com/items?itemName=hediet.vscode-drawio)
