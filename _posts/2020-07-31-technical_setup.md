@@ -309,6 +309,8 @@ https://chocolatey.org/packages/gnupg
 
 [tfsec](https://chocolatey.org/packages/tfsec)
 
+[MobaXTerm](https://community.chocolatey.org/packages/MobaXTerm)
+
 ### 1.9.1. nvm
 
 ⚠ [rename the node js folder](https://github.com/coreybutler/nvm-windows/issues/321#issuecomment-382396940)
