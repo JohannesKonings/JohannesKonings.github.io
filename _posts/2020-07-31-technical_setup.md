@@ -311,6 +311,8 @@ https://chocolatey.org/packages/gnupg
 
 [MobaXTerm](https://community.chocolatey.org/packages/MobaXTerm)
 
+[NoSQL Workbench for Amazon DynamoDB](https://community.chocolatey.org/packages/nosql-workbench)
+
 ### 1.9.1. nvm
 
 ⚠ [rename the node js folder](https://github.com/coreybutler/nvm-windows/issues/321#issuecomment-382396940)
