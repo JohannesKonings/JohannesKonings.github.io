@@ -69,6 +69,8 @@ Disclaimer: This articel contains my VS Code Extensions and will be updated from
 
 [shell-format](https://marketplace.visualstudio.com/items?itemName=foxundermoon.shell-format)
 
+[Thunder Client](https://marketplace.visualstudio.com/items?itemName=rangav.vscode-thunder-client)
+
 ## diagramms
 
 [Draw.io Integration](https://marketplace.visualstudio.com/items?itemName=hediet.vscode-drawio)
