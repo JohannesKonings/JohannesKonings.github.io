@@ -313,6 +313,8 @@ https://chocolatey.org/packages/gnupg
 
 [NoSQL Workbench for Amazon DynamoDB](https://community.chocolatey.org/packages/nosql-workbench)
 
+[SonarQube Scanner](https://community.chocolatey.org/packages/sonarqube-scanner.portable)
+
 ### 1.9.1. nvm
 
 ⚠ [rename the node js folder](https://github.com/coreybutler/nvm-windows/issues/321#issuecomment-382396940)
