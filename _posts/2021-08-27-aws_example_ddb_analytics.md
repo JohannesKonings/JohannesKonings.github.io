@@ -1,6 +1,6 @@
 ---
 layout:     post
-title:      Example how to analyze DynamoDB item changes with Kinesis and Athena created with terraform
+title:      Example how to analyze DynamoDB item changes with Kinesis and Athena created with Terraform
 date:       2021-08-27 08:15:18
 published:  true
 summary:    This post is how stream data changes of a DynamoDb table via Kinesis Data Stream and Kinesis Firehose to S3, and analyze the data with Athena
