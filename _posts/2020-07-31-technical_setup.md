@@ -231,6 +231,8 @@ https://chocolatey.org/packages/gnupg
 
 [pgAdmin4v5](https://winget.run/pkg/PostgreSQL/pgAdmin-x64)
 
+[Bitwarden](https://winget.run/pkg/Bitwarden/Bitwarden)
+
 ## 1.9. Chocolatey packages
 
 [GoogleChrome](https://chocolatey.org/packages/GoogleChrome)
