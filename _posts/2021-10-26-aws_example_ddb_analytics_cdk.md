@@ -57,7 +57,7 @@ That adds to the DynamoDb, a Kinesis Data Stream, and connects it to the DynamoD
 
 ![kinesis data stream]({{ site.baseurl }}/img/2021-10-26-aws_example_ddb_analytics_cdk/kinesis_data_stream.png)
 
-![kinesis data stream ddb]({{ site.baseurl }}/2021-10-26-aws_example_ddb_analytics_cdk/kinesis_data_stream_ddb.png)
+![kinesis data stream ddb]({{ site.baseurl }}/img/2021-10-26-aws_example_ddb_analytics_cdk/kinesis_data_stream_ddb.png)
 
 # Kinesis Data Firehose and S3 Bucket
 
@@ -114,68 +114,70 @@ There is already a [github issue](https://github.com/aws/aws-cdk/issues/8863) to
 
 
 ```typescript
-const roleCrawler = new iam.Role(this, 'role crawler', {
-      roleName: `${name}-crawler-role`,
-      assumedBy: new iam.ServicePrincipal('glue.amazonaws.com'),
+const getSecurityConfiguration = new iam.PolicyDocument({
+      statements: [
+        new iam.PolicyStatement({
+          actions: ['glue:GetSecurityConfiguration'],
+          resources: ['*']
+        })
+      ]
     })
 
-    roleCrawler.addToPolicy(
-      new iam.PolicyStatement({
-        resources: ['*'],
-        actions: ['glue:GetSecurityConfiguration'],
-      })
-    )
+  const roleCrawler = new iam.Role(this, 'role crawler', {
+    roleName: `${name}-crawler-role`,
+    assumedBy: new iam.ServicePrincipal('glue.amazonaws.com'),
+    inlinePolicies: {
+      GetSecurityConfiguration: getSecurityConfiguration
+    }
+  })
 
-    const glueDb = new glue.Database(this, 'glue db', {
-      databaseName: `${name}-db`,
+  const glueDb = new glue.Database(this, 'glue db', {
+    databaseName: `${name}-db`,
+  })
+
+  const glueSecurityOptions = new glue.SecurityConfiguration(this, 'glue security options', {
+    securityConfigurationName: `${name}-security-options`,
+    s3Encryption: {
+      mode: glue.S3EncryptionMode.KMS,
+    },
+  })
+
+  const crawler = new glue.CfnCrawler(this, 'crawler', {
+    name: `${name}-crawler`,
+    role: roleCrawler.roleArn,
+    targets: {
+      s3Targets: [
+        {
+          path: `s3://${firehoseBucket.bucketName}`,
+        },
+      ],
+    },
+    databaseName: glueDb.databaseName,
+    crawlerSecurityConfiguration: glueSecurityOptions.securityConfigurationName,
+  })
+
+  // const glueCrawlerLogArn = `arn:aws:logs:${cdk.Stack.of(this).region}:${cdk.Stack.of(this).account}:log-group:/aws-glue/crawlers:log-stream:${crawler.name}`
+  const glueCrawlerLogArn = `arn:aws:logs:${cdk.Stack.of(this).region}:${cdk.Stack.of(this).account}:log-group:/aws-glue/crawlers*` //:log-stream:${crawler.name}`
+
+  const glueTableArn = `arn:aws:glue:${cdk.Stack.of(this).region}:${cdk.Stack.of(this).account}:table/${glueDb.databaseName}/*`
+
+  const glueCrawlerArn = `arn:aws:glue:${cdk.Stack.of(this).region}:${cdk.Stack.of(this).account}:crawler/${crawler.name}`
+
+  roleCrawler.addToPolicy(
+    new iam.PolicyStatement({
+      resources: [
+        glueCrawlerLogArn,
+        glueTableArn,
+        glueDb.catalogArn,
+        glueDb.databaseArn,
+        kmsKey.keyArn,
+        firehoseBucket.bucketArn,
+        `${firehoseBucket.bucketArn}/*`,
+        glueCrawlerArn,
+      ],
+      actions: ['logs:*', 'glue:*', 'kms:*', 'S3:*'],
     })
-
-    const glueSecurityOptions = new glue.SecurityConfiguration(this, 'glue security options', {
-      securityConfigurationName: `${name}-security-options`,
-      s3Encryption: {
-        mode: glue.S3EncryptionMode.KMS,
-      },
-      cloudWatchEncryption: {
-        mode: glue.CloudWatchEncryptionMode.KMS,
-      },
-    })
-
-    const crawler = new glue.CfnCrawler(this, 'crawler', {
-      name: `${name}-crawler`,
-      role: roleCrawler.roleArn,
-      targets: {
-        s3Targets: [
-          {
-            path: `s3://${firehoseBucket.bucketName}`,
-          },
-        ],
-      },
-      databaseName: glueDb.databaseName,
-      crawlerSecurityConfiguration: glueSecurityOptions.securityConfigurationName,
-    })
-
-    // const glueCrawlerLogArn = `arn:aws:logs:${cdk.Stack.of(this).region}:${cdk.Stack.of(this).account}:log-group:/aws-glue/crawlers:log-stream:${crawler.name}`
-    const glueCrawlerLogArn = `arn:aws:logs:${cdk.Stack.of(this).region}:${cdk.Stack.of(this).account}:log-group:/aws-glue/crawlers*` //:log-stream:${crawler.name}`
-
-    const glueTableArn = `arn:aws:glue:${cdk.Stack.of(this).region}:${cdk.Stack.of(this).account}:table/${glueDb.databaseName}/*`
-
-    const glueCrawlerArn = `arn:aws:glue:${cdk.Stack.of(this).region}:${cdk.Stack.of(this).account}:crawler/${crawler.name}`
-
-    roleCrawler.addToPolicy(
-      new iam.PolicyStatement({
-        resources: [
-          glueCrawlerLogArn,
-          glueTableArn,
-          glueDb.catalogArn,
-          glueDb.databaseArn,
-          kmsKey.keyArn,
-          firehoseBucket.bucketArn,
-          `${firehoseBucket.bucketArn}/*`,
-          glueCrawlerArn,
-        ],
-        actions: ['logs:*', 'glue:*', 'kms:Decrypt', 'S3:*'],
-      })
-    )
+  )
 ```
 
 For test purposes, it's enough to run the crawler before any analysis. Scheduling is also possible.
@@ -209,6 +211,8 @@ new athena.CfnWorkGroup(this, 'analytics-athena-workgroup', {
   },
 })
 ```
+
+How to anylyze the data see also [here]({{ site.baseurl }}/aws/2021/08/27/aws_example_ddb_analytics/)
 
 # Cost Alert 💰
 
