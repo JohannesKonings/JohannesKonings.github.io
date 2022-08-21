@@ -33,7 +33,6 @@ The following tools and libraries are used in this theme
  * [Font Awesome](http://fortawesome.github.io/Font-Awesome/)
 
 ### Social
- * [AddThis](http://www.addthis.com/)
  * [Disqus](https://disqus.com/)
 
 ### Other
