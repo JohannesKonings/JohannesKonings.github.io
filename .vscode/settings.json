@@ -27,5 +27,11 @@
         "!Select sequence",
         "!Split",
         "!Split sequence"
+    ],
+    "grammarly.selectors": [
+        {
+            "language": "markdown",
+            "scheme": "file"
+        }
     ]
 }
