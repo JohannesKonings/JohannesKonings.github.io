@@ -1,9 +1,9 @@
 ---
 layout:     post
-title:      Example how to analyze DynamoDB item changes with Kinesis and Athena created with CDK
+title:      Example how to visualize DynamoDB item changes with Quicksight (S3 source) created with CDK
 date:       2022-08-xx 08:15:18
 published:  false
-summary:    This post is how stream data changes of a DynamoDb table via Kinesis Data Stream and Kinesis Firehose to S3, and analyze the data with Athena. Build with CDK.
+summary:    This post is how to visualize the streamed data changes of a DynamoDb table via Kinesis Data Stream and Kinesis Firehose to S3. Build with CDK.
 categories: aws
 thumbnail: aws_kinesis
 tags:
@@ -11,213 +11,65 @@ tags:
  - aws kinesis
  - aws athena
  - aws cdk
+ - aws quicksight
 ---
 
-This is the same like described [here]({{ site.baseurl }}/aws/2021/08/27/aws_example_ddb_analytics/), but instead of terraform it's build with [CDK](https://aws.amazon.com/cdk/).
+[This]({{ site.baseurl }}/aws/2021/08/27/aws_example_ddb_analytics_cdk/) post describes how to anlyze the data with Athena. Thius post describes how to visualize this data with Quicksight.
 
-To bootrap the project run this command: `cdk init app --language typescript`
-Further information are [here](https://docs.aws.amazon.com/cdk/latest/guide/hello_world.html)
+## Quicksight activation and costs
 
-All the services are in [this](https://github.com/JohannesKonings/test-aws-dynamodb-athena-cdk/blob/main/cdk/lib/cdk-stack.ts) file.
+## Quicksight role
 
-# KMS key
+In the [standard edition](https://docs.aws.amazon.com/quicksight/latest/user/security_iam_service-with-iam.html#security-create-iam-role), Quicksight uses a standard role that could be configured via the Quicksight console.
 
-This creates are KMS key with an alias to encrypt the data in the created services.
+![quicksight permission access to aws services]({{ site.baseurl }}/img/2022-08-xx-aws_example_ddb_analytics_quicksight_cdk/quicksight-permission-access-to-aws-services.png)
 
-```typescript
-const kmsKey = new kms.Key(this, 'kmsKey', {
-      enableKeyRotation: true,
-    })
+Unfortunately, it is not possible to allow for specific KMS keys. For that we need to add a policy to the role aws-quicksight-service-role-v0.
 
-kmsKey.addAlias(name)
-```
-
-# DynamoDb and Kinesis Data Stream
-
-This is the creation of the DynamoDb with the Kinesis Data Stream.
+[This](https://github.com/JohannesKonings/test-aws-dynamodb-athena-cdk/blob/main/cdk/lib/quicksight/quicksight-role.ts) ads the needed permissions to that role.
 
 ```typescript
-const stream = new kinesis.Stream(this, 'Stream', {
-      streamName: `${name}-data-stream`,
-      encryption: kinesis.StreamEncryption.KMS,
-      encryptionKey: kmsKey,
-    })
+import { Construct } from 'constructs'
+import { aws_iam as iam, aws_s3 as s3 } from 'aws-cdk-lib'
 
-    const table = new dynamodb.Table(this, 'Table', {
-      tableName: name,
-      partitionKey: { name: 'pk', type: dynamodb.AttributeType.STRING },
-      billingMode: dynamodb.BillingMode.PAY_PER_REQUEST,
-      encryption: dynamodb.TableEncryption.CUSTOMER_MANAGED,
-      encryptionKey: kmsKey,
-      kinesisStream: stream,
-    })
+export interface QuicksightRoleProps {
+  name: string
+  bucket: s3.IBucket
+}
+
+export class QuicksightRole extends Construct {
+  constructor(scope: Construct, id: string, props: QuicksightRoleProps) {
+    super(scope, id)
+
+    const quicksightRoleName = 'aws-quicksight-service-role-v0'
+
+    const quicksightRole = iam.Role.fromRoleName(this, 'quicksight-role', quicksightRoleName)
+
+    quicksightRole.attachInlinePolicy(
+      new iam.Policy(this, `${props.name}-policy`, {
+        statements: [
+          new iam.PolicyStatement({
+            actions: ['kms:Decrypt', 's3:GetObject', 's3:List*'],
+            resources: [props.bucket.bucketArn, `${props.bucket.bucketArn}/*`, props.bucket.encryptionKey!.keyArn],
+          }),
+        ],
+      })
+    )
+  }
+}
 ```
 
-That adds to the DynamoDb, a Kinesis Data Stream, and connects it to the DynamoDb.
-
-![kinesis data stream]({{ site.baseurl }}/img/2021-10-26-aws_example_ddb_analytics_cdk/kinesis_data_stream.png)
-
-![kinesis data stream ddb]({{ site.baseurl }}/img/2021-10-26-aws_example_ddb_analytics_cdk/kinesis_data_stream_ddb.png)
-
-# Kinesis Data Firehose and S3 Bucket
-
-Kinesis Data Firehose is the connection between the Kinesis Data Stream to the S3 Bucket.
-
-Unfortunately, Firehose stores the JSONs without a linefeed. Therefore it's a lambda for conversion is necessary.
-
-More about that is described in this [post](https://medium.com/analytics-vidhya/append-newline-to-amazon-kinesis-firehose-json-formatted-records-with-python-f58498d0177a)
-
-It looks like this.
-
-```typescript
- const firehoseBucket = new s3.Bucket(this, 'firehose-s3-bucket', {
-      bucketName: `${name}-firehose-s3-bucket`,
-      encryptionKey: kmsKey,
-    })
-
-const processor = new lambda.NodejsFunction(this, 'lambda-function-processor', {
-  functionName: `${name}-firehose-converter`,
-  timeout: cdk.Duration.minutes(2),
-  bundling: {
-    sourceMap: true,
-  },
-})
-
-const lambdaProcessor = new LambdaFunctionProcessor(processor, {
-  retries: 5,
-})
-
-const s3Destination = new destinations.S3Bucket(firehoseBucket, {
-  encryptionKey: kmsKey,
-  bufferingInterval: cdk.Duration.seconds(60),
-  processor: lambdaProcessor,
-})
-
-const firehoseDeliveryStream = new firehose.DeliveryStream(this, 'Delivery Stream', {
-  deliveryStreamName: `${name}-firehose`,
-  sourceStream: stream,
-  destinations: [s3Destination],
-})
-```
-
-The delivery of the data to the S3 bucket is buffered. Here are the default values.
-
-![firehose-buffer]({{ site.baseurl }}/img/2021-10-26-aws_example_ddb_analytics_cdk/firehose_buffer.png)
-
-# Glue crawler
-
-Athena needs a structured table for the SQL queries. The Glue crawler creates this from the data in the S3 bucket.
-
-The glue crawler isn't a L2 construct yet. So it needs a L1 construct. See [here](https://blog.phillipninan.com/a-no-nonsense-guide-to-aws-cloud-development-kit-cdk) more about L1 - L3.
-
-There is already a [github issue](https://github.com/aws/aws-cdk/issues/8863) to create a L2 construct for the glue crawler.
+Now it's possible to create a datasource from the S3 bucket.
 
 
-```typescript
-const getSecurityConfiguration = new iam.PolicyDocument({
-      statements: [
-        new iam.PolicyStatement({
-          actions: ['glue:GetSecurityConfiguration'],
-          resources: ['*']
-        })
-      ]
-    })
+## Create a datasource and dataset
 
-  const roleCrawler = new iam.Role(this, 'role crawler', {
-    roleName: `${name}-crawler-role`,
-    assumedBy: new iam.ServicePrincipal('glue.amazonaws.com'),
-    inlinePolicies: {
-      GetSecurityConfiguration: getSecurityConfiguration
-    }
-  })
 
-  const glueDb = new glue.Database(this, 'glue db', {
-    databaseName: `${name}-db`,
-  })
 
-  const glueSecurityOptions = new glue.SecurityConfiguration(this, 'glue security options', {
-    securityConfigurationName: `${name}-security-options`,
-    s3Encryption: {
-      mode: glue.S3EncryptionMode.KMS,
-    },
-  })
-
-  const crawler = new glue.CfnCrawler(this, 'crawler', {
-    name: `${name}-crawler`,
-    role: roleCrawler.roleArn,
-    targets: {
-      s3Targets: [
-        {
-          path: `s3://${firehoseBucket.bucketName}`,
-        },
-      ],
-    },
-    databaseName: glueDb.databaseName,
-    crawlerSecurityConfiguration: glueSecurityOptions.securityConfigurationName,
-  })
-
-  // const glueCrawlerLogArn = `arn:aws:logs:${cdk.Stack.of(this).region}:${cdk.Stack.of(this).account}:log-group:/aws-glue/crawlers:log-stream:${crawler.name}`
-  const glueCrawlerLogArn = `arn:aws:logs:${cdk.Stack.of(this).region}:${cdk.Stack.of(this).account}:log-group:/aws-glue/crawlers*` //:log-stream:${crawler.name}`
-
-  const glueTableArn = `arn:aws:glue:${cdk.Stack.of(this).region}:${cdk.Stack.of(this).account}:table/${glueDb.databaseName}/*`
-
-  const glueCrawlerArn = `arn:aws:glue:${cdk.Stack.of(this).region}:${cdk.Stack.of(this).account}:crawler/${crawler.name}`
-
-  roleCrawler.addToPolicy(
-    new iam.PolicyStatement({
-      resources: [
-        glueCrawlerLogArn,
-        glueTableArn,
-        glueDb.catalogArn,
-        glueDb.databaseArn,
-        kmsKey.keyArn,
-        firehoseBucket.bucketArn,
-        `${firehoseBucket.bucketArn}/*`,
-        glueCrawlerArn,
-      ],
-      actions: ['logs:*', 'glue:*', 'kms:*', 'S3:*'],
-    })
-  )
-```
-
-For test purposes, it's enough to run the crawler before any analysis. Scheduling is also possible.
-
-![glue-run-crawler]({{ site.baseurl }}/img/2021-10-26-aws_example_ddb_analytics_cdk/glue_run_crawler.png)
-
-That creates this table, which is accessible by Athena.
-
-![glue-table]({{ site.baseurl }}/img/2021-10-26-aws_example_ddb_analytics_cdk/glue_table.png)
-
-# Athena
-
-For Athena it needs an S3 bucket for the query results and, for better isolation to other projects, a workgroup.
-
-```typescript
-const athenaQueryResults = new s3.Bucket(this, 'query-results', {
-      bucketName: `${name}-query-results`,
-      encryptionKey: kmsKey,
-    })
-
-new athena.CfnWorkGroup(this, 'analytics-athena-workgroup', {
-  name: `${name}-workgroup`,
-  workGroupConfiguration: {
-    resultConfiguration: {
-      outputLocation: `s3://${athenaQueryResults.bucketName}`,
-      encryptionConfiguration: {
-        encryptionOption: 'SSE_KMS',
-        kmsKey: kmsKey.keyArn,
-      },
-    },
-  },
-})
-```
-
-How to anylyze the data see also [here]({{ site.baseurl }}/aws/2021/08/27/aws_example_ddb_analytics/)
 
 # Cost Alert 💰
 
-⚠️ Don't forget to destroy after testing. Kinesis Data Streams has [costs](https://aws.amazon.com/kinesis/data-streams/pricing/) per hour
-
+⚠️ Don't forget to delete the Quicksight account after testing.
 
 # Code
 
