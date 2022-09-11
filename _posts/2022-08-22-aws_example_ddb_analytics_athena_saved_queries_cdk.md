@@ -99,7 +99,7 @@ This needs the query as a string. The function `getSqlString` converts and trans
 
 So that the placeholders are replaced with the resources, which are deployed.
 
-The Athena table name will be created during the glue crawler process. The convention is that the table name is the S3 bucket name with an underscore ("_") instead of dashes ("-").
+The Athena table name will be created during the glue crawler process. The convention is that the table name configured prefix of the S3 bucket with an underscore ("_") instead of dashes ("-").
 
 The database name and the workgroup name are passed from the stack to the construct.
 
