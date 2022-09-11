@@ -15,12 +15,17 @@ tags:
 
 This is the same like described [here]({{ site.baseurl }}/aws/2021/08/27/aws_example_ddb_analytics/), but instead of terraform it's build with [CDK](https://aws.amazon.com/cdk/).
 
-To bootrap the project run this command: `cdk init app --language typescript`
+To bootstrap the project run this command: `cdk init app --language typescript`
 Further information are [here](https://docs.aws.amazon.com/cdk/latest/guide/hello_world.html)
 
 All the services are in [this](https://github.com/JohannesKonings/test-aws-dynamodb-athena-cdk/blob/main/cdk/lib/cdk-stack.ts) file.
 
-# KMS key
+## Updates
+
+2022-09-11: Add prefix for kinesis data firehose S3 destination
+2022-08-13: CDK migrated to v2
+
+## KMS key
 
 This creates are KMS key with an alias to encrypt the data in the created services.
 
@@ -32,7 +37,7 @@ const kmsKey = new kms.Key(this, 'kmsKey', {
 kmsKey.addAlias(name)
 ```
 
-# DynamoDb and Kinesis Data Stream
+## DynamoDb and Kinesis Data Stream
 
 This is the creation of the DynamoDb with the Kinesis Data Stream.
 
@@ -59,13 +64,15 @@ That adds to the DynamoDb, a Kinesis Data Stream, and connects it to the DynamoD
 
 ![kinesis data stream ddb]({{ site.baseurl }}/img/2021-10-26-aws_example_ddb_analytics_cdk/kinesis_data_stream_ddb.png)
 
-# Kinesis Data Firehose and S3 Bucket
+## Kinesis Data Firehose and S3 Bucket
 
 Kinesis Data Firehose is the connection between the Kinesis Data Stream to the S3 Bucket.
 
 Unfortunately, Firehose stores the JSONs without a linefeed. Therefore it's a lambda for conversion is necessary.
 
 More about that is described in this [post](https://medium.com/analytics-vidhya/append-newline-to-amazon-kinesis-firehose-json-formatted-records-with-python-f58498d0177a)
+
+To have the kinesis firehose data isolated under a "namespace" we use a prefix.
 
 It looks like this.
 
@@ -87,10 +94,13 @@ const lambdaProcessor = new LambdaFunctionProcessor(processor, {
   retries: 5,
 })
 
+const ddbChangesPrefix = 'ddb-changes';
+
 const s3Destination = new destinations.S3Bucket(firehoseBucket, {
   encryptionKey: kmsKey,
   bufferingInterval: cdk.Duration.seconds(60),
   processor: lambdaProcessor,
+  dataOutputPrefix: `${ddbChangesPrefix}/`,
 })
 
 const firehoseDeliveryStream = new firehose.DeliveryStream(this, 'Delivery Stream', {
@@ -104,9 +114,9 @@ The delivery of the data to the S3 bucket is buffered. Here are the default valu
 
 ![firehose-buffer]({{ site.baseurl }}/img/2021-10-26-aws_example_ddb_analytics_cdk/firehose_buffer.png)
 
-# Glue crawler
+## Glue crawler
 
-Athena needs a structured table for the SQL queries. The Glue crawler creates this from the data in the S3 bucket.
+Athena needs a structured table for the SQL queries. The Glue crawler creates this from the data in the S3 bucket below the configured prefix.
 
 The glue crawler isn't a L2 construct yet. So it needs a L1 construct. See [here](https://blog.phillipninan.com/a-no-nonsense-guide-to-aws-cloud-development-kit-cdk) more about L1 - L3.
 
@@ -148,7 +158,7 @@ const getSecurityConfiguration = new iam.PolicyDocument({
     targets: {
       s3Targets: [
         {
-          path: `s3://${firehoseBucket.bucketName}`,
+          path: `s3://${firehoseBucket.bucketName}/${ddbChangesPrefix}`,
         },
       ],
     },
@@ -188,7 +198,7 @@ That creates this table, which is accessible by Athena.
 
 ![glue-table]({{ site.baseurl }}/img/2021-10-26-aws_example_ddb_analytics_cdk/glue_table.png)
 
-# Athena
+## Athena
 
 For Athena it needs an S3 bucket for the query results and, for better isolation to other projects, a workgroup.
 
@@ -214,12 +224,12 @@ new athena.CfnWorkGroup(this, 'analytics-athena-workgroup', {
 
 How to anylyze the data see also [here]({{ site.baseurl }}/aws/2021/08/27/aws_example_ddb_analytics/)
 
-# Cost Alert 💰
+## Cost Alert 💰
 
 ⚠️ Don't forget to destroy after testing. Kinesis Data Streams has [costs](https://aws.amazon.com/kinesis/data-streams/pricing/) per hour
 
 
-# Code
+## Code
 
 [https://github.com/JohannesKonings/test-aws-dynamodb-athena-cdk](https://github.com/JohannesKonings/test-aws-dynamodb-athena-cdk)
 
