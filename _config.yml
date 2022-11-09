@@ -14,6 +14,7 @@ post_limit: 5
 # Social usernames/URLs
 email_address: mail@johanneskonings.dev
 twitter_username: KoningsJohannes
+mastodon_username:  KoningsJohannes
 github_username:  JohannesKonings
 dev-to_username: JohannesKonings
 linkedin_link: https://www.linkedin.com/in/johanneskonings

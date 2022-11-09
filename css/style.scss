@@ -3,6 +3,7 @@
 /* Colours */
 $email:          #31373b;
 $twitter:        #6dabda;
+$mastodon:       #6dabda;
 $dev-to:         #020e18;
 $linkedin:       #2b77b1;
 $github:         #f6c2a4;
@@ -188,6 +189,14 @@ ul {
 	}
 	.fa-twitter:hover {
 		color: $twitter;
+	}
+
+	.fa-mastodon {
+		animation : updown 1s;
+		animation-delay: 250ms;
+	}
+	.fa-mastodon:hover {
+		color: $mastodon;
 	}
 
 	.fa-dev-to {
