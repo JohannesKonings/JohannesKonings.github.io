@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Personal from './personal';
 
 export default function Layout({ children }) {
   return (
@@ -6,12 +7,15 @@ export default function Layout({ children }) {
       <header className='bg-fuchsia-100 mb-8 py-4'>
         <div className='container mx-auto flex justify-center'>
           <Link href='/'>
-            <a>🏡</a>
+            🏡
           </Link>
           <span className='mx-auto'>Welcome to my blog</span>{' '}
         </div>
       </header>
-      <main className='container mx-auto flex-1'>{children}</main>
+      <main className='container mx-auto flex-1'>
+        <Personal />
+        <div>{children}</div>
+      </main>
       <footer className='bg-fuchsia-100 mt-8 py-4'>
         <div className='container mx-auto flex justify-center'>
           &copy; 2022 DailyDevTips

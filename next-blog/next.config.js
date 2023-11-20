@@ -1,11 +1,12 @@
 /** @type {import('next').NextConfig} */
+const basePath = '/next-blog/out'
 const nextConfig = {
+  basePath: basePath,
+  output: 'export',
   reactStrictMode: true,
   swcMinify: true,
-  experimental: {
-    images: {
-        unoptimized: true
-    }
+  images: {
+    unoptimized: true,
   }
 }
 
