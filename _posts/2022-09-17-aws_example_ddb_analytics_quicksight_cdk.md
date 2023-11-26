@@ -1,7 +1,7 @@
 ---
 layout:     post
 title:      Example how to visualize DynamoDB item changes with Quicksight (S3 source) created with CDK
-date:       2022-09-17 08:15:18
+date:       '2022-09-17 08:15:18'
 published:  true
 summary:    This post is how to visualize the streamed data changes of a DynamoDb table via Kinesis Data Stream and Kinesis Firehose to S3. Build with CDK.
 categories: aws

@@ -1,7 +1,7 @@
 ---
 layout:     post
 title:      How to setup AWS Billing metrics in Grafana Cloud via Terraform
-date:       2020-12-19 08:15:18
+date:       '2020-12-19 08:15:18'
 published:  true
 summary:    Terraform setup to display AWS billing metrics in Grafana Cloud with S3 Backend and CI/CD pipeline
 categories: aws

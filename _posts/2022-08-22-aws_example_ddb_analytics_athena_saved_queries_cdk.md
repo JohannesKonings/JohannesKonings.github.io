@@ -1,7 +1,7 @@
 ---
 layout:     post
 title:      Example how to create Athena saved queries with CDK
-date:       2022-08-22 08:15:18
+date:       '2022-08-22 08:15:18'
 published:  true
 summary:    This post is about how saved queries are created with CDK. This is useful to have important queries prepared for any users.
 categories: aws

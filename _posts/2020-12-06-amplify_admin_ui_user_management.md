@@ -1,7 +1,7 @@
 ---
 layout:     post
 title:      User management with the AWS Amplify Admin UI instead as self sign up
-date:       2020-12-06 08:15:18
+date:       '2020-12-06 08:15:18'
 summary:    Description of the change from a self sign up to user management from an admin
 categories: aws
 thumbnail: amplify

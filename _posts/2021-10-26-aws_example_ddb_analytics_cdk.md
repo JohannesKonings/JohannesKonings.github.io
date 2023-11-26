@@ -1,7 +1,7 @@
 ---
 layout:     post
 title:      Example how to analyze DynamoDB item changes with Kinesis and Athena created with CDK
-date:       2021-10-26 08:15:18
+date:       '2021-10-26 08:15:18'
 published:  true
 summary:    This post is how stream data changes of a DynamoDb table via Kinesis Data Stream and Kinesis Firehose to S3, and analyze the data with Athena. Build with CDK.
 categories: aws

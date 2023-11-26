@@ -1,7 +1,7 @@
 ---
 layout:     post
 title:      VS Code Extensions
-date:       2020-08-01 08:15:18
+date:       '2020-08-01 08:15:18'
 summary:    all used VS Code Extensions
 categories: settings
 thumbnail: vs_code

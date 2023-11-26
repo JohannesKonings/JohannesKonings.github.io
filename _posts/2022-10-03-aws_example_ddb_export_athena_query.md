@@ -1,7 +1,7 @@
 ---
 layout:     post
 title:      Example how to trigger a Dynamodb export and create an Athena saved query with CDK
-date:       2022-10-03 08:15:18
+date:       '2022-10-03 08:15:18'
 published:  true
 summary:    This post is how to trigger a Dynamodb export and create saved query to create a Athena table from the exported data
 categories: aws

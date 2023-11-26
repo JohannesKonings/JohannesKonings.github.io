@@ -1,7 +1,7 @@
 ---
 layout:     post
 title:      Web development tools
-date:       2020-08-02 08:15:18
+date:       '2020-08-02 08:15:18'
 summary:    web development tools summary
 categories: tools
 thumbnail: fa-bookmark-o

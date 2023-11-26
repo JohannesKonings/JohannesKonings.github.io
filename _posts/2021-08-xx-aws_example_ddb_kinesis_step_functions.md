@@ -1,7 +1,8 @@
 ---
 layout:     post
 title:      GitHub actions example for automatic release drafts and changelog.md creation
-date:       2021-02-xx 08:15:18
+# date:       '2021-02-xx 08:15:18'
+date:       '2021-02-28 08:15:18'
 published:  false
 summary:    This post is how to define your release draft via labels in pull requests and the update of the changelog.md after publishing a release
 categories: github

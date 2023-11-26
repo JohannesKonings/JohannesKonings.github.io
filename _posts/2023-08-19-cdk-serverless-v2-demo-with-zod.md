@@ -1,7 +1,7 @@
 ---
 layout:     post
 title:      Example how to use zod with CDK serverless v2
-date:       2023-08-19 08:15:18
+date:       '2023-08-19 08:15:18'
 published:  true
 summary:    CDK serverless v2 is for using type saftey develepmonet base on schemas like openAPI. This post is a example how to use zod with CDK serverless v2
 categories: aws

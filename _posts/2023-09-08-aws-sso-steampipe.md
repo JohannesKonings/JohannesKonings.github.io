@@ -1,7 +1,7 @@
 ---
 layout:     post
 title:      Use Steampipe to select your AWS resources across SSO accounts with SQL
-date:       2023-09-08 08:15:18
+date:       '2023-09-08 08:15:18'
 published:  true
 summary: See how this setup can help to discover your AWS resources across all SSO accounts with a mix of Steampipe, docker, bash scripts, and AWS CLI   
 categories: aws

@@ -1,7 +1,7 @@
 ---
 layout:     post
 title:      Technical setup
-date:       2020-07-31 16:15:18
+date:       '2020-07-31 16:15:18'
 summary:    installed software and used hardware
 categories: settings
 thumbnail: chocolatey

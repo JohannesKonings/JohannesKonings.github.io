@@ -1,7 +1,7 @@
 ---
 layout:     post
 title:      serverless framework plugins
-date:       2020-11-06 08:15:18
+date:       '2020-11-06 08:15:18'
 summary:    all used VS Code Extensions
 categories: aws
 thumbnail: serverless_framework
