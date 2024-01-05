@@ -1,13 +1,15 @@
 import Link from 'next/link';
 import { useRouter } from 'next/router'
 
-import React, { ReactNode } from 'react';
+import React, { ReactNode, useState } from 'react';
+import Search from './search';
 
 interface LayoutProps {
   children: ReactNode;
 }
 
 export default function Layout({ children }: LayoutProps) {
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
 
   const {
     basePath
@@ -21,7 +23,9 @@ export default function Layout({ children }: LayoutProps) {
             <Link href='/'>
               🏡
             </Link>
-            <span className='mx-auto'>Welcome to my blog</span>{' '}
+            <span className='mx-auto' />
+            <button onClick={() => setIsSearchOpen(true)}>🔎</button>
+            <Search isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} />
           </div>
         </header>
         <main className='container mx-auto flex-1'>
