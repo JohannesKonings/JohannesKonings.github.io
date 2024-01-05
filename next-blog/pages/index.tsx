@@ -21,7 +21,9 @@ export async function getStaticProps() {
       frontmatter,
     };
   });
-
+  posts.sort((a, b) => {
+    return new Date(b.frontmatter.date).getTime() - new Date(a.frontmatter.date).getTime();
+  });
   return {
     props: {
       posts,
@@ -40,11 +42,8 @@ export default function Home({ posts }: { posts: any }) {
       <Personal />
       <div key='home-div' className='flex flex-col items-center justify-center p-4 md:p-0'>
         {posts.map(({ slug, frontmatter }: { slug: any, frontmatter: any }) => (
-          <>
-            <div
-              key={slug}
-              className='flex flex-col max-w-md border border-gray-200 m-2 rounded-xl shadow-lg overflow-hidden'
-            >
+          <React.Fragment key={slug}>
+            <div className='flex flex-col max-w-md border border-gray-200 m-2 rounded-xl shadow-lg overflow-hidden'             >
               <Link href={`/post/${slug}`}>
                 <Image
                   width={650}
@@ -56,7 +55,7 @@ export default function Home({ posts }: { posts: any }) {
                 <h1 className='p-4 text-center'>{frontmatter.title}</h1>
               </Link>
             </div>
-          </>
+          </React.Fragment>
         ))}
       </div>
     </>

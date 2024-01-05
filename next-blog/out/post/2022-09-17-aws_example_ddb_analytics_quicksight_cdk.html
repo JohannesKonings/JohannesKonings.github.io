@@ -1,0 +1,263 @@
+<!DOCTYPE html><html><head><meta charSet="utf-8"/><meta name="viewport" content="width=device-width"/><meta name="next-head-count" content="2"/><link rel="preload" href="/next-blog/out/_next/static/css/66c48826d6382dcb.css" as="style" crossorigin=""/><link rel="stylesheet" href="/next-blog/out/_next/static/css/66c48826d6382dcb.css" crossorigin="" data-n-g=""/><noscript data-n-css=""></noscript><script defer="" crossorigin="" nomodule="" src="/next-blog/out/_next/static/chunks/polyfills-c67a75d1b6f99dc8.js"></script><script src="/next-blog/out/_next/static/chunks/webpack-7af3f00e54ee1119.js" defer="" crossorigin=""></script><script src="/next-blog/out/_next/static/chunks/framework-5429a50ba5373c56.js" defer="" crossorigin=""></script><script src="/next-blog/out/_next/static/chunks/main-def68a4901fa3cc6.js" defer="" crossorigin=""></script><script src="/next-blog/out/_next/static/chunks/pages/_app-a5ae041df49b62a0.js" defer="" crossorigin=""></script><script src="/next-blog/out/_next/static/chunks/56-99b6b0e6945aba0d.js" defer="" crossorigin=""></script><script src="/next-blog/out/_next/static/chunks/pages/post/%5Bslug%5D-c07d00169c09ab18.js" defer="" crossorigin=""></script><script src="/next-blog/out/_next/static/2zVoAH4240IV3odeQrveE/_buildManifest.js" defer="" crossorigin=""></script><script src="/next-blog/out/_next/static/2zVoAH4240IV3odeQrveE/_ssgManifest.js" defer="" crossorigin=""></script></head><body><div id="__next"><div class="flex flex-col min-h-screen"><header class="bg-fuchsia-100 mb-8 py-4"><div class="container mx-auto flex justify-center"><a href="/next-blog/out">🏡</a><span class="mx-auto">Welcome to my blog</span> </div></header><main class="container mx-auto flex-1"><div><div class="prose mx-auto"><h1>Example how to visualize DynamoDB item changes with Quicksight (S3 source) created with CDK</h1><div><p>This post is about how to visualize the DynamoDb data changes with Quicksight. It's an extension of [this]({{ site.baseurl }}/aws/2021/08/27/aws_example_ddb_analytics_cdk/) post, which describes how to analyze the data with Athena.
+The setting for creating the DynamoDb table and putting the data changes to a S3 bucket is the same. Instead of creating an Athena table of the data in the S3 bucket, this data is linked to a data source in Quicksight.</p>
+<h2>Quicksight activation and costs</h2>
+<p>Quicksight needs to be activated before using. It's enough to use the standard edition for this scenario. The first 30 days are <a href="https://docs.aws.amazon.com/quicksight/latest/user/signing-up.html">free</a>. Costs are listed <a href="https://aws.amazon.com/quicksight/pricing/">here</a>.</p>
+<p>![quicksight open service]({{ site.baseurl }}/img/2022-09-17-aws_example_ddb_analytics_quicksight_cdk/quicksight-open-service.png)</p>
+<p>![quicksight sign up]({{ site.baseurl }}/img/2022-09-17-aws_example_ddb_analytics_quicksight_cdk/quicksight-sign-up.png)</p>
+<p>![quicksight choose standard]({{ site.baseurl }}/img/2022-09-17-aws_example_ddb_analytics_quicksight_cdk/quicksight-choose-standard.png)</p>
+<p>Enter a name and an email address</p>
+<p>![quicksight create standard]({{ site.baseurl }}/img/2022-09-17-aws_example_ddb_analytics_quicksight_cdk/quicksight-create-standard.png)</p>
+<h2>Quicksight role</h2>
+<p>In the <a href="https://docs.aws.amazon.com/quicksight/latest/user/security_iam_service-with-iam.html#security-create-iam-role">standard edition</a>, Quicksight uses a standard role that could be configured via the Quicksight console.</p>
+<p>![quicksight permission access to aws services]({{ site.baseurl }}/img/2022-09-17-aws_example_ddb_analytics_quicksight_cdk/quicksight-permission-access-to-aws-services.png)</p>
+<p>Unfortunately, it is not possible to allow for specific KMS keys. For that, we need to add a policy to the role aws-quicksight-service-role-v0.</p>
+<p><a href="https://github.com/JohannesKonings/test-aws-dynamodb-athena-cdk/blob/main/cdk/lib/quicksight/quicksight-role.ts">This</a> ads the needed permissions to that role.</p>
+<pre><code class="language-typescript">import { Construct } from 'constructs'
+import { aws_iam as iam, aws_s3 as s3 } from 'aws-cdk-lib'
+
+export interface QuicksightRoleProps {
+  name: string
+  bucket: s3.IBucket
+}
+
+export class QuicksightRole extends Construct {
+  constructor(scope: Construct, id: string, props: QuicksightRoleProps) {
+    super(scope, id)
+
+    const quicksightRoleName = 'aws-quicksight-service-role-v0'
+
+    const quicksightRole = iam.Role.fromRoleName(this, 'quicksight-role', quicksightRoleName)
+
+    quicksightRole.attachInlinePolicy(
+      new iam.Policy(this, `${props.name}-policy`, {
+        statements: [
+          new iam.PolicyStatement({
+            actions: ['kms:Decrypt', 's3:GetObject', 's3:List*'],
+            resources: [props.bucket.bucketArn, `${props.bucket.bucketArn}/*`, props.bucket.encryptionKey!.keyArn],
+          }),
+        ],
+      })
+    )
+  }
+}
+</code></pre>
+<p>Now it's possible to create a datasource from the S3 bucket.</p>
+<h2>Create a datasource and dataset</h2>
+<p>In Quicksight a data source is the connection to the data and the data set is using this data source and defining how the data will be used.</p>
+<p>Quicksight has a lot of different data sources. We want to use the data from S3.</p>
+<p>![quicksight datasource kinds]({{ site.baseurl }}/img/2022-09-17-aws_example_ddb_analytics_quicksight_cdk/quicksight-datasource-kinds.png)</p>
+<p>Currently, there is no L2 CDK construct for data sources so we need to use the L1 cloud formation.</p>
+<p>In the case of a S3 data source, it's a link to a manifest file</p>
+<pre><code class="language-typescript">const datasource = new quicksightCfn.CfnDataSource(this, 'datasource', {
+      name: datasourceName,
+      type: 'S3',
+      awsAccountId: Stack.of(this).account,
+      dataSourceId: datasourceName,
+      dataSourceParameters: {
+        s3Parameters: {
+          manifestFileLocation: {
+            bucket: props.bucket.bucketName,
+            key: manifestKey,
+          },
+        },
+      },
+      permissions: permissionsDatasource,
+    })
+</code></pre>
+<p>This is the definition of the manifest file. More about manifest files <a href="https://docs.aws.amazon.com/quicksight/latest/user/supported-manifest-file-format.html">here</a></p>
+<pre><code class="language-typescript">const manifest = {
+      fileLocations: [
+        {
+          URIPrefixes: [`s3://${props.bucket.bucketName}/${props.prefix}/`],
+        },
+      ],
+      globalUploadSettings: {
+        format: 'JSON',
+      },
+    }
+</code></pre>
+<p>The dataset then defines which fields will be used and has the potential to format these fields.</p>
+<pre><code class="language-typescript">const dataset = new quicksightCfn.CfnDataSet(this, 'dataset', {
+      name: datasetName,
+      awsAccountId: Stack.of(this).account,
+      dataSetId: datasetName,
+      importMode: 'SPICE',
+      physicalTableMap: {
+        itemChanges: {
+          s3Source: {
+            dataSourceArn: datasource.attrArn,
+            uploadSettings: {
+              format: 'JSON',
+            },
+            inputColumns: [
+              {
+                name: 'awsRegion',
+                type: 'STRING',
+              },
+              {
+                name: 'eventID',
+                type: 'STRING',
+              },
+              {
+                name: 'eventName',
+                type: 'STRING',
+              },
+              {
+                name: 'userIdentity',
+                type: 'STRING',
+              },
+              {
+                name: 'recordFormat',
+                type: 'STRING',
+              },
+              {
+                name: 'tableName',
+                type: 'STRING',
+              },
+              {
+                name: 'dynamodb.ApproximateCreationDateTime',
+                type: 'STRING',
+              },
+              {
+                name: 'dynamodb.Keys.pk.S',
+                type: 'STRING',
+              },
+              {
+                name: 'dynamodb.NewImage.pk.S',
+                type: 'STRING',
+              },
+              {
+                name: 'dynamodb.NewImage.person.M.jobArea.S',
+                type: 'STRING',
+              },
+              {
+                name: 'dynamodb.NewImage.person.M.firstname.S',
+                type: 'STRING',
+              },
+              {
+                name: 'dynamodb.NewImage.person.M.gender.S',
+                type: 'STRING',
+              },
+              {
+                name: 'dynamodb.NewImage.person.M.jobType.S',
+                type: 'STRING',
+              },
+              {
+                name: 'dynamodb.NewImage.person.M.jobDescriptor.S',
+                type: 'STRING',
+              },
+              {
+                name: 'dynamodb.NewImage.person.M.lastname.S',
+                type: 'STRING',
+              },
+              {
+                name: 'dynamodb.SizeBytes',
+                type: 'STRING',
+              },
+              {
+                name: 'eventSource',
+                type: 'STRING',
+              },
+            ],
+          },
+        },
+      },
+      logicalTableMap: {
+        logicalTableProperty: {
+          alias: `${datasetName}-alias`,
+          source: { physicalTableId: 'itemChanges' },
+        },
+      },
+      permissions: permissionsDataset,
+    });
+</code></pre>
+<p>The whole definition is <a href="https://github.com/JohannesKonings/test-aws-dynamodb-athena-cdk/blob/main/cdk/lib/quicksight/quicksight.ts">here</a></p>
+<p><a href="https://aws-blog.com/2021/09/building-quicksight-datasets-with-cdk-s3.html">Here</a> is a post that describes it with Python CDK.</p>
+<h3>permission to see the datasource and dataset</h3>
+<p>Datasources and datasets will be only displayed if your user has permission for that. That is not automatically the case if you deploy it with CDK.
+Therefore you need to put your user ARN to the permission. One way to do that is with an environment variable</p>
+<p><code>QUICKSIGHT_USERNAME=&lt;&lt;Quicksight user name&gt;&gt; npx cdk deploy</code></p>
+<pre><code class="language-typescript">const quicksightUsername = process.env.QUICKSIGHT_USERNAME
+    const principalArn = `arn:aws:quicksight:${Stack.of(this).region}:${Stack.of(this).account}:user/default/${quicksightUsername}`
+
+    const permissionsDatasource = [
+      {
+        principal: principalArn,
+        actions: [
+          'quicksight:DescribeDataSource',
+          'quicksight:DescribeDataSourcePermissions',
+          'quicksight:PassDataSource',
+          'quicksight:UpdateDataSource',
+          'quicksight:DeleteDataSource',
+          'quicksight:UpdateDataSourcePermissions',
+        ],
+      },
+    ]
+
+    const permissionsDataset = [
+      {
+        principal: principalArn,
+        actions: [
+          'quicksight:DescribeDataSet',
+          'quicksight:DescribeDataSetPermissions',
+          'quicksight:PassDataSet',
+          'quicksight:DescribeIngestion',
+          'quicksight:ListIngestions',
+          'quicksight:UpdateDataSet',
+          'quicksight:DeleteDataSet',
+          'quicksight:CreateIngestion',
+          'quicksight:CancelIngestion',
+          'quicksight:UpdateDataSetPermissions',
+        ],
+      },
+    ]
+</code></pre>
+<p>You can find the Quicksight username here</p>
+<p>![quicksight username]({{ site.baseurl }}/img/2022-09-17-aws_example_ddb_analytics_quicksight_cdk/quicksight-username.png)</p>
+<h3>Deployment and refresh of the dataset</h3>
+<p>If you deploy this setup the first time, the data does not exist, but the datasource links already to the data. That causes a deployment error.
+To avoid this a little dummy data file will be deployed with a SDK call of a CDK custom resource</p>
+<pre><code class="language-typescript">const dummyJsonString = JSON.stringify({ dummy: 'dummy'}); // Delete after deplyoment
+    const customResourcePutObject = new custom_resources.AwsCustomResource(this, 'prefix-creation', { // add -put
+      onCreate: {
+        service: 'S3',
+        action: 'putObject',
+        parameters: {
+          Bucket: props.bucket.bucketName,
+          Key: `${props.prefix}/dummy.json`,
+          Body: dummyJsonString,
+        },
+        physicalResourceId: custom_resources.PhysicalResourceId.of('prefix-creation'),
+      },
+      policy: custom_resources.AwsCustomResourcePolicy.fromSdkCalls({ resources: custom_resources.AwsCustomResourcePolicy.ANY_RESOURCE }),
+    });
+    props.
+</code></pre>
+<p>After the datasource is deployed this will be removed</p>
+<pre><code class="language-typescript">const customResourceDeleteObject = new custom_resources.AwsCustomResource(this, 'prefix-creation-delete', {
+      onCreate: {
+        service: 'S3',
+        action: 'deleteObject',
+        parameters: {
+          Bucket: props.bucket.bucketName,
+          Key: `${props.prefix}/dummy.json`,
+        },
+        physicalResourceId: custom_resources.PhysicalResourceId.of('prefix-creation'),
+      },
+      policy: custom_resources.AwsCustomResourcePolicy.fromSdkCalls({ resources: custom_resources.AwsCustomResourcePolicy.ANY_RESOURCE }),
+    });
+    props.bucket.grantReadWrite(customResourceDeleteObject);
+    customResourceDeleteObject.node.addDependency(dataset);
+</code></pre>
+<p>After there is some data in the dynamodb you have to refresh the dataset. This is how it looks like if you create 5 new entries and then modify 1 and refresh again and use this data in an analysis.</p>
+<p>![quicksight refresh dataset]({{ site.baseurl }}/img/2022-09-17-aws_example_ddb_analytics_quicksight_cdk/quicksight-refresh-dataset.png)</p>
+<p>![quicksight dataset imported rows]({{ site.baseurl }}/img/2022-09-17-aws_example_ddb_analytics_quicksight_cdk/quicksight-dataset-imported-rows.png)</p>
+<p>![quicksight dataset analysis]({{ site.baseurl }}/img/2022-09-17-aws_example_ddb_analytics_quicksight_cdk/quicksight-dataset-analysis.png)</p>
+<p>![quicksight analysis inserts]({{ site.baseurl }}/img/2022-09-17-aws_example_ddb_analytics_quicksight_cdk/quicksight-analysis-inserts.png)</p>
+<p>![quicksight analysis modify]({{ site.baseurl }}/img/2022-09-17-aws_example_ddb_analytics_quicksight_cdk/quicksight-analysis-modify.png)</p>
+<h1>Cost Alert 💰</h1>
+<p>⚠️ Don't forget to delete the Quicksight account after testing.</p>
+<p>![quicksight delete account]({{ site.baseurl }}/img/2022-09-17-aws_example_ddb_analytics_quicksight_cdk/quicksight-delete-account.png)</p>
+<h1>Code</h1>
+<p><a href="https://github.com/JohannesKonings/test-aws-dynamodb-athena-cdk">https://github.com/JohannesKonings/test-aws-dynamodb-athena-cdk</a></p>
+</div></div></div></main><footer class="bg-fuchsia-100 mt-8 py-4"><div class="container mx-auto flex justify-center"><a href="/next-blog/out/impressum">Impressum</a></div><div class="container mx-auto flex justify-center">&lt;/&gt; on <a href="https://github.com/JohannesKonings/JohannesKonings.github.io">Github</a>  <i class="fa fa-github-alt"></i></div></footer></div></div><script id="__NEXT_DATA__" type="application/json" crossorigin="">{"props":{"pageProps":{"frontmatter":{"layout":"post","title":"Example how to visualize DynamoDB item changes with Quicksight (S3 source) created with CDK","date":"2022-09-17 08:15:18","published":true,"summary":"This post is how to visualize the streamed data changes of a DynamoDb table via Kinesis Data Stream and Kinesis Firehose to S3. Build with CDK.","categories":"aws","thumbnail":"aws_quicksight","tags":["aws","aws kinesis","aws athena","aws cdk","aws quicksight"]},"content":"\nThis post is about how to visualize the DynamoDb data changes with Quicksight. It's an extension of [this]({{ site.baseurl }}/aws/2021/08/27/aws_example_ddb_analytics_cdk/) post, which describes how to analyze the data with Athena.\nThe setting for creating the DynamoDb table and putting the data changes to a S3 bucket is the same. Instead of creating an Athena table of the data in the S3 bucket, this data is linked to a data source in Quicksight. \n\n## Quicksight activation and costs\n\nQuicksight needs to be activated before using. It's enough to use the standard edition for this scenario. The first 30 days are [free](https://docs.aws.amazon.com/quicksight/latest/user/signing-up.html). Costs are listed [here](https://aws.amazon.com/quicksight/pricing/). \n\n![quicksight open service]({{ site.baseurl }}/img/2022-09-17-aws_example_ddb_analytics_quicksight_cdk/quicksight-open-service.png)\n\n![quicksight sign up]({{ site.baseurl }}/img/2022-09-17-aws_example_ddb_analytics_quicksight_cdk/quicksight-sign-up.png)\n\n![quicksight choose standard]({{ site.baseurl }}/img/2022-09-17-aws_example_ddb_analytics_quicksight_cdk/quicksight-choose-standard.png)\n\nEnter a name and an email address\n\n![quicksight create standard]({{ site.baseurl }}/img/2022-09-17-aws_example_ddb_analytics_quicksight_cdk/quicksight-create-standard.png)\n\n## Quicksight role\n\nIn the [standard edition](https://docs.aws.amazon.com/quicksight/latest/user/security_iam_service-with-iam.html#security-create-iam-role), Quicksight uses a standard role that could be configured via the Quicksight console.\n\n![quicksight permission access to aws services]({{ site.baseurl }}/img/2022-09-17-aws_example_ddb_analytics_quicksight_cdk/quicksight-permission-access-to-aws-services.png)\n\nUnfortunately, it is not possible to allow for specific KMS keys. For that, we need to add a policy to the role aws-quicksight-service-role-v0.\n\n[This](https://github.com/JohannesKonings/test-aws-dynamodb-athena-cdk/blob/main/cdk/lib/quicksight/quicksight-role.ts) ads the needed permissions to that role.\n\n```typescript\nimport { Construct } from 'constructs'\nimport { aws_iam as iam, aws_s3 as s3 } from 'aws-cdk-lib'\n\nexport interface QuicksightRoleProps {\n  name: string\n  bucket: s3.IBucket\n}\n\nexport class QuicksightRole extends Construct {\n  constructor(scope: Construct, id: string, props: QuicksightRoleProps) {\n    super(scope, id)\n\n    const quicksightRoleName = 'aws-quicksight-service-role-v0'\n\n    const quicksightRole = iam.Role.fromRoleName(this, 'quicksight-role', quicksightRoleName)\n\n    quicksightRole.attachInlinePolicy(\n      new iam.Policy(this, `${props.name}-policy`, {\n        statements: [\n          new iam.PolicyStatement({\n            actions: ['kms:Decrypt', 's3:GetObject', 's3:List*'],\n            resources: [props.bucket.bucketArn, `${props.bucket.bucketArn}/*`, props.bucket.encryptionKey!.keyArn],\n          }),\n        ],\n      })\n    )\n  }\n}\n```\n\nNow it's possible to create a datasource from the S3 bucket.\n\n\n## Create a datasource and dataset\n\nIn Quicksight a data source is the connection to the data and the data set is using this data source and defining how the data will be used.\n\nQuicksight has a lot of different data sources. We want to use the data from S3.\n\n![quicksight datasource kinds]({{ site.baseurl }}/img/2022-09-17-aws_example_ddb_analytics_quicksight_cdk/quicksight-datasource-kinds.png)\n\nCurrently, there is no L2 CDK construct for data sources so we need to use the L1 cloud formation.\n\nIn the case of a S3 data source, it's a link to a manifest file\n\n```typescript\nconst datasource = new quicksightCfn.CfnDataSource(this, 'datasource', {\n      name: datasourceName,\n      type: 'S3',\n      awsAccountId: Stack.of(this).account,\n      dataSourceId: datasourceName,\n      dataSourceParameters: {\n        s3Parameters: {\n          manifestFileLocation: {\n            bucket: props.bucket.bucketName,\n            key: manifestKey,\n          },\n        },\n      },\n      permissions: permissionsDatasource,\n    })\n```\nThis is the definition of the manifest file. More about manifest files [here](https://docs.aws.amazon.com/quicksight/latest/user/supported-manifest-file-format.html)\n\n```typescript\nconst manifest = {\n      fileLocations: [\n        {\n          URIPrefixes: [`s3://${props.bucket.bucketName}/${props.prefix}/`],\n        },\n      ],\n      globalUploadSettings: {\n        format: 'JSON',\n      },\n    }\n```\n\n\nThe dataset then defines which fields will be used and has the potential to format these fields.\n\n```typescript\nconst dataset = new quicksightCfn.CfnDataSet(this, 'dataset', {\n      name: datasetName,\n      awsAccountId: Stack.of(this).account,\n      dataSetId: datasetName,\n      importMode: 'SPICE',\n      physicalTableMap: {\n        itemChanges: {\n          s3Source: {\n            dataSourceArn: datasource.attrArn,\n            uploadSettings: {\n              format: 'JSON',\n            },\n            inputColumns: [\n              {\n                name: 'awsRegion',\n                type: 'STRING',\n              },\n              {\n                name: 'eventID',\n                type: 'STRING',\n              },\n              {\n                name: 'eventName',\n                type: 'STRING',\n              },\n              {\n                name: 'userIdentity',\n                type: 'STRING',\n              },\n              {\n                name: 'recordFormat',\n                type: 'STRING',\n              },\n              {\n                name: 'tableName',\n                type: 'STRING',\n              },\n              {\n                name: 'dynamodb.ApproximateCreationDateTime',\n                type: 'STRING',\n              },\n              {\n                name: 'dynamodb.Keys.pk.S',\n                type: 'STRING',\n              },\n              {\n                name: 'dynamodb.NewImage.pk.S',\n                type: 'STRING',\n              },\n              {\n                name: 'dynamodb.NewImage.person.M.jobArea.S',\n                type: 'STRING',\n              },\n              {\n                name: 'dynamodb.NewImage.person.M.firstname.S',\n                type: 'STRING',\n              },\n              {\n                name: 'dynamodb.NewImage.person.M.gender.S',\n                type: 'STRING',\n              },\n              {\n                name: 'dynamodb.NewImage.person.M.jobType.S',\n                type: 'STRING',\n              },\n              {\n                name: 'dynamodb.NewImage.person.M.jobDescriptor.S',\n                type: 'STRING',\n              },\n              {\n                name: 'dynamodb.NewImage.person.M.lastname.S',\n                type: 'STRING',\n              },\n              {\n                name: 'dynamodb.SizeBytes',\n                type: 'STRING',\n              },\n              {\n                name: 'eventSource',\n                type: 'STRING',\n              },\n            ],\n          },\n        },\n      },\n      logicalTableMap: {\n        logicalTableProperty: {\n          alias: `${datasetName}-alias`,\n          source: { physicalTableId: 'itemChanges' },\n        },\n      },\n      permissions: permissionsDataset,\n    });\n```\n\nThe whole definition is [here](https://github.com/JohannesKonings/test-aws-dynamodb-athena-cdk/blob/main/cdk/lib/quicksight/quicksight.ts)\n\n[Here](https://aws-blog.com/2021/09/building-quicksight-datasets-with-cdk-s3.html) is a post that describes it with Python CDK.\n\n\n### permission to see the datasource and dataset\n\nDatasources and datasets will be only displayed if your user has permission for that. That is not automatically the case if you deploy it with CDK.\nTherefore you need to put your user ARN to the permission. One way to do that is with an environment variable\n\n`QUICKSIGHT_USERNAME=\u003c\u003cQuicksight user name\u003e\u003e npx cdk deploy`\n\n\n```typescript\nconst quicksightUsername = process.env.QUICKSIGHT_USERNAME\n    const principalArn = `arn:aws:quicksight:${Stack.of(this).region}:${Stack.of(this).account}:user/default/${quicksightUsername}`\n\n    const permissionsDatasource = [\n      {\n        principal: principalArn,\n        actions: [\n          'quicksight:DescribeDataSource',\n          'quicksight:DescribeDataSourcePermissions',\n          'quicksight:PassDataSource',\n          'quicksight:UpdateDataSource',\n          'quicksight:DeleteDataSource',\n          'quicksight:UpdateDataSourcePermissions',\n        ],\n      },\n    ]\n\n    const permissionsDataset = [\n      {\n        principal: principalArn,\n        actions: [\n          'quicksight:DescribeDataSet',\n          'quicksight:DescribeDataSetPermissions',\n          'quicksight:PassDataSet',\n          'quicksight:DescribeIngestion',\n          'quicksight:ListIngestions',\n          'quicksight:UpdateDataSet',\n          'quicksight:DeleteDataSet',\n          'quicksight:CreateIngestion',\n          'quicksight:CancelIngestion',\n          'quicksight:UpdateDataSetPermissions',\n        ],\n      },\n    ]\n```\n\nYou can find the Quicksight username here\n\n![quicksight username]({{ site.baseurl }}/img/2022-09-17-aws_example_ddb_analytics_quicksight_cdk/quicksight-username.png)\n\n### Deployment and refresh of the dataset\n\nIf you deploy this setup the first time, the data does not exist, but the datasource links already to the data. That causes a deployment error.\nTo avoid this a little dummy data file will be deployed with a SDK call of a CDK custom resource\n\n```typescript\nconst dummyJsonString = JSON.stringify({ dummy: 'dummy'}); // Delete after deplyoment\n    const customResourcePutObject = new custom_resources.AwsCustomResource(this, 'prefix-creation', { // add -put\n      onCreate: {\n        service: 'S3',\n        action: 'putObject',\n        parameters: {\n          Bucket: props.bucket.bucketName,\n          Key: `${props.prefix}/dummy.json`,\n          Body: dummyJsonString,\n        },\n        physicalResourceId: custom_resources.PhysicalResourceId.of('prefix-creation'),\n      },\n      policy: custom_resources.AwsCustomResourcePolicy.fromSdkCalls({ resources: custom_resources.AwsCustomResourcePolicy.ANY_RESOURCE }),\n    });\n    props.\n```\n\nAfter the datasource is deployed this will be removed\n\n```typescript\nconst customResourceDeleteObject = new custom_resources.AwsCustomResource(this, 'prefix-creation-delete', {\n      onCreate: {\n        service: 'S3',\n        action: 'deleteObject',\n        parameters: {\n          Bucket: props.bucket.bucketName,\n          Key: `${props.prefix}/dummy.json`,\n        },\n        physicalResourceId: custom_resources.PhysicalResourceId.of('prefix-creation'),\n      },\n      policy: custom_resources.AwsCustomResourcePolicy.fromSdkCalls({ resources: custom_resources.AwsCustomResourcePolicy.ANY_RESOURCE }),\n    });\n    props.bucket.grantReadWrite(customResourceDeleteObject);\n    customResourceDeleteObject.node.addDependency(dataset);\n```\n\n\nAfter there is some data in the dynamodb you have to refresh the dataset. This is how it looks like if you create 5 new entries and then modify 1 and refresh again and use this data in an analysis.\n\n![quicksight refresh dataset]({{ site.baseurl }}/img/2022-09-17-aws_example_ddb_analytics_quicksight_cdk/quicksight-refresh-dataset.png)\n\n![quicksight dataset imported rows]({{ site.baseurl }}/img/2022-09-17-aws_example_ddb_analytics_quicksight_cdk/quicksight-dataset-imported-rows.png)\n\n![quicksight dataset analysis]({{ site.baseurl }}/img/2022-09-17-aws_example_ddb_analytics_quicksight_cdk/quicksight-dataset-analysis.png)\n\n![quicksight analysis inserts]({{ site.baseurl }}/img/2022-09-17-aws_example_ddb_analytics_quicksight_cdk/quicksight-analysis-inserts.png)\n\n![quicksight analysis modify]({{ site.baseurl }}/img/2022-09-17-aws_example_ddb_analytics_quicksight_cdk/quicksight-analysis-modify.png)\n\n\n\n# Cost Alert 💰\n\n⚠️ Don't forget to delete the Quicksight account after testing.\n\n![quicksight delete account]({{ site.baseurl }}/img/2022-09-17-aws_example_ddb_analytics_quicksight_cdk/quicksight-delete-account.png)\n\n\n# Code\n\n[https://github.com/JohannesKonings/test-aws-dynamodb-athena-cdk](https://github.com/JohannesKonings/test-aws-dynamodb-athena-cdk)\n\n"},"__N_SSG":true},"page":"/post/[slug]","query":{"slug":"2022-09-17-aws_example_ddb_analytics_quicksight_cdk"},"buildId":"2zVoAH4240IV3odeQrveE","assetPrefix":"/next-blog/out","isFallback":false,"gsp":true,"scriptLoader":[]}</script></body></html>

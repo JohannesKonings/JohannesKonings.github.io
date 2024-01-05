@@ -1,0 +1,91 @@
+<!DOCTYPE html><html><head><meta charSet="utf-8"/><meta name="viewport" content="width=device-width"/><meta name="next-head-count" content="2"/><link rel="preload" href="/next-blog/out/_next/static/css/66c48826d6382dcb.css" as="style" crossorigin=""/><link rel="stylesheet" href="/next-blog/out/_next/static/css/66c48826d6382dcb.css" crossorigin="" data-n-g=""/><noscript data-n-css=""></noscript><script defer="" crossorigin="" nomodule="" src="/next-blog/out/_next/static/chunks/polyfills-c67a75d1b6f99dc8.js"></script><script src="/next-blog/out/_next/static/chunks/webpack-7af3f00e54ee1119.js" defer="" crossorigin=""></script><script src="/next-blog/out/_next/static/chunks/framework-5429a50ba5373c56.js" defer="" crossorigin=""></script><script src="/next-blog/out/_next/static/chunks/main-def68a4901fa3cc6.js" defer="" crossorigin=""></script><script src="/next-blog/out/_next/static/chunks/pages/_app-a5ae041df49b62a0.js" defer="" crossorigin=""></script><script src="/next-blog/out/_next/static/chunks/56-99b6b0e6945aba0d.js" defer="" crossorigin=""></script><script src="/next-blog/out/_next/static/chunks/pages/post/%5Bslug%5D-c07d00169c09ab18.js" defer="" crossorigin=""></script><script src="/next-blog/out/_next/static/2zVoAH4240IV3odeQrveE/_buildManifest.js" defer="" crossorigin=""></script><script src="/next-blog/out/_next/static/2zVoAH4240IV3odeQrveE/_ssgManifest.js" defer="" crossorigin=""></script></head><body><div id="__next"><div class="flex flex-col min-h-screen"><header class="bg-fuchsia-100 mb-8 py-4"><div class="container mx-auto flex justify-center"><a href="/next-blog/out">🏡</a><span class="mx-auto">Welcome to my blog</span> </div></header><main class="container mx-auto flex-1"><div><div class="prose mx-auto"><h1>Example how to create Athena saved queries with CDK</h1><div><p>In [this]({{ site.baseurl }}/aws/2021/08/27/aws_example_ddb_analytics/) post is a example of a Athena query to get the the current data of the DynamoDb table.</p>
+<p>This post explains how to provide this query with CDK as a saved query in Athena to have the query stored &quot;nearby&quot; the editor and that the query fits to the current deployment regarding the naming of the DB and table.
+Another advantage is to have the query under source control.</p>
+<p>This is a extension of [this]({{ site.baseurl }}/aws/2021/10/26/aws_example_ddb_analytics_cdk/) post.</p>
+<p>The saved queries are stored here in the console:</p>
+<p>![athena save queries]({{ site.baseurl }}/img/2022-08-22-aws_example_ddb_analytics_athena_saved_queries_cdk/athena_saved_queries.png)</p>
+<h1>The SQL command</h1>
+<p>This SQL command will be provided as a saved query in Athena. For easier maintenance, the command is in an extra <a href="https://github.com/JohannesKonings/test-aws-dynamodb-athena-cdk/blob/main/cdk/lib/saved-queries/ddb-state.sql">SQL file</a>.
+The DB and the table name are placeholders in the file and will be replaced during the deployment process. That ensures that this SQL command refers to the correct resources, which are also deployed.</p>
+<pre><code class="language-sql">SELECT dynamodb.newimage.pk.s AS pk,
+        dynamodb.newimage.person.M.firstname.s AS firstname,
+        dynamodb.newimage.person.M.lastname.s AS lastname,
+        dynamodb.approximatecreationdatetime AS ts,
+        dynamodb.newimage,
+        *
+FROM &quot;athenaDbName&quot;.&quot;athenaTableName&quot; AS persons1
+WHERE (eventname = 'INSERT'
+        OR eventname = 'MODIFY')
+        AND dynamodb.approximatecreationdatetime =
+    (SELECT MAX(dynamodb.approximatecreationdatetime)
+    FROM &quot;athenaDbName&quot;.&quot;athenaTableName&quot; AS persons2
+    WHERE persons2.dynamodb.newimage.pk.s = persons1.dynamodb.newimage.pk.s);
+</code></pre>
+<h1>Saved Query Construct</h1>
+<p>Like the SQL file, the CDK definition of the saved query is in an <a href="https://github.com/JohannesKonings/test-aws-dynamodb-athena-cdk/blob/main/cdk/lib/saved-queries/saved-queries.ts">extra</a><a href="https://github.com/JohannesKonings/test-aws-dynamodb-athena-cdk/blob/main/cdk/lib/saved-queries/saved-queries.ts"> file</a> as a CDK construct.</p>
+<pre><code class="language-typescript">import { Construct } from 'constructs'
+import {
+  aws_athena as athenaCfn
+} from 'aws-cdk-lib'
+import * as glue from '@aws-cdk/aws-glue-alpha'
+import { readFileSync } from 'fs';
+import { join } from 'path';
+
+export interface SavedQueriesProps {
+  glueDb: glue.IDatabase;
+  athenaTableName: string;
+  athenaWorkgroupName: string;
+}
+
+export class SavedQueries extends Construct {
+  constructor(scope: Construct, id: string, props: SavedQueriesProps) {
+    super(scope, id)
+
+    const getSqlString = (file: string): string =&gt; {
+      let personsDdbStateSqlCommand = readFileSync(join(__dirname, `${file}`), 'utf-8').toString()
+      const athenaDbName = props.glueDb.databaseName
+      let athenaTableName = props.athenaTableName;
+      athenaTableName = athenaTableName.replace(/-/g, '_')
+      personsDdbStateSqlCommand = personsDdbStateSqlCommand.replace(/athenaDbName/g, athenaDbName)
+      personsDdbStateSqlCommand = personsDdbStateSqlCommand.replace(/athenaTableName/g, athenaTableName)
+      return personsDdbStateSqlCommand
+    }
+
+    let queryString = getSqlString('ddb-state.sql')
+
+    // eslint-disable-next-line no-new
+    new athenaCfn.CfnNamedQuery(this, 'query-current-ddb-state', {
+      database: props.glueDb.databaseName,
+      queryString: queryString,
+      description: 'query the current state from the ddb table',
+      name: 'current-ddb-state',
+      workGroup: props.athenaWorkgroupName
+    })
+
+  }
+}
+</code></pre>
+<p>Currently, there is no L2 Construct for a named query in CDK, so it is defined as a L1 CFN Resource (<code>CfnNamedQuery</code>).</p>
+<p>This needs the query as a string. The function <code>getSqlString</code> converts and transforms the SQL file content to that needed string.</p>
+<p>So that the placeholders are replaced with the resources, which are deployed.</p>
+<p>The Athena table name will be created during the glue crawler process. The convention is that the table name configured prefix of the S3 bucket with an underscore (&quot;_&quot;) instead of dashes (&quot;-&quot;).</p>
+<p>The database name and the workgroup name are passed from the stack to the construct.</p>
+<h1>Insert the saved query construct in the stack</h1>
+<p>For the deployment the saved queries construct will be inserted into the <a href="https://github.com/JohannesKonings/test-aws-dynamodb-athena-cdk/blob/main/cdk/lib/cdk-stack.ts#L211">stack</a></p>
+<p>The needed information are passed as props to the construct.</p>
+<p>The saved queries are depending on the workgroup. That has to be defined in CDK. Otherwise, the deployment will fail.</p>
+<pre><code class="language-typescript">const savedQueries = new SavedQueries(this, 'saved-queries', {
+      glueDb: glueDb,
+      athenaTableName: firehoseBucketName,
+      athenaWorkgroupName: athenaWorkgroup.name,
+    })
+
+    savedQueries.node.addDependency(athenaWorkgroup);
+</code></pre>
+<h1>Result</h1>
+<p>After the deployment, the new query is listed here and can be chosen for query in the editor.</p>
+<p>![athena save query deployed]({{ site.baseurl }}/img/2022-08-22-aws_example_ddb_analytics_athena_saved_queries_cdk/athena_saved_query_deployed.png)</p>
+<p>![athena save queries]({{ site.baseurl }}/img/2022-08-22-aws_example_ddb_analytics_athena_saved_queries_cdk/athena_saved_query_editor.png)</p>
+<h1>Code</h1>
+<p><a href="https://github.com/JohannesKonings/test-aws-dynamodb-athena-cdk">https://github.com/JohannesKonings/test-aws-dynamodb-athena-cdk</a></p>
+</div></div></div></main><footer class="bg-fuchsia-100 mt-8 py-4"><div class="container mx-auto flex justify-center"><a href="/next-blog/out/impressum">Impressum</a></div><div class="container mx-auto flex justify-center">&lt;/&gt; on <a href="https://github.com/JohannesKonings/JohannesKonings.github.io">Github</a>  <i class="fa fa-github-alt"></i></div></footer></div></div><script id="__NEXT_DATA__" type="application/json" crossorigin="">{"props":{"pageProps":{"frontmatter":{"layout":"post","title":"Example how to create Athena saved queries with CDK","date":"2022-08-22 08:15:18","published":true,"summary":"This post is about how saved queries are created with CDK. This is useful to have important queries prepared for any users.","categories":"aws","thumbnail":"aws_kinesis","tags":["aws","aws athena","aws cdk"]},"content":"In [this]({{ site.baseurl }}/aws/2021/08/27/aws_example_ddb_analytics/) post is a example of a Athena query to get the the current data of the DynamoDb table.\n\nThis post explains how to provide this query with CDK as a saved query in Athena to have the query stored \"nearby\" the editor and that the query fits to the current deployment regarding the naming of the DB and table.\nAnother advantage is to have the query under source control.\n\nThis is a extension of [this]({{ site.baseurl }}/aws/2021/10/26/aws_example_ddb_analytics_cdk/) post.\n\nThe saved queries are stored here in the console:\n\n![athena save queries]({{ site.baseurl }}/img/2022-08-22-aws_example_ddb_analytics_athena_saved_queries_cdk/athena_saved_queries.png)\n\n# The SQL command\n\nThis SQL command will be provided as a saved query in Athena. For easier maintenance, the command is in an extra [SQL file](https://github.com/JohannesKonings/test-aws-dynamodb-athena-cdk/blob/main/cdk/lib/saved-queries/ddb-state.sql).\nThe DB and the table name are placeholders in the file and will be replaced during the deployment process. That ensures that this SQL command refers to the correct resources, which are also deployed.\n\n```sql\nSELECT dynamodb.newimage.pk.s AS pk,\n        dynamodb.newimage.person.M.firstname.s AS firstname,\n        dynamodb.newimage.person.M.lastname.s AS lastname,\n        dynamodb.approximatecreationdatetime AS ts,\n        dynamodb.newimage,\n        *\nFROM \"athenaDbName\".\"athenaTableName\" AS persons1\nWHERE (eventname = 'INSERT'\n        OR eventname = 'MODIFY')\n        AND dynamodb.approximatecreationdatetime =\n    (SELECT MAX(dynamodb.approximatecreationdatetime)\n    FROM \"athenaDbName\".\"athenaTableName\" AS persons2\n    WHERE persons2.dynamodb.newimage.pk.s = persons1.dynamodb.newimage.pk.s);\n```\n\n\n# Saved Query Construct\n\nLike the SQL file, the CDK definition of the saved query is in an [extra](https://github.com/JohannesKonings/test-aws-dynamodb-athena-cdk/blob/main/cdk/lib/saved-queries/saved-queries.ts)[ file](https://github.com/JohannesKonings/test-aws-dynamodb-athena-cdk/blob/main/cdk/lib/saved-queries/saved-queries.ts) as a CDK construct.\n\n\n```typescript\nimport { Construct } from 'constructs'\nimport {\n  aws_athena as athenaCfn\n} from 'aws-cdk-lib'\nimport * as glue from '@aws-cdk/aws-glue-alpha'\nimport { readFileSync } from 'fs';\nimport { join } from 'path';\n\nexport interface SavedQueriesProps {\n  glueDb: glue.IDatabase;\n  athenaTableName: string;\n  athenaWorkgroupName: string;\n}\n\nexport class SavedQueries extends Construct {\n  constructor(scope: Construct, id: string, props: SavedQueriesProps) {\n    super(scope, id)\n\n    const getSqlString = (file: string): string =\u003e {\n      let personsDdbStateSqlCommand = readFileSync(join(__dirname, `${file}`), 'utf-8').toString()\n      const athenaDbName = props.glueDb.databaseName\n      let athenaTableName = props.athenaTableName;\n      athenaTableName = athenaTableName.replace(/-/g, '_')\n      personsDdbStateSqlCommand = personsDdbStateSqlCommand.replace(/athenaDbName/g, athenaDbName)\n      personsDdbStateSqlCommand = personsDdbStateSqlCommand.replace(/athenaTableName/g, athenaTableName)\n      return personsDdbStateSqlCommand\n    }\n\n    let queryString = getSqlString('ddb-state.sql')\n\n    // eslint-disable-next-line no-new\n    new athenaCfn.CfnNamedQuery(this, 'query-current-ddb-state', {\n      database: props.glueDb.databaseName,\n      queryString: queryString,\n      description: 'query the current state from the ddb table',\n      name: 'current-ddb-state',\n      workGroup: props.athenaWorkgroupName\n    })\n\n  }\n}\n```\n\nCurrently, there is no L2 Construct for a named query in CDK, so it is defined as a L1 CFN Resource (`CfnNamedQuery`).\n\nThis needs the query as a string. The function `getSqlString` converts and transforms the SQL file content to that needed string.\n\nSo that the placeholders are replaced with the resources, which are deployed.\n\nThe Athena table name will be created during the glue crawler process. The convention is that the table name configured prefix of the S3 bucket with an underscore (\"_\") instead of dashes (\"-\").\n\nThe database name and the workgroup name are passed from the stack to the construct.\n\n# Insert the saved query construct in the stack\n\nFor the deployment the saved queries construct will be inserted into the [stack](https://github.com/JohannesKonings/test-aws-dynamodb-athena-cdk/blob/main/cdk/lib/cdk-stack.ts#L211)\n\nThe needed information are passed as props to the construct.\n\nThe saved queries are depending on the workgroup. That has to be defined in CDK. Otherwise, the deployment will fail.\n\n```typescript\nconst savedQueries = new SavedQueries(this, 'saved-queries', {\n      glueDb: glueDb,\n      athenaTableName: firehoseBucketName,\n      athenaWorkgroupName: athenaWorkgroup.name,\n    })\n\n    savedQueries.node.addDependency(athenaWorkgroup);\n```\n\n\n# Result\nAfter the deployment, the new query is listed here and can be chosen for query in the editor.\n\n![athena save query deployed]({{ site.baseurl }}/img/2022-08-22-aws_example_ddb_analytics_athena_saved_queries_cdk/athena_saved_query_deployed.png)\n\n![athena save queries]({{ site.baseurl }}/img/2022-08-22-aws_example_ddb_analytics_athena_saved_queries_cdk/athena_saved_query_editor.png)\n\n# Code\n\n[https://github.com/JohannesKonings/test-aws-dynamodb-athena-cdk](https://github.com/JohannesKonings/test-aws-dynamodb-athena-cdk)\n\n"},"__N_SSG":true},"page":"/post/[slug]","query":{"slug":"2022-08-22-aws_example_ddb_analytics_athena_saved_queries_cdk"},"buildId":"2zVoAH4240IV3odeQrveE","assetPrefix":"/next-blog/out","isFallback":false,"gsp":true,"scriptLoader":[]}</script></body></html>
