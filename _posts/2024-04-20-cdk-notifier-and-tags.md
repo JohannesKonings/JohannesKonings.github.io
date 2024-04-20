@@ -78,6 +78,7 @@ new CdkNotfifierFeatureStackExample(app, `cdk-notifier-feature-stacks-${branchNa
   },
 });
 ```
+https://github.com/JohannesKonings/cdk-notifier-examples/blob/66874c06b8204b09781e9ad3ab8707590b948000/src/main.ts#L23
 
 The tag will then be added to the stack properties and not to the template file.
 
