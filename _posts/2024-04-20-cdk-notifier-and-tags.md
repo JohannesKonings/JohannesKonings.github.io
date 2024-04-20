@@ -157,7 +157,7 @@ GITHUB_OWNER: JohannesKonings
 GITHUB_REPO: $(echo JohannesKonings/cdk-notifier-examples | cut -d'/' -f2)
 time="2024-04-20T14:59:48Z" level=info msg="There is no diff detected for tag id diff-to-main. Skip posting diff."
 ```
-https://github.com/JohannesKonings/cdk-notifier-examples/actions/runs/8765869174/job/24057331666
+https://github.com/JohannesKonings/cdk-notifier-examples/actions/runs/8765869174/job/24057331666#step:6:55
 
 ## Conclusion
 
