@@ -13,10 +13,23 @@ export async function getStaticProps() {
 
   const posts = files.map((fileName) => {
     const slug = fileName.replace('.md', '');
-    // const readFile = fs.readFileSync(`posts/${fileName}`, 'utf-8');
     const readFile = fs.readFileSync(`../_posts/${fileName}`, 'utf-8');
     const { data: frontmatter } = matter(readFile);
     const date = frontmatter.date;
+
+    // if cover image not starting with https copy to folder cover-images
+    if (frontmatter.cover_image && !frontmatter.cover_image.startsWith('https')) {
+      console.log(JSON.stringify(frontmatter, null, 2));
+      console.log(`copying cover image ${frontmatter.cover_image}`);
+      console.log('fileName', fileName)
+      const coverImage = fs.readFileSync(`../${frontmatter.cover_image}`);
+      fs.writeFileSync(`out/images/cover-images/${slug}.png`, coverImage);
+      frontmatter.cover_image_out = `images/cover-images/${slug}.png`;
+    } else if (frontmatter.cover_image) {
+      frontmatter.cover_image_out = frontmatter.cover_image;
+    }
+
+
     return {
       slug,
       frontmatter,
@@ -51,21 +64,25 @@ export default function Home({ posts }: { posts: any }) {
   return (
     <>
       <Personal />
-      <div key='home-div' className='flex flex-col items-center justify-center p-4 md:p-0'>
+      <div key='home-div' className='flex flex-col items-center justify-center p-0 m-0'>
         {posts.map(({ slug, frontmatter, date }: { slug: any, frontmatter: any, date: any }) => (
           <React.Fragment key={slug}>
-            <div className='flex flex-col max-w-md border border-gray-200 m-2 rounded-xl shadow-lg overflow-hidden'             >
-              <Link href={`/post/${slug}`}>
-                <Image
-                  width={650}
-                  height={340}
-                  alt={frontmatter.title}
-                  src={`${basePath}/${frontmatter.socialImage}`}
-                />
-                {/* date without time */}
-                <p className='p-4 text-center'>{date}</p>
-                {/* <p className='p-4 text-center'>{frontmatter.date}</p> */}
-                <h1 className='p-4 text-center'>{frontmatter.title}</h1>
+            <div className='flex flex-col max-w-2xl border-4 border-gray-200 m-2 rounded-xl shadow-4xl w-full mr-0 pr-0'>
+              <Link href={`/post/${slug}`} className="m-0 p-0">
+                <div className='flex flex-row justify-between p-4 rounded-t-xl'>
+                  <Image
+                    className="w-full m-0 p-0"
+                    width={700}
+                    height={390}
+                    alt={frontmatter.title}
+                    src={frontmatter.cover_image_out}
+                    // src={frontmatter.cover_image.startsWith('https') ? frontmatter.cover_image : `${basePath}/${frontmatter.cover_image}`}
+                  />
+                </div>
+                <div className='flex flex-col bg-gray-300 justify-between p-2 pb-4 rounded-t-xl rounded-b-xl w-4/5 mx-auto'>
+                  <p className='text-center text-black'>{date}</p>
+                  <h1 className='text-center text-black'>{frontmatter.title}</h1>
+                </div>
               </Link>
             </div>
           </React.Fragment>

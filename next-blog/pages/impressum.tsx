@@ -32,7 +32,7 @@ export default function Impressum() {
                   Rechtsverletzungen werden wir derartige Links umgehend
                   entfernen.<br /><br /><strong>Urheberrecht</strong><br /><br />
                   Die durch die Seitenbetreiber erstellten Inhalte und Werke auf diesen Seiten unterliegen dem deutschen
-                  Urheberrecht. Die Vervielfältigung, Bearbeitung, Verbreitung und jede Art der Verwertung außerhalb der
+                  Urheberrecht. Die Vervielfältigung, Bearbeitung, Verbreitung und jede Art der Verwertung außerhalb des
                   Grenzen des Urheberrechtes bedürfen der schriftlichen Zustimmung des jeweiligen Autors bzw. Erstellers.
                   Downloads und Kopien dieser Seite sind nur für den privaten, nicht kommerziellen Gebrauch gestattet. Soweit
                   die Inhalte auf dieser Seite nicht vom Betreiber erstellt wurden, werden die Urheberrechte Dritter beachtet.
@@ -52,8 +52,8 @@ export default function Impressum() {
                   widersprochen. Die Betreiber der Seiten behalten sich ausdrücklich rechtliche Schritte im Falle der
                   unverlangten Zusendung von Werbeinformationen, etwa durch Spam-Mails, vor.<br />
                   <br /><br /><strong>Google Analytics</strong><br /><br />
-                  Diese Website benutzt Google Analytics, einen Webanalysedienst der Google Inc. (''Google''). Google
-                  Analytics verwendet sog. ''Cookies'', Textdateien, die auf Ihrem Computer gespeichert werden und die eine
+                  Diese Website benutzt Google Analytics, einen Webanalysedienst der Google Inc. (&apos;&apos;Google&apos;&apos;). Google
+                  Analytics verwendet sog. &apos;&apos;Cookies&apos;&apos;, Textdateien, die auf Ihrem Computer gespeichert werden und die eine
                   Analyse der Benutzung der Website durch Sie ermöglicht. Die durch den Cookie erzeugten Informationen über
                   Ihre Benutzung dieser Website (einschließlich Ihrer IP-Adresse) wird an einen Server von Google in den USA
                   übertragen und dort gespeichert. Google wird diese Informationen benutzen, um Ihre Nutzung der Website

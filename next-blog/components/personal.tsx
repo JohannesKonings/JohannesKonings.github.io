@@ -32,10 +32,10 @@ export default function Personal() {
         />
         <h1 className="mt-[-50px] text-black text-5xl">Johannes Konings</h1>
         <div className="flex space-x-4 mt-2">
-          <a href="https://github.com/yourusername" target="_blank" rel="noopener noreferrer">
+          <a href="https://github.com/JohannesKonings" target="_blank" rel="noopener noreferrer">
             <FontAwesomeIcon icon={faGithub} className="text-black hover:text-gray-700 text-3xl" />
           </a>
-          <a href="https://linkedin.com/in/yourusername" target="_blank" rel="noopener noreferrer">
+          <a href="https://linkedin.com/in/JohannesKonings" target="_blank" rel="noopener noreferrer">
             <FontAwesomeIcon icon={faLinkedin} className="text-black hover:text-gray-700 text-3xl" />
           </a>
         </div>
