@@ -1,5 +1,5 @@
 ---
-layout: post
+
 title: Consideration about cdk-notifier and Tags
 date: 2024-04-20 08:15:18
 published: true

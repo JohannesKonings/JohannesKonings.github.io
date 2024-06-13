@@ -1,5 +1,5 @@
 ---
-layout:     post
+
 title:      "AWS Amplify Console: How I changed master branch and env to main"
 published:  true
 date:       '2020-08-18 08:15:18'
