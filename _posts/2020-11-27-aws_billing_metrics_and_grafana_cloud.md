@@ -1,13 +1,14 @@
 ---
-layout:     post
-title:      How to display AWS billing metrics in Grafana Cloud
-date:       '2020-11-27 08:15:18'
-summary:    Configuration of Grafana Cloud to display AWS billing metrics
+layout: post
+title: How to display AWS billing metrics in Grafana Cloud
+date: 2020-11-27 08:15:18
+summary: Configuration of Grafana Cloud to display AWS billing metrics
 categories: aws
 thumbnail: grafana
 tags:
- - aws
- - grafana
+    - aws
+    - grafana
+published: true
 ---
 
 # Why Grafana for AWS billing metrics?

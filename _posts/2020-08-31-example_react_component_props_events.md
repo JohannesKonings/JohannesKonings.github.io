@@ -1,14 +1,14 @@
 ---
-layout:     post
-title:      Quick example to pass data to a React component and get the changed value back
-published:  true
-date:       '2020-08-31 08:15:18'
-summary:    An quick example how to pass data to componenents and get data from components
+layout: post
+title: "Quick example: pass data to a React component and get the changed value back"
+published: true
+date: 2020-08-31 08:15:18
+summary: An quick example how to pass data to componenents and get data from components
 categories: react
 thumbnail: react
 tags:
- - react
- - react components
+  - react
+  - react components
 ---
 
 # ⚠ Disclaimer

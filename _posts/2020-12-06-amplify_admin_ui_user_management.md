@@ -1,14 +1,15 @@
 ---
-layout:     post
-title:      User management with the AWS Amplify Admin UI instead as self sign up
-date:       '2020-12-06 08:15:18'
-summary:    Description of the change from a self sign up to user management from an admin
+layout: post
+title: AWS Amplify Admin UI user management instead of self sign up
+date: 2020-12-06 08:15:18
+summary: Description of the change from a self sign up to user management from an admin
 categories: aws
 thumbnail: amplify
 tags:
- - aws
- - AWS Amplify
- - AWS Amplify Admin UI
+    - aws
+    - AWS Amplify
+    - AWS Amplify Admin UI
+published: true
 ---
 
 In my web app, I use the authentification [UI Compontents](https://docs.amplify.aws/ui/auth/authenticator/q/framework/react) of Amplify. Without any configuration, this UI component comes with a signup link so that any person who knows the URL can signup for themself. However, this web app is for a certain group of users. That's why I want to create users who are allowed to sign in.

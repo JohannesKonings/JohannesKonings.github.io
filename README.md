@@ -1,4 +1,4 @@
-# Personal Website and blog
+# Personal website and blog
 
 ## blog post distribution
 
@@ -11,4 +11,8 @@
 ## search
 
 ...
+
+## astro
+
+## next
 
