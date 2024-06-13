@@ -1,0 +1,190 @@
+<!DOCTYPE html><html lang="en"> <head><!-- Global Metadata --><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" type="image/x-icon" href="/favicon.ico"><meta name="generator" content="Astro v4.10.2"><!-- <link rel="preload" href="/fonts/atkinson-regular.woff" as="font" type="font/woff" crossorigin>
+<link rel="preload" href="/fonts/atkinson-bold.woff" as="font" type="font/woff" crossorigin> --><link rel="preload" href="/fonts/CascadiaMonoNF.woff2" as="font" type="font/woff2" crossorigin><link rel="preload" href="/fonts/CascadiaMonoNF-SemiBold.woff2" as="font" type="font/woff2" crossorigin><!-- Canonical URL --><link rel="canonical" href="https://johanneskonings.dev/blog/2020-08-31-example_react_component_props_events/"><!-- Primary Meta Tags --><title>Quick example: pass data to a React component and get the changed value back | Johannes Konings</title><meta name="title" content="Quick example: pass data to a React component and get the changed value back | Johannes Konings"><meta name="description" content="An quick example how to pass data to componenents and get data from components"><!-- Open Graph / Facebook --><meta property="og:type" content="website"><meta property="og:url" content="https://johanneskonings.dev/blog/2020-08-31-example_react_component_props_events/"><meta property="og:title" content="Quick example: pass data to a React component and get the changed value back | Johannes Konings"><meta property="og:description" content="An quick example how to pass data to componenents and get data from components"><meta property="og:image" content="https://johanneskonings.dev/open-graph.jpg"><!-- Twitter --><meta property="twitter:card" content="summary_large_image"><meta property="twitter:url" content="https://johanneskonings.dev/blog/2020-08-31-example_react_component_props_events/"><meta property="twitter:title" content="Quick example: pass data to a React component and get the changed value back | Johannes Konings"><meta property="twitter:description" content="An quick example how to pass data to componenents and get data from components"><meta property="twitter:image" content="https://johanneskonings.dev/open-graph.jpg"><!-- Sitemap --><link rel="sitemap" href="/sitemap-index.xml"><!-- RSS Feed --><link rel="alternate" type="application/rss+xml" title="Quick example: pass data to a React component and get the changed value back | Johannes Konings" href="https://johanneskonings.dev/rss.xml"><!-- Global Scripts --><script src="/js/theme.js"></script><script src="/js/scroll.js"></script><script src="/js/animate.js"></script><!-- <ViewTransitions  /> --><link rel="stylesheet" href="/_astro/_slug_.COeGf7i0.css"><script type="module" src="/_astro/hoisted.BGfjo5mV.js"></script></head> <body> <header id="header" class="fixed top-0 w-full h-16 z-50" data-astro-cid-3ef6ksr2> <div class="w-full h-full mx-auto px-5 max-w-screen-md">  <div class="relative h-full w-full" data-astro-cid-3ef6ksr2> <div class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2" data-astro-cid-3ef6ksr2> <nav class="hidden md:flex items-center justify-center text-sm gap-1" data-astro-cid-3ef6ksr2> <a href="/" class="h-8 rounded-full px-3 text-current flex items-center justify-center transition-colors duration-300 ease-in-out hover:bg-black/5 dark:hover:bg-white/20 hover:text-black dark:hover:text-white" data-astro-cid-3ef6ksr2> Home </a><a href="/blog" class="h-8 rounded-full px-3 flex items-center justify-center transition-colors duration-300 ease-in-out bg-black dark:bg-white text-white dark:text-black" data-astro-cid-3ef6ksr2> Blog </a> </nav> </div> <div class="buttons absolute right-0 top-1/2 -translate-y-1/2 flex gap-1" data-astro-cid-3ef6ksr2> <a href="/search" aria-label="Search blog posts and projects on Johannes Konings" class="hidden md:flex size-9 rounded-full p-2 items-center justify-center bg-transparent hover:bg-black/5 dark:hover:bg-white/20 stroke-current hover:stroke-black hover:dark:stroke-white border border-black/10 dark:border-white/25 transition-colors duration-300 ease-in-out" data-astro-cid-3ef6ksr2> <svg class="size-full" data-astro-cid-3ef6ksr2> <use href="/ui.svg#search" data-astro-cid-3ef6ksr2></use> </svg> </a> <a href="/rss.xml" target="_blank" aria-label="Rss feed for Johannes Konings" class="hidden md:flex size-9 rounded-full p-2 items-center justify-center bg-transparent hover:bg-black/5 dark:hover:bg-white/20 stroke-current hover:stroke-black hover:dark:stroke-white border border-black/10 dark:border-white/25 transition-colors duration-300 ease-in-out" data-astro-cid-3ef6ksr2> <svg class="size-full" data-astro-cid-3ef6ksr2> <use href="/ui.svg#rss" data-astro-cid-3ef6ksr2></use> </svg> </a> <button id="header-theme-button" aria-label="Toggle light and dark theme" class="hidden md:flex size-9 rounded-full p-2 items-center justify-center bg-transparent hover:bg-black/5 dark:hover:bg-white/20 stroke-current hover:stroke-black hover:dark:stroke-white border border-black/10 dark:border-white/25 transition-colors duration-300 ease-in-out" data-astro-cid-3ef6ksr2> <svg class="size-full block dark:hidden" data-astro-cid-3ef6ksr2> <use href="/ui.svg#sun" data-astro-cid-3ef6ksr2></use> </svg> <svg class="size-full hidden dark:block" data-astro-cid-3ef6ksr2> <use href="/ui.svg#moon" data-astro-cid-3ef6ksr2></use> </svg> </button> <button id="header-drawer-button" aria-label="Toggle drawer open and closed" class="flex md:hidden size-9 rounded-full p-2 items-center justify-center bg-transparent hover:bg-black/5 dark:hover:bg-white/20 stroke-current hover:stroke-black hover:dark:stroke-white border border-black/10 dark:border-white/25 transition-colors duration-300 ease-in-out" data-astro-cid-3ef6ksr2> <svg id="drawer-open" class="size-full" data-astro-cid-3ef6ksr2> <use href="/ui.svg#menu" data-astro-cid-3ef6ksr2></use> </svg> <svg id="drawer-close" class="size-full" data-astro-cid-3ef6ksr2> <use href="/ui.svg#x" data-astro-cid-3ef6ksr2></use> </svg> </button> </div> </div>  </div> </header>  <script>
+  function toggleDrawer() {
+    const drawer = document.getElementById("drawer");
+    const drawerButton = document.getElementById("header-drawer-button");
+    drawer?.classList.toggle("open");
+    drawerButton?.classList.toggle("open");
+  }
+
+  function initializeDrawerButton() {
+    const drawerButton = document.getElementById("header-drawer-button");
+    drawerButton?.addEventListener("click", toggleDrawer);
+  }
+
+  document.addEventListener("astro:after-swap", initializeDrawerButton);
+  initializeDrawerButton();
+</script> <div id="drawer" class="fixed inset-0 h-0 z-40 overflow-hidden flex flex-col items-center justify-center md:hidden bg-neutral-100 dark:bg-neutral-900 transition-[height] duration-300 ease-in-out" data-astro-cid-hxtyo74s> <nav class="flex flex-col items-center space-y-2" data-astro-cid-hxtyo74s> <a href="/" class="flex items-center justify-center px-3 py-1 rounded-full text-current hover:text-black dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/20 transition-colors duration-300 ease-in-out" data-astro-cid-hxtyo74s> Home </a><a href="/blog" class="flex items-center justify-center px-3 py-1 rounded-full hover:text-black dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/20 transition-colors duration-300 ease-in-out pointer-events-none bg-black dark:bg-white text-white dark:text-black" data-astro-cid-hxtyo74s> Blog </a> </nav> <div class="flex gap-1 mt-5" data-astro-cid-hxtyo74s> <a href="/search" aria-label="Search blog posts and projects on Johannes Konings" class="size-9 rounded-full p-2 items-center justify-center bg-transparent hover:bg-black/5 dark:hover:bg-white/20 stroke-current hover:stroke-black hover:dark:stroke-white border border-black/10 dark:border-white/25 transition-colors duration-300 ease-in-out" data-astro-cid-hxtyo74s> <svg class="size-full" data-astro-cid-hxtyo74s> <use href="/ui.svg#search" data-astro-cid-hxtyo74s></use> </svg> </a> <a href="/rss.xml" target="_blank" aria-label="Rss feed for Johannes Konings" class="size-9 rounded-full p-2 items-center justify-center bg-transparent hover:bg-black/5 dark:hover:bg-white/20 stroke-current hover:stroke-black hover:dark:stroke-white border border-black/10 dark:border-white/25 transition-colors duration-300 ease-in-out" data-astro-cid-hxtyo74s> <svg class="size-full" data-astro-cid-hxtyo74s> <use href="/ui.svg#rss" data-astro-cid-hxtyo74s></use> </svg> </a> <button id="drawer-theme-button" aria-label="Toggle light and dark theme" class="size-9 rounded-full p-2 items-center justify-center bg-transparent hover:bg-black/5 dark:hover:bg-white/20 stroke-current hover:stroke-black hover:dark:stroke-white border border-black/10 dark:border-white/25 transition-colors duration-300 ease-in-out" data-astro-cid-hxtyo74s> <svg class="block dark:hidden size-full" data-astro-cid-hxtyo74s> <use href="/ui.svg#sun" data-astro-cid-hxtyo74s></use> </svg> <svg class="hidden dark:block size-full" data-astro-cid-hxtyo74s> <use href="/ui.svg#moon" data-astro-cid-hxtyo74s></use> </svg> </button> </div> </div>  <main>  <div class="pt-36 pb-5"> <div class="w-full h-full mx-auto px-5 max-w-screen-md">   <div class="animate"> <div> <a href="/blog" class="group w-fit p-1.5 gap-1.5 text-sm flex items-center border rounded hover:bg-black/5 hover:dark:bg-white/10 border-black/15 dark:border-white/20 transition-colors duration-300 ease-in-out"> <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="stroke-current group-hover:stroke-black group-hover:dark:stroke-white"> <line x1="19" y1="12" x2="5" y2="12" class="scale-x-0 group-hover:scale-x-100 translate-x-3 group-hover:translate-x-0 transition-all duration-300 ease-in-out"></line> <polyline points="12 19 5 12 12 5" class="translate-x-1 group-hover:translate-x-0 transition-all duration-300 ease-in-out"></polyline> </svg> <div class="w-full group-hover:text-black group-hover:dark:text-white transition-colors duration-300 ease-in-out">
+Back to blog </div> </a> <div class="flex flex-wrap text-sm uppercase mt-12 gap-3 opacity-75"> <div class="flex items-center gap-2"> <svg class="size-5 stroke-current"> <use href="/ui.svg#calendar"></use> </svg> Aug 31, 2020 </div> <div class="flex items-center gap-2"> <svg class="size-5 stroke-current"> <use href="/ui.svg#book-open"></use> </svg> 3 min read </div> </div> <h1 class="text-3xl font-semibold text-black dark:text-white mt-2"> Quick example: pass data to a React component and get the changed value back </h1> <div class="mt-1"> An quick example how to pass data to componenents and get data from components </div> <!-- {(demoUrl || repoUrl) && 
+  <div class="mt-4 flex flex-wrap gap-2">
+    {demoUrl && 
+      <a href={demoUrl} target="_blank" class="group flex gap-2 items-center px-3 py-1.5 truncate rounded text-xs md:text-sm lg:text-base border border-black/25 dark:border-white/25 hover:bg-black/5 hover:dark:bg-white/15 blend">
+        <svg class="size-4">
+          <use href="/ui.svg#globe" class="fill-current group-hover:fill-black group-hover:dark:fill-white blend"/>
+        </svg>
+        <span class="text-current group-hover:text-black group-hover:dark:text-white blend">
+          See Demo
+        </span>
+      </a>
+    }
+    {repoUrl && 
+      <a href={repoUrl} target="_blank" class="group flex gap-2 items-center px-3 py-1.5 truncate rounded text-xs md:text-sm lg:text-base border border-black/25 dark:border-white/25 hover:bg-black/5 hover:dark:bg-white/15 blend">
+        <svg class="size-4">
+          <use href="/ui.svg#link" class="fill-current group-hover:fill-black group-hover:dark:fill-white blend"/>
+        </svg>
+        <span class="text-current group-hover:text-black group-hover:dark:text-white blend">
+          See Repository
+        </span>
+      </a>
+    }
+  </div> 
+  } --> </div> </div>   </div> </div> <div class="flex-1 py-5"> <div class="w-full h-full mx-auto px-5 max-w-screen-md">   <div class="animate"> <div> <article> <h1 id="-disclaimer">⚠ Disclaimer</h1>
+<p>This is a quick example how I pass data to a React component and get the changed data back. If there are better solutions, please let me know.</p>
+<h1 id="overview">Overview</h1>
+<p>In different cases it’s neccessary to pass data to a component and get the data back. In this quick example there are two child components. One is used to determine the height of increase in the count. The other one is used to increase the count via a button click with the height of increase from the other component.</p>
+<p>![result]({{ site.baseurl }}/img/2020-08-31-example_react_component_props_events/components_overview.png)</p>
+<h1 id="implementation">Implementation</h1>
+<p>The implementation looks as follows:</p>
+<h2 id="appjs">App.js</h2>
+<p>The <code>App.js</code> contains the two child components <code>CounterSteps.js</code> and <code>Button.js</code>.
+From the <code>CounterSteps.js</code> the <code>App.js</code> get the height of the increase via a event and store it in the <code>counterSteps</code> state. The <code>counterSteps</code> value will be passed to <code>Button.js</code>. After each time the Button was pressed the <code>App.js</code> get the value back.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="javascript"><code><span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> React, { useState } </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> "react"</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> CounterSteps </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> "./CounterSteps"</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> Button </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> "./Button"</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#9ECBFF"> "./style.css"</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">export</span><span style="color:#F97583"> default</span><span style="color:#F97583"> function</span><span style="color:#B392F0"> App</span><span style="color:#E1E4E8">() {</span></span>
+<span class="line"><span style="color:#F97583">  const</span><span style="color:#E1E4E8"> [</span><span style="color:#79B8FF">counterSteps</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">setCounterSteps</span><span style="color:#E1E4E8">] </span><span style="color:#F97583">=</span><span style="color:#B392F0"> useState</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#F97583">  const</span><span style="color:#E1E4E8"> [</span><span style="color:#79B8FF">count</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">setCount</span><span style="color:#E1E4E8">] </span><span style="color:#F97583">=</span><span style="color:#B392F0"> useState</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">  const</span><span style="color:#B392F0"> handleCurrentInput</span><span style="color:#F97583"> =</span><span style="color:#FFAB70"> currentInput</span><span style="color:#F97583"> =></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#B392F0">    setCounterSteps</span><span style="color:#E1E4E8">(currentInput);</span></span>
+<span class="line"><span style="color:#E1E4E8">  };</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">  const</span><span style="color:#B392F0"> handleCounterIncreased</span><span style="color:#F97583"> =</span><span style="color:#FFAB70"> counterSteps</span><span style="color:#F97583"> =></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">    const</span><span style="color:#79B8FF"> newCount</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> count </span><span style="color:#F97583">+</span><span style="color:#B392F0"> parseInt</span><span style="color:#E1E4E8">(counterSteps);</span></span>
+<span class="line"><span style="color:#B392F0">    setCount</span><span style="color:#E1E4E8">(newCount);</span></span>
+<span class="line"><span style="color:#E1E4E8">  };</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">  return</span><span style="color:#E1E4E8"> (</span></span>
+<span class="line"><span style="color:#E1E4E8">    &#x3C;</span><span style="color:#85E89D">div</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">      &#x3C;</span><span style="color:#85E89D">h1</span><span style="color:#E1E4E8">>Hello StackBlitz!&#x3C;/</span><span style="color:#85E89D">h1</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">      &#x3C;</span><span style="color:#85E89D">p</span><span style="color:#E1E4E8">>current counterStepsInput: {counterSteps}&#x3C;/</span><span style="color:#85E89D">p</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">      &#x3C;</span><span style="color:#85E89D">p</span><span style="color:#E1E4E8">>current count: {count}&#x3C;/</span><span style="color:#85E89D">p</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">      &#x3C;</span><span style="color:#79B8FF">CounterSteps</span><span style="color:#B392F0"> onCurrentInput</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{handleCurrentInput} /></span></span>
+<span class="line"><span style="color:#E1E4E8">      &#x3C;</span><span style="color:#79B8FF">Button</span></span>
+<span class="line"><span style="color:#B392F0">        counterSteps</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{counterSteps}</span></span>
+<span class="line"><span style="color:#B392F0">        onCounterIncreased</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{handleCounterIncreased}</span></span>
+<span class="line"><span style="color:#E1E4E8">      /></span></span>
+<span class="line"><span style="color:#E1E4E8">    &#x3C;/</span><span style="color:#85E89D">div</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">  );</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span></code></pre>
+<h2 id="counterstepsjs">CounterSteps.js</h2>
+<p>In the <code>CounterSteps.js</code> is a input field. Every change of the value will be passed via a event to the parent component.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="javascript"><code><span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> React, { useState } </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> "react"</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> PropTypes </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> "prop-types"</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#9ECBFF"> "./style.css"</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">export</span><span style="color:#F97583"> default</span><span style="color:#F97583"> function</span><span style="color:#B392F0"> CounterSteps</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">props</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">  const</span><span style="color:#E1E4E8"> [</span><span style="color:#79B8FF">count</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">setCount</span><span style="color:#E1E4E8">] </span><span style="color:#F97583">=</span><span style="color:#B392F0"> useState</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#F97583">  const</span><span style="color:#E1E4E8"> { </span><span style="color:#79B8FF">onCurrentInput</span><span style="color:#E1E4E8"> } </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> props;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">  const</span><span style="color:#B392F0"> handleInput</span><span style="color:#F97583"> =</span><span style="color:#FFAB70"> event</span><span style="color:#F97583"> =></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#B392F0">    onCurrentInput</span><span style="color:#E1E4E8">(event.target.value);</span></span>
+<span class="line"><span style="color:#E1E4E8">  };</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">  return</span><span style="color:#E1E4E8"> (</span></span>
+<span class="line"><span style="color:#E1E4E8">    &#x3C;</span><span style="color:#85E89D">div</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">      &#x3C;</span><span style="color:#85E89D">p</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">        &#x3C;</span><span style="color:#85E89D">input</span></span>
+<span class="line"><span style="color:#B392F0">          type</span><span style="color:#F97583">=</span><span style="color:#9ECBFF">"number"</span></span>
+<span class="line"><span style="color:#B392F0">          name</span><span style="color:#F97583">=</span><span style="color:#9ECBFF">"counterSteps"</span></span>
+<span class="line"><span style="color:#B392F0">          placeholder</span><span style="color:#F97583">=</span><span style="color:#9ECBFF">"counterSteps"</span></span>
+<span class="line"><span style="color:#B392F0">          onKeyDown</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{</span><span style="color:#FFAB70">e</span><span style="color:#F97583"> =></span><span style="color:#9ECBFF"> /</span><span style="color:#79B8FF">[</span><span style="color:#85E89D;font-weight:bold">\+</span><span style="color:#79B8FF">\-</span><span style="color:#85E89D;font-weight:bold">\.\,</span><span style="color:#79B8FF">]</span><span style="color:#F97583">$</span><span style="color:#9ECBFF">/</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">test</span><span style="color:#E1E4E8">(e.key) </span><span style="color:#F97583">&#x26;&#x26;</span><span style="color:#E1E4E8"> e.</span><span style="color:#B392F0">preventDefault</span><span style="color:#E1E4E8">()}</span></span>
+<span class="line"><span style="color:#B392F0">          onInput</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{handleInput}</span></span>
+<span class="line"><span style="color:#E1E4E8">        /></span></span>
+<span class="line"><span style="color:#E1E4E8">      &#x3C;/</span><span style="color:#85E89D">p</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">    &#x3C;/</span><span style="color:#85E89D">div</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">  );</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">CounterSteps.propTypes </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">  onCurrentInput: PropTypes.func</span></span>
+<span class="line"><span style="color:#E1E4E8">};</span></span>
+<span class="line"></span></code></pre>
+<h2 id="buttonjs">Button.js</h2>
+<p>The <code>Button.js</code> receive the height of the inccrease from the parent component. A Button click calls the event and pass the height of increase back. In the <code>App.js</code> the total count is calculated.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="javascript"><code><span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> React, { useState, useEffect } </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> "react"</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> PropTypes </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> "prop-types"</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#9ECBFF"> "./style.css"</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">export</span><span style="color:#F97583"> default</span><span style="color:#F97583"> function</span><span style="color:#B392F0"> Button</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">props</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">  const</span><span style="color:#E1E4E8"> [</span><span style="color:#79B8FF">counterSteps</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">setCounterSteps</span><span style="color:#E1E4E8">] </span><span style="color:#F97583">=</span><span style="color:#B392F0"> useState</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#F97583">  const</span><span style="color:#E1E4E8"> { </span><span style="color:#79B8FF">onCounterIncreased</span><span style="color:#E1E4E8"> } </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> props;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#B392F0">  useEffect</span><span style="color:#E1E4E8">(() </span><span style="color:#F97583">=></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#B392F0">    setCounterSteps</span><span style="color:#E1E4E8">(props.counterSteps);</span></span>
+<span class="line"><span style="color:#E1E4E8">  }, [props]);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">  const</span><span style="color:#B392F0"> increaseCount</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> () </span><span style="color:#F97583">=></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#B392F0">    onCounterIncreased</span><span style="color:#E1E4E8">(counterSteps);</span></span>
+<span class="line"><span style="color:#E1E4E8">  };</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">  return</span><span style="color:#E1E4E8"> (</span></span>
+<span class="line"><span style="color:#E1E4E8">    &#x3C;</span><span style="color:#85E89D">div</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">      &#x3C;</span><span style="color:#85E89D">button</span><span style="color:#B392F0"> onClick</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{increaseCount}>increase counter&#x3C;/</span><span style="color:#85E89D">button</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">    &#x3C;/</span><span style="color:#85E89D">div</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">  );</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">Button.propTypes </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">  onCounterIncreased: PropTypes.func</span></span>
+<span class="line"><span style="color:#E1E4E8">};</span></span>
+<span class="line"></span></code></pre>
+<h1 id="result">Result</h1>
+<p>![result]({{ site.baseurl }}/img/2020-08-31-example_react_component_props_events/result.gif)</p>
+<h1 id="coding">Coding</h1>
+<p>See the Coding on GitHub or StackBlitz:</p>
+<p><a href="https://github.com/JohannesKonings/example-react-component-props-events">GitHub</a></p>
+<p><a href="https://stackblitz.com/edit/example-react-component-props-events">StackBlitz</a></p> </article> <div class="grid grid-cols-1 sm:grid-cols-2 gap-4"> <a href="/blog/2020-10-19-example_react_average_of_items_in_different_arrays" class="group p-4 gap-3 flex items-center border rounded-lg hover:bg-black/5 hover:dark:bg-white/10 border-black/15 dark:border-white/20 blend"> <div class="order-2 w-full h-full group-hover:text-black group-hover:dark:text-white blend"> <div class="flex flex-wrap gap-2"> <div class="text-sm uppercase">
+Prev
+</div> </div> <div class="font-semibold mt-3 text-black dark:text-white"> Quick example to get the average of items from different arrays </div> </div> <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="order-1 stroke-current group-hover:stroke-black group-hover:dark:stroke-white rotate-180"> <line x1="5" y1="12" x2="19" y2="12" class="scale-x-0 group-hover:scale-x-100 translate-x-4 group-hover:translate-x-1 transition-all duration-300 ease-in-out"></line> <polyline points="12 5 19 12 12 19" class="translate-x-0 group-hover:translate-x-1 transition-all duration-300 ease-in-out"></polyline> </svg> </a> <a href="/blog/aws-amplify-console-changed-master-branchenv-main" class="group p-4 gap-3 flex items-center border rounded-lg hover:bg-black/5 hover:dark:bg-white/10 border-black/15 dark:border-white/20 transition-colors duration-300 ease-in-out"> <div class="w-full h-full text-right group-hover:text-black group-hover:dark:text-white blend"> <div class="text-sm uppercase">
+Next
+</div> <div class="font-semibold mt-3 text-black dark:text-white"> AWS Amplify Console: How I changed master branchenv to main </div> </div> <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="stroke-current group-hover:stroke-black group-hover:dark:stroke-white"> <line x1="5" y1="12" x2="19" y2="12" class="scale-x-0 group-hover:scale-x-100 translate-x-4 group-hover:translate-x-1 transition-all duration-300 ease-in-out"></line> <polyline points="12 5 19 12 12 19" class="translate-x-0 group-hover:translate-x-1 transition-all duration-300 ease-in-out"></polyline> </svg> </a> </div> </div> </div>   </div> </div>  </main> <footer class="relative bg-white dark:bg-black"> <div class="animate"> <section class="py-5"> <div class="w-full h-full mx-auto px-5 max-w-screen-md">  <div class="flex items-center justify-center sm:justify-end"> <button id="back-to-top" aria-label="Back to top of page" class="group flex w-fit p-1.5 gap-1.5 text-sm items-center border rounded hover:bg-black/5 hover:dark:bg-white/10 border-black/15 dark:border-white/20 transition-colors duration-300 ease-in-out"> <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="stroke-current group-hover:stroke-black group-hover:dark:stroke-white rotate-90"> <line x1="19" y1="12" x2="5" y2="12" class="scale-x-0 group-hover:scale-x-100 translate-x-3 group-hover:translate-x-0 transition-all duration-300 ease-in-out"></line> <polyline points="12 19 5 12 12 5" class="translate-x-1 group-hover:translate-x-0 transition-all duration-300 ease-in-out"></polyline> </svg> <div class="w-full group-hover:text-black group-hover:dark:text-white transition-colors duration-300 ease-in-out">
+Back to top
+</div> </button> </div>  </div> </section> <section class="py-5 overflow-hidden whitespace-nowrap border-t border-black/10 dark:border-white/25"> <div class="w-full h-full mx-auto px-5 max-w-screen-md">  <div class="h-full grid grid-cols-1 sm:grid-cols-2 gap-3"> <div class="order-2 sm:order-1 flex flex-col items-center justify-center sm:items-start"> <div class="legal"> <a href="/legal/terms" class="text-current hover:text-black dark:hover:text-white transition-colors duration-300 ease-in-out">
+Terms
+</a> |
+<a href="/legal/privacy" class="text-current hover:text-black dark:hover:text-white transition-colors duration-300 ease-in-out">
+Privacy
+</a> </div> <div class="text-sm mt-2">&copy; 2024 | All rights reserved</div> </div> <div class="order-1 sm:order-2 flex justify-center sm:justify-end"> <div class="flex flex-wrap gap-1 items-center justify-center"> <!-- {
+                SOCIALS.map((SOCIAL) => (
+                  <a 
+                    href={SOCIAL.HREF} 
+                    target="_blank" 
+                    aria-label={`${SITE.TITLE} on ${SOCIAL.NAME}`} 
+                    class="group size-10 rounded-full p-2 items-center justify-center hover:bg-black/5 dark:hover:bg-white/20  blend"
+                  >
+                    <svg class="size-full fill-current group-hover:fill-black group-hover:dark:fill-white blend">
+                      <use href={`/social.svg#${SOCIAL.ICON}`} />
+                    </svg>
+                  </a>
+                ))
+              } --> <a href="https://github.com/JohannesKonings/JohannesKonings.github.io" target="_blank" aria-label="GitHub repo" class="group size-10 rounded-full p-2 items-center justify-center hover:bg-black/5 dark:hover:bg-white/20 blend"> <svg class="size-full fill-current group-hover:fill-black group-hover:dark:fill-white blend"> <use href="/social.svg#github"></use> </svg> </a> </div> </div> </div>  </div> </section> </div> </footer> <script>
+  function goBackToTop(event) {
+    event.preventDefault();
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  }
+
+  function inintializeBackToTop() {
+    const backToTop = document.getElementById("back-to-top");
+    backToTop?.addEventListener("click", goBackToTop);
+  }
+
+  document.addEventListener("astro:after-swap", inintializeBackToTop);
+  inintializeBackToTop();
+</script> </body></html>

@@ -1,0 +1,225 @@
+<!DOCTYPE html><html lang="en"> <head><!-- Global Metadata --><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" type="image/x-icon" href="/favicon.ico"><meta name="generator" content="Astro v4.10.2"><!-- <link rel="preload" href="/fonts/atkinson-regular.woff" as="font" type="font/woff" crossorigin>
+<link rel="preload" href="/fonts/atkinson-bold.woff" as="font" type="font/woff" crossorigin> --><link rel="preload" href="/fonts/CascadiaMonoNF.woff2" as="font" type="font/woff2" crossorigin><link rel="preload" href="/fonts/CascadiaMonoNF-SemiBold.woff2" as="font" type="font/woff2" crossorigin><!-- Canonical URL --><link rel="canonical" href="https://johanneskonings.dev/blog/2020-12-19-aws_billing_metrics_grafana_cloud_and_terraform/"><!-- Primary Meta Tags --><title>How to setup AWS Billing metrics in Grafana Cloud via Terraform | Johannes Konings</title><meta name="title" content="How to setup AWS Billing metrics in Grafana Cloud via Terraform | Johannes Konings"><meta name="description" content="Terraform setup to display AWS billing metrics in Grafana Cloud with S3 Backend and CI/CD pipeline"><!-- Open Graph / Facebook --><meta property="og:type" content="website"><meta property="og:url" content="https://johanneskonings.dev/blog/2020-12-19-aws_billing_metrics_grafana_cloud_and_terraform/"><meta property="og:title" content="How to setup AWS Billing metrics in Grafana Cloud via Terraform | Johannes Konings"><meta property="og:description" content="Terraform setup to display AWS billing metrics in Grafana Cloud with S3 Backend and CI/CD pipeline"><meta property="og:image" content="https://johanneskonings.dev/open-graph.jpg"><!-- Twitter --><meta property="twitter:card" content="summary_large_image"><meta property="twitter:url" content="https://johanneskonings.dev/blog/2020-12-19-aws_billing_metrics_grafana_cloud_and_terraform/"><meta property="twitter:title" content="How to setup AWS Billing metrics in Grafana Cloud via Terraform | Johannes Konings"><meta property="twitter:description" content="Terraform setup to display AWS billing metrics in Grafana Cloud with S3 Backend and CI/CD pipeline"><meta property="twitter:image" content="https://johanneskonings.dev/open-graph.jpg"><!-- Sitemap --><link rel="sitemap" href="/sitemap-index.xml"><!-- RSS Feed --><link rel="alternate" type="application/rss+xml" title="How to setup AWS Billing metrics in Grafana Cloud via Terraform | Johannes Konings" href="https://johanneskonings.dev/rss.xml"><!-- Global Scripts --><script src="/js/theme.js"></script><script src="/js/scroll.js"></script><script src="/js/animate.js"></script><!-- <ViewTransitions  /> --><link rel="stylesheet" href="/_astro/_slug_.COeGf7i0.css"><script type="module" src="/_astro/hoisted.BGfjo5mV.js"></script></head> <body> <header id="header" class="fixed top-0 w-full h-16 z-50" data-astro-cid-3ef6ksr2> <div class="w-full h-full mx-auto px-5 max-w-screen-md">  <div class="relative h-full w-full" data-astro-cid-3ef6ksr2> <div class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2" data-astro-cid-3ef6ksr2> <nav class="hidden md:flex items-center justify-center text-sm gap-1" data-astro-cid-3ef6ksr2> <a href="/" class="h-8 rounded-full px-3 text-current flex items-center justify-center transition-colors duration-300 ease-in-out hover:bg-black/5 dark:hover:bg-white/20 hover:text-black dark:hover:text-white" data-astro-cid-3ef6ksr2> Home </a><a href="/blog" class="h-8 rounded-full px-3 flex items-center justify-center transition-colors duration-300 ease-in-out bg-black dark:bg-white text-white dark:text-black" data-astro-cid-3ef6ksr2> Blog </a> </nav> </div> <div class="buttons absolute right-0 top-1/2 -translate-y-1/2 flex gap-1" data-astro-cid-3ef6ksr2> <a href="/search" aria-label="Search blog posts and projects on Johannes Konings" class="hidden md:flex size-9 rounded-full p-2 items-center justify-center bg-transparent hover:bg-black/5 dark:hover:bg-white/20 stroke-current hover:stroke-black hover:dark:stroke-white border border-black/10 dark:border-white/25 transition-colors duration-300 ease-in-out" data-astro-cid-3ef6ksr2> <svg class="size-full" data-astro-cid-3ef6ksr2> <use href="/ui.svg#search" data-astro-cid-3ef6ksr2></use> </svg> </a> <a href="/rss.xml" target="_blank" aria-label="Rss feed for Johannes Konings" class="hidden md:flex size-9 rounded-full p-2 items-center justify-center bg-transparent hover:bg-black/5 dark:hover:bg-white/20 stroke-current hover:stroke-black hover:dark:stroke-white border border-black/10 dark:border-white/25 transition-colors duration-300 ease-in-out" data-astro-cid-3ef6ksr2> <svg class="size-full" data-astro-cid-3ef6ksr2> <use href="/ui.svg#rss" data-astro-cid-3ef6ksr2></use> </svg> </a> <button id="header-theme-button" aria-label="Toggle light and dark theme" class="hidden md:flex size-9 rounded-full p-2 items-center justify-center bg-transparent hover:bg-black/5 dark:hover:bg-white/20 stroke-current hover:stroke-black hover:dark:stroke-white border border-black/10 dark:border-white/25 transition-colors duration-300 ease-in-out" data-astro-cid-3ef6ksr2> <svg class="size-full block dark:hidden" data-astro-cid-3ef6ksr2> <use href="/ui.svg#sun" data-astro-cid-3ef6ksr2></use> </svg> <svg class="size-full hidden dark:block" data-astro-cid-3ef6ksr2> <use href="/ui.svg#moon" data-astro-cid-3ef6ksr2></use> </svg> </button> <button id="header-drawer-button" aria-label="Toggle drawer open and closed" class="flex md:hidden size-9 rounded-full p-2 items-center justify-center bg-transparent hover:bg-black/5 dark:hover:bg-white/20 stroke-current hover:stroke-black hover:dark:stroke-white border border-black/10 dark:border-white/25 transition-colors duration-300 ease-in-out" data-astro-cid-3ef6ksr2> <svg id="drawer-open" class="size-full" data-astro-cid-3ef6ksr2> <use href="/ui.svg#menu" data-astro-cid-3ef6ksr2></use> </svg> <svg id="drawer-close" class="size-full" data-astro-cid-3ef6ksr2> <use href="/ui.svg#x" data-astro-cid-3ef6ksr2></use> </svg> </button> </div> </div>  </div> </header>  <script>
+  function toggleDrawer() {
+    const drawer = document.getElementById("drawer");
+    const drawerButton = document.getElementById("header-drawer-button");
+    drawer?.classList.toggle("open");
+    drawerButton?.classList.toggle("open");
+  }
+
+  function initializeDrawerButton() {
+    const drawerButton = document.getElementById("header-drawer-button");
+    drawerButton?.addEventListener("click", toggleDrawer);
+  }
+
+  document.addEventListener("astro:after-swap", initializeDrawerButton);
+  initializeDrawerButton();
+</script> <div id="drawer" class="fixed inset-0 h-0 z-40 overflow-hidden flex flex-col items-center justify-center md:hidden bg-neutral-100 dark:bg-neutral-900 transition-[height] duration-300 ease-in-out" data-astro-cid-hxtyo74s> <nav class="flex flex-col items-center space-y-2" data-astro-cid-hxtyo74s> <a href="/" class="flex items-center justify-center px-3 py-1 rounded-full text-current hover:text-black dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/20 transition-colors duration-300 ease-in-out" data-astro-cid-hxtyo74s> Home </a><a href="/blog" class="flex items-center justify-center px-3 py-1 rounded-full hover:text-black dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/20 transition-colors duration-300 ease-in-out pointer-events-none bg-black dark:bg-white text-white dark:text-black" data-astro-cid-hxtyo74s> Blog </a> </nav> <div class="flex gap-1 mt-5" data-astro-cid-hxtyo74s> <a href="/search" aria-label="Search blog posts and projects on Johannes Konings" class="size-9 rounded-full p-2 items-center justify-center bg-transparent hover:bg-black/5 dark:hover:bg-white/20 stroke-current hover:stroke-black hover:dark:stroke-white border border-black/10 dark:border-white/25 transition-colors duration-300 ease-in-out" data-astro-cid-hxtyo74s> <svg class="size-full" data-astro-cid-hxtyo74s> <use href="/ui.svg#search" data-astro-cid-hxtyo74s></use> </svg> </a> <a href="/rss.xml" target="_blank" aria-label="Rss feed for Johannes Konings" class="size-9 rounded-full p-2 items-center justify-center bg-transparent hover:bg-black/5 dark:hover:bg-white/20 stroke-current hover:stroke-black hover:dark:stroke-white border border-black/10 dark:border-white/25 transition-colors duration-300 ease-in-out" data-astro-cid-hxtyo74s> <svg class="size-full" data-astro-cid-hxtyo74s> <use href="/ui.svg#rss" data-astro-cid-hxtyo74s></use> </svg> </a> <button id="drawer-theme-button" aria-label="Toggle light and dark theme" class="size-9 rounded-full p-2 items-center justify-center bg-transparent hover:bg-black/5 dark:hover:bg-white/20 stroke-current hover:stroke-black hover:dark:stroke-white border border-black/10 dark:border-white/25 transition-colors duration-300 ease-in-out" data-astro-cid-hxtyo74s> <svg class="block dark:hidden size-full" data-astro-cid-hxtyo74s> <use href="/ui.svg#sun" data-astro-cid-hxtyo74s></use> </svg> <svg class="hidden dark:block size-full" data-astro-cid-hxtyo74s> <use href="/ui.svg#moon" data-astro-cid-hxtyo74s></use> </svg> </button> </div> </div>  <main>  <div class="pt-36 pb-5"> <div class="w-full h-full mx-auto px-5 max-w-screen-md">   <div class="animate"> <div> <a href="/blog" class="group w-fit p-1.5 gap-1.5 text-sm flex items-center border rounded hover:bg-black/5 hover:dark:bg-white/10 border-black/15 dark:border-white/20 transition-colors duration-300 ease-in-out"> <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="stroke-current group-hover:stroke-black group-hover:dark:stroke-white"> <line x1="19" y1="12" x2="5" y2="12" class="scale-x-0 group-hover:scale-x-100 translate-x-3 group-hover:translate-x-0 transition-all duration-300 ease-in-out"></line> <polyline points="12 19 5 12 12 5" class="translate-x-1 group-hover:translate-x-0 transition-all duration-300 ease-in-out"></polyline> </svg> <div class="w-full group-hover:text-black group-hover:dark:text-white transition-colors duration-300 ease-in-out">
+Back to blog </div> </a> <div class="flex flex-wrap text-sm uppercase mt-12 gap-3 opacity-75"> <div class="flex items-center gap-2"> <svg class="size-5 stroke-current"> <use href="/ui.svg#calendar"></use> </svg> Dec 19, 2020 </div> <div class="flex items-center gap-2"> <svg class="size-5 stroke-current"> <use href="/ui.svg#book-open"></use> </svg> 4 min read </div> </div> <h1 class="text-3xl font-semibold text-black dark:text-white mt-2"> How to setup AWS Billing metrics in Grafana Cloud via Terraform </h1> <div class="mt-1"> Terraform setup to display AWS billing metrics in Grafana Cloud with S3 Backend and CI/CD pipeline </div> <!-- {(demoUrl || repoUrl) && 
+  <div class="mt-4 flex flex-wrap gap-2">
+    {demoUrl && 
+      <a href={demoUrl} target="_blank" class="group flex gap-2 items-center px-3 py-1.5 truncate rounded text-xs md:text-sm lg:text-base border border-black/25 dark:border-white/25 hover:bg-black/5 hover:dark:bg-white/15 blend">
+        <svg class="size-4">
+          <use href="/ui.svg#globe" class="fill-current group-hover:fill-black group-hover:dark:fill-white blend"/>
+        </svg>
+        <span class="text-current group-hover:text-black group-hover:dark:text-white blend">
+          See Demo
+        </span>
+      </a>
+    }
+    {repoUrl && 
+      <a href={repoUrl} target="_blank" class="group flex gap-2 items-center px-3 py-1.5 truncate rounded text-xs md:text-sm lg:text-base border border-black/25 dark:border-white/25 hover:bg-black/5 hover:dark:bg-white/15 blend">
+        <svg class="size-4">
+          <use href="/ui.svg#link" class="fill-current group-hover:fill-black group-hover:dark:fill-white blend"/>
+        </svg>
+        <span class="text-current group-hover:text-black group-hover:dark:text-white blend">
+          See Repository
+        </span>
+      </a>
+    }
+  </div> 
+  } --> </div> </div>   </div> </div> <div class="flex-1 py-5"> <div class="w-full h-full mx-auto px-5 max-w-screen-md">   <div class="animate"> <div> <article> <h1 id="why-terraform">Why Terraform?</h1>
+<p>In this [post]({{ site.baseurl }}/aws/2020/11/27/aws_billing_metrics_and_grafana_cloud/) I described how to display AWS Billing metrics in Grafana Cloud. Therefore it was necessary to create manually the data source and the dashboard.
+With Terraform, you can describe the setup as code and benefit from the full advantages of <a href="https://en.wikipedia.org/wiki/Infrastructure_as_code">IaC</a>.</p>
+<h1 id="terraform">Terraform</h1>
+<p><a href="https://www.terraform.io/">Terraform</a> is a tool for infrastructure as code and works with many different <a href="https://www.terraform.io/docs/providers/index.html#lists-of-terraform-providers">provider</a>.
+Terraform comes with a CLI for the deployments.</p>
+<h1 id="grafana-provider-and-dashboard-declaration">Grafana Provider and Dashboard declaration</h1>
+<p>For this use case, you need a Grafana data source and a Grafana dashboard. These configurations have to defined in a .tf file like this <a href="https://github.com/JohannesKonings/aws-grafana-billing-dashboard/blob/main/grafana.tf">one</a></p>
+<p>At first the <a href="https://registry.terraform.io/providers/grafana/grafana/latest/docs">provider</a>.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>provider "grafana" {</span></span>
+<span class="line"><span>  url  = var.grafana_url</span></span>
+<span class="line"><span>  auth = var.grafana_api_key</span></span>
+<span class="line"><span>}</span></span>
+<span class="line"><span></span></span></code></pre>
+<p>Then the <a href="https://registry.terraform.io/providers/grafana/grafana/latest/docs/resources/data_source">data source</a> and <a href="https://registry.terraform.io/providers/grafana/grafana/latest/docs/resources/dashboard">dashboard</a>.
+The dashboard section links to the file <a href="https://github.com/JohannesKonings/aws-grafana-billing-dashboard/blob/main/dashboards/aws-billing.json">dashboards/aws-billing.json</a>.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>resource "grafana_data_source" "cloudwatch" {</span></span>
+<span class="line"><span>  type = "cloudwatch"</span></span>
+<span class="line"><span>  name = "CloudWatch"</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>  json_data {</span></span>
+<span class="line"><span>    default_region = var.region</span></span>
+<span class="line"><span>    auth_type      = "keys"</span></span>
+<span class="line"><span>  }</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>  secure_json_data {</span></span>
+<span class="line"><span>    access_key = var.access_key_grafana</span></span>
+<span class="line"><span>    secret_key = var.secret_key_grafana</span></span>
+<span class="line"><span>  }</span></span>
+<span class="line"><span>}</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>resource "grafana_dashboard" "metrics" {</span></span>
+<span class="line"><span>  config_json = file("dashboards/aws-billing.json")</span></span>
+<span class="line"><span>}</span></span>
+<span class="line"><span></span></span></code></pre>
+<p>For security reasons and flexible sharing of the template, the parameters for secrets and variables like region are in a .env file. This is the <a href="https://github.com/JohannesKonings/aws-grafana-billing-dashboard/blob/main/.env_template">template</a> for that.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span># The URL of the Grafana instance</span></span>
+<span class="line"><span>export TF_VAR_grafana_url=</span></span>
+<span class="line"><span># The API key of the Grafana instance</span></span>
+<span class="line"><span>export TF_VAR_grafana_api_key=</span></span>
+<span class="line"><span># IAM user like described here: https://grafana.com/docs/grafana/latest/datasources/cloudwatch/#iam-policies</span></span>
+<span class="line"><span>export TF_VAR_access_key_grafana=</span></span>
+<span class="line"><span>export TF_VAR_secret_key_grafana=</span></span>
+<span class="line"><span># Default region of the data source</span></span>
+<span class="line"><span>export TF_VAR_region=</span></span>
+<span class="line"><span></span></span></code></pre>
+<p>The declaration of Terraform variables looks like that.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>variable "grafana_url" {}</span></span>
+<span class="line"><span>variable "grafana_api_key" {}</span></span>
+<span class="line"><span>variable "access_key_grafana" {}</span></span>
+<span class="line"><span>variable "secret_key_grafana" {}</span></span>
+<span class="line"><span>variable "region" {}</span></span>
+<span class="line"><span></span></span></code></pre>
+<p>In this case it’s in the file <a href="https://github.com/JohannesKonings/aws-grafana-billing-dashboard/blob/main/variables.tf">variable.tf</a> like described <a href="https://learn.hashicorp.com/tutorials/terraform/azure-variables">here</a>.</p>
+<h1 id="grafana-api-key">Grafana API Key</h1>
+<p>Terraform can “communicate” with Grafana via an API key.
+Navigate to this URL “https://&#x3C;<grafana instance="">>/org/apikeys” and create on with the role “Admin”.</grafana></p>
+<p>![grafana api key creation]({{ site.baseurl }}/img/2020-12-19-aws_billing_metrics_grafana_cloud_and_terraform/grafana_api_key_creation.png)</p>
+<p>Put the API key into the .env file.</p>
+<h1 id="usage-of-the-env-file">Usage of the env file</h1>
+<p>Before the creation of the S3 Backend and the deployment run the command <code>source .env</code>.</p>
+<h1 id="terraform-aws-s3-backend">Terraform AWS S3 backend</h1>
+<p>This setup so far works for the first deployment. Changes and a redeployment lead to an error because the resource already exists.
+Therefore it’s necessary to extend the setup with a <a href="https://www.terraform.io/docs/backends/index.html">Terraform backend</a>.
+In this example, it’s a <a href="https://www.terraform.io/docs/backends/types/s3.html">S3 backend</a>.</p>
+<p>Unfortunately, it’s not possible to use variables here. This is discussed in this <a href="https://github.com/hashicorp/terraform/issues/13022">issue</a> with some approaches for workarounds. I use this <a href="https://github.com/hashicorp/terraform/issues/13022#issuecomment-482014961">one</a>, more or less.</p>
+<p>Concrete I put a <a href="https://github.com/JohannesKonings/aws-grafana-billing-dashboard/blob/main/scripts/terraformInit.sh">script</a> around the command <code>terraform init</code>. This script can use the environment variables and create a terraform file for the backend.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6A737D">#!/bin/sh</span></span>
+<span class="line"><span style="color:#B392F0">cat</span><span style="color:#F97583"> ></span><span style="color:#9ECBFF"> ./backend.tf</span><span style="color:#F97583"> &#x3C;&#x3C;</span><span style="color:#9ECBFF"> EOF</span></span>
+<span class="line"><span style="color:#9ECBFF">terraform {</span></span>
+<span class="line"><span style="color:#9ECBFF">  backend "s3" {</span></span>
+<span class="line"><span style="color:#9ECBFF">    bucket = "${</span><span style="color:#E1E4E8">TF_VAR_s3_bucket_name</span><span style="color:#9ECBFF">}"</span></span>
+<span class="line"><span style="color:#9ECBFF">    key    = "${</span><span style="color:#E1E4E8">TF_VAR_backend_key</span><span style="color:#9ECBFF">}"</span></span>
+<span class="line"><span style="color:#9ECBFF">    region = "${</span><span style="color:#E1E4E8">TF_VAR_region</span><span style="color:#9ECBFF">}"</span></span>
+<span class="line"><span style="color:#9ECBFF">  }</span></span>
+<span class="line"><span style="color:#9ECBFF">}</span></span>
+<span class="line"><span style="color:#9ECBFF">EOF</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#B392F0">terraform</span><span style="color:#9ECBFF"> init</span><span style="color:#79B8FF"> -input=false</span></span>
+<span class="line"></span></code></pre>
+<p>This <a href="https://github.com/JohannesKonings/aws-grafana-billing-dashboard/blob/main/scripts/createS3BackendBucket.sh">script</a> creates the bucket.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="sh"><code><span class="line"><span style="color:#6A737D">#!/bin/sh</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#B392F0">aws</span><span style="color:#9ECBFF"> s3api</span><span style="color:#9ECBFF"> create-bucket</span><span style="color:#79B8FF"> --bucket</span><span style="color:#E1E4E8"> $TF_VAR_s3_bucket_name </span><span style="color:#79B8FF">--region</span><span style="color:#E1E4E8"> $TF_VAR_region</span></span>
+<span class="line"></span></code></pre>
+<p>For the backend, it needs an IAM user. This <a href="https://github.com/JohannesKonings/aws-grafana-billing-dashboard/blob/main/scripts/createUser4S3BackendBucket.sh">script</a> creates the user and return access and secret key. Put that into the .env file.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span># Name of the Terrafrom S3 backend for state handling</span></span>
+<span class="line"><span>export TF_VAR_s3_bucket_name=</span></span>
+<span class="line"><span># Name of the state file</span></span>
+<span class="line"><span>export TF_VAR_backend_key=terraform.tfstate</span></span>
+<span class="line"><span># IAM user credentials to access S3 and write the state file</span></span>
+<span class="line"><span>export AWS_ACCESS_KEY_ID=</span></span>
+<span class="line"><span>export AWS_SECRET_ACCESS_KEY=</span></span>
+<span class="line"><span></span></span></code></pre>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="sh"><code><span class="line"><span style="color:#6A737D">#!/bin/sh</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#B392F0">aws</span><span style="color:#9ECBFF"> iam</span><span style="color:#9ECBFF"> create-user</span><span style="color:#79B8FF"> --user-name</span><span style="color:#9ECBFF"> terraform_state</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#B392F0">aws</span><span style="color:#9ECBFF"> iam</span><span style="color:#9ECBFF"> create-access-key</span><span style="color:#79B8FF"> --user-name</span><span style="color:#9ECBFF"> terraform_state</span></span>
+<span class="line"></span></code></pre>
+<p>This <a href="https://github.com/JohannesKonings/aws-grafana-billing-dashboard/blob/main/scripts/createAndAttachS3BackendBucketPolicy.sh">script</a> creates and attach the missing policy.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="sh"><code><span class="line"><span style="color:#6A737D">#!/bin/bash</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#B392F0">cat</span><span style="color:#F97583"> ></span><span style="color:#9ECBFF"> ./scripts/policy</span><span style="color:#F97583"> &#x3C;&#x3C;</span><span style="color:#9ECBFF"> EOF</span></span>
+<span class="line"><span style="color:#9ECBFF">{</span></span>
+<span class="line"><span style="color:#9ECBFF">  "Version": "2012-10-17",</span></span>
+<span class="line"><span style="color:#9ECBFF">  "Statement": [</span></span>
+<span class="line"><span style="color:#9ECBFF">    {</span></span>
+<span class="line"><span style="color:#9ECBFF">      "Effect": "Allow",</span></span>
+<span class="line"><span style="color:#9ECBFF">      "Action": "s3:ListBucket",</span></span>
+<span class="line"><span style="color:#9ECBFF">      "Resource": "arn:aws:s3:::${</span><span style="color:#E1E4E8">TF_VAR_s3_bucket_name</span><span style="color:#9ECBFF">}"</span></span>
+<span class="line"><span style="color:#9ECBFF">    },</span></span>
+<span class="line"><span style="color:#9ECBFF">    {</span></span>
+<span class="line"><span style="color:#9ECBFF">      "Effect": "Allow",</span></span>
+<span class="line"><span style="color:#9ECBFF">      "Action": ["s3:GetObject", "s3:PutObject"],</span></span>
+<span class="line"><span style="color:#9ECBFF">      "Resource": "arn:aws:s3:::${</span><span style="color:#E1E4E8">TF_VAR_s3_bucket_name</span><span style="color:#9ECBFF">}/*"</span></span>
+<span class="line"><span style="color:#9ECBFF">    }</span></span>
+<span class="line"><span style="color:#9ECBFF">  ]</span></span>
+<span class="line"><span style="color:#9ECBFF">}</span></span>
+<span class="line"><span style="color:#9ECBFF">EOF</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#B392F0">aws</span><span style="color:#9ECBFF"> iam</span><span style="color:#9ECBFF"> create-policy</span><span style="color:#79B8FF"> --policy-name</span><span style="color:#9ECBFF"> terraform_state</span><span style="color:#79B8FF"> --policy-document</span><span style="color:#9ECBFF"> file://scripts/policy</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">ARN</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">$(</span><span style="color:#B392F0">aws</span><span style="color:#9ECBFF"> iam</span><span style="color:#9ECBFF"> list-policies</span><span style="color:#79B8FF"> --query</span><span style="color:#9ECBFF"> 'Policies[?PolicyName==`terraform_state`].Arn'</span><span style="color:#79B8FF"> --output</span><span style="color:#9ECBFF"> text</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#B392F0">aws</span><span style="color:#9ECBFF"> iam</span><span style="color:#9ECBFF"> attach-user-policy</span><span style="color:#79B8FF"> --policy-arn</span><span style="color:#E1E4E8"> $ARN </span><span style="color:#79B8FF">--user-name</span><span style="color:#9ECBFF"> terraform_state</span></span>
+<span class="line"></span></code></pre>
+<h1 id="deployment-commands">Deployment commands</h1>
+<p>Once the S3 backend is created, you’re a few commands away from the deployment.</p>
+<p>At first, the initialization of Terraform, which is wrapped in a script.</p>
+<p><code>sh scripts/terraformInit.sh</code></p>
+<p>For the next commands, the Terraform CLI is sufficient.</p>
+<p><a href="https://www.terraform.io/docs/commands/validate.html">validate:</a> <code>terraform validate</code></p>
+<p><a href="https://www.terraform.io/docs/commands/plan.html">plan:</a> <code>terraform plan</code></p>
+<p><a href="https://www.terraform.io/docs/commands/apply.html">apply:</a> <code>terraform apply</code></p>
+<h1 id="grafana-dasboard-changes">Grafana Dasboard changes</h1>
+<p>The dashboard can now be changed directly via the JSON file in the folder dashboards. The easier way is to do that manually in Grafana and copy the changed JSON via the share functionality.</p>
+<p>![share grafana dashboard]({{ site.baseurl }}/img/2020-12-19-aws_billing_metrics_grafana_cloud_and_terraform/share_grafana_dashboard.png)</p>
+<p>![grafana dashboard export view json]({{ site.baseurl }}/img/2020-12-19-aws_billing_metrics_grafana_cloud_and_terraform/grafana_dashboard_export_view_json.png)</p>
+<p>Overwrite the file aws-billing.json with the JSON from Grafana and redeploy.</p>
+<h1 id="cicd-pipeline">CI/CD pipeline</h1>
+<p>The local deployment is also possible with a CI/CD pipeline. In <a href="https://github.com/JohannesKonings/aws-grafana-billing-dashboard/blob/main/.github/workflows/deploy2grafana.yml">this example</a> it’s with GitHub actions.
+Instead of the .env file, the variables and credentials coming from GitHub secrets.</p>
+<h1 id="code">Code</h1>
+<p><a href="https://github.com/JohannesKonings/aws-grafana-billing-dashboard">https://github.com/JohannesKonings/aws-grafana-billing-dashboard</a></p> </article> <div class="grid grid-cols-1 sm:grid-cols-2 gap-4"> <a href="/blog/2021-02-28-github_automatic_releases_and-changelog" class="group p-4 gap-3 flex items-center border rounded-lg hover:bg-black/5 hover:dark:bg-white/10 border-black/15 dark:border-white/20 blend"> <div class="order-2 w-full h-full group-hover:text-black group-hover:dark:text-white blend"> <div class="flex flex-wrap gap-2"> <div class="text-sm uppercase">
+Prev
+</div> </div> <div class="font-semibold mt-3 text-black dark:text-white"> GitHub actions example for automatic release drafts and changelog.md creation </div> </div> <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="order-1 stroke-current group-hover:stroke-black group-hover:dark:stroke-white rotate-180"> <line x1="5" y1="12" x2="19" y2="12" class="scale-x-0 group-hover:scale-x-100 translate-x-4 group-hover:translate-x-1 transition-all duration-300 ease-in-out"></line> <polyline points="12 5 19 12 12 19" class="translate-x-0 group-hover:translate-x-1 transition-all duration-300 ease-in-out"></polyline> </svg> </a> <a href="/blog/2020-12-06-amplify_admin_ui_user_management" class="group p-4 gap-3 flex items-center border rounded-lg hover:bg-black/5 hover:dark:bg-white/10 border-black/15 dark:border-white/20 transition-colors duration-300 ease-in-out"> <div class="w-full h-full text-right group-hover:text-black group-hover:dark:text-white blend"> <div class="text-sm uppercase">
+Next
+</div> <div class="font-semibold mt-3 text-black dark:text-white"> AWS Amplify Admin UI user management instead of self sign up </div> </div> <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="stroke-current group-hover:stroke-black group-hover:dark:stroke-white"> <line x1="5" y1="12" x2="19" y2="12" class="scale-x-0 group-hover:scale-x-100 translate-x-4 group-hover:translate-x-1 transition-all duration-300 ease-in-out"></line> <polyline points="12 5 19 12 12 19" class="translate-x-0 group-hover:translate-x-1 transition-all duration-300 ease-in-out"></polyline> </svg> </a> </div> </div> </div>   </div> </div>  </main> <footer class="relative bg-white dark:bg-black"> <div class="animate"> <section class="py-5"> <div class="w-full h-full mx-auto px-5 max-w-screen-md">  <div class="flex items-center justify-center sm:justify-end"> <button id="back-to-top" aria-label="Back to top of page" class="group flex w-fit p-1.5 gap-1.5 text-sm items-center border rounded hover:bg-black/5 hover:dark:bg-white/10 border-black/15 dark:border-white/20 transition-colors duration-300 ease-in-out"> <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="stroke-current group-hover:stroke-black group-hover:dark:stroke-white rotate-90"> <line x1="19" y1="12" x2="5" y2="12" class="scale-x-0 group-hover:scale-x-100 translate-x-3 group-hover:translate-x-0 transition-all duration-300 ease-in-out"></line> <polyline points="12 19 5 12 12 5" class="translate-x-1 group-hover:translate-x-0 transition-all duration-300 ease-in-out"></polyline> </svg> <div class="w-full group-hover:text-black group-hover:dark:text-white transition-colors duration-300 ease-in-out">
+Back to top
+</div> </button> </div>  </div> </section> <section class="py-5 overflow-hidden whitespace-nowrap border-t border-black/10 dark:border-white/25"> <div class="w-full h-full mx-auto px-5 max-w-screen-md">  <div class="h-full grid grid-cols-1 sm:grid-cols-2 gap-3"> <div class="order-2 sm:order-1 flex flex-col items-center justify-center sm:items-start"> <div class="legal"> <a href="/legal/terms" class="text-current hover:text-black dark:hover:text-white transition-colors duration-300 ease-in-out">
+Terms
+</a> |
+<a href="/legal/privacy" class="text-current hover:text-black dark:hover:text-white transition-colors duration-300 ease-in-out">
+Privacy
+</a> </div> <div class="text-sm mt-2">&copy; 2024 | All rights reserved</div> </div> <div class="order-1 sm:order-2 flex justify-center sm:justify-end"> <div class="flex flex-wrap gap-1 items-center justify-center"> <!-- {
+                SOCIALS.map((SOCIAL) => (
+                  <a 
+                    href={SOCIAL.HREF} 
+                    target="_blank" 
+                    aria-label={`${SITE.TITLE} on ${SOCIAL.NAME}`} 
+                    class="group size-10 rounded-full p-2 items-center justify-center hover:bg-black/5 dark:hover:bg-white/20  blend"
+                  >
+                    <svg class="size-full fill-current group-hover:fill-black group-hover:dark:fill-white blend">
+                      <use href={`/social.svg#${SOCIAL.ICON}`} />
+                    </svg>
+                  </a>
+                ))
+              } --> <a href="https://github.com/JohannesKonings/JohannesKonings.github.io" target="_blank" aria-label="GitHub repo" class="group size-10 rounded-full p-2 items-center justify-center hover:bg-black/5 dark:hover:bg-white/20 blend"> <svg class="size-full fill-current group-hover:fill-black group-hover:dark:fill-white blend"> <use href="/social.svg#github"></use> </svg> </a> </div> </div> </div>  </div> </section> </div> </footer> <script>
+  function goBackToTop(event) {
+    event.preventDefault();
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  }
+
+  function inintializeBackToTop() {
+    const backToTop = document.getElementById("back-to-top");
+    backToTop?.addEventListener("click", goBackToTop);
+  }
+
+  document.addEventListener("astro:after-swap", inintializeBackToTop);
+  inintializeBackToTop();
+</script> </body></html>

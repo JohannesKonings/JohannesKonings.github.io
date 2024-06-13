@@ -1,5 +1,5 @@
 ---
-layout:     post
+layout:     note
 title:      Chrome Extensions
 date:       '2020-08-11 08:15:18'
 summary:    all used chrome Extensions
@@ -7,6 +7,7 @@ categories: settings
 thumbnail: chrome
 tags:
  - chrome Extensions
+published: false
 ---
 
 # Chrome Extensions

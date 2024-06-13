@@ -1,5 +1,5 @@
 # build output
-dist/
+# dist/ # is used for gitlab page
 
 # generated types
 .astro/

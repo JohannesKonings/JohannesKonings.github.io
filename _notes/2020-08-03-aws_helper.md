@@ -1,5 +1,5 @@
 ---
-layout:     post
+layout:     note
 title:      AWS helper
 date:       '2020-08-03 08:15:18'
 summary:    AWS helper
@@ -7,6 +7,7 @@ categories: tools
 thumbnail: fa-bookmark-o
 tags:
  - aws
+published: false
 ---
 
 # AWS helper tools

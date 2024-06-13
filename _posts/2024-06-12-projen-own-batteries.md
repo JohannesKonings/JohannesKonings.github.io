@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Consideration about cdk-notifier and Tags
-date: 2024-04-20 08:15:18
+date: 2024-06-13 08:15:18
 published: false
 summary: Description of the diff consequence of two ways of tagging in CDK
 categories: []

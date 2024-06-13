@@ -1,29 +1,23 @@
 import { defineCollection, z } from "astro:content"
 
-const work = defineCollection({
-  type: "content",
-  schema: z.object({
-    company: z.string(),
-    role: z.string(),
-    dateStart: z.coerce.date(),
-    dateEnd: z.union([z.coerce.date(), z.string()]),
-  }),
-})
-
 const blog = defineCollection({
   type: "content",
   schema: z.object({
+    // layout: z.literal("post"), layout has a onw menaing in astro
+    published: z.boolean(),
     title: z.string(),
     summary: z.string(),
     date: z.coerce.date(),
     tags: z.array(z.string()),
-    draft: z.boolean().optional(),
+    // draft: z.boolean().optional(),
   }),
 })
 
-const projects = defineCollection({
+const notes = defineCollection({
   type: "content",
   schema: z.object({
+    // layout: z.literal("note"), layout has a onw menaing in astro
+    published: z.boolean(),
     title: z.string(),
     summary: z.string(),
     date: z.coerce.date(),
@@ -42,4 +36,4 @@ const legal = defineCollection({
   }),
 })
 
-export const collections = { work, blog, projects, legal }
+export const collections = { blog, notes, legal }

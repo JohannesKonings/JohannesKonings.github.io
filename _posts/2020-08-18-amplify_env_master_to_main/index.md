@@ -10,6 +10,7 @@ tags:
     - aws
     - AWS Amplify
     - AWS Amplify Console
+slug: aws-amplify-console-changed-master-branchenv-main
 ---
 
 As part of #BlackLivesMatter there was a discussion to rename git branch master to main. How to do that in git and GitHub and some more about the background is described here:
@@ -30,13 +31,13 @@ Run the command `amplify add env main` and `amplify push`. After that, you can c
 
 The new main branch and the new main env can now be connected in the amplify console.
 
-![Amplify Console connection branch to env]({{ site.baseurl }}/img/2020-08-18-amplify_env_master_to_main/amplify_console_connection_branch_to_env1.png)
+![Amplify Console connection branch to env](./amplify_console_connection_branch_to_env1.png)
 
-![Amplify Console connection branch to env]({{ site.baseurl }}/img/2020-08-18-amplify_env_master_to_main/amplify_console_connection_branch_to_env2.png)
+![Amplify Console connection branch to env](./amplify_console_connection_branch_to_env2.png)
 
 Afterwards the production branch must be changed to main.
 
-![Amplify Console production branch]({{ site.baseurl }}/img/2020-08-18-amplify_env_master_to_main/amplify_console_production_branch.png)
+![Amplify Console production branch](./amplify_console_production_branch.png)
 
 # Migration
 
@@ -66,7 +67,7 @@ As described here the users can upload new profile pictures:
 
 That profile pictures can also be copied by a script [s3-migration.sh](https://github.com/JohannesKonings/fff-badminton/blob/main/AmplifyEnvMigration/s3-migration.sh). But it's necessary to rename the folder name to the new identity pool identity browser id, that the pictures will be found.
 
-![identity brwoser]({{ site.baseurl }}/img/2020-08-18-amplify_env_master_to_main/identity_browser.png)
+![identity browser]({{ site.baseurl }}/img/2020-08-18-amplify_env_master_to_main/identity_browser.png)
 
 I fixed that manually 😊
 

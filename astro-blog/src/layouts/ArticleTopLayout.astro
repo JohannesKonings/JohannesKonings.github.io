@@ -3,15 +3,16 @@ import type { CollectionEntry } from "astro:content"
 import { formatDate, readingTime } from "@lib/utils"
 
 type Props = {
-  entry: CollectionEntry<"projects"> | CollectionEntry<"blog">
+  // entry: CollectionEntry<"notes"> | CollectionEntry<"blog">
+  entry: CollectionEntry<"blog">
 }
 
 const { entry } = Astro.props
 const { collection, data, body } = entry
 const { title, summary, date } = data
 
-const demoUrl = collection === "projects" ? data.demoUrl : null
-const repoUrl = collection === "projects" ? data.repoUrl : null
+// const demoUrl = collection === "projects" ? data.demoUrl : null
+// const repoUrl = collection === "projects" ? data.repoUrl : null
 ---
 
 <div>
@@ -44,7 +45,7 @@ const repoUrl = collection === "projects" ? data.repoUrl : null
   <div class="mt-1">
     {summary}
   </div>
-  {(demoUrl || repoUrl) && 
+  <!-- {(demoUrl || repoUrl) && 
   <div class="mt-4 flex flex-wrap gap-2">
     {demoUrl && 
       <a href={demoUrl} target="_blank" class="group flex gap-2 items-center px-3 py-1.5 truncate rounded text-xs md:text-sm lg:text-base border border-black/25 dark:border-white/25 hover:bg-black/5 hover:dark:bg-white/15 blend">
@@ -67,5 +68,5 @@ const repoUrl = collection === "projects" ? data.repoUrl : null
       </a>
     }
   </div> 
-  }
+  } -->
 </div>

@@ -1,5 +1,5 @@
 ---
-layout:     post
+layout:     note
 title:      VS Code Extensions
 date:       '2020-08-01 08:15:18'
 summary:    all used VS Code Extensions
@@ -7,6 +7,7 @@ categories: settings
 thumbnail: vs_code
 tags:
  - VS Code Extensions
+published: false
 ---
 
 # VS Code Extensions

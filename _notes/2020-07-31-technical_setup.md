@@ -1,13 +1,14 @@
 ---
-layout:     post
-title:      Technical setup
-date:       '2020-07-31 16:15:18'
-summary:    installed software and used hardware
+layout: note
+title: Technical setup
+date: 2020-07-31 16:15:18
+summary: installed software and used hardware
 categories: settings
 thumbnail: chocolatey
 tags:
- - software
- - hardware
+  - software
+  - hardware
+published: false
 ---
 
 - [1. technical setup](#1-technical-setup)
