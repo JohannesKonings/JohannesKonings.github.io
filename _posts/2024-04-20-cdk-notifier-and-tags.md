@@ -1,16 +1,17 @@
 ---
-layout:     post
-title:      Consideration about cdk-notifier and Tags
-date:       '2024-04-20 08:15:18'
-published:  true
+layout: post
+title: Consideration about cdk-notifier and Tags
+date: 2024-04-20 08:15:18
+published: true
 summary: Description of the diff consequence of two ways of tagging in CDK
 categories: aws
 thumbnail: cdk
 cover_image: https://raw.githubusercontent.com/JohannesKonings/JohannesKonings.github.io/main/img/2024-04-20-cdk-notifier-and-tags/cover-image.png
 tags:
- - aws
- - cdk
- - cdk-notifier
+  - aws
+  - cdk
+  - cdk-notifier
+type: default
 ---
 
 ## Use case

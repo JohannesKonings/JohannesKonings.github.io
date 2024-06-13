@@ -1,0 +1,186 @@
+<!DOCTYPE html><html lang="en"> <head><!-- Global Metadata --><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" type="image/x-icon" href="/favicon.ico"><meta name="generator" content="Astro v4.10.2"><!-- <link rel="preload" href="/fonts/atkinson-regular.woff" as="font" type="font/woff" crossorigin>
+<link rel="preload" href="/fonts/atkinson-bold.woff" as="font" type="font/woff" crossorigin> --><link rel="preload" href="/fonts/CascadiaMonoNF.woff2" as="font" type="font/woff2" crossorigin><link rel="preload" href="/fonts/CascadiaMonoNF-SemiBold.woff2" as="font" type="font/woff2" crossorigin><!-- Canonical URL --><link rel="canonical" href="https://johanneskonings.dev/blog/2021-08-xx-aws_example_ddb_kinesis_step_functions/"><!-- Primary Meta Tags --><title>GitHub actions example for automatic release drafts and changelog.md creation | Johannes Konings</title><meta name="title" content="GitHub actions example for automatic release drafts and changelog.md creation | Johannes Konings"><meta name="description" content="This post is how to define your release draft via labels in pull requests and the update of the changelog.md after publishing a release"><!-- Open Graph / Facebook --><meta property="og:type" content="website"><meta property="og:url" content="https://johanneskonings.dev/blog/2021-08-xx-aws_example_ddb_kinesis_step_functions/"><meta property="og:title" content="GitHub actions example for automatic release drafts and changelog.md creation | Johannes Konings"><meta property="og:description" content="This post is how to define your release draft via labels in pull requests and the update of the changelog.md after publishing a release"><meta property="og:image" content="https://johanneskonings.dev/open-graph.jpg"><!-- Twitter --><meta property="twitter:card" content="summary_large_image"><meta property="twitter:url" content="https://johanneskonings.dev/blog/2021-08-xx-aws_example_ddb_kinesis_step_functions/"><meta property="twitter:title" content="GitHub actions example for automatic release drafts and changelog.md creation | Johannes Konings"><meta property="twitter:description" content="This post is how to define your release draft via labels in pull requests and the update of the changelog.md after publishing a release"><meta property="twitter:image" content="https://johanneskonings.dev/open-graph.jpg"><!-- Sitemap --><link rel="sitemap" href="/sitemap-index.xml"><!-- RSS Feed --><link rel="alternate" type="application/rss+xml" title="GitHub actions example for automatic release drafts and changelog.md creation | Johannes Konings" href="https://johanneskonings.dev/rss.xml"><!-- Global Scripts --><script src="/js/theme.js"></script><script src="/js/scroll.js"></script><script src="/js/animate.js"></script><!-- <ViewTransitions  /> --><link rel="stylesheet" href="/_astro/_slug_.COeGf7i0.css"><script type="module" src="/_astro/hoisted.BGfjo5mV.js"></script></head> <body> <header id="header" class="fixed top-0 w-full h-16 z-50" data-astro-cid-3ef6ksr2> <div class="w-full h-full mx-auto px-5 max-w-screen-md">  <div class="relative h-full w-full" data-astro-cid-3ef6ksr2> <div class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2" data-astro-cid-3ef6ksr2> <nav class="hidden md:flex items-center justify-center text-sm gap-1" data-astro-cid-3ef6ksr2> <a href="/" class="h-8 rounded-full px-3 text-current flex items-center justify-center transition-colors duration-300 ease-in-out hover:bg-black/5 dark:hover:bg-white/20 hover:text-black dark:hover:text-white" data-astro-cid-3ef6ksr2> Home </a><a href="/blog" class="h-8 rounded-full px-3 flex items-center justify-center transition-colors duration-300 ease-in-out bg-black dark:bg-white text-white dark:text-black" data-astro-cid-3ef6ksr2> Blog </a> </nav> </div> <div class="buttons absolute right-0 top-1/2 -translate-y-1/2 flex gap-1" data-astro-cid-3ef6ksr2> <a href="/search" aria-label="Search blog posts and projects on Johannes Konings" class="hidden md:flex size-9 rounded-full p-2 items-center justify-center bg-transparent hover:bg-black/5 dark:hover:bg-white/20 stroke-current hover:stroke-black hover:dark:stroke-white border border-black/10 dark:border-white/25 transition-colors duration-300 ease-in-out" data-astro-cid-3ef6ksr2> <svg class="size-full" data-astro-cid-3ef6ksr2> <use href="/ui.svg#search" data-astro-cid-3ef6ksr2></use> </svg> </a> <a href="/rss.xml" target="_blank" aria-label="Rss feed for Johannes Konings" class="hidden md:flex size-9 rounded-full p-2 items-center justify-center bg-transparent hover:bg-black/5 dark:hover:bg-white/20 stroke-current hover:stroke-black hover:dark:stroke-white border border-black/10 dark:border-white/25 transition-colors duration-300 ease-in-out" data-astro-cid-3ef6ksr2> <svg class="size-full" data-astro-cid-3ef6ksr2> <use href="/ui.svg#rss" data-astro-cid-3ef6ksr2></use> </svg> </a> <button id="header-theme-button" aria-label="Toggle light and dark theme" class="hidden md:flex size-9 rounded-full p-2 items-center justify-center bg-transparent hover:bg-black/5 dark:hover:bg-white/20 stroke-current hover:stroke-black hover:dark:stroke-white border border-black/10 dark:border-white/25 transition-colors duration-300 ease-in-out" data-astro-cid-3ef6ksr2> <svg class="size-full block dark:hidden" data-astro-cid-3ef6ksr2> <use href="/ui.svg#sun" data-astro-cid-3ef6ksr2></use> </svg> <svg class="size-full hidden dark:block" data-astro-cid-3ef6ksr2> <use href="/ui.svg#moon" data-astro-cid-3ef6ksr2></use> </svg> </button> <button id="header-drawer-button" aria-label="Toggle drawer open and closed" class="flex md:hidden size-9 rounded-full p-2 items-center justify-center bg-transparent hover:bg-black/5 dark:hover:bg-white/20 stroke-current hover:stroke-black hover:dark:stroke-white border border-black/10 dark:border-white/25 transition-colors duration-300 ease-in-out" data-astro-cid-3ef6ksr2> <svg id="drawer-open" class="size-full" data-astro-cid-3ef6ksr2> <use href="/ui.svg#menu" data-astro-cid-3ef6ksr2></use> </svg> <svg id="drawer-close" class="size-full" data-astro-cid-3ef6ksr2> <use href="/ui.svg#x" data-astro-cid-3ef6ksr2></use> </svg> </button> </div> </div>  </div> </header>  <script>
+  function toggleDrawer() {
+    const drawer = document.getElementById("drawer");
+    const drawerButton = document.getElementById("header-drawer-button");
+    drawer?.classList.toggle("open");
+    drawerButton?.classList.toggle("open");
+  }
+
+  function initializeDrawerButton() {
+    const drawerButton = document.getElementById("header-drawer-button");
+    drawerButton?.addEventListener("click", toggleDrawer);
+  }
+
+  document.addEventListener("astro:after-swap", initializeDrawerButton);
+  initializeDrawerButton();
+</script> <div id="drawer" class="fixed inset-0 h-0 z-40 overflow-hidden flex flex-col items-center justify-center md:hidden bg-neutral-100 dark:bg-neutral-900 transition-[height] duration-300 ease-in-out" data-astro-cid-hxtyo74s> <nav class="flex flex-col items-center space-y-2" data-astro-cid-hxtyo74s> <a href="/" class="flex items-center justify-center px-3 py-1 rounded-full text-current hover:text-black dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/20 transition-colors duration-300 ease-in-out" data-astro-cid-hxtyo74s> Home </a><a href="/blog" class="flex items-center justify-center px-3 py-1 rounded-full hover:text-black dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/20 transition-colors duration-300 ease-in-out pointer-events-none bg-black dark:bg-white text-white dark:text-black" data-astro-cid-hxtyo74s> Blog </a> </nav> <div class="flex gap-1 mt-5" data-astro-cid-hxtyo74s> <a href="/search" aria-label="Search blog posts and projects on Johannes Konings" class="size-9 rounded-full p-2 items-center justify-center bg-transparent hover:bg-black/5 dark:hover:bg-white/20 stroke-current hover:stroke-black hover:dark:stroke-white border border-black/10 dark:border-white/25 transition-colors duration-300 ease-in-out" data-astro-cid-hxtyo74s> <svg class="size-full" data-astro-cid-hxtyo74s> <use href="/ui.svg#search" data-astro-cid-hxtyo74s></use> </svg> </a> <a href="/rss.xml" target="_blank" aria-label="Rss feed for Johannes Konings" class="size-9 rounded-full p-2 items-center justify-center bg-transparent hover:bg-black/5 dark:hover:bg-white/20 stroke-current hover:stroke-black hover:dark:stroke-white border border-black/10 dark:border-white/25 transition-colors duration-300 ease-in-out" data-astro-cid-hxtyo74s> <svg class="size-full" data-astro-cid-hxtyo74s> <use href="/ui.svg#rss" data-astro-cid-hxtyo74s></use> </svg> </a> <button id="drawer-theme-button" aria-label="Toggle light and dark theme" class="size-9 rounded-full p-2 items-center justify-center bg-transparent hover:bg-black/5 dark:hover:bg-white/20 stroke-current hover:stroke-black hover:dark:stroke-white border border-black/10 dark:border-white/25 transition-colors duration-300 ease-in-out" data-astro-cid-hxtyo74s> <svg class="block dark:hidden size-full" data-astro-cid-hxtyo74s> <use href="/ui.svg#sun" data-astro-cid-hxtyo74s></use> </svg> <svg class="hidden dark:block size-full" data-astro-cid-hxtyo74s> <use href="/ui.svg#moon" data-astro-cid-hxtyo74s></use> </svg> </button> </div> </div>  <main>  <div class="pt-36 pb-5"> <div class="w-full h-full mx-auto px-5 max-w-screen-md">   <div class="animate"> <div> <a href="/blog" class="group w-fit p-1.5 gap-1.5 text-sm flex items-center border rounded hover:bg-black/5 hover:dark:bg-white/10 border-black/15 dark:border-white/20 transition-colors duration-300 ease-in-out"> <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="stroke-current group-hover:stroke-black group-hover:dark:stroke-white"> <line x1="19" y1="12" x2="5" y2="12" class="scale-x-0 group-hover:scale-x-100 translate-x-3 group-hover:translate-x-0 transition-all duration-300 ease-in-out"></line> <polyline points="12 19 5 12 12 5" class="translate-x-1 group-hover:translate-x-0 transition-all duration-300 ease-in-out"></polyline> </svg> <div class="w-full group-hover:text-black group-hover:dark:text-white transition-colors duration-300 ease-in-out">
+Back to blog </div> </a> <div class="flex flex-wrap text-sm uppercase mt-12 gap-3 opacity-75"> <div class="flex items-center gap-2"> <svg class="size-5 stroke-current"> <use href="/ui.svg#calendar"></use> </svg> Feb 28, 2021 </div> <div class="flex items-center gap-2"> <svg class="size-5 stroke-current"> <use href="/ui.svg#book-open"></use> </svg> 3 min read </div> </div> <h1 class="text-3xl font-semibold text-black dark:text-white mt-2"> GitHub actions example for automatic release drafts and changelog.md creation </h1> <div class="mt-1"> This post is how to define your release draft via labels in pull requests and the update of the changelog.md after publishing a release </div> <!-- {(demoUrl || repoUrl) && 
+  <div class="mt-4 flex flex-wrap gap-2">
+    {demoUrl && 
+      <a href={demoUrl} target="_blank" class="group flex gap-2 items-center px-3 py-1.5 truncate rounded text-xs md:text-sm lg:text-base border border-black/25 dark:border-white/25 hover:bg-black/5 hover:dark:bg-white/15 blend">
+        <svg class="size-4">
+          <use href="/ui.svg#globe" class="fill-current group-hover:fill-black group-hover:dark:fill-white blend"/>
+        </svg>
+        <span class="text-current group-hover:text-black group-hover:dark:text-white blend">
+          See Demo
+        </span>
+      </a>
+    }
+    {repoUrl && 
+      <a href={repoUrl} target="_blank" class="group flex gap-2 items-center px-3 py-1.5 truncate rounded text-xs md:text-sm lg:text-base border border-black/25 dark:border-white/25 hover:bg-black/5 hover:dark:bg-white/15 blend">
+        <svg class="size-4">
+          <use href="/ui.svg#link" class="fill-current group-hover:fill-black group-hover:dark:fill-white blend"/>
+        </svg>
+        <span class="text-current group-hover:text-black group-hover:dark:text-white blend">
+          See Repository
+        </span>
+      </a>
+    }
+  </div> 
+  } --> </div> </div>   </div> </div> <div class="flex-1 py-5"> <div class="w-full h-full mx-auto px-5 max-w-screen-md">   <div class="animate"> <div> <article> <h1 id="what-are-github-actions">What are GitHub actions?</h1>
+<p>That is well described in this <a href="https://dev.to/github/what-are-github-actions-3pml">post</a> by <a href="https://dev.to/bdougieyo">Brian Douglas</a>.
+He has also an entire <a href="https://dev.to/github/28-days-of-github-action-tips-4opg">post series</a> about tips around GitHub actions.</p>
+<h1 id="which-problem-should-be-solved">Which problem should be solved?</h1>
+<p>There are different solutions to create automatic releases based on certain criteria. Again <a href="https://dev.to/bdougieyo">Brian Douglas</a> pointed out some possibilities in this <a href="https://dev.to/github/generate-semantic-release-with-github-actions-2lll">post</a>.</p>
+<p>For <a href="https://github.com/abap-observability-tools">this</a> open-source project, the requirement was to determine the release structure via labels at the pull request. This was preferred over <a href="https://www.conventionalcommits.org/en/v1.0.0/">conventional commits</a>.
+Also, not every merged pull request should automatically trigger a new release. Therefore, a draft is the right way to collect the changes and publish a version whenever needed.</p>
+<p>Addionatylly to the GitHub releases, a changelog.md helps see the version history, for example, directly in the code editor.
+That changelog.md should be updated every time a release is published.</p>
+<p>The combination <a href="https://github.com/release-drafter/release-drafter">Release Drafter</a> and <a href="https://github.com/github-tools/github-release-notes">gren</a> is the approach to solve the problem.</p>
+<h1 id="configure-release-drafter">Configure Release Drafter</h1>
+<p>To configure <a href="https://github.com/release-drafter/release-drafter">Release Drafter</a> in the default way, it needs two files and the according labels.</p>
+<p>This <a href="https://github.com/abap-observability-tools/abap-log-exporter/blob/main/.github/release-drafter.yml">template</a> describes the structure of the release draft and the needed labels.
+The full path is <code>.github/release-drafter.yml</code></p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="yaml"><code><span class="line"><span style="color:#85E89D">name-template</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">'v$RESOLVED_VERSION 🌈'</span></span>
+<span class="line"><span style="color:#85E89D">tag-template</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">'v$RESOLVED_VERSION'</span></span>
+<span class="line"><span style="color:#85E89D">categories</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#E1E4E8">  - </span><span style="color:#85E89D">title</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">'🚀 Features'</span></span>
+<span class="line"><span style="color:#85E89D">    labels</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#E1E4E8">      - </span><span style="color:#9ECBFF">'feature'</span></span>
+<span class="line"><span style="color:#E1E4E8">      - </span><span style="color:#9ECBFF">'enhancement'</span></span>
+<span class="line"><span style="color:#E1E4E8">  - </span><span style="color:#85E89D">title</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">'🐛 Bug Fixes'</span></span>
+<span class="line"><span style="color:#85E89D">    labels</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#E1E4E8">      - </span><span style="color:#9ECBFF">'fix'</span></span>
+<span class="line"><span style="color:#E1E4E8">      - </span><span style="color:#9ECBFF">'bugfix'</span></span>
+<span class="line"><span style="color:#E1E4E8">      - </span><span style="color:#9ECBFF">'bug'</span></span>
+<span class="line"><span style="color:#E1E4E8">  - </span><span style="color:#85E89D">title</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">'🧰 Maintenance'</span></span>
+<span class="line"><span style="color:#85E89D">    label</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">'chore'</span></span>
+<span class="line"><span style="color:#E1E4E8">  - </span><span style="color:#85E89D">title</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">'🧺 Miscellaneous'</span><span style="color:#6A737D"> #Everything except ABAP</span></span>
+<span class="line"><span style="color:#85E89D">    label</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">'misc'</span></span>
+<span class="line"><span style="color:#85E89D">change-template</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">'- $TITLE @$AUTHOR (#$NUMBER)'</span></span>
+<span class="line"><span style="color:#85E89D">change-title-escapes</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">'\&#x3C;*_&#x26;'</span><span style="color:#6A737D"> # You can add # and @ to disable mentions, and add ` to disable code blocks.</span></span>
+<span class="line"><span style="color:#85E89D">version-resolver</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#85E89D">  major</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#85E89D">    labels</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#E1E4E8">      - </span><span style="color:#9ECBFF">'major'</span></span>
+<span class="line"><span style="color:#85E89D">  minor</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#85E89D">    labels</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#E1E4E8">      - </span><span style="color:#9ECBFF">'minor'</span></span>
+<span class="line"><span style="color:#85E89D">  patch</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#85E89D">    labels</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#E1E4E8">      - </span><span style="color:#9ECBFF">'patch'</span></span>
+<span class="line"><span style="color:#85E89D">  default</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">patch</span></span>
+<span class="line"><span style="color:#85E89D">template</span><span style="color:#E1E4E8">: </span><span style="color:#F97583">|</span></span>
+<span class="line"><span style="color:#9ECBFF">  ## Changes</span></span>
+<span class="line"><span style="color:#9ECBFF">  $CHANGES</span></span>
+<span class="line"></span></code></pre>
+<p>The GitHub actions <a href="https://github.com/abap-observability-tools/abap-log-exporter/blob/main/.github/workflows/release-drafter.yml">configuration</a> like this:</p>
+<p><code>github/workflows/release-drafter.yml</code></p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="yaml"><code><span class="line"><span style="color:#85E89D">name</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">Release Drafter</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#79B8FF">on</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#85E89D">  push</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#6A737D">    # branches to consider in the event; optional, defaults to all</span></span>
+<span class="line"><span style="color:#85E89D">    branches</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#E1E4E8">      - </span><span style="color:#9ECBFF">main</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#85E89D">jobs</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#85E89D">  update_release_draft</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#85E89D">    runs-on</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">ubuntu-latest</span></span>
+<span class="line"><span style="color:#85E89D">    steps</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#6A737D">      # Drafts your next Release notes as Pull Requests are merged into "master"</span></span>
+<span class="line"><span style="color:#E1E4E8">      - </span><span style="color:#85E89D">uses</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">release-drafter/release-drafter@v5</span></span>
+<span class="line"><span style="color:#85E89D">        env</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#85E89D">          GITHUB_TOKEN</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">${{ secrets.GITHUB_TOKEN }}</span></span>
+<span class="line"></span></code></pre>
+<h1 id="configure-gren">Configure gren</h1>
+<p>The releases are published manually at certain times. This trigger <a href="https://github.com/abap-observability-tools/abap-log-exporter/blob/main/.github/workflows/update-changelog.yml">this</a> configuration.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="yaml"><code><span class="line"><span style="color:#85E89D">name</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"update changelog"</span></span>
+<span class="line"><span style="color:#79B8FF">on</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#85E89D">  release</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#85E89D">    types</span><span style="color:#E1E4E8">: [</span><span style="color:#9ECBFF">published</span><span style="color:#E1E4E8">]</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#85E89D">jobs</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#85E89D">  update-changelog</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#85E89D">    runs-on</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">ubuntu-latest</span></span>
+<span class="line"><span style="color:#85E89D">    steps</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#E1E4E8">    - </span><span style="color:#85E89D">uses</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">actions/checkout@v2</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">    - </span><span style="color:#85E89D">name</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">Update changelog</span></span>
+<span class="line"><span style="color:#85E89D">      run</span><span style="color:#E1E4E8">: </span><span style="color:#F97583">|</span></span>
+<span class="line"><span style="color:#9ECBFF">        npm install github-release-notes</span></span>
+<span class="line"><span style="color:#9ECBFF">        export GREN_GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}</span></span>
+<span class="line"><span style="color:#9ECBFF">        npm run overrideChangelog</span></span>
+<span class="line"><span style="color:#E1E4E8">    - </span><span style="color:#85E89D">name</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">Create Pull Request</span></span>
+<span class="line"><span style="color:#85E89D">      uses</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">peter-evans/create-pull-request@v3</span></span>
+<span class="line"><span style="color:#85E89D">      with</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#85E89D">        commit-message</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">update changelog</span></span>
+<span class="line"><span style="color:#85E89D">        title</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">Update Changelog</span></span>
+<span class="line"><span style="color:#85E89D">        body</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">Update changelog to reflect release changes</span></span>
+<span class="line"><span style="color:#85E89D">        branch</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">update-changelog</span></span>
+<span class="line"><span style="color:#85E89D">        base</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">main</span></span>
+<span class="line"></span></code></pre>
+<p>The command <code>"overrideChangelog": "gren changelog --override"</code> from the <a href="https://github.com/abap-observability-tools/abap-log-exporter/blob/main/package.json">package.json</a> update then the changelog.md.</p>
+<p>Because of the main branch protection, it’s not possible to push the changes directly back. This will do this via a pull request with the GitHub action <a href="https://github.com/marketplace/actions/create-pull-request">create-pull-request</a>.</p>
+<h1 id="how-it-looks-like">How it looks like</h1>
+<p>The collection of the changes in a release draft.</p>
+<p>![release-draft]({{ site.baseurl }}/img/2021-02-28-github_automatic_releases_and changelog/release-draft.png)</p>
+<p>The labels in a pull request.</p>
+<p>![label-pull-request]({{ site.baseurl }}/img/2021-02-28-github_automatic_releases_and changelog/label-pull-request.png)</p>
+<p>The result in the GitHub release.</p>
+<p>![minor-enhancement]({{ site.baseurl }}/img/2021-02-28-github_automatic_releases_and changelog/minor-enhancement.png)</p>
+<p>The result in the CHANGELOG.md.</p>
+<p>![changelog]({{ site.baseurl }}/img/2021-02-28-github_automatic_releases_and changelog/changelog.png)</p>
+<h1 id="code">Code</h1>
+<p><a href="https://github.com/abap-observability-tools">https://github.com/abap-observability-tools</a></p> </article> <div class="grid grid-cols-1 sm:grid-cols-2 gap-4"> <a href="/blog/2020-08-31-example_react_component_props_events" class="group p-4 gap-3 flex items-center border rounded-lg hover:bg-black/5 hover:dark:bg-white/10 border-black/15 dark:border-white/20 blend"> <div class="order-2 w-full h-full group-hover:text-black group-hover:dark:text-white blend"> <div class="flex flex-wrap gap-2"> <div class="text-sm uppercase">
+Prev
+</div> </div> <div class="font-semibold mt-3 text-black dark:text-white"> Quick example: pass data to a React component and get the changed value back </div> </div> <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="order-1 stroke-current group-hover:stroke-black group-hover:dark:stroke-white rotate-180"> <line x1="5" y1="12" x2="19" y2="12" class="scale-x-0 group-hover:scale-x-100 translate-x-4 group-hover:translate-x-1 transition-all duration-300 ease-in-out"></line> <polyline points="12 5 19 12 12 19" class="translate-x-0 group-hover:translate-x-1 transition-all duration-300 ease-in-out"></polyline> </svg> </a> <a href="/blog/2024-04-20-cdk-notifier-and-tags" class="group p-4 gap-3 flex items-center border rounded-lg hover:bg-black/5 hover:dark:bg-white/10 border-black/15 dark:border-white/20 transition-colors duration-300 ease-in-out"> <div class="w-full h-full text-right group-hover:text-black group-hover:dark:text-white blend"> <div class="text-sm uppercase">
+Next
+</div> <div class="font-semibold mt-3 text-black dark:text-white"> Consideration about cdk-notifier and Tags </div> </div> <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="stroke-current group-hover:stroke-black group-hover:dark:stroke-white"> <line x1="5" y1="12" x2="19" y2="12" class="scale-x-0 group-hover:scale-x-100 translate-x-4 group-hover:translate-x-1 transition-all duration-300 ease-in-out"></line> <polyline points="12 5 19 12 12 19" class="translate-x-0 group-hover:translate-x-1 transition-all duration-300 ease-in-out"></polyline> </svg> </a> </div> </div> </div>   </div> </div>  </main> <footer class="relative bg-white dark:bg-black"> <div class="animate"> <section class="py-5"> <div class="w-full h-full mx-auto px-5 max-w-screen-md">  <div class="flex items-center justify-center sm:justify-end"> <button id="back-to-top" aria-label="Back to top of page" class="group flex w-fit p-1.5 gap-1.5 text-sm items-center border rounded hover:bg-black/5 hover:dark:bg-white/10 border-black/15 dark:border-white/20 transition-colors duration-300 ease-in-out"> <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="stroke-current group-hover:stroke-black group-hover:dark:stroke-white rotate-90"> <line x1="19" y1="12" x2="5" y2="12" class="scale-x-0 group-hover:scale-x-100 translate-x-3 group-hover:translate-x-0 transition-all duration-300 ease-in-out"></line> <polyline points="12 19 5 12 12 5" class="translate-x-1 group-hover:translate-x-0 transition-all duration-300 ease-in-out"></polyline> </svg> <div class="w-full group-hover:text-black group-hover:dark:text-white transition-colors duration-300 ease-in-out">
+Back to top
+</div> </button> </div>  </div> </section> <section class="py-5 overflow-hidden whitespace-nowrap border-t border-black/10 dark:border-white/25"> <div class="w-full h-full mx-auto px-5 max-w-screen-md">  <div class="h-full grid grid-cols-1 sm:grid-cols-2 gap-3"> <div class="order-2 sm:order-1 flex flex-col items-center justify-center sm:items-start"> <div class="legal"> <a href="/legal/terms" class="text-current hover:text-black dark:hover:text-white transition-colors duration-300 ease-in-out">
+Terms
+</a> |
+<a href="/legal/privacy" class="text-current hover:text-black dark:hover:text-white transition-colors duration-300 ease-in-out">
+Privacy
+</a> </div> <div class="text-sm mt-2">&copy; 2024 | All rights reserved</div> </div> <div class="order-1 sm:order-2 flex justify-center sm:justify-end"> <div class="flex flex-wrap gap-1 items-center justify-center"> <!-- {
+                SOCIALS.map((SOCIAL) => (
+                  <a 
+                    href={SOCIAL.HREF} 
+                    target="_blank" 
+                    aria-label={`${SITE.TITLE} on ${SOCIAL.NAME}`} 
+                    class="group size-10 rounded-full p-2 items-center justify-center hover:bg-black/5 dark:hover:bg-white/20  blend"
+                  >
+                    <svg class="size-full fill-current group-hover:fill-black group-hover:dark:fill-white blend">
+                      <use href={`/social.svg#${SOCIAL.ICON}`} />
+                    </svg>
+                  </a>
+                ))
+              } --> <a href="https://github.com/JohannesKonings/JohannesKonings.github.io" target="_blank" aria-label="GitHub repo" class="group size-10 rounded-full p-2 items-center justify-center hover:bg-black/5 dark:hover:bg-white/20 blend"> <svg class="size-full fill-current group-hover:fill-black group-hover:dark:fill-white blend"> <use href="/social.svg#github"></use> </svg> </a> </div> </div> </div>  </div> </section> </div> </footer> <script>
+  function goBackToTop(event) {
+    event.preventDefault();
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  }
+
+  function inintializeBackToTop() {
+    const backToTop = document.getElementById("back-to-top");
+    backToTop?.addEventListener("click", goBackToTop);
+  }
+
+  document.addEventListener("astro:after-swap", inintializeBackToTop);
+  inintializeBackToTop();
+</script> </body></html>
