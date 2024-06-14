@@ -42,16 +42,31 @@
           "type": "string"
         },
         {
+          "title": "tags",
+          "name": "tags",
+          "type": "tags"
+        },
+        {
           "title": "cover_image",
           "name": "cover_image",
           "type": "image"
         },
         {
-          "title": "tags",
-          "name": "tags",
-          "type": "tags"
+          "title": "series",
+          "name": "series",
+          "type": "string"
         }
       ]
+    }
+  ],
+  "frontMatter.content.pageFolders": [
+    {
+      "title": "_posts",
+      "path": "[[workspace]]/_posts"
+    },
+    {
+      "title": "_notes",
+      "path": "[[workspace]]/_notes"
     }
   ]
 }
