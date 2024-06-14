@@ -1,18 +1,16 @@
 ---
-layout:     note
-title:      VS Code Extensions
-date:       '2020-08-01 08:15:18'
-summary:    all used VS Code Extensions
+layout: note
+title: VS Code Extensions
+date: "2020-08-01 08:15:18"
+summary: all used VS Code Extensions
 categories: settings
 thumbnail: vs_code
 tags:
- - VS Code Extensions
+  - VS Code Extensions
 published: false
 ---
 
 # VS Code Extensions
-
-Disclaimer: This articel contains my VS Code Extensions and will be updated from time to time
 
 ## Link list
 
@@ -82,12 +80,15 @@ Disclaimer: This articel contains my VS Code Extensions and will be updated from
 
 [Remote Development](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.vscode-remote-extensionpack)
 
->Remote - SSH - Work with source code in any location by opening folders on a remote machine/VM using SSH. Supports x86_64, ARMv7l (AArch32), and ARMv8l (AArch64) glibc-based >Linux, Windows 10/Server (1803+), and macOS 10.14+ (Mojave) SSH hosts.
->Remote - Containers - Work with a sandboxed toolchain or container based application by opening any folder mounted into or inside a container.
->Remote - WSL - Get a Linux-powered development experience from the comfort of Windows by opening any folder in the Windows Subsystem for Linux.
+> Remote - SSH - Work with source code in any location by opening folders on a remote machine/VM using SSH. Supports x86_64, ARMv7l (AArch32), and ARMv8l (AArch64) glibc-based >Linux, Windows 10/Server (1803+), and macOS 10.14+ (Mojave) SSH hosts.
+> Remote - Containers - Work with a sandboxed toolchain or container based application by opening any folder mounted into or inside a container.
+> Remote - WSL - Get a Linux-powered development experience from the comfort of Windows by opening any folder in the Windows Subsystem for Linux.
 
+## programming languages / file support
 
-## programming languages
+### markdown
+
+- https://marketplace.visualstudio.com/items?itemName=eliostruyf.vscode-front-matter
 
 ### Javascript
 
@@ -96,9 +97,3 @@ Disclaimer: This articel contains my VS Code Extensions and will be updated from
 ### Python
 
 [Pylance](https://marketplace.visualstudio.com/items?itemName=ms-python.vscode-pylance)
-
-### ABAP
-
-[abaplint](https://marketplace.visualstudio.com/items?itemName=larshp.vscode-abaplint)
-
-[ABAP](https://marketplace.visualstudio.com/items?itemName=larshp.vscode-abap)

@@ -1,17 +1,15 @@
 ---
-title:      Web development tools
-date:       '2020-08-02 08:15:18'
-summary:    web development tools summary
+title: Web development tools
+date: "2020-08-02 08:15:18"
+summary: web development tools summary
 categories: tools
 thumbnail: fa-bookmark-o
 tags:
- - web development
+  - web development
 published: false
 ---
 
 # Web development tools
-
-Disclaimer: This article contains web development tools that I "encountered".
 
 ## Infos
 
@@ -25,10 +23,13 @@ Disclaimer: This article contains web development tools that I "encountered".
 
 [Clean PNG](https://www.cleanpng.com/)
 
+## Icons
+
+[iconify](https://icon-sets.iconify.design/)
+
 ## cookies consent
 
 [legalmonster](https://www.legalmonster.com/)
-
 
 ## domains
 
@@ -38,3 +39,6 @@ Disclaimer: This article contains web development tools that I "encountered".
 
 [10minutemail](https://10minutemail.com/)
 
+## favicon
+
+- https://favicon.io/favicon-converter/

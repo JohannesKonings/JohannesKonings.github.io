@@ -1,0 +1,17 @@
+---
+import PageLayout from "@layouts/PageLayout.astro";
+import TopLayout from "@layouts/TopLayout.astro";
+import BottomLayout from "@layouts/BottomLayout.astro";
+import { BLOG } from "@consts";
+---
+
+<PageLayout title="404" description="site not found">
+  <TopLayout>
+    <div class="animate">
+      <h1>404</h1>
+    </div>
+  </TopLayout>
+  <BottomLayout>
+    <div class="animate">Not found 😱</div>
+  </BottomLayout>
+</PageLayout>
