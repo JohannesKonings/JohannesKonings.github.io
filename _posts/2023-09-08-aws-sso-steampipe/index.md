@@ -6,7 +6,7 @@ published:  true
 summary: See how this setup can help to discover your AWS resources across all SSO accounts with a mix of Steampipe, docker, bash scripts, and AWS CLI   
 categories: aws
 thumbnail: steampipe
-cover_image: https://raw.githubusercontent.com/JohannesKonings/JohannesKonings.github.io/main/img/2023-09-08-aws-sso-steampipe/cover-image.png
+cover_image: ./cover-image.png
 tags:
  - aws
  - steampipe

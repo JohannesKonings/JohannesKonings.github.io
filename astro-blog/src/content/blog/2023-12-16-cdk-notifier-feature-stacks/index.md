@@ -5,7 +5,7 @@ published:  true
 summary: See how cdk-notifier can help to compare which cdk changes will be applied after merging a pull request
 categories: aws
 thumbnail: cdk
-cover_image: https://raw.githubusercontent.com/JohannesKonings/JohannesKonings.github.io/main/img/2023-12-16-cdk-notifier-feature-stacks/cover-image.png
+cover_image: ./cover-image.png
 tags:
  - aws
  - cdk

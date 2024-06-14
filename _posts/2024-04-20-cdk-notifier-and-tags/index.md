@@ -1,11 +1,12 @@
 ---
+layout: post
 title: Consideration about cdk-notifier and Tags
 date: 2024-04-20 08:15:18
 published: true
 summary: Description of the diff consequence of two ways of tagging in CDK
 categories: aws
 thumbnail: cdk
-cover_image: https://raw.githubusercontent.com/JohannesKonings/JohannesKonings.github.io/main/img/2024-04-20-cdk-notifier-and-tags/cover-image.png
+cover_image: ./cover-image.png
 tags:
   - aws
   - cdk
@@ -63,7 +64,7 @@ The tag will then be added to all resources in the synthesized cloudformation te
 ```
 Because the tag is in the template, it will then be shown in the diff.
 
-![diff tag of]({{ site.baseurl }}/img/2024-04-20-cdk-notifier-and-tags/diff-tag-of.png)
+![diff tag of](./diff-tag-of.png)
 
 https://github.com/JohannesKonings/cdk-notifier-examples/pull/5
 
