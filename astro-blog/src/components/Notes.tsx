@@ -59,11 +59,11 @@ export default function Notes({ data, tags }: Props) {
             SHOWING {notes().length} OF {data.length} PROJECTS
           </div>
           <ul class="flex flex-col gap-3">
-            {notes().map((project) => (
+            {/* {notes().map((note) => (
               <li>
-                <ArrowCard entry={project} />
+                <ArrowCard entry={note} />
               </li>
-            ))}
+            ))} */}
           </ul>
         </div>
       </div>
