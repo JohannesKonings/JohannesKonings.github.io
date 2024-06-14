@@ -6,9 +6,9 @@ summary: Change of the master branch end amplfiy env to main and migration of th
 categories: aws
 thumbnail: null
 tags:
-    - aws
-    - AWS Amplify
-    - AWS Amplify Console
+  - aws
+  - AWS Amplify
+  - AWS Amplify Console
 slug: aws-amplify-console-changed-master-branchenv-main
 ---
 
@@ -17,7 +17,7 @@ As part of #BlackLivesMatter there was a discussion to rename git branch master 
 
 Together with the master branch I had a master env, which was connected to the git master branch in the amplify console. I also wanted to rename this master env.
 
-# AWS Amplify 
+# AWS Amplify
 
 After the master branch was renamed to main, the corresponding env have to be also renamed from master to main.
 
@@ -52,10 +52,9 @@ There are some approaches to export und import cognito users:
 
 However, since it is a small internal app, it is sufficient for users to register again 😊
 
-
 ## DynamoDb
 
-The DynamoDB data is more important. The easiest way to migrate the data was with a shell script and the aws cli: 
+The DynamoDB data is more important. The easiest way to migrate the data was with a shell script and the aws cli:
 
 [dynamodb-migration.sh](https://github.com/JohannesKonings/fff-badminton/blob/main/AmplifyEnvMigration/dynamodb-migration.sh)
 
@@ -66,12 +65,6 @@ As described here the users can upload new profile pictures:
 
 That profile pictures can also be copied by a script [s3-migration.sh](https://github.com/JohannesKonings/fff-badminton/blob/main/AmplifyEnvMigration/s3-migration.sh). But it's necessary to rename the folder name to the new identity pool identity browser id, that the pictures will be found.
 
-![identity browser]({{ site.baseurl }}/img/2020-08-18-amplify_env_master_to_main/identity_browser.png)
+![identity browser](./identity_browser.png)
 
 I fixed that manually 😊
-
-
-
-
-
-
