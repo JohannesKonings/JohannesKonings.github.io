@@ -11,6 +11,7 @@ tags:
   - aws
   - cdk
   - cdk-notifier
+series: cdk-notifier
 ---
 
 ## Use case

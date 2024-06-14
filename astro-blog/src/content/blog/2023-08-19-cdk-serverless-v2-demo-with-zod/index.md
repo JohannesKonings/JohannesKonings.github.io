@@ -12,6 +12,7 @@ tags:
   - projen
   - zod
 cover_image: ./cover-image.png
+series: cdk-notifier
 ---
 
 The [AWS CDK Serverless Toolsuite](https://github.com/taimos/cdk-serverless) from [Thorsten Hoeger](https://github.com/hoegertn) helps, among others, to deploy an API Gateway from [OpenApi specs](https://www.openapis.org/) and a DynamoDb from [DynamoDb onetable data modeling](https://doc.onetable.io/). The advantage is to leverage the type safety from Typscript generated from these files.
