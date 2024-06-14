@@ -1,26 +1,25 @@
 ---
-layout:     post
-title:      Example how to trigger a Dynamodb export and create an Athena saved query with CDK
-date:       '2022-10-03 08:15:18'
-published:  true
-summary:    This post is how to trigger a Dynamodb export and create saved query to create a Athena table from the exported data
+layout: post
+title: Example how to trigger a Dynamodb export and create an Athena saved query with CDK
+date: "2022-10-03 08:15:18"
+published: true
+summary: This post is how to trigger a Dynamodb export and create saved query to create a Athena table from the exported data
 categories: aws
 thumbnail: aws_athena
 tags:
- - aws
- - aws athena
- - aws cdk
- - aws dynamodb
+  - aws
+  - aws athena
+  - aws cdk
+  - aws dynamodb
 ---
 
-In [this]({{ site.baseurl }}/aws/2021/08/27/aws_example_ddb_analytics_cdk/) post is described how to get the data to analyze the changes in the dynamodb data. This post describes how to (semi) automate the export of the dynamodb table data and analyze it with Athena. [This](https://aws.amazon.com/de/blogs/aws/new-export-amazon-dynamodb-table-data-to-data-lake-amazon-s3/) post describes how you can do that manually. 
+In [this]({{ site.baseurl }}/aws/2021/08/27/aws_example_ddb_analytics_cdk/) post is described how to get the data to analyze the changes in the dynamodb data. This post describes how to (semi) automate the export of the dynamodb table data and analyze it with Athena. [This](https://aws.amazon.com/de/blogs/aws/new-export-amazon-dynamodb-table-data-to-data-lake-amazon-s3/) post describes how you can do that manually.
 
 One approach is with a lambda and another approach is with step functions. Both approaches implement the steps for triggering the export to a S3 bucket, create an athena table for that exported data and prepare a namend query for analyzing.
 
 The data for this example looks like this.
 
 ![ddb export ddb data]({{ site.baseurl }}/img/2022-10-03-aws_example_ddb_export_athena_query/ddb-export-ddb-data.png)
-
 
 ## With lambda
 
@@ -48,13 +47,13 @@ TBLPROPERTIES ( 'has_encrypted_data'='true');
 https://github.com/JohannesKonings/test-aws-dynamodb-athena-cdk/blob/main/cdk/lib/ddb-export/readTable.sql
 
 ```SQL
-SELECT 
+SELECT
 item.pk.S as pk,
 item.person.M.firstname.S as firstname,
 item.person.M.lastname.S as lastname,
 item.person.M.jobArea.S as jobArea,
-item.person.M.gender.S as gender, 
-item.person.M.jobType.S as jobType, 
+item.person.M.gender.S as gender,
+item.person.M.jobType.S as jobType,
 item.person.M.jobDescriptor.S as jobDescriptor
 FROM "db_name"."table_name";
 ```
@@ -65,7 +64,7 @@ A more orchestrated approach is with step function. That's better for waiting fo
 
 ## With step functions
 
-This are the steps, which are orchestrated by the step function. 
+This are the steps, which are orchestrated by the step function.
 
 ![ddb export sfn]({{ site.baseurl }}/img/2022-10-03-aws_example_ddb_export_athena_query/ddb-export-sfn.png)
 
@@ -89,8 +88,6 @@ After it's finished you can choose the saved query with the name `sfn-ddb-export
 
 ![ddb export sfn athena query]({{ site.baseurl }}/img/2022-10-03-aws_example_ddb_export_athena_query/ddb-export-sfn-athena-query.png)
 
-
 ## Code
 
 [https://github.com/JohannesKonings/test-aws-dynamodb-athena-cdk](https://github.com/JohannesKonings/test-aws-dynamodb-athena-cdk)
-

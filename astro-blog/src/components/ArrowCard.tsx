@@ -15,11 +15,6 @@ export default function ArrowCard({ entry, pill }: Props) {
   const coverImagePath = isCoverImage
     ? (entry.data["cover_image"] as ImageMetadata)
     : null;
-  // if (!coverImagePath) {
-  //   return
-  // }
-  // console.log('hhhhhh',coverImagePath)
-  // console.log('ggg',coverImagePath.src)
 
   return (
     <a

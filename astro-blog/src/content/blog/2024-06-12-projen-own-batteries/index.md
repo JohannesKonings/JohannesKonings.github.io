@@ -1,16 +1,15 @@
 ---
-layout: post
-title: Consideration about cdk-notifier and Tags
+title: Projen with own batteries
 date: 2024-06-13 08:15:18
 published: false
-summary: Description of the diff consequence of two ways of tagging in CDK
+summary: How to setup a projen project to store central decisions to apply across all own repositories
 categories: []
 thumbnail: cdk
 cover_image: null
 tags:
   - projen
 type: default
-slug: consideration-cdk-notifier-tags
+slug: projen-own-batteries
 ---
 
 ## Use case
@@ -21,10 +20,12 @@ In case of using tags in the CDK there a two ways to tag resources, which will h
 ## Tagging with Tags.of()
 
 The documentation of CDK describes the tagging of resources with the `Tags.of()` method: https://docs.aws.amazon.com/cdk/v2/guide/tagging.html
-This could look like this:  
+This could look like this:
+
 ```typescript
-Tags.of(app).add('branch', branchName);
+Tags.of(app).add("branch", branchName);
 ```
+
 https://github.com/JohannesKonings/cdk-notifier-examples/blob/746c2b2bc0ecc0ecf3e8f0e6ff771a7430a45d04/src/main.ts#L23
 
 The tag will then be added to all resources in the synthesized cloudformation template.
@@ -61,6 +62,7 @@ The tag will then be added to all resources in the synthesized cloudformation te
  }
 }
 ```
+
 Because the tag is in the template, it will then be shown in the diff.
 
 ![diff tag of]({{ site.baseurl }}/img/2024-04-20-cdk-notifier-and-tags/diff-tag-of.png)
@@ -71,13 +73,19 @@ https://github.com/JohannesKonings/cdk-notifier-examples/pull/5
 
 The other way is to pass the tags as stack properties (https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.Stack.html#tags-1).
 This could look like this:
+
 ```typescript
-new CdkNotfifierFeatureStackExample(app, `cdk-notifier-feature-stacks-${branchName}`, {
-  tags: {
-    branch: branchName,
-  },
-});
+new CdkNotfifierFeatureStackExample(
+  app,
+  `cdk-notifier-feature-stacks-${branchName}`,
+  {
+    tags: {
+      branch: branchName,
+    },
+  }
+);
 ```
+
 https://github.com/JohannesKonings/cdk-notifier-examples/blob/66874c06b8204b09781e9ad3ab8707590b948000/src/main.ts#L23
 
 The tag will then be added to the stack properties and not to the template file.
@@ -157,6 +165,7 @@ GITHUB_OWNER: JohannesKonings
 GITHUB_REPO: $(echo JohannesKonings/cdk-notifier-examples | cut -d'/' -f2)
 time="2024-04-20T14:59:48Z" level=info msg="There is no diff detected for tag id diff-to-main. Skip posting diff."
 ```
+
 https://github.com/JohannesKonings/cdk-notifier-examples/actions/runs/8765869174/job/24057331666#step:6:55
 
 ## Conclusion
@@ -167,4 +176,3 @@ If not, you can go with the stack properties.
 ## Code
 
 [https://github.com/JohannesKonings/cdk-notifier-examples](https://github.com/JohannesKonings/cdk-notifier-examples)
-

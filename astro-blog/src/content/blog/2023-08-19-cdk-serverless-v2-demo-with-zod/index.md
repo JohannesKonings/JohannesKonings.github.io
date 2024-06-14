@@ -1,16 +1,17 @@
 ---
 
-title:      Example how to use zod with CDK serverless v2
-date:       '2023-08-19 08:15:18'
-published:  true
-summary:    CDK serverless v2 is for using type saftey develepmonet base on schemas like openAPI. This post is a example how to use zod with CDK serverless v2
+title: Example how to use zod with CDK serverless v2
+date: 2023-08-19 08:15:18
+published: true
+summary: CDK serverless v2 is for using type saftey develepmonet base on schemas like openAPI. This post is a example how to use zod with CDK serverless v2
 categories: aws
 thumbnail: zod
 tags:
- - aws
- - aws cdk
- - projen
- - zod
+  - aws
+  - aws cdk
+  - projen
+  - zod
+cover_image: ./cover-image.png
 ---
 
 The [AWS CDK Serverless Toolsuite](https://github.com/taimos/cdk-serverless) from [Thorsten Hoeger](https://github.com/hoegertn) helps, among others, to deploy an API Gateway from [OpenApi specs](https://www.openapis.org/) and a DynamoDb from [DynamoDb onetable data modeling](https://doc.onetable.io/). The advantage is to leverage the type safety from Typscript generated from these files.
@@ -23,7 +24,7 @@ The workflow so far is to create a definition and generate Typescript types from
 
 As you can see, the types are available at development time via the OpenApi spec.
 
-![add Todo title type]({{ site.baseurl }}/img/2023-08-19-cdk-serverless-v2-demo-with-zod/addTodoTitleType.png)
+![add Todo title type](./addTodoTitleType.png)
 
 This is because of the defined components in this [openApi spec](https://github.com/JohannesKonings/cdk-serverless-v2-demo/blob/main/src/definitions/myapi.yaml)
 
@@ -39,13 +40,13 @@ components:
         - description
         - lastUpdate
       properties:
-        id: 
+        id:
           type: string
-        state: 
+        state:
           type: string
-        title: 
+        title:
           type: string
-        description: 
+        description:
           type: string
         lastUpdate:
           type: string
@@ -56,29 +57,29 @@ components:
         - title
         - description
       properties:
-        title: 
+        title:
           type: string
-        description: 
+        description:
           type: string
 ```
 
 But that didn't prevent you from using the false type during runtime.
 
-![add Todo title as number]({{ site.baseurl }}/img/2023-08-19-cdk-serverless-v2-demo-with-zod/addTodoTitleAsNumber.png)
+![add Todo title as number](./addTodoTitleAsNumber.png)
 
 ## Type checking with zod
 
 With a one-line parsing command, zod checks all the types.
 
-![add Todo zod parsing]({{ site.baseurl }}/img/2023-08-19-cdk-serverless-v2-demo-with-zod/addTodoZodParsing.png)
+![add Todo zod parsing](./addTodoZodParsing.png)
 
 Furthermore, zod has some [string-specific validations](https://github.com/colinhacks/zod#strings) that can check if the email is valid.
 
 ```typescript
 notificationsEmail: z.string().email(),
 ```
-![add Todo validation result]({{ site.baseurl }}/img/2023-08-19-cdk-serverless-v2-demo-with-zod/addTodoValidationResult.png)
 
+![add Todo validation result](./addTodoValidationResult.png)
 
 ## Implementation
 
@@ -88,11 +89,11 @@ One for the API request, one for the API response and one how the data is stored
 With zod it's possible to reference existing schema an extend fields or omit some.
 
 ```typescript
-import * as z from 'zod';
+import * as z from "zod";
 
 export const schemaTodoApi = z.object({
   id: z.string().uuid(),
-  state: z.enum(['OPEN', 'IN PROGRESS', 'DONE']).default('OPEN'),
+  state: z.enum(["OPEN", "IN PROGRESS", "DONE"]).default("OPEN"),
   title: z.string(),
   finishedInDays: z.number().int().positive(),
   notificationsEmail: z.string().email(),
@@ -106,9 +107,11 @@ export const schemaAddTodoApi = schemaTodoApi.omit({
   lastUpdate: true,
 });
 
-export const schemaTodoDdb = schemaTodoApi.extend({
-  lastUpdated: z.string().datetime(),
-}).omit({ lastUpdate: true });
+export const schemaTodoDdb = schemaTodoApi
+  .extend({
+    lastUpdated: z.string().datetime(),
+  })
+  .omit({ lastUpdate: true });
 ```
 
 ### openApi
@@ -118,61 +121,55 @@ To create the openApi spec I'm using the `@asteasolutions/zod-to-openapi` packag
 The definition of the apiSpec is now created via Typescript as you can see [here](https://github.com/JohannesKonings/cdk-serverless-v2-demo/blob/main/src/zod/openapi.ts) and generate a yaml file.
 
 ```typescript
-import fs from 'node:fs';
+import fs from "node:fs";
 import {
   extendZodWithOpenApi,
   OpenAPIRegistry,
   OpenApiGeneratorV3,
-} from '@asteasolutions/zod-to-openapi';
-import yaml from 'js-yaml';
-import * as z from 'zod';
-import { schemaAddTodoApi, schemaTodoApi } from './schema-todo';
+} from "@asteasolutions/zod-to-openapi";
+import yaml from "js-yaml";
+import * as z from "zod";
+import { schemaAddTodoApi, schemaTodoApi } from "./schema-todo";
 
 extendZodWithOpenApi(z);
 
 const registry = new OpenAPIRegistry();
 
 const apiKeyComponent = registry.registerComponent(
-  'securitySchemes',
-  'api_key',
+  "securitySchemes",
+  "api_key",
   {
-    type: 'apiKey',
-    name: 'x-api-key',
-    in: 'header',
-  },
+    type: "apiKey",
+    name: "x-api-key",
+    in: "header",
+  }
 );
 
-registry.register(
-  'Todo',
-  schemaTodoApi.openapi({}),
-);
-registry.register(
-  'AddTodo',
-  schemaAddTodoApi.openapi({}),
-);
+registry.register("Todo", schemaTodoApi.openapi({}));
+registry.register("AddTodo", schemaAddTodoApi.openapi({}));
 
 registry.registerPath({
-  method: 'get',
-  path: '/todos',
-  summary: 'return list of todos',
-  tags: ['admin'],
+  method: "get",
+  path: "/todos",
+  summary: "return list of todos",
+  tags: ["admin"],
   security: [{ [apiKeyComponent.name]: [] }],
-  operationId: 'getTodos',
+  operationId: "getTodos",
   responses: {
     200: {
-      description: 'successful operation',
+      description: "successful operation",
       content: {
-        'application/json': {
+        "application/json": {
           schema: {
-            type: 'array',
+            type: "array",
             items: {
-              $ref: '#/components/schemas/Todo',
+              $ref: "#/components/schemas/Todo",
             },
           },
         },
-        'text/calendar': {
+        "text/calendar": {
           schema: {
-            type: 'string',
+            type: "string",
           },
         },
       },
@@ -180,82 +177,82 @@ registry.registerPath({
   },
 });
 registry.registerPath({
-  'method': 'post',
-  'path': '/todos',
-  'summary': 'add new todo',
-  'tags': ['admin'],
-  'security': [{ [apiKeyComponent.name]: [] }],
-  'operationId': 'addTodo',
-  'requestBody': {
+  method: "post",
+  path: "/todos",
+  summary: "add new todo",
+  tags: ["admin"],
+  security: [{ [apiKeyComponent.name]: [] }],
+  operationId: "addTodo",
+  requestBody: {
     required: true,
     content: {
-      'application/json': {
+      "application/json": {
         schema: {
-          $ref: '#/components/schemas/AddTodo',
+          $ref: "#/components/schemas/AddTodo",
         },
       },
     },
   },
-  'responses': {
+  responses: {
     201: {
-      description: 'successful operation',
+      description: "successful operation",
       content: {
-        'application/json': {
+        "application/json": {
           schema: {
-            $ref: '#/components/schemas/Todo',
+            $ref: "#/components/schemas/Todo",
           },
         },
       },
     },
     401: {
-      description: 'you are not logged in',
+      description: "you are not logged in",
       content: {},
     },
     403: {
-      description: 'you are not authorized to add todos',
+      description: "you are not authorized to add todos",
       content: {},
     },
   },
-  'x-codegen-request-body-name': 'body',
+  "x-codegen-request-body-name": "body",
 });
 registry.registerPath({
-  method: 'post',
-  path: '/todos/{id}',
-  summary: 'get a todo by its id',
-  tags: ['admin'],
+  method: "post",
+  path: "/todos/{id}",
+  summary: "get a todo by its id",
+  tags: ["admin"],
   security: [{ [apiKeyComponent.name]: [] }],
-  operationId: 'getTodoById',
+  operationId: "getTodoById",
   responses: {
     200: {
-      description: 'successful operation',
+      description: "successful operation",
       content: {
-        'application/json': {
+        "application/json": {
           schema: {
-            $ref: '#/components/schemas/Todo',
+            $ref: "#/components/schemas/Todo",
           },
         },
       },
     },
     401: {
-      description: 'you are not logged in',
+      description: "you are not logged in",
       content: {},
     },
     403: {
-      description: 'you are not authorized to add todos',
+      description: "you are not authorized to add todos",
       content: {},
     },
   },
 });
 registry.registerPath({
-  method: 'delete',
-  path: '/todos/{id}',
-  summary: 'delete a todo',
-  tags: ['admin'],
+  method: "delete",
+  path: "/todos/{id}",
+  summary: "delete a todo",
+  tags: ["admin"],
   security: [{ [apiKeyComponent.name]: [] }],
-  operationId: 'removeTodo',
+  operationId: "removeTodo",
   responses: {
     200: {
-      description: 'successful operation',
+      description: "successful operation",
       content: {},
     },
   },
@@ -264,24 +261,24 @@ registry.registerPath({
 const generator = new OpenApiGeneratorV3(registry.definitions);
 
 const generatorDocument = generator.generateDocument({
-  openapi: '3.0.1',
+  openapi: "3.0.1",
   info: {
-    version: '1.0',
-    title: 'Serverless Demo with zod',
+    version: "1.0",
+    title: "Serverless Demo with zod",
   },
   tags: [
     {
-      name: 'info',
+      name: "info",
     },
     {
-      name: 'admin',
+      name: "admin",
     },
   ],
 });
 
 const yamlString = yaml.dump(generatorDocument, { indent: 2 });
 
-fs.writeFileSync('./src/definitions/myapi-zod.yaml', yamlString);
+fs.writeFileSync("./src/definitions/myapi-zod.yaml", yamlString);
 ```
 
 ### onetable
@@ -290,31 +287,31 @@ Unfortunately, for onetable didn't exist a npm package. So the conversion is mad
 [This](https://github.com/JohannesKonings/cdk-serverless-v2-demo/blob/main/src/zod/onetable.ts) is how it looks like.
 
 ```typescript
-import fs from 'node:fs';
-import { z } from 'zod';
-import { schemaTodoDdb } from './schema-todo';
+import fs from "node:fs";
+import { z } from "zod";
+import { schemaTodoDdb } from "./schema-todo";
 
 const modelTodoDdb = {
   PK: {
-    type: 'string',
-    value: 'TODO#${id}',
+    type: "string",
+    value: "TODO#${id}",
   },
   SK: {
-    type: 'string',
-    value: 'TODO#${id}',
+    type: "string",
+    value: "TODO#${id}",
   },
   id: {
-    type: 'string',
+    type: "string",
     required: true,
-    generate: 'uuid',
+    generate: "uuid",
   },
   GSI1PK: {
-    type: 'string',
-    value: 'TODOS',
+    type: "string",
+    value: "TODOS",
   },
   GSI1SK: {
-    type: 'string',
-    value: '${state}#${title}',
+    type: "string",
+    value: "${state}#${title}",
   },
 };
 
@@ -324,7 +321,8 @@ const modelTodoFields = Object.keys(schemaTodoValues).reduce((acc, key) => {
   const keyOfSchemaTodoKeyValues = key as keyof typeof schemaTodoValues;
   const shapeType = schemaTodoDdb.shape[keyOfSchemaTodoKeyValues];
 
-  const { type, required, generate, enumValues, defaultValue } = deriveAttributes(shapeType);
+  const { type, required, generate, enumValues, defaultValue } =
+    deriveAttributes(shapeType);
 
   return {
     ...acc,
@@ -339,29 +337,31 @@ const modelTodoFields = Object.keys(schemaTodoValues).reduce((acc, key) => {
 }, {});
 
 function deriveAttributes(shapeType: z.ZodType<any, any>) {
-  let type = '';
+  let type = "";
   let required = false;
   let generate = undefined;
   let enumValues = [] as string[];
   let defaultValue = undefined;
 
   if (shapeType === undefined) {
-    throw new Error('type is undefined');
+    throw new Error("type is undefined");
   } else if (shapeType instanceof z.ZodString) {
-    type = 'string';
+    type = "string";
     required = true;
-    generate = shapeType.isUUID ? 'uuid' : undefined;
+    generate = shapeType.isUUID ? "uuid" : undefined;
   } else if (shapeType instanceof z.ZodNumber) {
-    type = 'number';
+    type = "number";
     required = true;
   } else if (shapeType instanceof z.ZodEnum) {
     required = true;
-    type = 'string';
+    type = "string";
     enumValues = shapeType._def.values;
   } else if (shapeType instanceof z.ZodDefault) {
     required = true;
     defaultValue = shapeType._def.defaultValue();
-    const { type: typeInnerType, enumValues: enumInnerType } = deriveAttributes(shapeType._def.innerType);
+    const { type: typeInnerType, enumValues: enumInnerType } = deriveAttributes(
+      shapeType._def.innerType
+    );
     type = typeInnerType;
     enumValues = enumInnerType as string[];
   } else if (shapeType instanceof z.ZodOptional) {
@@ -369,8 +369,8 @@ function deriveAttributes(shapeType: z.ZodType<any, any>) {
     const { type: typeInnerType } = deriveAttributes(shapeType._def.innerType);
     type = typeInnerType;
   } else {
-    console.log('shapeType', shapeType);
-    throw new Error('type is not supported');
+    console.log("shapeType", shapeType);
+    throw new Error("type is not supported");
   }
   return {
     type,
@@ -389,33 +389,32 @@ export const modelTodo = {
 const onetable = {
   indexes: {
     primary: {
-      hash: 'PK',
-      sort: 'SK',
+      hash: "PK",
+      sort: "SK",
     },
     GSI1: {
-      hash: 'GSI1PK',
-      sort: 'GSI1SK',
-      project: 'all',
+      hash: "GSI1PK",
+      sort: "GSI1SK",
+      project: "all",
     },
     LSI1: {
-      type: 'local',
-      sort: 'lastUpdated',
-      project: [
-        'id',
-        'lastUpdated',
-        'title',
-      ],
+      type: "local",
+      sort: "lastUpdated",
+      project: ["id", "lastUpdated", "title"],
     },
   },
   models: {
     Todo: modelTodo,
   },
-  version: '0.1.0',
-  format: 'onetable:1.1.0',
+  version: "0.1.0",
+  format: "onetable:1.1.0",
   queries: {},
 };
 
-fs.writeFileSync('./src/definitions/mymodel-zod.json', JSON.stringify(onetable, null, 2));
+fs.writeFileSync(
+  "./src/definitions/mymodel-zod.json",
+  JSON.stringify(onetable, null, 2)
+);
 ```
 
 ### Integration into the file creation workflow
@@ -423,10 +422,10 @@ fs.writeFileSync('./src/definitions/mymodel-zod.json', JSON.stringify(onetable, 
 The definition files can now be generated based on a zod schema. So that that will happen together with generating the files from the spec the projen.ts file need to be enhanced. This will create two commands before.
 
 ```typescript
-const taskDefinitionsCreation = project.addTask('definitionsCreation', {
+const taskDefinitionsCreation = project.addTask("definitionsCreation", {
   steps: [
-    { exec: 'ts-node ./src/zod/openapi.ts' },
-    { exec: 'ts-node ./src/zod/onetable.ts' },
+    { exec: "ts-node ./src/zod/openapi.ts" },
+    { exec: "ts-node ./src/zod/onetable.ts" },
   ],
 });
 project.defaultTask!.prependSpawn(taskDefinitionsCreation);
@@ -434,7 +433,7 @@ project.defaultTask!.prependSpawn(taskDefinitionsCreation);
 
 Than the steps look like this.
 
-```JSON
+```json
   "default": {
       "name": "default",
       "description": "Synthesize project files",
@@ -457,4 +456,3 @@ Now with the command `npm run projen` the definition file are created derived fr
 ## Code
 
 [https://github.com/JohannesKonings/cdk-serverless-v2-demo](https://github.com/JohannesKonings/cdk-serverless-v2-demo)
-
