@@ -3,21 +3,18 @@ import type { CollectionEntry } from "astro:content";
 import { formatDate, readingTime } from "@lib/utils";
 
 type Props = {
-  // entry: CollectionEntry<"notes"> | CollectionEntry<"blog">
-  entry: CollectionEntry<"blog">;
+  entry: CollectionEntry<"notes"> | CollectionEntry<"blog">;
 };
 
 const { entry } = Astro.props;
 const { collection, data, body } = entry;
 const { title, summary, date } = data;
 
-// const demoUrl = collection === "projects" ? data.demoUrl : null
-// const repoUrl = collection === "projects" ? data.repoUrl : null
-
 const isCoverImage = entry.data.hasOwnProperty("cover_image");
 // @ts-ignore
 const coverImagePath = isCoverImage
-  ? (entry.data["cover_image"] as ImageMetadata)
+  ? // @ts-ignore
+    (entry.data["cover_image"] as ImageMetadata)
   : null;
 ---
 
@@ -86,28 +83,4 @@ const coverImagePath = isCoverImage
   <div class="mt-1">
     {summary}
   </div>
-  <!-- {(demoUrl || repoUrl) && 
-  <div class="mt-4 flex flex-wrap gap-2">
-    {demoUrl && 
-      <a href={demoUrl} target="_blank" class="group flex gap-2 items-center px-3 py-1.5 truncate rounded text-xs md:text-sm lg:text-base border border-black/25 dark:border-white/25 hover:bg-black/5 hover:dark:bg-white/15 blend">
-        <svg class="size-4">
-          <use href="/ui.svg#globe" class="fill-current group-hover:fill-black group-hover:dark:fill-white blend"/>
-        </svg>
-        <span class="text-current group-hover:text-black group-hover:dark:text-white blend">
-          See Demo
-        </span>
-      </a>
-    }
-    {repoUrl && 
-      <a href={repoUrl} target="_blank" class="group flex gap-2 items-center px-3 py-1.5 truncate rounded text-xs md:text-sm lg:text-base border border-black/25 dark:border-white/25 hover:bg-black/5 hover:dark:bg-white/15 blend">
-        <svg class="size-4">
-          <use href="/ui.svg#link" class="fill-current group-hover:fill-black group-hover:dark:fill-white blend"/>
-        </svg>
-        <span class="text-current group-hover:text-black group-hover:dark:text-white blend">
-          See Repository
-        </span>
-      </a>
-    }
-  </div> 
-  } -->
 </div>

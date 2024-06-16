@@ -1,5 +1,4 @@
 import { execa } from "execa";
-import * as matter from "gray-matter";
 import fs from "fs";
 import path from "path";
 
@@ -17,9 +16,11 @@ async function sync(from: string, to: string) {
 
   //   markdown post processing
 
-  const markdownFiles = fs.readdirSync(`./src/content/${to}`, { recursive: true }).filter((file) => {
-    return path.extname(file.toString()) === ".md";
-  });
+  const markdownFiles = fs
+    .readdirSync(`./src/content/${to}`, { recursive: true })
+    .filter((file) => {
+      return path.extname(file.toString()) === ".md";
+    });
 
   for (const file of markdownFiles) {
     // Process each markdown file here

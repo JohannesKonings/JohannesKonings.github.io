@@ -1,21 +1,12 @@
 import { formatDate } from "@lib/utils";
 import type { CollectionEntry } from "astro:content";
-import { Image } from "astro:assets";
-import avatar from "../../img/avatar.png";
 
 type Props = {
-  // entry: CollectionEntry<"blog"> | CollectionEntry<"notes">
-  entry: CollectionEntry<"blog">;
+  entry: CollectionEntry<"notes">;
   pill?: boolean;
 };
 
-export default function ArrowCard({ entry, pill }: Props) {
-  const isCoverImage = entry.data.hasOwnProperty("cover_image");
-  // @ts-ignore
-  const coverImagePath = isCoverImage
-    ? (entry.data["cover_image"] as ImageMetadata)
-    : null;
-
+export default function ArrowCardNote({ entry, pill }: Props) {
   return (
     <a
       href={`/${entry.collection}/${entry.slug}`}
@@ -25,19 +16,11 @@ export default function ArrowCard({ entry, pill }: Props) {
         <div class="flex flex-wrap items-center gap-2">
           {pill && (
             <div class="text-sm capitalize px-2 py-0.5 rounded-full border border-black/15 dark:border-white/25">
-              {entry.collection === "blog" ? "post" : "notes"}
+              "notes"
             </div>
           )}
           <div class="text-sm uppercase">{formatDate(entry.data.date)}</div>
         </div>
-        {isCoverImage && coverImagePath && (
-          // <Image src={coverImagePath} alt={entry.data.title} />
-          // <Image src={avatar} alt={entry.data.title} />
-          //   <div class="flex justify-center items-center">
-          //   <Image  src={avatar} alt="Avatar" class="animate-grow" />
-          // </div>
-          <img src={coverImagePath.src} alt="Avatar" />
-        )}
         <div class="font-semibold mt-3 text-black dark:text-white">
           {entry.data.title}
         </div>
