@@ -1,13 +1,12 @@
 ---
 import { getCollection } from "astro:content";
 import PageLayout from "@layouts/PageLayout.astro";
-import ArrowCard from "@components/ArrowCard";
+import ArrowCardPost from "@components/ArrowCardPost";
 import { SITE, SOCIALS } from "@consts";
 import TwinklingStars from "@components/TwinklingStars.astro";
 import MeteorShower from "@components/MeteorShower.astro";
 import { Image } from "astro:assets";
 import avatar from "../../img/avatar.png";
-import Blog from "@components/Blog";
 
 const posts = (await getCollection("blog"))
   .filter((post) => post.data.published)
@@ -93,21 +92,6 @@ const posts = (await getCollection("blog"))
                 </a>
               ))
             }
-
-            {
-              /* <a
-                href="https://github.com/JohannesKonings/JohannesKonings.github.io"
-                target="_blank"
-                aria-label="GitHub repo"
-                class="group size-10 rounded-full p-2 items-center justify-center hover:bg-black/5 dark:hover:bg-white/20 blend"
-              >
-                <svg
-                  class="size-full fill-current group-hover:fill-black group-hover:dark:fill-white blend"
-                >
-                  <use href="/social.svg#github"></use>
-                </svg>
-              </a> */
-            }
           </div>
         </div>
       </div>
@@ -136,7 +120,7 @@ const posts = (await getCollection("blog"))
             {
               posts.map((post) => (
                 <li>
-                  <ArrowCard entry={post} />
+                  <ArrowCardPost entry={post} />
                 </li>
               ))
             }
@@ -145,5 +129,4 @@ const posts = (await getCollection("blog"))
       </section>
     </div>
   </div>
-  <!-- </section> -->
 </PageLayout>

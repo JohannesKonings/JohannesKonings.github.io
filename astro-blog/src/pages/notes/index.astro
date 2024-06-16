@@ -1,0 +1,29 @@
+---
+import { getCollection } from "astro:content";
+import PageLayout from "@layouts/PageLayout.astro";
+import TopLayout from "@layouts/TopLayout.astro";
+import BottomLayout from "@layouts/BottomLayout.astro";
+import Notes from "@components/Notes";
+import { NOTES } from "@consts";
+
+const notes = (await getCollection("notes"))
+  .filter((notes) => notes.data.published)
+  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+
+const tags = [...new Set(notes.flatMap((note) => note.data.tags))].sort(
+  (a, b) => a.localeCompare(b)
+);
+---
+
+<PageLayout title={NOTES.TITLE} description={NOTES.DESCRIPTION}>
+  <TopLayout>
+    <div class="animate page-heading">
+      {NOTES.TITLE}
+    </div>
+  </TopLayout>
+  <BottomLayout>
+    <div class="animate">
+      <Notes client:load tags={tags} data={notes} />
+    </div>
+  </BottomLayout>
+</PageLayout>

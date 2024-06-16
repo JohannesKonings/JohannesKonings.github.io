@@ -1,19 +1,23 @@
 ---
-import { type CollectionEntry, getCollection } from "astro:content"
-import PageLayout from "@layouts/PageLayout.astro"
-import TopLayout from "@layouts/TopLayout.astro"
-import BottomLayout from "@layouts/BottomLayout.astro"
-import Search from "@components/Search"
-import { SEARCH } from "@consts"
+import { type CollectionEntry, getCollection } from "astro:content";
+import PageLayout from "@layouts/PageLayout.astro";
+import TopLayout from "@layouts/TopLayout.astro";
+import BottomLayout from "@layouts/BottomLayout.astro";
+import Search from "@components/Search";
+import { SEARCH } from "@consts";
 
-const posts = (await getCollection("blog"))
-  .filter(post => post.data.published)
+const posts = (await getCollection("blog")).filter(
+  (post) => post.data.published
+);
 
-const notes = (await getCollection("notes"))
-  .filter(post => post.data.published)
+const notes = (await getCollection("notes")).filter(
+  (post) => post.data.published
+);
 
-// const data = [...posts, ...projects] as CollectionEntry<"blog">[]
-const data = [...posts] as CollectionEntry<"blog">[]
+const data = [
+  ...(posts as CollectionEntry<"blog">[]),
+  ...(notes as CollectionEntry<"notes">[]),
+];
 ---
 
 <PageLayout title={SEARCH.TITLE} description={SEARCH.DESCRIPTION}>
@@ -24,7 +28,8 @@ const data = [...posts] as CollectionEntry<"blog">[]
   </TopLayout>
   <BottomLayout>
     <div class="animate">
-      <Search client:load data={data}/>
+      <!-- @ts-ignore -->
+      <Search client:load data={data} />
     </div>
   </BottomLayout>
 </PageLayout>
