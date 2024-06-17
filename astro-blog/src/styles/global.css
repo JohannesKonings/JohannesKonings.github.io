@@ -1,6 +1,6 @@
-@import 'tailwindcss/base';
-@import 'tailwindcss/components';
-@import 'tailwindcss/utilities';
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
 
 @layer base {
   @font-face {
@@ -10,7 +10,7 @@
     font-style: normal;
     font-display: swap;
   }
-  
+
   @font-face {
     font-family: "CascadiaMonoNF-SemiBold";
     src: url("/fonts/CascadiaMonoNF-SemiBold.woff2") format("woff2");
@@ -34,7 +34,6 @@ html {
   color-scheme: light;
   background-color: white;
   font-family: "CascadiaMonoNF", sans-serif;
-  
 }
 
 html.dark {
@@ -76,6 +75,32 @@ article {
   @apply prose dark:prose-invert max-w-full pb-12;
 }
 
+/* :not(pre) > code {
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 2px 4px;
+  font-family: 'Courier New', monospace;
+  color: #333;
+} */
+/* markdonw inline code */
+:not(pre) > code {
+  background-color: #bbbdbb;
+  padding: 2px 4px;
+  color: #333;
+  border: none;
+  border-radius: 0;
+}
+.dark :not(pre) > code {
+  background-color: #b5afaf;
+}
+:not(pre) > code:before {
+  content: "";
+}
+:not(pre) > code:after {
+  content: "";
+}
+
 .page-heading {
   @apply font-semibold text-black dark:text-white;
 }
@@ -98,7 +123,9 @@ article {
 .animate {
   opacity: 0;
   transform: translateY(50px);
-  transition: opacity 1s ease, transform 1s ease;
+  transition:
+    opacity 1s ease,
+    transform 1s ease;
 }
 
 .animate.show {
@@ -121,7 +148,7 @@ article img {
  * TWINKLE STARS
  */
 
- #twinkle-star.template {
+#twinkle-star.template {
   @apply absolute -left-full; /* hide offscreen */
 }
 
@@ -129,13 +156,12 @@ article img {
   @apply animate-twinkle; /* defined in tailwind.config */
 }
 
-
 /**
  * Meteors
  */
 
 #meteors .shower {
-  @apply absolute inset-0 top-0;;
+  @apply absolute inset-0 top-0;
   @apply left-1/2 -translate-x-1/2;
   @apply w-screen aspect-square;
 }
