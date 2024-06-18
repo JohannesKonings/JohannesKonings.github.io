@@ -1,5 +1,7 @@
 ---
 import { type CollectionEntry, getCollection } from "astro:content";
+import PostComments from "@components/PostComments.astro";
+import NoteComments from "@components/NoteComments.astro";
 
 type Props = {
   entry: CollectionEntry<"blog"> | CollectionEntry<"notes">;
@@ -22,6 +24,13 @@ const next = items[(index + 1) % items.length];
 <div>
   <article>
     <Content />
+    {
+      entry.collection === "blog" ? (
+        <PostComments />
+      ) : entry.collection === "notes" ? (
+        <NoteComments />
+      ) : null
+    }
   </article>
   <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
     <a
