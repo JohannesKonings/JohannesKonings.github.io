@@ -27,7 +27,7 @@ This is how the result will look like for my AWS SSO accounts.
 
 ![query result](./query-result.png)
 
-More about Steampipe and AWS: https://dev.to/aws-builders/easily-query-your-cloud-inventory-with-steampipe-2af3
+More about Steampipe and AWS: <https://dev.to/aws-builders/easily-query-your-cloud-inventory-with-steampipe-2af3>
 
 ## Setup
 
@@ -35,7 +35,7 @@ It's necessary to have a link between AWS CLI profiles and Steampipe connection 
 
 ### Docker
 
-```Dockerfile
+```dockerfile
 FROM ghcr.io/turbot/steampipe
 
 # Setup prerequisites (as root)
@@ -54,7 +54,7 @@ USER steampipe:0
 RUN  steampipe plugin install steampipe aws
 ```
 
-The Steampipe docu is here: https://steampipe.io/docs/managing/containers
+The Steampipe docu is here: <https://steampipe.io/docs/managing/containers>
 
 After creating the image with `docker build -t steampipe-query .`. The container can be created with the following command.
 
@@ -73,7 +73,7 @@ These are the commands to use the container again `docker start -a steampipe-que
 
 One of the mount points was the folder queries, which contain, in this example, the SQL to check the lambda runtime.
 
-```SQL
+```sql
 select
   account_id,
   _ctx ->> 'connection_name' as connection_name,
@@ -99,7 +99,7 @@ The command to run this query is `steampipe query queries/lambda-runtime.sql`. T
 
 The other mount points are scripts and the env file. The first step is to set the needed env variable values and then run the script `./scripts/create-aws-config.sh` inside the container, which creates the file ~/.aws/config with SS0 session values.
 
-```env
+```plain
 SSO_START_URL= # https://<your-aws-account-id>.awsapps.com/start
 SSO_SESSION_NAME= # <your session name, it's just a name>
 SSO_REGION= # <your region, e.g. us-east-1>
@@ -123,7 +123,7 @@ Then, allow the access.
 
 After it's confirmed, you can create profiles with the script `./scripts/create-aws-profiles.sh` inside the container. This will create a profile for each account in the aws config file ~/.aws/config (after confirmation) with a suffix of the assigned roles for the accounts.
 
-The scipt is adapted from this gist: https://gist.github.com/lukeplausin/3cfedc29755e184ef526b504c77ffe70
+The scipt is adapted from this gist: <https://gist.github.com/lukeplausin/3cfedc29755e184ef526b504c77ffe70>
 
 The last step for the setup is to create the connections for Steampipe with the script `./scripts/create-aws-connections.sh` inside the container. This will create a connection for each profile in the AWS config file ~/.aws/config.
 Not every role is allowed to query the data, so it's necessary to set the env variable `ALLOWED_ROLES` with the roles allowed to query the data. The roles are comma-separated. E.g.
