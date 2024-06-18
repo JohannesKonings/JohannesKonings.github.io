@@ -23,6 +23,7 @@
     "@astrojs/tailwind": "^5.1.0",
     "@tailwindcss/typography": "^0.5.13",
     "astro": "^4.10.2",
+    "astro-rehype-relative-markdown-links": "^0.15.0",
     "clsx": "^2.1.1",
     "fuse.js": "^7.0.0",
     "postcss-apply": "^0.12.0",
