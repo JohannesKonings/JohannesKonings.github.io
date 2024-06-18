@@ -24,9 +24,9 @@ In this post, it's described to use streams. Since 11/2020, it is also possible 
 That also allows to analyze changes and use it for audits.
 
 A example with DynamoDb streams are here:
+
 - [https://www.youtube.com/watch?v=7QFUEh-FYYE](https://www.youtube.com/watch?v=7QFUEh-FYYE)
 - [https://www.youtube.com/watch?v=17AmrTqn0GY](https://www.youtube.com/watch?v=17AmrTqn0GY)
-
 
 # Architecture
 
@@ -132,6 +132,7 @@ resource "aws_kinesis_firehose_delivery_stream" "aws_kinesis_firehose_delivery_s
   }
 }
 ```
+
 Details are [here](https://github.com/JohannesKonings/test-aws-dynamodb-athena-tf/blob/main/terraform/kinesis_firehose.tf)
 
 The delivery of the data to the S3 bucket is buffered. Here are the default values.
@@ -218,6 +219,7 @@ resource "aws_athena_workgroup" "aws_athena_workgroup" {
   }
 }
 ```
+
 Details [here](https://github.com/JohannesKonings/test-aws-dynamodb-athena-tf/blob/main/terraform/glue.tf)
 
 ## Analysis
@@ -230,12 +232,11 @@ And than the new Database.
 
 ![athena-database]({{ site.baseurl }}/img/2021-08-27-aws_example_ddb_analytics/athena_database.png)
 
-
 ### Query example
 
 DynamoDb sends the changes of an item as INSERT, MODIFY or REMOVE. To the current data of the table, this Query will work.
 
-```SQL
+```sql
 SELECT dynamodb.newimage.pk.s AS pk,
          dynamodb.newimage.person.M.firstname.s AS firstname,
          dynamodb.newimage.person.M.lastname.s AS lastname,
@@ -257,8 +258,6 @@ WHERE (eventname = 'INSERT'
 
 ⚠️ Don't forget to destroy after testing. Kinesis Data Streams has [costs](https://aws.amazon.com/kinesis/data-streams/pricing/) per hour
 
-
 # Code
 
 [https://github.com/JohannesKonings/test-aws-dynamodb-athena-tf](https://github.com/JohannesKonings/test-aws-dynamodb-athena-tf)
-
