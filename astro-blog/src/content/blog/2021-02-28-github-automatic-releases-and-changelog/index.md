@@ -5,6 +5,7 @@ published:  true
 summary:    This post is how to define your release draft via labels in pull requests and the update of the changelog.md after publishing a release
 categories: github
 thumbnail: github
+cover_image: ./cover-image.png
 tags:
  - github
  - github actions
@@ -130,19 +131,19 @@ Because of the main branch protection, it's not possible to push the changes dir
 
 The collection of the changes in a release draft.
 
-![release-draft]({{ site.baseurl }}/img/2021-02-28-github_automatic_releases_and changelog/release-draft.png)
+![release-draft](release-draft.png)
 
 The labels in a pull request.
 
-![label-pull-request]({{ site.baseurl }}/img/2021-02-28-github_automatic_releases_and changelog/label-pull-request.png)
+![label-pull-request](./label-pull-request.png)
 
 The result in the GitHub release.
 
-![minor-enhancement]({{ site.baseurl }}/img/2021-02-28-github_automatic_releases_and changelog/minor-enhancement.png)
+![minor-enhancement](./minor-enhancement.png)
 
 The result in the CHANGELOG.md.
 
-![changelog]({{ site.baseurl }}/img/2021-02-28-github_automatic_releases_and changelog/changelog.png)
+![changelog](./changelog.png)
 
 
 # Code

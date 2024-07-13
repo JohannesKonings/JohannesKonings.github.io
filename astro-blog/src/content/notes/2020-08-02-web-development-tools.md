@@ -1,13 +1,12 @@
 ---
-layout: note
 title: Web development tools
 date: "2020-08-02 08:15:18"
+published: true
 summary: web development tools summary
 categories: tools
 thumbnail: fa-bookmark-o
 tags:
   - web development
-published: false
 ---
 
 # Web development tools
@@ -43,3 +42,8 @@ published: false
 ## favicon
 
 - https://favicon.io/favicon-converter/
+
+# misc
+
+https://socialsharepreview.com/
+
