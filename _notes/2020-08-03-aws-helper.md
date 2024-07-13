@@ -1,12 +1,13 @@
 ---
+layout:     note
 title:      AWS helper
 date:       '2020-08-03 08:15:18'
+published: true
 summary:    AWS helper
 categories: tools
 thumbnail: fa-bookmark-o
 tags:
  - aws
-published: false
 ---
 
 # AWS helper tools
@@ -86,6 +87,11 @@ Disclaimer: This article contains helper tools for AWS and will be updated from 
 Remove all resources from an AWS account.
 
 [https://github.com/rebuy-de/aws-nuke](https://github.com/rebuy-de/aws-nuke)
+
+
+# misc
+
+* https://visualsubnetcalc.com/
 
 
 
