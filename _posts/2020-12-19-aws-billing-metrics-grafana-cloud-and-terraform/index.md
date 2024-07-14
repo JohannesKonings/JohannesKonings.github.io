@@ -1,25 +1,27 @@
 ---
-title:      How to setup AWS Billing metrics in Grafana Cloud via Terraform
-date:       '2020-12-19 08:15:18'
-published:  true
-summary:    Terraform setup to display AWS billing metrics in Grafana Cloud with S3 Backend and CI/CD pipeline
+layout: post
+title: How to setup AWS Billing metrics in Grafana Cloud via Terraform
+date: "2020-12-19 08:15:18"
+published: true
+summary: Terraform setup to display AWS billing metrics in Grafana Cloud with S3 Backend and CI/CD pipeline
 categories: aws
 thumbnail: terraform
+cover_image: ./cover-image.avif
 tags:
- - aws
- - grafana
- - terraform
+  - aws
+  - grafana
+  - terraform
 ---
 
 # Why Terraform?
 
-In this [post]({{ site.baseurl }}/aws/2020/11/27/aws_billing_metrics_and_grafana_cloud/) I described how to display AWS Billing metrics in Grafana Cloud. Therefore it was necessary to create manually the data source and the dashboard.
+In this [post](./aws_billing_metrics_and_grafana_cloud/) I described how to display AWS Billing metrics in Grafana Cloud. Therefore it was necessary to create manually the data source and the dashboard.
 With Terraform, you can describe the setup as code and benefit from the full advantages of [IaC](https://en.wikipedia.org/wiki/Infrastructure_as_code).
 
 # Terraform
 
 [Terraform](https://www.terraform.io/) is a tool for infrastructure as code and works with many different [provider](https://www.terraform.io/docs/providers/index.html#lists-of-terraform-providers).
-Terraform comes with a CLI for the deployments. 
+Terraform comes with a CLI for the deployments.
 
 # Grafana Provider and Dashboard declaration
 
@@ -35,7 +37,7 @@ provider "grafana" {
 ```
 
 Then the [data source](https://registry.terraform.io/providers/grafana/grafana/latest/docs/resources/data_source) and [dashboard](https://registry.terraform.io/providers/grafana/grafana/latest/docs/resources/dashboard).
-The dashboard section links to the file [dashboards/aws-billing.json](https://github.com/JohannesKonings/aws-grafana-billing-dashboard/blob/main/dashboards/aws-billing.json). 
+The dashboard section links to the file [dashboards/aws-billing.json](https://github.com/JohannesKonings/aws-grafana-billing-dashboard/blob/main/dashboards/aws-billing.json).
 
 ```
 resource "grafana_data_source" "cloudwatch" {
@@ -86,10 +88,10 @@ In this case it's in the file [variable.tf](https://github.com/JohannesKonings/a
 
 # Grafana API Key
 
-Terraform can "communicate" with Grafana via an API key. 
+Terraform can "communicate" with Grafana via an API key.
 Navigate to this URL "https://<<Grafana instance>>/org/apikeys" and create on with the role "Admin".
 
-![grafana api key creation]({{ site.baseurl }}/img/2020-12-19-aws_billing_metrics_grafana_cloud_and_terraform/grafana_api_key_creation.png)
+![grafana api key creation](./grafana_api_key_creation.png)
 
 Put the API key into the .env file.
 
@@ -100,7 +102,7 @@ Before the creation of the S3 Backend and the deployment run the command `source
 # Terraform AWS S3 backend
 
 This setup so far works for the first deployment. Changes and a redeployment lead to an error because the resource already exists.
-Therefore it's necessary to extend the setup with a [Terraform backend](https://www.terraform.io/docs/backends/index.html). 
+Therefore it's necessary to extend the setup with a [Terraform backend](https://www.terraform.io/docs/backends/index.html).
 In this example, it's a [S3 backend](https://www.terraform.io/docs/backends/types/s3.html).
 
 Unfortunately, it's not possible to use variables here. This is discussed in this [issue](https://github.com/hashicorp/terraform/issues/13022) with some approaches for workarounds. I use this [one](https://github.com/hashicorp/terraform/issues/13022#issuecomment-482014961), more or less.
@@ -129,7 +131,6 @@ This [script](https://github.com/JohannesKonings/aws-grafana-billing-dashboard/b
 
 aws s3api create-bucket --bucket $TF_VAR_s3_bucket_name --region $TF_VAR_region
 ```
-
 
 For the backend, it needs an IAM user. This [script](https://github.com/JohannesKonings/aws-grafana-billing-dashboard/blob/main/scripts/createUser4S3BackendBucket.sh) creates the user and return access and secret key. Put that into the .env file.
 
@@ -191,7 +192,7 @@ At first, the initialization of Terraform, which is wrapped in a script.
 
 For the next commands, the Terraform CLI is sufficient.
 
-[validate:](https://www.terraform.io/docs/commands/validate.html) `terraform validate` 
+[validate:](https://www.terraform.io/docs/commands/validate.html) `terraform validate`
 
 [plan:](https://www.terraform.io/docs/commands/plan.html) `terraform plan`
 
@@ -201,18 +202,17 @@ For the next commands, the Terraform CLI is sufficient.
 
 The dashboard can now be changed directly via the JSON file in the folder dashboards. The easier way is to do that manually in Grafana and copy the changed JSON via the share functionality.
 
-![share grafana dashboard]({{ site.baseurl }}/img/2020-12-19-aws_billing_metrics_grafana_cloud_and_terraform/share_grafana_dashboard.png)
+![share grafana dashboard](./share_grafana_dashboard.png)
 
-![grafana dashboard export view json]({{ site.baseurl }}/img/2020-12-19-aws_billing_metrics_grafana_cloud_and_terraform/grafana_dashboard_export_view_json.png)
+![grafana dashboard export view json](./grafana_dashboard_export_view_json.png)
 
 Overwrite the file aws-billing.json with the JSON from Grafana and redeploy.
 
 # CI/CD pipeline
 
 The local deployment is also possible with a CI/CD pipeline. In [this example](https://github.com/JohannesKonings/aws-grafana-billing-dashboard/blob/main/.github/workflows/deploy2grafana.yml) it's with GitHub actions.
-Instead of the .env file, the variables and credentials coming from GitHub secrets. 
+Instead of the .env file, the variables and credentials coming from GitHub secrets.
 
 # Code
 
 [https://github.com/JohannesKonings/aws-grafana-billing-dashboard](https://github.com/JohannesKonings/aws-grafana-billing-dashboard)
-
