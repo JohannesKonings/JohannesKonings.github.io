@@ -9,9 +9,9 @@ import { Image } from "astro:assets";
 import avatar from "../../img/avatar.png";
 
 const posts = (await getCollection("blog"))
-  .filter((post) => post.data.published)
-  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime())
-  .slice(0, 3);
+	.filter((post) => post.data.published)
+	.sort((a, b) => b.data.date.getTime() - a.data.date.getTime())
+	.slice(0, 3);
 ---
 
 <PageLayout title="Home" description={SITE.DESCRIPTION}>

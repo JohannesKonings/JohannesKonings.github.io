@@ -7,16 +7,16 @@ import Search from "@components/Search";
 import { SEARCH } from "@consts";
 
 const posts = (await getCollection("blog")).filter(
-  (post) => post.data.published
+	(post) => post.data.published,
 );
 
 const notes = (await getCollection("notes")).filter(
-  (post) => post.data.published
+	(post) => post.data.published,
 );
 
 const data = [
-  ...(posts as CollectionEntry<"blog">[]),
-  ...(notes as CollectionEntry<"notes">[]),
+	...(posts as CollectionEntry<"blog">[]),
+	...(notes as CollectionEntry<"notes">[]),
 ];
 ---
 

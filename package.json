@@ -1,24 +1,27 @@
 {
-  "name": "johanneskonings.github.io",
-  "version": "1.0.0",
-  "description": "Blogging and Accounts",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "knip": "knip"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/JohannesKonings/JohannesKonings.github.io.git"
-  },
-  "author": "Johannes Konings",
-  "license": "GPL-3.0-or-later",
-  "bugs": {
-    "url": "https://github.com/JohannesKonings/JohannesKonings.github.io/issues"
-  },
-  "homepage": "johanneskonings.dev",
-  "devDependencies": {
-    "@types/node": "^20.14.10",
-    "knip": "^5.21.1",
-    "typescript": "^5.5.3"
-  }
+	"name": "johanneskonings.github.io",
+	"version": "1.0.0",
+	"description": "Blogging and Accounts",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"knip": "knip",
+		"format:check": "npx @biomejs/biome format",
+		"lint:check": "npx @biomejs/biome lint"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/JohannesKonings/JohannesKonings.github.io.git"
+	},
+	"author": "Johannes Konings",
+	"license": "GPL-3.0-or-later",
+	"bugs": {
+		"url": "https://github.com/JohannesKonings/JohannesKonings.github.io/issues"
+	},
+	"homepage": "johanneskonings.dev",
+	"devDependencies": {
+		"@biomejs/biome": "1.8.3",
+		"@types/node": "^20.14.10",
+		"knip": "^5.21.1",
+		"typescript": "^5.5.3"
+	}
 }

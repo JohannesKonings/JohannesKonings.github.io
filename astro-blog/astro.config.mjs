@@ -7,16 +7,16 @@ import rehypeAstroRelativeMarkdownLinks from "astro-rehype-relative-markdown-lin
 
 // https://astro.build/config
 export default defineConfig({
-  site: "https://johanneskonings.dev",
-  markdown: {
-    rehypePlugins: [rehypeAstroRelativeMarkdownLinks],
-  },
-  integrations: [
-    mdx(),
-    sitemap(),
-    solidJs(),
-    tailwind({
-      applyBaseStyles: false,
-    }),
-  ],
+	site: "https://johanneskonings.dev",
+	markdown: {
+		rehypePlugins: [rehypeAstroRelativeMarkdownLinks],
+	},
+	integrations: [
+		mdx(),
+		sitemap(),
+		solidJs(),
+		tailwind({
+			applyBaseStyles: false,
+		}),
+	],
 });

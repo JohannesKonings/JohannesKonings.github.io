@@ -3,7 +3,7 @@ import type { CollectionEntry } from "astro:content";
 import { formatDate, readingTime } from "@lib/utils";
 
 type Props = {
-  entry: CollectionEntry<"notes"> | CollectionEntry<"blog">;
+	entry: CollectionEntry<"notes"> | CollectionEntry<"blog">;
 };
 
 const { entry } = Astro.props;
@@ -13,9 +13,9 @@ const { title, summary, date } = data;
 const isCoverImage = entry.data.hasOwnProperty("cover_image");
 // @ts-ignore
 const coverImagePath = isCoverImage
-  ? // @ts-ignore
-    (entry.data["cover_image"] as ImageMetadata)
-  : null;
+	? // @ts-ignore
+		(entry.data["cover_image"] as ImageMetadata)
+	: null;
 ---
 
 <div>
