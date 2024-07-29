@@ -80,7 +80,7 @@ jobs:
           ${{ steps.detect-package-manager.outputs.runner }} build:astro \
             --site "${{ steps.pages.outputs.origin }}" \
             --base "${{ steps.pages.outputs.base_path }}"
-        working-directory: ${{ env.WEBSITE_PATH }}
+        working-directory: ${{ env.BUILD_PATH }}
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
