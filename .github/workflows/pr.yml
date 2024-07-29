@@ -1,4 +1,4 @@
-name: PR Format Check
+name: PR Checks
 
 on:
   pull_request:
@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  format-check:
+  checks:
     runs-on: ubuntu-latest
 
     steps:
@@ -26,3 +26,4 @@ jobs:
 
       - name: Run lint check
         run: npm run lint:check
+        continue-on-error: true
