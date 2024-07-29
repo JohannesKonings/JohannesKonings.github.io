@@ -8,11 +8,11 @@ import ArticleBottomLayout from "@layouts/ArticleBottomLayout.astro";
 
 // Create the static note pages
 export async function getStaticPaths() {
-  const notes = await getCollection("notes");
-  return notes.map((post) => ({
-    params: { slug: post.slug },
-    props: post,
-  }));
+	const notes = await getCollection("notes");
+	return notes.map((post) => ({
+		params: { slug: post.slug },
+		props: post,
+	}));
 }
 
 // Get the requested post

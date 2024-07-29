@@ -1,1 +1,1 @@
-export const basePath = '/next-blog/out'
+export const basePath = "/next-blog/out";
