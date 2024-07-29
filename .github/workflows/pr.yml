@@ -19,11 +19,11 @@ jobs:
           node-version: 20
 
       - name: Install dependencies
-        run: npm ci
+        run: pnpm i --frozen-lockfile
 
       - name: Run format check
-        run: npm run format:check
+        run: pnpm run format:check
 
       - name: Run lint check
-        run: npm run lint:check
+        run: pnpm run lint:check
         continue-on-error: true
