@@ -25,8 +25,8 @@ concurrency:
   cancel-in-progress: false
 
 env:
-  # BUILD_PATH: "." # default value when not using subfolders
-  BUILD_PATH: astro-blog
+  BUILD_PATH: "." # default value when not using subfolders
+  WEBSITE_PATH: websites/astro
 
 jobs:
   build:
@@ -44,16 +44,25 @@ jobs:
             echo "runner=yarn" >> $GITHUB_OUTPUT
             echo "lockfile=yarn.lock" >> $GITHUB_OUTPUT
             exit 0
-          elif [ -f "${{ github.workspace }}/package.json" ]; then
+          elif [ -f "${{ github.workspace }}/package-lock.json" ]; then
             echo "manager=npm" >> $GITHUB_OUTPUT
             echo "command=ci" >> $GITHUB_OUTPUT
             echo "runner=npx --no-install" >> $GITHUB_OUTPUT
             echo "lockfile=package-lock.json" >> $GITHUB_OUTPUT
             exit 0
+          elif [ -f "${{ github.workspace }}/pnpm-lock.yaml" ]; then
+            echo "manager=pnpm" >> $GITHUB_OUTPUT
+            echo "command=i --frozen-lockfile" >> $GITHUB_OUTPUT
+            echo "runner=pnpm" >> $GITHUB_OUTPUT
+            echo "lockfile=pnpm-lock.yaml" >> $GITHUB_OUTPUT
+            exit 0
           else
             echo "Unable to determine package manager"
             exit 1
           fi
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
@@ -68,14 +77,14 @@ jobs:
         working-directory: ${{ env.BUILD_PATH }}
       - name: Build with Astro
         run: |
-          ${{ steps.detect-package-manager.outputs.runner }} astro build \
+          ${{ steps.detect-package-manager.outputs.runner }} build:astro \
             --site "${{ steps.pages.outputs.origin }}" \
             --base "${{ steps.pages.outputs.base_path }}"
         working-directory: ${{ env.BUILD_PATH }}
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ${{ env.BUILD_PATH }}/dist
+          path: ${{ env.WEBSITE_PATH }}/dist
 
   deploy:
     environment:

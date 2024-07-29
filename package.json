@@ -5,8 +5,10 @@
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1",
 		"knip": "knip",
-		"format:check": "npx @biomejs/biome format",
-		"lint:check": "npx @biomejs/biome lint"
+		"format:check": "pnpm biome format",
+		"lint:check": "pnpm biome lint",
+		"dev:astro": "pnpm --filter astro dev",
+		"build:astro": "pnpm --filter astro build"
 	},
 	"repository": {
 		"type": "git",
@@ -22,6 +24,9 @@
 		"@biomejs/biome": "1.8.3",
 		"@types/node": "^20.14.10",
 		"knip": "^5.21.1",
-		"typescript": "^5.5.3"
-	}
+		"typescript": "^5.5.3",
+		"execa": "9.3.0",
+		"tsx": "4.16.2"
+	},
+	"type": "module"
 }
