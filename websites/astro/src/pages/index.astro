@@ -39,6 +39,19 @@ const posts = (await getCollection("blog"))
 
   <script is:inline src="/js/bg.js"></script>
 
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const jk = document.getElementById('jk');
+      // const avatar = document.getElementById('avatar-img');
+      const recentPosts = document.getElementById('recent-posts');
+      setTimeout(() => {
+        jk!.classList.add('animate-move-up');
+        // avatar!.classList.add('animate-corona');
+        recentPosts!.classList.add('animate-move-up');
+      }, 2_000);
+    });
+  </script>
+
   <!-- HERO -->
   <section class="relative h-screen w-full">
     <div
@@ -65,9 +78,9 @@ const posts = (await getCollection("blog"))
       class="animate absolute h-full w-full flex items-center justify-center"
     >
       <div class="relative w-full h-full flex items-center justify-center">
-        <div class="p-5 text-center">
-          <div class="flex justify-center items-center">
-            <Image src={avatar} alt="Avatar" class="animate-grow" />
+        <div id="jk" class="p-5 text-center">
+          <div id="avatar" class="flex justify-center items-center">
+            <Image id="avatar-img" src={avatar} alt="Avatar" class="animate-grow" />
           </div>
           <p
             class="animated text-2xl md:text-3xl lg:text-4xl font-bold uppercase text-black dark:text-white pt-4"
@@ -98,7 +111,7 @@ const posts = (await getCollection("blog"))
     </div>
   </section>
   <!-- <section class="relative h-screen w-full"> -->
-  <div class="relative bg-white dark:bg-black">
+  <div id="recent-posts" class="relative bg-white dark:bg-black">
     <div class="mx-auto max-w-screen-sm p-5 space-y-24 pb-16">
       <!-- Blog Preview Section -->
       <section class="animate">
