@@ -62,6 +62,12 @@ export const SOCIALS: Socials = [
 		HREF: "https://www.linkedin.com/in/JohannesKonings/",
 	},
 	{
+		NAME: "Bluesky",
+		ICON: "bluesky",
+		TEXT: "@johanneskonings.dev",
+		HREF: "https://bsky.app/profile/johanneskonings.dev",
+	},
+	{
 		NAME: "Mastodon",
 		ICON: "mastodon",
 		TEXT: "@KoningsJohannes",
