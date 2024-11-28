@@ -87,8 +87,8 @@ jobs:
         run: |
           ${{ steps.detect-package-manager.outputs.runner }} build:tanstack \
             --site "${{ steps.pages.outputs.origin }}" \
-            --base "${{ steps.pages.outputs.base_path }}"
-        working-directory: ${{ env.BUILD_PATH }}
+            --base "${{ steps.pages.outputs.base_path }}/tanstack"
+        working-directory: ${{ env.WEBSITE_TANSTACK_PATH }}
       - name: Upload Astro artifact
         uses: actions/upload-pages-artifact@v3
         with:
@@ -103,11 +103,18 @@ jobs:
   deploy:
     environment:
       name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+      url: ${{ steps.deployment-astro.outputs.page_url }}
     needs: build
     runs-on: ubuntu-latest
     name: Deploy
     steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
+      - name: Deploy Astro to GitHub Pages
+        id: deployment-astro
         uses: actions/deploy-pages@v4
+        with:
+          artifact_name: astro-artifact
+      - name: Deploy Tanstack to GitHub Pages
+        id: deployment-tanstack
+        uses: actions/deploy-pages@v4
+        with:
+          artifact_name: tanstack-artifact
