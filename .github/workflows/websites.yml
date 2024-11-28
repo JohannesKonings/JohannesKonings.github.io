@@ -93,10 +93,12 @@ jobs:
         uses: actions/upload-pages-artifact@v3
         with:
           path: ${{ env.WEBSITE_ASTRO_PATH }}/dist
+          name: astro-artifact
       - name: Upload Tanstack artifact
         uses: actions/upload-pages-artifact@v3
         with:
           path: ${{ env.WEBSITE_TANSTACK_PATH }}/.output/public
+          name: tanstack-artifact
 
   deploy:
     environment:
