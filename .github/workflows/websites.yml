@@ -88,7 +88,7 @@ jobs:
           ${{ steps.detect-package-manager.outputs.runner }} build:tanstack \
             --site "${{ steps.pages.outputs.origin }}" \
             --base "${{ steps.pages.outputs.base_path }}/tanstack"
-        working-directory: ${{ env.WEBSITE_TANSTACK_PATH }}
+        working-directory: ${{ env.BUILD_PATH }}
       - name: Upload Astro artifact
         uses: actions/upload-pages-artifact@v3
         with:
