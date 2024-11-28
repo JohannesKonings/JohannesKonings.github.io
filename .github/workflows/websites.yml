@@ -2,12 +2,13 @@
 #
 # To get started with Astro see: https://docs.astro.build/en/getting-started/
 #
-name: Deploy Astro site to Pages
+name: Deploy websites to Pages
 
 on:
   # Runs on pushes targeting the default branch
   push:
-    branches: ["main"]
+    # branches: ["main"]
+    branches: ["tanstack"]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -26,7 +27,8 @@ concurrency:
 
 env:
   BUILD_PATH: "." # default value when not using subfolders
-  WEBSITE_PATH: websites/astro
+  WEBSITE_ASTRO_PATH: websites/astro
+  WEBSITE_TANSTACK_PATH: websites/tanstack
 
 jobs:
   build:
@@ -81,10 +83,20 @@ jobs:
             --site "${{ steps.pages.outputs.origin }}" \
             --base "${{ steps.pages.outputs.base_path }}"
         working-directory: ${{ env.BUILD_PATH }}
-      - name: Upload artifact
+      - name: Build with Tanstack
+        run: |
+          ${{ steps.detect-package-manager.outputs.runner }} build:tanstack \
+            --site "${{ steps.pages.outputs.origin }}" \
+            --base "${{ steps.pages.outputs.base_path }}/tanstack"
+        working-directory: ${{ env.WEBSITE_TANSTACK_PATH }}
+      - name: Upload Astro artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ${{ env.WEBSITE_PATH }}/dist
+          path: ${{ env.WEBSITE_ASTRO_PATH }}/dist
+      - name: Upload Tanstack artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ${{ env.WEBSITE_TANSTACK_PATH }}/.output/public
 
   deploy:
     environment:
