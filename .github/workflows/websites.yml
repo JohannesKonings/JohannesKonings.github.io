@@ -89,32 +89,26 @@ jobs:
             --site "${{ steps.pages.outputs.origin }}" \
             --base "${{ steps.pages.outputs.base_path }}/tanstack"
         working-directory: ${{ env.BUILD_PATH }}
-      - name: Upload Astro artifact
+      - name: Combine build artifacts
+        run: |
+          # astro is root, tanstack is in a subfolder
+          mkdir -p ${{ env.BUILD_PATH }}/dist
+          cp -r ${{ env.WEBSITE_ASTRO_PATH }}/dist/* ${{ env.BUILD_PATH }}/dist
+          mkdir -p ${{ env.BUILD_PATH }}/dist/tanstack
+          cp -r ${{ env.WEBSITE_TANSTACK_PATH }}/.output/public/* ${{ env.BUILD_PATH }}/dist/tanstack
+      - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ${{ env.WEBSITE_ASTRO_PATH }}/dist
-          name: astro-artifact
-      - name: Upload Tanstack artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: ${{ env.WEBSITE_TANSTACK_PATH }}/.output/public
-          name: tanstack-artifact
+          path: ${{ env.BUILD_PATH }}/dist
 
   deploy:
     environment:
       name: github-pages
-      url: ${{ steps.deployment-astro.outputs.page_url }}
+      url: ${{ steps.deployment.outputs.page_url }}
     needs: build
     runs-on: ubuntu-latest
     name: Deploy
     steps:
-      - name: Deploy Astro to GitHub Pages
-        id: deployment-astro
+      - name: Deploy websites to GitHub Pages
+        id: deployment
         uses: actions/deploy-pages@v4
-        with:
-          artifact_name: astro-artifact
-      # - name: Deploy Tanstack to GitHub Pages
-      #   id: deployment-tanstack
-      #   uses: actions/deploy-pages@v4
-      #   with:
-      #     artifact_name: tanstack-artifact
