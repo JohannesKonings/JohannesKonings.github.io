@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "dev": "vinxi dev",
-    "build": "vinxi build",
+    "build": "vinxi build && cp -r .output/public/tanstack/assets .output/public",
     "start": "vinxi start",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
