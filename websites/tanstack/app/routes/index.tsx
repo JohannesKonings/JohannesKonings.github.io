@@ -11,13 +11,19 @@ import {
 	Typography,
 	Link,
 } from "@mui/material";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-	faTwitter,
-	faGithub,
-	faBluesky,
-} from "@fortawesome/free-brands-svg-icons";
+// import { Icon } from "@iconify/react";
+// import {
+// 	faTwitter,
+// 	faGithub,
+// 	faBluesky,
+// } from "@fortawesome/free-brands-svg-icons";
 import avatar from "../images/avatar.png";
+import { Fa6BrandsBluesky, MdiGithub } from "../icons";
+
+// import "@fortawesome/fontawesome-svg-core/styles.css";
+
+// import { config } from "@fortawesome/fontawesome-svg-core";
+// config.autoAddCss = false; /* eslint-disable import/first */
 
 export const Route = createFileRoute("/")({
 	// component: React.lazy(() =>
@@ -54,14 +60,6 @@ function Home() {
 			<Container style={{ textAlign: "center" }}>
 				{/* <img src="/tanstack/img/avatar.png" alt="Avatar" /> */}
 				<img src={avatar} alt="Avatar" />
-				{/* <img
-					src={
-						isDev
-							? "../images/avatar.png"
-							: `${githubPagesPrefix}/app/images/avatar.png`
-					}
-					alt="Avatar"
-				/> */}
 				<div>
 					<Link
 						href="https://github.com/johanneskonings"
@@ -70,7 +68,7 @@ function Home() {
 						color="inherit"
 						style={{ margin: "0 10px" }}
 					>
-						<FontAwesomeIcon icon={faGithub} size="2x" />
+						<MdiGithub style={{ fontSize: "48px" }} />
 					</Link>
 					<Link
 						href="https://bsky.app/profile/johanneskonings.dev"
@@ -79,7 +77,7 @@ function Home() {
 						color="inherit"
 						style={{ margin: "0 10px" }}
 					>
-						<FontAwesomeIcon icon={faBluesky} size="2x" />
+						<Fa6BrandsBluesky style={{ fontSize: "48px" }} />
 					</Link>
 				</div>
 				<Typography variant="h3" style={{ fontFamily: "Cascadia Code" }}>
