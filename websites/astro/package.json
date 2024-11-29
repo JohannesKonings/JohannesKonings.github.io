@@ -4,10 +4,10 @@
 	"version": "1.0.0",
 	"scripts": {
 		"sync": "pnpm tsx ./../../scripts/sync.ts astro",
-		"dev": "npm run sync && astro dev",
+		"dev": "pnpm sync && astro dev",
 		"dev:network": "astro dev --host",
 		"start": "astro dev",
-		"build": "npm run sync && astro check && astro build",
+		"build": "pnpm sync && astro check && astro build",
 		"preview": "astro preview",
 		"preview:network": "astro dev --host",
 		"astro": "astro"

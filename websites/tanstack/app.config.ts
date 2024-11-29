@@ -10,6 +10,9 @@ export default defineConfig({
 			base: githubPagesPrefix,
 		},
 	},
+	// vite: {
+	// 	assetsInclude: "**/*.md",
+	// },
 	server: {
 		compatibilityDate: "2024-11-23",
 		prerender: {

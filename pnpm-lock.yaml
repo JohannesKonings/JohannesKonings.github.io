@@ -162,6 +162,9 @@ importers:
       '@tanstack/start':
         specifier: ^1.83.1
         version: 1.83.1(@types/node@22.10.0)(ioredis@5.4.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(terser@5.36.0)(typescript@5.7.2)(vite@5.4.10(@types/node@22.10.0)(terser@5.36.0))
+      markdown-to-jsx:
+        specifier: ^7.7.0
+        version: 7.7.0(react@18.3.1)
       react:
         specifier: 18.3.1
         version: 18.3.1
@@ -4175,6 +4178,12 @@ packages:
 
   markdown-table@3.0.3:
     resolution: {integrity: sha512-Z1NL3Tb1M9wH4XESsCDEksWoKTdlUafKc4pt0GRwjUyXaCFZ+dc3g2erqB6zm3szA2IUSi7VnPI+o/9jnxh9hw==}
+
+  markdown-to-jsx@7.7.0:
+    resolution: {integrity: sha512-130nIMbJY+woOQJ11xTqEtYko60t6EpNkZuqjKMferL3udtob3nRfzXOdsiA26NPemiR7w/hR8M3/B9yiYPGZg==}
+    engines: {node: '>= 10'}
+    peerDependencies:
+      react: '>= 0.14.0'
 
   mdast-util-definitions@6.0.0:
     resolution: {integrity: sha512-scTllyX6pnYNZH/AIp/0ePz6s4cZtARxImwoPJ7kS42n+MnVsI4XbnG6d4ibehRIldYMWM2LD7ImQblVhUejVQ==}
@@ -10479,6 +10488,10 @@ snapshots:
       uc.micro: 2.1.0
 
   markdown-table@3.0.3: {}
+
+  markdown-to-jsx@7.7.0(react@18.3.1):
+    dependencies:
+      react: 18.3.1
 
   mdast-util-definitions@6.0.0:
     dependencies:
