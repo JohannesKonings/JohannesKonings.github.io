@@ -19,32 +19,13 @@ import {
 } from "@fortawesome/free-brands-svg-icons";
 import avatar from "../images/avatar.png";
 
-const filePath = "count.txt";
-
-async function readCount() {
-	return parseInt(
-		await fs.promises.readFile(filePath, "utf-8").catch(() => "0"),
-	);
-}
-
-const getCount = createServerFn({
-	method: "GET",
-}).handler(() => {
-	return readCount();
-});
-
-const updateCount = createServerFn({ method: "POST" })
-	.validator((d: number) => d)
-	.handler(async ({ data }) => {
-		const count = await readCount();
-		await fs.promises.writeFile(filePath, `${count + data}`);
-	});
-
 export const Route = createFileRoute("/")({
-	component: React.lazy(() =>
-		import("./index").then((module) => ({ default: module.Home })),
-	),
-	loader: async () => await getCount(),
+	// component: React.lazy(() =>
+	// 	import("./index").then((module) => ({ default: module.Home })),
+	// ),
+	component: Home,
+	// loader: async () => await getCount(),
+	notFoundComponent: () => <div>Page Not Found</div>,
 });
 // const rootRoute = createRootRoute({
 // });
@@ -60,9 +41,12 @@ const darkTheme = createTheme({
 	},
 });
 
-export function Home() {
-	const router = useRouter();
-	const state = Route.useLoaderData();
+function Home() {
+	// const router = useRouter();
+	// const state = Route.useLoaderData();
+	// const isDev = process.env.NODE_ENV === "development";
+	// console.log("isDev", isDev);
+	// console.log("process.env.NODE_ENV", process.env.NODE_ENV);
 
 	return (
 		<ThemeProvider theme={darkTheme}>
@@ -70,6 +54,14 @@ export function Home() {
 			<Container style={{ textAlign: "center" }}>
 				{/* <img src="/tanstack/img/avatar.png" alt="Avatar" /> */}
 				<img src={avatar} alt="Avatar" />
+				{/* <img
+					src={
+						isDev
+							? "../images/avatar.png"
+							: `${githubPagesPrefix}/app/images/avatar.png`
+					}
+					alt="Avatar"
+				/> */}
 				<div>
 					<Link
 						href="https://github.com/johanneskonings"
