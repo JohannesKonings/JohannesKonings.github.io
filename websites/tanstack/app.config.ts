@@ -3,7 +3,8 @@ import { defineConfig } from '@tanstack/start/config'
 export default defineConfig({
   server: {
     prerender: {
-      routes: ['/'],
+      // autoSubfolderIndex: true,
+      routes: ['/tanstack'],
       crawlLinks: true,
     },
     static: true,

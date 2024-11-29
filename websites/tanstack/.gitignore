@@ -1,4 +1,4 @@
-.vercel
-.vinxi
-public/
+.vercel/
+.vinxi/
+.output/
 app.config.timestamp*
