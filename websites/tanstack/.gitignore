@@ -1,0 +1,4 @@
+.vercel/
+.vinxi/
+.output/
+app.config.timestamp*

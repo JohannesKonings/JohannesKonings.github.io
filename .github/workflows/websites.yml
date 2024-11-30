@@ -2,7 +2,7 @@
 #
 # To get started with Astro see: https://docs.astro.build/en/getting-started/
 #
-name: Deploy Astro site to Pages
+name: Deploy websites to Pages
 
 on:
   # Runs on pushes targeting the default branch
@@ -26,7 +26,8 @@ concurrency:
 
 env:
   BUILD_PATH: "." # default value when not using subfolders
-  WEBSITE_PATH: websites/astro
+  WEBSITE_ASTRO_PATH: websites/astro
+  WEBSITE_TANSTACK_PATH: websites/tanstack
 
 jobs:
   build:
@@ -81,10 +82,27 @@ jobs:
             --site "${{ steps.pages.outputs.origin }}" \
             --base "${{ steps.pages.outputs.base_path }}"
         working-directory: ${{ env.BUILD_PATH }}
+      # - name: Build with Tanstack
+      #   run: |
+      #     ${{ steps.detect-package-manager.outputs.runner }} build:tanstack \
+      #       --site "${{ steps.pages.outputs.origin }}" \
+      #       --base "${{ steps.pages.outputs.base_path }}/tanstack"
+      #   working-directory: ${{ env.BUILD_PATH }}
+      - name: Build with Tanstack
+        run: |
+          ${{ steps.detect-package-manager.outputs.runner }} build:tanstack
+        working-directory: ${{ env.BUILD_PATH }}
+      - name: Combine build artifacts
+        run: |
+          # astro is root, tanstack is in a subfolder
+          mkdir -p ${{ env.BUILD_PATH }}/dist
+          cp -r ${{ env.WEBSITE_ASTRO_PATH }}/dist/* ${{ env.BUILD_PATH }}/dist
+          mkdir -p ${{ env.BUILD_PATH }}/dist/tanstack
+          cp -r ${{ env.WEBSITE_TANSTACK_PATH }}/.output/public/* ${{ env.BUILD_PATH }}/dist/tanstack
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ${{ env.WEBSITE_PATH }}/dist
+          path: ${{ env.BUILD_PATH }}/dist
 
   deploy:
     environment:
@@ -94,6 +112,6 @@ jobs:
     runs-on: ubuntu-latest
     name: Deploy
     steps:
-      - name: Deploy to GitHub Pages
+      - name: Deploy websites to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
