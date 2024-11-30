@@ -6,6 +6,7 @@
 		"test": "echo \"Error: no test specified\" && exit 1",
 		"knip": "knip",
 		"format:check": "pnpm biome format",
+		"format:fix": "pnpm biome format --fix",
 		"lint:check": "pnpm biome lint",
 		"dev:astro": "pnpm --filter astro dev",
 		"dev:tanstack": "pnpm --filter tanstack dev",

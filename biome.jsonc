@@ -1,7 +1,15 @@
 {
 	"$schema": "https://biomejs.dev/schemas/1.8.3/schema.json",
 	"files": {
-		"ignore": ["next-blog/.next/**", "next-blog/out/**", ".astro", "**/dist/**"]
+		"ignore": [
+			"next-blog/.next/**",
+			"next-blog/out/**",
+			".astro",
+			"**/dist/**",
+			//tanstack
+			".vinxi",
+			".output"
+		]
 	},
 	"formatter": {
 		"enabled": true

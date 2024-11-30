@@ -1,23 +1,26 @@
 {
-  "[markdown]": {
-    "editor.fontSize": 14,
-    "editor.lineHeight": 26,
-    "editor.wordWrap": "wordWrapColumn",
-    "editor.wordWrapColumn": 64,
-    "editor.lineNumbers": "off",
-    "editor.quickSuggestions": {
-      "comments": "off",
-      "strings": "off",
-      "other": "off"
-    },
-    "editor.minimap.enabled": false
-  },
-  "editor.formatOnSave": true,
-  "editor.defaultFormatter": "biomejs.biome",
-  "[html]": {
-    "editor.defaultFormatter": "vscode.html-language-features"
-  },
-  "[typescript]": {
-    "editor.defaultFormatter": "biomejs.biome"
-  }
+	"[markdown]": {
+		"editor.fontSize": 14,
+		"editor.lineHeight": 26,
+		"editor.wordWrap": "wordWrapColumn",
+		"editor.wordWrapColumn": 64,
+		"editor.lineNumbers": "off",
+		"editor.quickSuggestions": {
+			"comments": "off",
+			"strings": "off",
+			"other": "off"
+		},
+		"editor.minimap.enabled": false
+	},
+	"editor.formatOnSave": true,
+	"editor.defaultFormatter": "biomejs.biome",
+	"[html]": {
+		"editor.defaultFormatter": "vscode.html-language-features"
+	},
+	"[typescript]": {
+		"editor.defaultFormatter": "biomejs.biome"
+	},
+	"[jsonc]": {
+		"editor.defaultFormatter": "biomejs.biome"
+	}
 }
