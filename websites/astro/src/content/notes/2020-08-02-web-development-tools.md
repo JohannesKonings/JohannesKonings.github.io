@@ -43,7 +43,7 @@ tags:
 
 - https://favicon.io/favicon-converter/
 
-# misc
+# open grap previews
 
-https://socialsharepreview.com/
-
+ * https://socialsharepreview.com/
+ * local: https://medium.com/@shriharimohan/how-to-test-open-graph-meta-tags-locally-13a65120d3ef

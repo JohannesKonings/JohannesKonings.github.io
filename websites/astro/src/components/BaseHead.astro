@@ -3,6 +3,7 @@ interface Props {
 	title: string;
 	description: string;
 	image?: string;
+	coverImage: string;
 }
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
@@ -45,6 +46,9 @@ const { title, description, image = "/open-graph.jpg" } = Astro.props;
 <meta property="og:title" content={title} />
 <meta property="og:description" content={description} />
 <meta property="og:image" content={new URL(image, Astro.url)} />
+{Astro.url.pathname.startsWith('/blog') && Astro.props.coverImage && (
+  <meta property="og:image" content={new URL(Astro.props.coverImage, Astro.url)} />
+)}
 
 <!-- Twitter -->
 <meta property="twitter:card" content="summary_large_image" />
