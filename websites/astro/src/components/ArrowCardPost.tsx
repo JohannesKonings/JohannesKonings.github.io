@@ -7,10 +7,9 @@ type Props = {
 };
 
 export default function ArrowCardPost({ entry, pill }: Props) {
-	const isCoverImage = entry.data.hasOwnProperty("cover_image");
-	// @ts-ignore
+	const isCoverImage = "cover_image" in entry.data;
 	const coverImagePath = isCoverImage
-		? (entry.data["cover_image"] as ImageMetadata)
+		? (entry.data.cover_image as ImageMetadata)
 		: null;
 
 	return (
@@ -28,11 +27,6 @@ export default function ArrowCardPost({ entry, pill }: Props) {
 					<div class="text-sm uppercase">{formatDate(entry.data.date)}</div>
 				</div>
 				{isCoverImage && coverImagePath && (
-					// <Image src={coverImagePath} alt={entry.data.title} />
-					// <Image src={avatar} alt={entry.data.title} />
-					//   <div class="flex justify-center items-center">
-					//   <Image  src={avatar} alt="Avatar" class="animate-grow" />
-					// </div>
 					<img src={coverImagePath.src} alt="Avatar" />
 				)}
 				<div class="font-semibold mt-3 text-black dark:text-white">

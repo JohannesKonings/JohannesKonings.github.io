@@ -4,7 +4,7 @@ import BaseHead from "@components/BaseHead.astro";
 import Header from "@components/Header.astro";
 import Footer from "@components/Footer.astro";
 import Drawer from "@components/Drawer.astro";
-const { title, description, coverImage } = Astro.props;
+const { title, description, coverImageSrc } = Astro.props;
 import { SITE } from "@consts";
 ---
 
@@ -16,7 +16,7 @@ import { SITE } from "@consts";
       defer
       src="https://cloud.umami.is/script.js"
       data-website-id="ad18022d-5431-470e-909a-74a7882c97e2"></script>
-    <BaseHead title={`${title} | ${SITE.TITLE}`} description={description}, coverImage={coverImage} />
+    <BaseHead title={`${title} | ${SITE.TITLE}`} description={description}, coverImageSrc={coverImageSrc} />
   </head>
   <body>
     <Header />
