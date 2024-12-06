@@ -13,9 +13,24 @@ export function formatDate(date: Date) {
 	}).format(date);
 }
 
+// export function readingTime(html: string) {
+// 	const textOnly = html.replace(/<[^>]+>/g, "");
+// 	const wordCount = textOnly.split(/\s+/).length;
+// 	const readingTimeMinutes = (wordCount / 200 + 1).toFixed();
+// 	return `${readingTimeMinutes} min read`;
+// }
 export function readingTime(html: string) {
-	const textOnly = html.replace(/<[^>]+>/g, "");
-	const wordCount = textOnly.split(/\s+/).length;
-	const readingTimeMinutes = (wordCount / 200 + 1).toFixed();
-	return `${readingTimeMinutes} min read`;
+	if (!html) {
+		return { text: "0 min read", minutes: 0, time: 0, words: 0 };
+	}
+
+	const wordsPerMinute = 200;
+	const words = html.trim().split(/\s+/).length;
+	const minutes = Math.ceil(words / wordsPerMinute);
+	return {
+		text: `${minutes} min read`,
+		minutes,
+		time: minutes * 60 * 1000,
+		words,
+	};
 }

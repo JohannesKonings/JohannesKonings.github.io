@@ -1,35 +1,35 @@
 {
-	"name": "johanneskonings.github.io",
-	"version": "1.0.0",
-	"description": "Blogging and Accounts",
-	"scripts": {
-		"test": "echo \"Error: no test specified\" && exit 1",
-		"knip": "knip",
-		"format:check": "pnpm biome format",
-		"format:fix": "pnpm biome format --fix",
-		"lint:check": "pnpm biome lint",
-		"dev:astro": "pnpm --filter astro dev",
-		"dev:tanstack": "pnpm --filter tanstack dev",
-		"build:astro": "pnpm --filter astro build",
-		"build:tanstack": "pnpm --filter tanstack build"
-	},
-	"repository": {
-		"type": "git",
-		"url": "git+https://github.com/JohannesKonings/JohannesKonings.github.io.git"
-	},
-	"author": "Johannes Konings",
-	"license": "GPL-3.0-or-later",
-	"bugs": {
-		"url": "https://github.com/JohannesKonings/JohannesKonings.github.io/issues"
-	},
-	"homepage": "johanneskonings.dev",
-	"devDependencies": {
-		"@biomejs/biome": "1.9.4",
-		"@types/node": "^22.10.0",
-		"knip": "^5.38.1",
-		"typescript": "^5.7.2",
-		"execa": "9.5.1",
-		"tsx": "4.19.2"
-	},
-	"type": "module"
+  "name": "johanneskonings.github.io",
+  "version": "1.0.0",
+  "description": "Blogging and Accounts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "knip": "knip",
+    "format:check": "pnpm biome format",
+    "format:fix": "pnpm biome format --fix",
+    "lint:check": "pnpm biome lint",
+    "dev:astro": "pnpm --filter astro dev",
+    "dev:tanstack": "pnpm --filter tanstack dev",
+    "build:astro": "pnpm --filter astro build",
+    "build:tanstack": "pnpm --filter tanstack build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JohannesKonings/JohannesKonings.github.io.git"
+  },
+  "author": "Johannes Konings",
+  "license": "GPL-3.0-or-later",
+  "bugs": {
+    "url": "https://github.com/JohannesKonings/JohannesKonings.github.io/issues"
+  },
+  "homepage": "johanneskonings.dev",
+  "devDependencies": {
+    "@biomejs/biome": "1.9.4",
+    "@types/node": "^22.10.1",
+    "knip": "^5.39.2",
+    "typescript": "^5.7.2",
+    "execa": "9.5.1",
+    "tsx": "4.19.2"
+  },
+  "type": "module"
 }
