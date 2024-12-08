@@ -37,6 +37,22 @@
 	}
 }
 
+@keyframes fire {
+	0% {
+		box-shadow: 0 0 10px 0 rgba(255, 69, 0, 0.5);
+	}
+	50% {
+		box-shadow: 0 0 20px 10px rgba(255, 69, 0, 1);
+	}
+	100% {
+		box-shadow: 0 0 10px 0 rgba(255, 69, 0, 0.5);
+	}
+}
+.animate-fire {
+	animation: fire 5s ease-in-out;
+	border-radius: 50%; /* Ensure the fire animation is round */
+}
+
 /* @keyframes corona {
   0% {
     box-shadow: 0 0 10px 5px rgba(255, 255, 0, 0.5);

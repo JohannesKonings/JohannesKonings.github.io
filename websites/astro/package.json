@@ -3,7 +3,7 @@
 	"type": "module",
 	"version": "1.0.0",
 	"scripts": {
-		"sync": "pnpm tsx ./../../scripts/sync.ts astro",
+		"sync": "pnpm tsx ./../../scripts/syncWebsites.ts astro",
 		"dev": "pnpm sync && astro dev",
 		"dev:network": "astro dev --host",
 		"start": "astro dev",
