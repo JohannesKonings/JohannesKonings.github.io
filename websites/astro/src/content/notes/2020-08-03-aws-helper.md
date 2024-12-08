@@ -73,7 +73,8 @@ Disclaimer: This article contains helper tools for AWS and will be updated from 
 
 ## icons
 
-[AWS ICONS](https://awsicons.dev/)
+* https://awsicons.dev
+* https://aws-icons.com/
 
 ## IAM
 
