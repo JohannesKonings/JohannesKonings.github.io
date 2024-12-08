@@ -27,7 +27,7 @@ export default function ArrowCardPost({ entry, pill }: Props) {
 					<div class="text-sm uppercase">{formatDate(entry.data.date)}</div>
 				</div>
 				{isCoverImage && coverImagePath && (
-					<img src={coverImagePath.src} alt="Avatar" />
+					<img src={coverImagePath.src} alt="Avatar" class="rounded-lg" />
 				)}
 				<div class="font-semibold mt-3 text-black dark:text-white">
 					{entry.data.title}

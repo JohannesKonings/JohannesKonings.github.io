@@ -5,7 +5,7 @@
 	"main": "index.js",
 	"type": "module",
 	"scripts": {
-		"sync": "pnpm tsx ./../../scripts/sync.ts tanstack",
+		"sync": "pnpm tsx ./../../scripts/syncWebsites.ts tanstack",
 		"dev": "pnpm sync && vinxi dev",
 		"build": "pnpm sync && vinxi build && cp -r .output/public/tanstack/assets .output/public",
 		"build:local": "pnpm sync && vinxi build",
