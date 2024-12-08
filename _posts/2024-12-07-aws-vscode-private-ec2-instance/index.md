@@ -28,7 +28,7 @@ The following steps are necessary to set up the environment.
 * Installation of the SSM plugin for the AWS CLI
 * Installation of vs code with the [code code-server](https://github.com/coder/code-server)
 
-## Prequsites
+## Prerequisites
 
 * The VPC network setting already exists.
 * The private subnet has access to the internet

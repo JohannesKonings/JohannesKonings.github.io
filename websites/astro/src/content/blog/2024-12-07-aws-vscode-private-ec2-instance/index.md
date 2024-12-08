@@ -27,7 +27,7 @@ The following steps are necessary to set up the environment.
 * Installation of the SSM plugin for the AWS CLI
 * Installation of vs code with the [code code-server](https://github.com/coder/code-server)
 
-## Prequsites
+## Prerequisites
 
 * The VPC network setting already exists.
 * The private subnet has access to the internet
@@ -36,7 +36,7 @@ The following steps are necessary to set up the environment.
 
 The configuration is described [here](https://repost.aws/knowledge-center/ec2-systems-manager-vpc-endpoints).
 
-The neede VPC endpoints can be created like this:
+The needed VPC endpoints can be created like this:
 
 ```typescript
  const subnetsPrivateIsolated = props.vpc.selectSubnets({
@@ -59,7 +59,7 @@ The neede VPC endpoints can be created like this:
     });
 ```
 
-Here is a list of images, which has the SSM agent preinstalled: https://docs.aws.amazon.com/systems-manager/latest/userguide/ami-preinstalled-agent.html
+Here is a list of AMIs, which has the SSM agent preinstalled: https://docs.aws.amazon.com/systems-manager/latest/userguide/ami-preinstalled-agent.html
 
 The creation of the instance can than look like this:
 ```typescript
@@ -78,6 +78,7 @@ const roleSsm2Ec2 = new Role(this, "RoleSsm2Ec2", {
       role: roleSsm2Ec2,
     });
 ```
+The attached role is importent for the SSM Session Manager to work.
 
 ## Installation of the SSM plugin for the AWS CLI
 
@@ -110,9 +111,9 @@ code-server
 
 ![run code-server](./run-code-server.png)
 
-As you can see, the code-server is running on `http://127.0.0.1:8080/` (1.) and the password is `/home/ssm-user/.config/code-server/config.yaml` (2.).
+As you can see, the code-server is running on `http://127.0.0.1:8080/` (1.) and the password is in file `/home/ssm-user/.config/code-server/config.yaml` (2.).
 
-That infomration are needed to connect to the code-server via the browser.
+That information are needed to connect to the code-server via the browser.
 
 ## Connect to vs code via AWS Systems Manager port forwarding
 
