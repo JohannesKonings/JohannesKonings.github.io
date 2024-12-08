@@ -2,5 +2,8 @@
 	"astro-blog": { "public": {} },
 	"img": {},
 	"websites": { "tanstack": {} },
-	"_posts": { "2024-11-30-aws-sso-prowler": {} }
+	"_posts": {
+		"2024-11-30-aws-sso-prowler": {},
+		"2024-12-07-aws-vscode-private-ec2-instance": {}
+	}
 }
