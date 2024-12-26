@@ -3,10 +3,14 @@ import type { CollectionEntry } from "astro:content";
 import { formatDate, readingTime } from "@lib/utils";
 
 type Props = {
-	entry: CollectionEntry<"notes"> | CollectionEntry<"blog">;
+	entry:
+		| CollectionEntry<"notes">
+		| CollectionEntry<"blog">
+		| CollectionEntry<"infoSlsManagementGovernance">;
+	path?: string;
 };
 
-const { entry } = Astro.props;
+const { entry, path } = Astro.props;
 const { collection, data, body } = entry;
 const { title, summary, date } = data;
 const readingStats = readingTime(body);
@@ -19,7 +23,7 @@ const coverImagePath = isCoverImage(entry.data) ? entry.data.cover_image : null;
 
 <div>
   <a
-    href={`/${collection}`}
+    href={`/${path || collection}`}
     class="group w-fit p-1.5 gap-1.5 text-sm flex items-center border rounded hover:bg-black/5 hover:dark:bg-white/10 border-black/15 dark:border-white/20 transition-colors duration-300 ease-in-out"
   >
     <svg

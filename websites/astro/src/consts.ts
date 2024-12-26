@@ -19,6 +19,13 @@ export const NOTES: Page = {
 	DESCRIPTION: "Some notes on topics I care about.",
 };
 
+// Info Page
+export const INFO_AWS_SLS_MANAGEMENT_GOVERNANCE: Page = {
+	TITLE: "AWS Serverless Management & Governance",
+	DESCRIPTION: "Info about AWS Management & Governance (severless focused).",
+	PATH: "info/aws-sls-management-governance",
+};
+
 // Search Page
 export const SEARCH: Page = {
 	TITLE: "Search",
@@ -38,6 +45,10 @@ export const LINKS: Links = [
 	{
 		TEXT: "Notes",
 		HREF: "/notes",
+	},
+	{
+		TEXT: "Info",
+		HREF: "/info",
 	},
 ];
 
