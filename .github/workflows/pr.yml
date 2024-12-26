@@ -31,3 +31,6 @@ jobs:
       - name: Run lint check
         run: pnpm run lint:check
         continue-on-error: true
+
+      - name: Run astro build
+        run: pnpm run build:astro
