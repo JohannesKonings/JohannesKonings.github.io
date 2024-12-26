@@ -10,12 +10,13 @@ async function sync(from: string, to: string, pathPrefix: string) {
 		await execa`rm -rf ./../../${pathPrefix}/${to}`;
 	console.log("current files removed", stdoutCleanup);
 	const { stdout: stdoutCopy } =
-		await execa`cp -r ./../../${from}/ ./../../${pathPrefix}`;
+		// await execa`cp -r ./../../${from}/ ./../../${pathPrefix}`;
+		await execa`cp -r ./../../${from}/ ./../../${pathPrefix}/${to}`;
 	console.log("files copied", stdoutCopy);
 	// rename _posts to blog -> copy of folders below _posts was somehow not possible
-	const { stdout: stdoutRename } =
-		await execa`mv ./../../${pathPrefix}/${from} ./../../${pathPrefix}/${to}`;
-	console.log("moved", stdoutRename);
+	// const { stdout: stdoutRename } =
+	// 	await execa`mv ./../../${pathPrefix}/${from} ./../../${pathPrefix}/${to}`;
+	// console.log("moved", stdoutRename);
 
 	//   markdown post processing
 
@@ -41,6 +42,11 @@ const syncAstro = async () => {
 	const pathPrefix = "websites/astro/src/content";
 	await sync("_posts", "blog", pathPrefix);
 	await sync("_notes", "notes", pathPrefix);
+	await sync(
+		"_info/aws-sls-management-governance",
+		"infoSlsManagementGovernance",
+		pathPrefix,
+	);
 };
 
 const syncTanstack = async () => {
