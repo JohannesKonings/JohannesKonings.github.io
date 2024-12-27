@@ -48,7 +48,8 @@ export const LINKS: Links = [
 	},
 	{
 		TEXT: "Info",
-		HREF: "/info",
+		// biome-ignore lint/style/noNonNullAssertion: <explanation>
+		HREF: INFO_AWS_SLS_MANAGEMENT_GOVERNANCE.PATH!,
 	},
 ];
 
