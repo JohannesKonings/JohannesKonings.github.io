@@ -1,6 +1,6 @@
 ---
-
-// return Astro.redirect("/info/aws-sls-management-governance", 301);
-return Astro.rewrite("/info/aws-sls-management-governance");
+import { INFO_AWS_SLS_MANAGEMENT_GOVERNANCE } from "@consts";
+return Astro.redirect(INFO_AWS_SLS_MANAGEMENT_GOVERNANCE.PATH, 301);
+// return Astro.rewrite("/info/aws-sls-management-governance");
 ---
 
