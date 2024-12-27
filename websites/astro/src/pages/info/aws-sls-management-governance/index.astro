@@ -5,6 +5,8 @@ import TopLayout from "@layouts/TopLayout.astro";
 import BottomLayout from "@layouts/BottomLayout.astro";
 import Info from "@components/Info";
 import { BLOG, INFO_AWS_SLS_MANAGEMENT_GOVERNANCE } from "@consts";
+import imgManagementGovernanceCategoryIcon from "../../../../img/management-governance-category-icon.png";
+import { Image } from "astro:assets";
 
 const issues = (await getCollection("infoSlsManagementGovernance"))
 	.filter((issue) => issue.data.published)
@@ -18,7 +20,7 @@ const tags = [...new Set(issues.flatMap((issue) => issue.data.tags))].sort(
 <PageLayout title={BLOG.TITLE} description={BLOG.DESCRIPTION}>
   <TopLayout class="animate">
     <div class="animate page-heading">
-  <img src="../img/management-governance-category-icon.png" alt="Management Governance Category Icon" class="mx-auto mt-4" />
+  <Image src={imgManagementGovernanceCategoryIcon} alt="Management Governance Category Icon" class="mx-auto mt-4" />
   <h1 class="text-4xl font-bold text-center mt-8">Info about AWS Management & Governance (serverless focused)</h1>
   <p class="text-lg text-center mt-4">Get information every Wednesday about topics regarding AWS Management & Governance, including services like CloudWatch and Systems Manager. Covering topics for operations and GRC, all centered around serverless.</p>
 <!-- </TopLayout> -->
