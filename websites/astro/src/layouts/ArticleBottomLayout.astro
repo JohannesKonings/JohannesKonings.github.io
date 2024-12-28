@@ -4,7 +4,10 @@ import PostComments from "@components/PostComments.astro";
 import NoteComments from "@components/NoteComments.astro";
 
 type Props = {
-	entry: CollectionEntry<"blog"> | CollectionEntry<"notes">;
+	entry:
+		| CollectionEntry<"blog">
+		| CollectionEntry<"notes">
+		| CollectionEntry<"infoSlsManagementGovernance">;
 };
 
 // Get the requested entry
