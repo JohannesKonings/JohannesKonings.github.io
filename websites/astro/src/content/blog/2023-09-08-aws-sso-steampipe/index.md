@@ -127,8 +127,6 @@ Then, allow the access.
 
 ![allow sso to access data](./allow-sso-to-access-data.png)
 
-![successfully logged in](./successfully-logged-in.png)
-
 The last step for the setup is to create the connections for Steampipe with the script `./scripts/create-steampipe-aws-config.sh` inside the container. This will create a connection for each profile in the AWS config file ~/.aws/config.
 Not every role is allowed to query the data, so it's necessary to set the env variable `ALLOWED_ROLES` with the roles allowed to query the data. The roles are comma-separated. E.g.
 
