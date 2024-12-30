@@ -82,8 +82,6 @@ jobs:
           ${{ steps.detect-package-manager.outputs.runner }} build:astro \
             --site "${{ steps.pages.outputs.origin }}" \
             --base "${{ steps.pages.outputs.base_path }}"
-          pwd
-          cp ${{ env.WEBSITE_ASTRO_PATH }}/sw.js  ${{ env.WEBSITE_ASTRO_PATH }}/dist
         working-directory: ${{ env.BUILD_PATH }}
       # - name: Build with Tanstack
       #   run: |
