@@ -7,7 +7,7 @@
 		"dev": "pnpm sync && astro dev",
 		"dev:network": "astro dev --host",
 		"start": "astro dev",
-		"build": "pnpm sync && astro check && astro build && pwd && cp ./sw.js ./dist",
+		"build": "pnpm sync && astro check && astro build",
 		"preview": "astro preview",
 		"preview:network": "astro dev --host",
 		"astro": "astro"
