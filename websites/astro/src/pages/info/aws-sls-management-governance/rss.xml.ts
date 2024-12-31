@@ -11,7 +11,7 @@ type Context = {
 
 export async function GET(context: Context) {
 	const awsSlsPosts = await getCollection("infoSlsManagementGovernance");
-	const path = "info/aws-sls-management-governance";
+	const path = INFO_AWS_SLS_MANAGEMENT_GOVERNANCE.PATH;
 
 	const items = [...awsSlsPosts];
 
@@ -22,7 +22,7 @@ export async function GET(context: Context) {
 	return rss({
 		title: INFO_AWS_SLS_MANAGEMENT_GOVERNANCE.TITLE,
 		description: INFO_AWS_SLS_MANAGEMENT_GOVERNANCE.DESCRIPTION,
-		site: `${context.site}/${path}`,
+		site: context.site,
 		items: items.map((item) => ({
 			title: item.data.title,
 			description: item.data.summary,
