@@ -81,6 +81,7 @@ jobs:
           ${{ steps.detect-package-manager.outputs.runner }} build:astro \
             --site "${{ steps.pages.outputs.origin }}" \
             --base "${{ steps.pages.outputs.base_path }}"
+          cp ${{ env.WEBSITE_ASTRO_PATH }}/Ads.txt  ${{ env.WEBSITE_ASTRO_PATH }}/dist
         working-directory: ${{ env.BUILD_PATH }}
       # - name: Build with Tanstack
       #   run: |
