@@ -1,8 +1,8 @@
 ---
-title: Issue 1 - placeholder
+title: Issue 1 - AWS Application Manager and New CloudWatch Features
 date: "2025-01-01 06:00:00"
 published: true
-summary: placeholder summary
+summary: This issue covers AWS Application Manager and new features in Amazon CloudWatch launched at re:invent.
 tags:
   - tbd
 ---
@@ -12,7 +12,13 @@ tags:
 
 * [AWS Application Manager: A Birds Eye View of your CloudFormation Stack](https://juinquok.medium.com/aws-application-manager-a-birds-eye-view-of-your-cloudformation-stack-4370beff4f7c)
 
-## Tools
+## Videos
+
+### AWS re:Invent 2024 - [NEW LAUNCH] What’s new with Amazon CloudWatch (COP381-NEW)
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/WrNBOx0yduE?si=fyGrLnco3Ln0P1T_" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+<!-- ## Tools -->
 ## Misc
 
 <blockquote class="bluesky-embed" data-bluesky-uri="at://did:plc:dtdgmfaxl7fosnlnda74tp2o/app.bsky.feed.post/3lebjavrnck2j" data-bluesky-cid="bafyreiheymrqvk465hy33xndaknsjnkkheanzucuet5tnofk7p2wjim4ui"><p lang="en">When you use fetch in Node 20 or later, the X-Ray SDK doesn&#x27;t propagate trace headers downstream.
