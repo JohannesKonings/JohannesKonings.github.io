@@ -72,7 +72,7 @@ const coverImagePath = isCoverImage(entry.data) ? entry.data.cover_image : null;
 
   {
     isCoverImage(entry.data) && coverImagePath && (
-      <div class="w-full h-auto mt-8 rounded-lg shadow-lg overflow-hidden">
+      <div class="w-full h-auto mt-8 mb-8 rounded-lg shadow-lg overflow-hidden">
         <img
           src={coverImagePath.src}
           alt="Cover Image"
