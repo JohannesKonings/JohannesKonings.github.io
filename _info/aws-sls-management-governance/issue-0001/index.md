@@ -5,7 +5,11 @@ date: "2025-01-01 06:00:00"
 published: true
 summary: This issue covers AWS Application Manager and new features in Amazon CloudWatch launched at re:invent.
 tags:
-  - tbd
+  - AWS
+  - CloudFormation
+  - CloudWatch
+  - re:Invent
+  - Application Manager
 ---
 
 

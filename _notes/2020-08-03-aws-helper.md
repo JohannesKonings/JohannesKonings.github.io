@@ -34,12 +34,6 @@ Disclaimer: This article contains helper tools for AWS and will be updated from 
 
 [Servicelist](https://aws.servicelist.cloud/)
 
-### Serverless
-
-[Serverless Cost Calculator](http://serverlesscalc.com/)
-
-[Servers. LOL](https://servers.lol/)
-
 ### Lambda
 
 [lumigo cli](https://www.npmjs.com/package/lumigo-cli)
