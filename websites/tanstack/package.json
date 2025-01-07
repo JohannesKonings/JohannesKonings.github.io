@@ -17,17 +17,17 @@
 	"license": "ISC",
 	"dependencies": {
 		"@emotion/styled": "^11.14.0",
-		"@mui/material": "^6.1.10",
+		"@mui/material": "^6.3.1",
 		"@tanstack/react-router": "^1.92.3",
-		"@tanstack/start": "^1.92.4",
-		"markdown-to-jsx": "^7.7.2",
+		"@tanstack/start": "^1.95.1",
+		"markdown-to-jsx": "^7.7.3",
 		"react": "19.0.0",
 		"react-dom": "19.0.0",
 		"vinxi": "0.5.1"
 	},
 	"devDependencies": {
-		"@iconify/react": "^5.1.0",
-		"@types/react": "19.0.2",
+		"@iconify/react": "^5.2.0",
+		"@types/react": "19.0.3",
 		"@types/react-dom": "^19.0.2",
 		"@vitejs/plugin-react": "^4.3.4",
 		"typescript": "*"
