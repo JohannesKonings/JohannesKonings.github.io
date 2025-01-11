@@ -97,6 +97,7 @@ const posts = (await getCollection("blog"))
                 <a
                   href={social.HREF}
                   target="_blank"
+                  rel={social.NAME === "Mastodon" ? "me" : undefined}
                   class="group size-10 rounded-full p-2 items-center justify-center hover:bg-black/5 dark:hover:bg-white/20 blend"
                 >
                   {/* <i class={`fab fa-${social.ICON}`}></i> */}

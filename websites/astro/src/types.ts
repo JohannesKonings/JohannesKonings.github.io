@@ -14,8 +14,8 @@ export type Links = {
 }[];
 
 export type Socials = {
-	NAME: string;
-	ICON: string;
+	NAME: "Email" | "Github" | "LinkedIn" | "Bluesky" | "Mastodon" | "dev";
+	ICON: "email" | "github" | "linkedin" | "bluesky" | "mastodon" | "dev";
 	TEXT: string;
 	HREF: string;
 }[];
