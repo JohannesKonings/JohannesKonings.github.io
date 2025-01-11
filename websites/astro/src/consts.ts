@@ -82,7 +82,7 @@ export const SOCIALS: Socials = [
 		NAME: "Mastodon",
 		ICON: "mastodon",
 		TEXT: "@KoningsJohannes",
-		HREF: "https://awscommunity.social/@KoningsJohannes",
+		HREF: "https://mastodon.social/@KoningsJohannes",
 	},
 	{
 		NAME: "dev",
