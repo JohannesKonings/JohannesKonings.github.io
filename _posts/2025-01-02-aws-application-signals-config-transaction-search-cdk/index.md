@@ -140,6 +140,7 @@ The whole configuration looks like this:
                 "ApplicationSignalsTransactionSearchXrayIndexRule",
               ),
             },
+            installLatestAwsSdk: true,
             policy: AwsCustomResourcePolicy.fromSdkCalls({
               resources: AwsCustomResourcePolicy.ANY_RESOURCE,
             }),
@@ -222,7 +223,7 @@ The documentation [here](https://docs.aws.amazon.com/AmazonCloudWatch/latest/mon
 
 ### Update the x-ray settings
 
-The 2 API calls for x-ray are nearly straight forward. Only the comamnd `UpdateTraceSegmentDestination` requires the newest SDK version, because it's introduced in version: https://github.com/aws/aws-sdk-js-v3/releases/tag/v3.698.0
+The 2 API calls for x-ray are nearly straight forward. Only the comamnds `UpdateTraceSegmentDestination` and `UpdateIndexingRule` requires the newest SDK version, because it's introduced in version: https://github.com/aws/aws-sdk-js-v3/releases/tag/v3.698.0
 
 
 ```typescript
@@ -281,6 +282,7 @@ The 2 API calls for x-ray are nearly straight forward. Only the comamnd `UpdateT
                 "ApplicationSignalsTransactionSearchXrayIndexRule",
               ),
             },
+            installLatestAwsSdk: true,
             policy: AwsCustomResourcePolicy.fromSdkCalls({
               resources: AwsCustomResourcePolicy.ANY_RESOURCE,
             }),
