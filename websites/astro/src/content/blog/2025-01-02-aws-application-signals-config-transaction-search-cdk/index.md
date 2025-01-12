@@ -1,5 +1,5 @@
 ---
-title: Config AWS Cloudwatch Application Signals Transaction Search with CDK
+title: Config AWS CloudWatch Application Signals Transaction Search with CDK
 date: "2025-01-07 08:15:18"
 published: true
 summary: Learn how to enable and configure AWS CloudWatch Application Signals Transaction Search functionality using AWS CDK, including setting up required IAM policies and X-Ray configurations
@@ -16,17 +16,17 @@ tags:
 
 ## Use case
 
-You want to use [AWS Cloudwatch Application Signals Transaction Search](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/CloudWatch-Application-Monitoring-Sections.html) and your IaC is based on AWS CDK.
+You want to use [AWS CloudWatch Application Signals Transaction Search](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/CloudWatch-Application-Monitoring-Sections.html) and your IaC is based on AWS CDK.
 
 ## Setup
 
-This is how the Transaction Search page looks like, if it's not yet configured:
+This is how the Transaction Search page looks if it's not yet configured:
 
 ![application signals transaction search without config](./application-signals-transaction-search-without-config.png)
 
-And like this in the x-ray settings:
+And like this in the X-Ray settings:
 
-![application signals transaction search without config x-ray](./application-signals-transaction-search-without-xray-config.png)
+![application signals transaction search without config X-Ray](./application-signals-transaction-search-without-xray-config.png)
 
 The AWS documentation outlines the steps to enable Transaction Search functionality here: https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/CloudWatch-Transaction-Search-getting-started.html#w24aac24c21c13b9
 
@@ -139,6 +139,7 @@ The whole configuration looks like this:
                 "ApplicationSignalsTransactionSearchXrayIndexRule",
               ),
             },
+            installLatestAwsSdk: true,
             policy: AwsCustomResourcePolicy.fromSdkCalls({
               resources: AwsCustomResourcePolicy.ANY_RESOURCE,
             }),
@@ -163,12 +164,12 @@ The whole configuration looks like this:
 
 It contains the following steps:
 
-1. Update the Cloudwatch Logs Resource Policy
-2. Update the x-ray settings
+1. Update the CloudWatch Logs Resource Policy
+2. Update the X-Ray settings
 
-### Update the Cloudwatch Logs Resource Policy
+### Update the CloudWatch Logs Resource Policy
 
-The documentation [here](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/CloudWatch-Transaction-Search-getting-started.html#w24aac24c21c13b9) is a little bit misleading. The shown condition `arn:partition:logs:region:account-id:*` should be `arn:partition:xray:region:account-id:*`. Also the action `logs:PutLogEvents` should be `logs:PutLogEvents` and `logs:CreateLogStream`.
+The documentation [here](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/CloudWatch-Transaction-Search-getting-started.html#w24aac24c21c13b9) is a little bit misleading. The shown condition `arn:partition:logs:region:account-id:*` should be `arn:partition:xray:region:account-id:*`. Also, the action `logs:PutLogEvents` should be `logs:PutLogEvents` and `logs:CreateLogStream`.
 
 ```typescript
  const applicationSignalsTransactionSearchLogsResourcePolicy =
@@ -219,9 +220,9 @@ The documentation [here](https://docs.aws.amazon.com/AmazonCloudWatch/latest/mon
         );
 ```	
 
-### Update the x-ray settings
+### Update the X-Ray settings
 
-The 2 API calls for x-ray are nearly straight forward. Only the comamnd `UpdateTraceSegmentDestination` requires the newest SDK version, because it's introduced in version: https://github.com/aws/aws-sdk-js-v3/releases/tag/v3.698.0
+The 2 API calls for X-Ray are nearly straightforward. Only the commands `UpdateTraceSegmentDestination` and `UpdateIndexingRule` require the newest SDK version, as they were introduced in version: https://github.com/aws/aws-sdk-js-v3/releases/tag/v3.698.0
 
 
 ```typescript
@@ -280,6 +281,7 @@ The 2 API calls for x-ray are nearly straight forward. Only the comamnd `UpdateT
                 "ApplicationSignalsTransactionSearchXrayIndexRule",
               ),
             },
+            installLatestAwsSdk: true,
             policy: AwsCustomResourcePolicy.fromSdkCalls({
               resources: AwsCustomResourcePolicy.ANY_RESOURCE,
             }),
@@ -289,11 +291,11 @@ The 2 API calls for x-ray are nearly straight forward. Only the comamnd `UpdateT
 
 ## Result
 
-After some minutes the Transaction Search is visible in the Management Console.
+After a few minutes, the Transaction Search is visible in the Management Console.
 
-![application signals transaction search enabled in x-ray settings](./result-transaction-search-xray-settings.png)
+![application signals transaction search enabled in X-Ray settings](./result-transaction-search-xray-settings.png)
 
-![application signals transaction search enabled in cloudwatch](./result-transaction-search.png)
+![application signals transaction search enabled in CloudWatch](./result-transaction-search.png)
 
 
 
