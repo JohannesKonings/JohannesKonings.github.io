@@ -181,6 +181,10 @@ When CDK synthesizes this code, it creates several CloudFormation resources:
   },
 ```
 
+This will be the linked resources if there a two custom resources in the stack.
+
+![Diagramm Cloudforamtion Template](./custom-resources.png)
+
 ### cdk-nag Findings
 
 This configuration triggers three main findings from cdk-nag:
