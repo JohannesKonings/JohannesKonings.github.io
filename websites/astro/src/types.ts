@@ -1,7 +1,6 @@
 export type Page = {
 	TITLE: string;
 	DESCRIPTION: string;
-	PATH?: string;
 };
 
 export interface Site extends Page {
