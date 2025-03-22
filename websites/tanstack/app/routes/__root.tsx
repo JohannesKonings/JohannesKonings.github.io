@@ -1,11 +1,12 @@
 // app/routes/__root.tsx
+import type { ReactNode } from "react";
 import {
 	Outlet,
-	ScrollRestoration,
 	createRootRoute,
+	HeadContent,
+	Scripts,
 } from "@tanstack/react-router";
-import { Meta, Scripts } from "@tanstack/start";
-import type { ReactNode } from "react";
+import globalCss from "@/app/styles/global.css?url";
 
 export const Route = createRootRoute({
 	head: () => ({
@@ -21,6 +22,7 @@ export const Route = createRootRoute({
 				title: "Johannes Konings | Blog & Notes",
 			},
 		],
+		links: [{ rel: "stylesheet", href: globalCss }],
 	}),
 	component: RootComponent,
 });
@@ -37,12 +39,13 @@ function RootDocument({ children }: Readonly<{ children: ReactNode }>) {
 	return (
 		<html lang="en">
 			<head>
-				<Meta />
+				<HeadContent />
 			</head>
 			<body>
-				{children}
-				<ScrollRestoration />
-				<Scripts />
+				<div className="bg-gray-500 bg-center bg-cover h-screen">
+					{children}
+					<Scripts />
+				</div>
 			</body>
 		</html>
 	);

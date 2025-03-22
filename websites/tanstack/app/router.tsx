@@ -6,6 +6,7 @@ export function createRouter() {
 	const router = createTanStackRouter({
 		// basepath: "/tanstack",
 		routeTree,
+		scrollRestoration: true,
 	});
 
 	return router;

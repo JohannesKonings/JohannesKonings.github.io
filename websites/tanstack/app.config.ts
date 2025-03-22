@@ -1,4 +1,5 @@
-import { defineConfig } from "@tanstack/start/config";
+import { defineConfig } from "@tanstack/react-start/config";
+import tsConfigPaths from "vite-tsconfig-paths";
 
 export const githubPagesPrefix = "/tanstack";
 
@@ -13,6 +14,13 @@ export default defineConfig({
 	// vite: {
 	// 	assetsInclude: "**/*.md",
 	// },
+	vite: {
+		plugins: [
+			tsConfigPaths({
+				projects: ["./tsconfig.json"],
+			}),
+		],
+	},
 	server: {
 		compatibilityDate: "2024-11-23",
 		prerender: {
