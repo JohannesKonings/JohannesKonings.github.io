@@ -2,15 +2,8 @@
 import * as React from "react";
 import * as fs from "node:fs";
 import { createFileRoute, useRouter } from "@tanstack/react-router";
-import { createServerFn } from "@tanstack/start";
-import {
-	ThemeProvider,
-	createTheme,
-	CssBaseline,
-	Container,
-	Typography,
-	Link,
-} from "@mui/material";
+import { createServerFn } from "@tanstack/react-start";
+
 // import { Icon } from "@iconify/react";
 // import {
 // 	faTwitter,
@@ -41,49 +34,31 @@ export const Route = createFileRoute("/")({
 // 	getParentRoute: () => rootRoute,
 // });
 
-const darkTheme = createTheme({
-	palette: {
-		mode: "dark",
-	},
-});
-
 function Home() {
-	// const router = useRouter();
-	// const state = Route.useLoaderData();
-	// const isDev = process.env.NODE_ENV === "development";
-	// console.log("isDev", isDev);
-	// console.log("process.env.NODE_ENV", process.env.NODE_ENV);
-
 	return (
-		<ThemeProvider theme={darkTheme}>
-			<CssBaseline />
-			<Container style={{ textAlign: "center" }}>
-				{/* <img src="/tanstack/img/avatar.png" alt="Avatar" /> */}
-				<img src={avatar} alt="Avatar" />
-				<div>
-					<Link
+		<>
+			<div className="flex flex-col items-center justify-center h-screen bg-gradient-to-r from-gray-500 via-gray-400 to-gray-300 animate-fade">
+				<img src={avatar} alt="Avatar" className="mb-5" />
+				<div className="flex items-center justify-center mb-5">
+					<a
 						href="https://github.com/johanneskonings"
 						target="_blank"
 						rel="noopener noreferrer"
-						color="inherit"
-						style={{ margin: "0 10px" }}
+						className="mx-5 transition-transform duration-300 ease-in-out hover:scale-110"
 					>
-						<MdiGithub style={{ fontSize: "48px" }} />
-					</Link>
-					<Link
+						<MdiGithub className="text-6xl" />
+					</a>
+					<a
 						href="https://bsky.app/profile/johanneskonings.dev"
 						target="_blank"
 						rel="noopener noreferrer"
-						color="inherit"
-						style={{ margin: "0 10px" }}
+						className="mx-5 transition-transform duration-300 ease-in-out hover:scale-110"
 					>
-						<Fa6BrandsBluesky style={{ fontSize: "48px" }} />
-					</Link>
+						<Fa6BrandsBluesky className="text-6xl" />
+					</a>
 				</div>
-				<Typography variant="h3" style={{ fontFamily: "Cascadia Code" }}>
-					Johannes Konings
-				</Typography>
-			</Container>
-		</ThemeProvider>
+				<h3>Johannes Konings</h3>
+			</div>
+		</>
 	);
 }
