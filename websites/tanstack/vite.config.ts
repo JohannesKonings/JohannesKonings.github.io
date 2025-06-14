@@ -10,7 +10,12 @@ export default defineConfig({
 	plugins: [
 		tsConfigPaths(),
 		tanstackStart({
-			target: "static",
+			// target: "static",
+			target: "github-pages", // Use GitHub Pages as the target
+			prerender: {
+				enabled: true,
+				crawlLinks: true,
+			},
 		}),
 	],
 });
