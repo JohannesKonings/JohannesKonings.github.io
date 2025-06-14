@@ -100,6 +100,9 @@ jobs:
           cp -r ${{ env.WEBSITE_ASTRO_PATH }}/dist/* ${{ env.BUILD_PATH }}/dist
           mkdir -p ${{ env.BUILD_PATH }}/dist/tanstack
           cp -r ${{ env.WEBSITE_TANSTACK_PATH }}/.output/public/* ${{ env.BUILD_PATH }}/dist/tanstack
+
+          # tmp for debugging
+          echo '<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Tanstack WIP</title></head><body><h1>Tanstack site is a work in progress.</h1></body></html>' > ${{ env.BUILD_PATH }}/dist/tanstack/index.html
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:

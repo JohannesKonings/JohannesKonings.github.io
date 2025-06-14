@@ -1,4 +1,3 @@
-// app/routes/__root.tsx
 import type { ReactNode } from "react";
 import {
 	Outlet,
@@ -6,7 +5,7 @@ import {
 	HeadContent,
 	Scripts,
 } from "@tanstack/react-router";
-import globalCss from "@/app/styles/global.css?url";
+import globalCss from "@/src/styles/global.css?url";
 
 export const Route = createRootRoute({
 	head: () => ({

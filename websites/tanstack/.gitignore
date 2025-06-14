@@ -1,4 +1,4 @@
-.vercel/
-.vinxi/
+.nitro/
 .output/
+.tanstack/
 app.config.timestamp*
