@@ -50,7 +50,7 @@ const syncAstro = async () => {
 };
 
 const syncTanstack = async () => {
-	const pathPrefix = "websites/tanstack/app/content";
+	const pathPrefix = "websites/tanstack/src/content";
 	await sync("_posts", "blog", pathPrefix);
 };
 
