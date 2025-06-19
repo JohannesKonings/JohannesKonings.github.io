@@ -4,7 +4,7 @@ import { tanstackStart } from "@tanstack/react-start/plugin/vite";
 import path from "node:path";
 
 export default defineConfig({
-	base: "/tanstack/", // Added base path
+	// base: "/tanstack/", // Added base path
 	server: {
 		port: 3000, // Port for local development
 	},

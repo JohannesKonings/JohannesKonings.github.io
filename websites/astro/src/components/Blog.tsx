@@ -48,7 +48,7 @@ export default function Blog({ data, tags }: Props) {
 										onClick={() => toggleTag(tag)}
 										class={cn(
 											"w-full px-2 py-1 rounded",
-											"whitespace-nowrap overflow-hidden overflow-ellipsis",
+											"whitespace-nowrap overflow-hidden text-ellipsis",
 											"flex gap-2 items-center",
 											"bg-black/5 dark:bg-white/10",
 											"hover:bg-black/10 hover:dark:bg-white/15",

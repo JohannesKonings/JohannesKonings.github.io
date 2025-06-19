@@ -1,6 +1,6 @@
 import type { Config } from "tailwindcss";
 import defaultTheme from "tailwindcss/defaultTheme";
-import typographyPlugin from "@tailwindcss/typography"; // Using import for plugins
+import typographyPlugin from "@tailwindcss/typography";
 
 const config = {
 	darkMode: "class",
@@ -13,7 +13,7 @@ const config = {
 			typography: {
 				DEFAULT: {
 					css: {
-						maxWidth: "100%", // Changed "full" to "100%" for standard CSS
+						maxWidth: "100%",
 					},
 				},
 			},

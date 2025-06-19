@@ -25,11 +25,12 @@
 	"homepage": "johanneskonings.dev",
 	"devDependencies": {
 		"@biomejs/biome": "1.9.4",
+		"@tailwindcss/nesting": "0.0.0-insiders.565cd3e",
 		"@types/node": "^22.15.31",
-		"knip": "^5.60.2",
-		"typescript": "^5.8.3",
 		"execa": "9.6.0",
-		"tsx": "4.20.1"
+		"knip": "^5.60.2",
+		"tsx": "4.20.1",
+		"typescript": "^5.8.3"
 	},
 	"type": "module"
 }
