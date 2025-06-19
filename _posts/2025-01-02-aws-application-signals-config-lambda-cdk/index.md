@@ -1,9 +1,9 @@
 ---
 layout: post
-title: Config AWS Cloudwatch Application Signals for NodeJs Lambda with CDK
+title: AWS Application Signals for Node.js Lambda with CDK
 date: "2025-01-02 08:15:18"
 published: true
-summary: How to configure AWS Cloudwatch Application Signals central for the account and for each NodeJs Lambda with CDK
+summary: How to configure AWS CloudWatch Application Signals centrally for an AWS account and for individual Node.js Lambdas using the AWS CDK.
 categories: aws
 cover_image: ./cover-image.png
 tags:
@@ -13,22 +13,35 @@ tags:
   - cloudwatch
 ---
 
+## Update 2025-06-18: Provisioning with CloudFormation
+It can now also be configured using CloudFormation.
+https://docs.aws.amazon.com/AWSCloudFormation/latest/TemplateReference/aws-resource-applicationsignals-discovery.html
+
+```typescript
+import { CfnDiscovery } from "aws-cdk-lib/aws-applicationsignals";
+
+new CfnDiscovery(this, "ApplicationSignalsDiscovery");
+```
+
+> [!NOTE]
+> With the `CfnDiscovery` resource now available, the following sections detailing the custom resource implementation are for informational purposes only. They show the workaround that was needed before native CloudFormation support was added.
+
 ## Use case
 
-You want to use [AWS Cloudwatch Application Signals](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/CloudWatch-Application-Monitoring-Sections.html) for your NodeJs Lambda functions. For IaC you use CDK.
+This guide shows how to use [AWS CloudWatch Application Signals](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/CloudWatch-Application-Monitoring-Sections.html) for your Node.js Lambda functions when using the AWS CDK for Infrastructure as Code (IaC).
 
 ## Setup
 
-In a new AWS account the Management Console show the two steps to set up the Cloudwatch Application Signals.
-Step 1 is an Account wide setup, 
+In a new AWS account, the Management Console shows two steps to set up CloudWatch Application Signals.
+Step 1 is an account-wide setup.
 Step 2 is necessary for each Lambda function.
 
 ![application signals config steps](./application-signals-config-steps.png)
 
-### Account wide setup
+### Account-wide setup
 
-For starting the discovery the service linked role `application-signals.cloudwatch.amazonaws.com` must be created: https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/using-service-linked-roles.html#service-linked-role-signals. 
-CDK itself has no direct functionality for that. The [SDK](https://docs.aws.amazon.com/AWSJavaScriptSDK/v3/latest/client/application-signals/command/StartDiscoveryCommand/) can help here via a custom resource.
+To start discovery, the service-linked role `application-signals.cloudwatch.amazonaws.com` must be created: https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/using-service-linked-roles.html#service-linked-role-signals.
+The AWS CDK does not have a high-level construct for this. However, we can use the AWS SDK via a custom resource to achieve this.
 
 ```typescript
  const serviceLinkeRoleArnApplicationSignals = `arn:aws:iam::${Stack.of(this).account}:role/aws-service-role/application-signals.cloudwatch.amazonaws.com/AWSServiceRoleForCloudWatchApplicationSignals`;
@@ -98,7 +111,7 @@ CDK itself has no direct functionality for that. The [SDK](https://docs.aws.amaz
 
 ### Each Lambda function
 
-As described [here](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/CloudWatch-Application-Signals-Enable-Lambda.html) each lambda need the environment variable `AWS_LAMBDA_EXEC_WRAPPER` with the value `/opt/otel-instrument` and the layer `AWSOpenTelemetryDistroJs` with the respective ARN.
+As described [here](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/CloudWatch-Application-Signals-Enable-Lambda.html), each Lambda needs the environment variable `AWS_LAMBDA_EXEC_WRAPPER` with the value `/opt/otel-instrument` and the `AWSOpenTelemetryDistroJs` layer with the respective ARN.
 
 ```typescript
   const LAMBDA_APPLICATION_SIGNALS_LAYER_ARN =
@@ -137,9 +150,9 @@ As described [here](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitori
     );
 
     lambda.addLayers(layerApplicationSignals);
-```	
+```
 
-The lambda function implementation can than look like this:
+The Lambda function implementation can then look like this:
 
 ```typescript
 const handler = async (event: undefined, context: undefined) => {
@@ -154,13 +167,13 @@ const handler = async (event: undefined, context: undefined) => {
 module.exports = { handler };
 ```
 
-⚠️ The [documentation](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/CloudWatch-Application-Signals-supportmatrix.html#CloudWatch-Application-Signals-supportmatrix-nodejs) recommend to use currently CommonJS (CJS) instead of ECMAScript Modules (ESM).
+⚠️ The [documentation](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/CloudWatch-Application-Signals-supportmatrix.html#CloudWatch-Application-Signals-supportmatrix-nodejs) currently recommends using CommonJS (CJS) instead of ECMAScript Modules (ESM).
 
-Also for CommonJs some "details" are to consider like the export of the handler: https://github.com/aws-observability/aws-otel-lambda/issues/284#issuecomment-1465465790
+For CommonJS, some details need to be considered, such as how the handler is exported: https://github.com/aws-observability/aws-otel-lambda/issues/284#issuecomment-1465465790
 
 ## Result
 
-After the setup and some runs of the Lambda function the Cloudwatch Application Signals are visible in the Management Console (It takes some minutes).
+After the setup and a few invocations of the Lambda function, the CloudWatch Application Signals will be visible in the Management Console. This might take a few minutes.
 
 ![application signals result](./result.png)
 
