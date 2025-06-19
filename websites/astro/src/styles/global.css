@@ -1,6 +1,43 @@
-@import "tailwindcss/base";
-@import "tailwindcss/components";
-@import "tailwindcss/utilities";
+@import "tailwindcss";
+
+@plugin "@tailwindcss/typography";
+
+@theme {
+	--animation-twinkle: twinkle 2s ease-in-out forwards;
+	--animation-meteor: meteor 3s ease-in-out forwards;
+
+	--animate-twinkle: var(--animation-twinkle);
+	--animate-meteor: var(--animation-meteor);
+}
+
+@keyframes twinkle {
+	0% {
+		opacity: 0;
+		transform: rotate(0deg);
+	}
+	50% {
+		opacity: 1;
+		transform: rotate(180deg);
+	}
+	100% {
+		opacity: 0;
+		transform: rotate(360deg);
+	}
+}
+
+@keyframes meteor {
+	0% {
+		opacity: 0;
+		transform: translateY(200%);
+	}
+	50% {
+		opacity: 1;
+	}
+	100% {
+		opacity: 0;
+		transform: translateY(0);
+	}
+}
 
 @layer base {
 	@font-face {
@@ -212,7 +249,7 @@ article img {
 #meteors .meteor {
 	@apply animate-meteor; /* defined in tailwind.config */
 	@apply absolute top-1/2 left-1/2 w-px h-[75vh];
-	@apply bg-gradient-to-b from-white to-transparent;
+	@apply bg-linear-to-b from-white to-transparent;
 }
 
 #meteors .shower.ur {
