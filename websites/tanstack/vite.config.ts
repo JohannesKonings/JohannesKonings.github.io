@@ -1,6 +1,7 @@
 import { defineConfig } from "vite";
 import tsConfigPaths from "vite-tsconfig-paths";
 import { tanstackStart } from "@tanstack/react-start/plugin/vite";
+import path from "node:path";
 
 export default defineConfig({
 	base: "/tanstack/", // Added base path
@@ -11,11 +12,31 @@ export default defineConfig({
 		tsConfigPaths(),
 		tanstackStart({
 			// target: "static",
-			target: "github-pages", // Use GitHub Pages as the target
-			prerender: {
+			target: "static", // Use GitHub Pages as the target
+			spa: {
 				enabled: true,
-				crawlLinks: true,
+				prerender: {
+					enabled: false,
+					crawlLinks: true,
+					autoSubfolderIndex: true,
+				},
 			},
+			pages: [
+				{
+					path: "/tanstack",
+					prerender: {
+						enabled: true,
+						crawlLinks: true,
+						autoSubfolderIndex: true,
+					},
+				},
+			],
+			// prerender: {
+			// 	enabled: true,
+			// 	crawlLinks: true,
+			// 	autoSubfolderIndex: true,
+			// 	filter: () => true,
+			// },
 		}),
 	],
 });
