@@ -1,12 +1,12 @@
 ---
-layout:     note
-title:      Chrome Extensions
-date:       '2020-08-11 08:15:18'
-summary:    all used chrome Extensions
+layout: note
+title: Chrome Extensions
+date: "2020-08-11 08:15:18"
+summary: all used chrome Extensions
 categories: settings
 thumbnail: chrome
 tags:
- - chrome Extensions
+  - chrome Extensions
 published: false
 ---
 
@@ -33,7 +33,3 @@ Disclaimer: This articel contains my Chrome Extensions and will be updated from 
 [OneTab](https://chrome.google.com/webstore/detail/onetab/chphlpgkkbolifaimnlloiipkdnihall/related?hl=de)
 
 [Gitpod - Always ready to code](https://chrome.google.com/webstore/detail/gitpod-online-ide/dodmmooeoklaejobgleioelladacbeki)
-
-
-
-

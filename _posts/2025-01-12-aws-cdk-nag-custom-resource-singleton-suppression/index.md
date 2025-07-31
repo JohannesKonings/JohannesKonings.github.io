@@ -221,6 +221,7 @@ This doesn't work for the other findings because the singleton Lambda function i
 ### Overview
 
 To properly suppress all findings related to the custom resource singleton Lambda, we need to:
+
 1. Identify all possible paths where the custom resource creates resources
 2. Check if these paths exist in our stack
 3. Apply suppressions only to existing paths
@@ -273,6 +274,7 @@ for (const path of customResourceSuppressPaths) {
 ### Benefits
 
 This solution:
+
 - Handles all cdk-nag findings related to the singleton Lambda
 - Works whether you're directly using custom resources or not
 - Prevents errors from trying to suppress non-existent paths
@@ -281,20 +283,3 @@ This solution:
 ## Additional Resources
 
 If you're using a custom [NagPack](https://github.com/cdklabs/cdk-nag/blob/main/docs/NagPack.md), you can find implementation examples [here](https://github.com/JohannesKonings/cdk-nag-custom-nag-pack?tab=readme-ov-file#custom-resource).
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

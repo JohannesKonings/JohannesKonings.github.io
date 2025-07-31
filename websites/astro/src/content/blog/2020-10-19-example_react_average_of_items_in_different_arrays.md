@@ -1,13 +1,13 @@
 ---
-title:      Quick example to get the average of items from different arrays
-published:  true
-date:       '2020-10-19 08:15:18'
-summary:    Example how to calculate the average of different arrays Javascript (map, reduce, concat, ...)
+title: Quick example to get the average of items from different arrays
+published: true
+date: "2020-10-19 08:15:18"
+summary: Example how to calculate the average of different arrays Javascript (map, reduce, concat, ...)
 categories: react
 thumbnail: react
 tags:
- - react
- - javascript
+  - react
+  - javascript
 ---
 
 # ⚠ Disclaimer
@@ -67,96 +67,97 @@ The `data.js` contains the data of the fruit baskets and the calculation input d
 The calculation has three steps and is described with the baskets 1 and 2 and is in this format.
 
 ```json
+[
   [
-    [
-      { fruitName: "Apple", count: 5 },
-      { fruitName: "Banana", count: 3 },
-      { fruitName: "Strawberry", count: 9 },
-      { fruitName: "Lemon", count: 7 }
-    ],
-    [
-      { fruitName: "Apple", count: 5 },
-      { fruitName: "Banana", count: 8 },
-      { fruitName: "Lemon", count: 3 }
-    ]
+    { "fruitName": "Apple", "count": 5 },
+    { "fruitName": "Banana", "count": 3 },
+    { "fruitName": "Strawberry", "count": 9 },
+    { "fruitName": "Lemon", "count": 7 }
+  ],
+  [
+    { "fruitName": "Apple", "count": 5 },
+    { "fruitName": "Banana", "count": 8 },
+    { "fruitName": "Lemon", "count": 3 }
   ]
-```  
+]
+```
 
 ### merge
 
 Basket 1 and 2 are selected. This two arrays will be merged with this coding.
 
 ```javascript
-  selectedFruitBaskets.forEach(selectedFruitBasket => {
-    const found = fruitBaskets.find(
-      fruitBasket => fruitBasket.name === selectedFruitBasket.name
-    );
-    fruits.push(found.fruitBasket);
-  });
+selectedFruitBaskets.forEach((selectedFruitBasket) => {
+  const found = fruitBaskets.find(
+    (fruitBasket) => fruitBasket.name === selectedFruitBasket.name,
+  );
+  fruits.push(found.fruitBasket);
+});
 
-  const basketCounts = fruits.length;
+const basketCounts = fruits.length;
 
-  const mergedBasket = [].concat(...fruits);
-  ```
-
-  **After**
-
-```json
-  [
-    { fruitName: "Apple", count: 5 },
-    { fruitName: "Banana", count: 3 },
-    { fruitName: "Strawberry", count: 9 },
-    { fruitName: "Lemon", count: 7 },
-    { fruitName: "Apple", count: 5 },
-    { fruitName: "Banana", count: 8 },
-    { fruitName: "Lemon", count: 3 }
-  ]
+const mergedBasket = [].concat(...fruits);
 ```
 
-### sum 
+**After**
+
+```json
+[
+  { "fruitName": "Apple", "count": 5 },
+  { "fruitName": "Banana", "count": 3 },
+  { "fruitName": "Strawberry", "count": 9 },
+  { "fruitName": "Lemon", "count": 7 },
+  { "fruitName": "Apple", "count": 5 },
+  { "fruitName": "Banana", "count": 8 },
+  { "fruitName": "Lemon", "count": 3 }
+]
+```
+
+### sum
 
 At this step the number of fruits of each kind will be summed
 
 ```javascript
-  const basketSum = mergedBasket.reduce((acc, curr) => {
-    if (!acc[curr.fruitName]) {
-      acc[curr.fruitName] = { ...curr, countInBaskets: 1, sum: curr.count };
-      return acc;
-    }
-    acc[curr.fruitName].countInBaskets += 1;
-    acc[curr.fruitName].sum += curr.count;
-
+const basketSum = mergedBasket.reduce((acc, curr) => {
+  if (!acc[curr.fruitName]) {
+    acc[curr.fruitName] = { ...curr, countInBaskets: 1, sum: curr.count };
     return acc;
-  }, {});
+  }
+  acc[curr.fruitName].countInBaskets += 1;
+  acc[curr.fruitName].sum += curr.count;
+
+  return acc;
+}, {});
 ```
-  **After**
+
+**After**
 
 ```json
 {
-    "Apple": {
-        "count": 5,
-        "countInBaskets": 2,
-        "fruitName": "Apple",
-        "sum": 10
-    },
-    "Banana": {
-        "count": 3,
-        "countInBaskets": 2,
-        "fruitName": "Banana",
-        "sum": 11
-    },
-    "Lemon": {
-        "count": 7,
-        "countInBaskets": 2,
-        "fruitName": "Lemon",
-        "sum": 10
-    },
-    "Strawberry": {
-        "count": 9,
-        "countInBaskets": 1,
-        "fruitName": "Strawberry",
-        "sum": 9
-    }
+  "Apple": {
+    "count": 5,
+    "countInBaskets": 2,
+    "fruitName": "Apple",
+    "sum": 10
+  },
+  "Banana": {
+    "count": 3,
+    "countInBaskets": 2,
+    "fruitName": "Banana",
+    "sum": 11
+  },
+  "Lemon": {
+    "count": 7,
+    "countInBaskets": 2,
+    "fruitName": "Lemon",
+    "sum": 10
+  },
+  "Strawberry": {
+    "count": 9,
+    "countInBaskets": 1,
+    "fruitName": "Strawberry",
+    "sum": 9
+  }
 }
 ```
 
@@ -165,46 +166,46 @@ At this step the number of fruits of each kind will be summed
 After the summation the average can be calulated.
 
 ```javascript
-  const basketAverage = Object.keys(basketSum).map(fruitName => {
-    const item = basketSum[fruitName];
-    return {
-      fruitName: item.fruitName,
-      averageCountOverall: item.sum / basketCounts,
-      averageCountWithMinOne: item.sum / item.countInBaskets,
-      sum: item.sum
-    };
-  });
-  return basketAverage;
+const basketAverage = Object.keys(basketSum).map((fruitName) => {
+  const item = basketSum[fruitName];
+  return {
+    fruitName: item.fruitName,
+    averageCountOverall: item.sum / basketCounts,
+    averageCountWithMinOne: item.sum / item.countInBaskets,
+    sum: item.sum,
+  };
+});
+return basketAverage;
 ```
 
-  **After**
+**After**
 
 ```json
 [
-    {
-        "averageCountOverall": 5,
-        "averageCountWithMinOne": 5,
-        "fruitName": "Apple",
-        "sum": 10
-    },
-    {
-        "averageCountOverall": 5.5,
-        "averageCountWithMinOne": 5.5,
-        "fruitName": "Banana",
-        "sum": 11
-    },
-    {
-        "averageCountOverall": 4.5,
-        "averageCountWithMinOne": 9,
-        "fruitName": "Strawberry",
-        "sum": 9
-    },
-    {
-        "averageCountOverall": 5,
-        "averageCountWithMinOne": 5,
-        "fruitName": "Lemon",
-        "sum": 10
-    }
+  {
+    "averageCountOverall": 5,
+    "averageCountWithMinOne": 5,
+    "fruitName": "Apple",
+    "sum": 10
+  },
+  {
+    "averageCountOverall": 5.5,
+    "averageCountWithMinOne": 5.5,
+    "fruitName": "Banana",
+    "sum": 11
+  },
+  {
+    "averageCountOverall": 4.5,
+    "averageCountWithMinOne": 9,
+    "fruitName": "Strawberry",
+    "sum": 9
+  },
+  {
+    "averageCountOverall": 5,
+    "averageCountWithMinOne": 5,
+    "fruitName": "Lemon",
+    "sum": 10
+  }
 ]
 ```
 
@@ -219,11 +220,3 @@ See the Coding on GitHub or StackBlitz:
 [GitHub](https://github.com/JohannesKonings/example-react-average-of-items-in-different-arrays)
 
 [StackBlitz](https://stackblitz.com/edit/example-react-average-of-items-in-different-arrays)
-
-
-
-
-
-
-
-

@@ -1,12 +1,12 @@
 ---
-title:      AWS helper
-date:       '2020-08-03 08:15:18'
+title: AWS helper
+date: "2020-08-03 08:15:18"
 published: true
-summary:    AWS helper
+summary: AWS helper
 categories: tools
 thumbnail: fa-bookmark-o
 tags:
- - aws
+  - aws
 ---
 
 # AWS helper tools
@@ -67,8 +67,8 @@ Disclaimer: This article contains helper tools for AWS and will be updated from 
 
 ## icons
 
-* https://awsicons.dev
-* https://aws-icons.com/
+- https://awsicons.dev
+- https://aws-icons.com/
 
 ## IAM
 
@@ -76,18 +76,12 @@ Disclaimer: This article contains helper tools for AWS and will be updated from 
 
 # Accounts
 
-## aws nuke 
+## aws nuke
 
 Remove all resources from an AWS account.
 
 [https://github.com/rebuy-de/aws-nuke](https://github.com/rebuy-de/aws-nuke)
 
-
 # misc
 
-* https://visualsubnetcalc.com/
-
-
-
-
-
+- https://visualsubnetcalc.com/

@@ -6,8 +6,8 @@ summary: Configuration of Grafana Cloud to display AWS billing metrics
 categories: aws
 thumbnail: grafana
 tags:
-    - aws
-    - grafana
+  - aws
+  - grafana
 published: true
 ---
 
@@ -39,7 +39,7 @@ Then log in to your instance.
 
 # Creation of an IAM user for the CloudWatch data source
 
-The CloudWatch data source needs an access key and a secret key. Therefore is an IAM user needed. As policy can be this used: 
+The CloudWatch data source needs an access key and a secret key. Therefore is an IAM user needed. As policy can be this used:
 
 [https://grafana.com/docs/grafana/latest/datasources/cloudwatch/#iam-policies](https://grafana.com/docs/grafana/latest/datasources/cloudwatch/#iam-policies)
 
@@ -68,6 +68,7 @@ This is a panel configuration example for the costs of all linked accounts.
 ![Grafana Cloud accounts panel]({{ site.baseurl }}/img/2020-11-27-aws_billing_metrics_and_grafana_cloud/grafana_cloud_accounts_panel.png)
 
 This should be considered:
+
 1. If the CloudWatch data source is not the default one, switch to the CloudWatch data source.
 2. Billing metrics are all in the region us-east-1
 3. The time frame "this month" seems the right choice for the monthly costs :)
@@ -92,9 +93,6 @@ And ready to go 🎉
 
 ![Grafana Cloud imported dashboard]({{ site.baseurl }}/img/2020-11-27-aws_billing_metrics_and_grafana_cloud/grafana_cloud_imported_dashboard.png)
 
-
 # more dashboards
 
 Monitoring Artist has many more cloud watch dashboards: [https://grafana.com/orgs/monitoringartist](https://grafana.com/orgs/monitoringartist)
-
-

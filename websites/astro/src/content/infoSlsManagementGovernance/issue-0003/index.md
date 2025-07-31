@@ -14,11 +14,10 @@ tags:
   - scp
 ---
 
-
 ## Blog posts
 
-* [Top 11 Cloud Monitoring Tools [Updated 2025 Guide]](https://signoz.io/comparisons/cloud-monitoring-tools/)
-* [OpenTelemetry vs. X-Ray - Choosing the Right Tracing Tool](https://signoz.io/comparisons/opentelemetry-vs-xray/)
+- [Top 11 Cloud Monitoring Tools [Updated 2025 Guide]](https://signoz.io/comparisons/cloud-monitoring-tools/)
+- [OpenTelemetry vs. X-Ray - Choosing the Right Tracing Tool](https://signoz.io/comparisons/opentelemetry-vs-xray/)
 
 <!-- ## Videos
 
@@ -28,12 +27,9 @@ tags:
 
 ## Tools
 
-* [SCP Automation for AWS Organization](https://dev.to/aws-builders/scp-automation-for-aws-organization-569j)
-* [Steampipe Config Generator](https://github.com/unicrons/steampipe-config-generator)
+- [SCP Automation for AWS Organization](https://dev.to/aws-builders/scp-automation-for-aws-organization-569j)
+- [Steampipe Config Generator](https://github.com/unicrons/steampipe-config-generator)
 
 ## Misc
 
-* [AWS Management Tools Cheat Sheet](https://digitalcloud.training/category/aws-cheat-sheets/aws-management-tools/)
-
-
-
+- [AWS Management Tools Cheat Sheet](https://digitalcloud.training/category/aws-cheat-sheets/aws-management-tools/)

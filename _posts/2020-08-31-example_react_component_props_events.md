@@ -40,11 +40,11 @@ export default function App() {
   const [counterSteps, setCounterSteps] = useState(0);
   const [count, setCount] = useState(0);
 
-  const handleCurrentInput = currentInput => {
+  const handleCurrentInput = (currentInput) => {
     setCounterSteps(currentInput);
   };
 
-  const handleCounterIncreased = counterSteps => {
+  const handleCounterIncreased = (counterSteps) => {
     const newCount = count + parseInt(counterSteps);
     setCount(newCount);
   };
@@ -63,6 +63,7 @@ export default function App() {
   );
 }
 ```
+
 ## CounterSteps.js
 
 In the `CounterSteps.js` is a input field. Every change of the value will be passed via a event to the parent component.
@@ -76,7 +77,7 @@ export default function CounterSteps(props) {
   const [count, setCount] = useState(0);
   const { onCurrentInput } = props;
 
-  const handleInput = event => {
+  const handleInput = (event) => {
     onCurrentInput(event.target.value);
   };
 
@@ -87,7 +88,7 @@ export default function CounterSteps(props) {
           type="number"
           name="counterSteps"
           placeholder="counterSteps"
-          onKeyDown={e => /[\+\-\.\,]$/.test(e.key) && e.preventDefault()}
+          onKeyDown={(e) => /[\+\-\.\,]$/.test(e.key) && e.preventDefault()}
           onInput={handleInput}
         />
       </p>
@@ -96,9 +97,10 @@ export default function CounterSteps(props) {
 }
 
 CounterSteps.propTypes = {
-  onCurrentInput: PropTypes.func
+  onCurrentInput: PropTypes.func,
 };
 ```
+
 ## Button.js
 
 The `Button.js` receive the height of the inccrease from the parent component. A Button click calls the event and pass the height of increase back. In the `App.js` the total count is calculated.
@@ -128,7 +130,7 @@ export default function Button(props) {
 }
 
 Button.propTypes = {
-  onCounterIncreased: PropTypes.func
+  onCounterIncreased: PropTypes.func,
 };
 ```
 
@@ -143,11 +145,3 @@ See the Coding on GitHub or StackBlitz:
 [GitHub](https://github.com/JohannesKonings/example-react-component-props-events)
 
 [StackBlitz](https://stackblitz.com/edit/example-react-component-props-events)
-
-
-
-
-
-
-
-

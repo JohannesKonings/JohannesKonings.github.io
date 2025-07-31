@@ -1,15 +1,15 @@
 ---
-layout:     post
-title:      GitHub actions example for automatic release drafts and changelog.md creation
-date:       '2021-02-28 08:15:18'
-published:  true
-summary:    This post is how to define your release draft via labels in pull requests and the update of the changelog.md after publishing a release
+layout: post
+title: GitHub actions example for automatic release drafts and changelog.md creation
+date: "2021-02-28 08:15:18"
+published: true
+summary: This post is how to define your release draft via labels in pull requests and the update of the changelog.md after publishing a release
 categories: github
 thumbnail: github
 cover_image: ./cover-image.png
 tags:
- - github
- - github actions
+  - github
+  - github actions
 ---
 
 # What are GitHub actions?
@@ -37,34 +37,34 @@ This [template](https://github.com/abap-observability-tools/abap-log-exporter/bl
 The full path is `.github/release-drafter.yml`
 
 ```yaml
-name-template: 'v$RESOLVED_VERSION 🌈'
-tag-template: 'v$RESOLVED_VERSION'
+name-template: "v$RESOLVED_VERSION 🌈"
+tag-template: "v$RESOLVED_VERSION"
 categories:
-  - title: '🚀 Features'
+  - title: "🚀 Features"
     labels:
-      - 'feature'
-      - 'enhancement'
-  - title: '🐛 Bug Fixes'
+      - "feature"
+      - "enhancement"
+  - title: "🐛 Bug Fixes"
     labels:
-      - 'fix'
-      - 'bugfix'
-      - 'bug'
-  - title: '🧰 Maintenance'
-    label: 'chore'
-  - title: '🧺 Miscellaneous' #Everything except ABAP
-    label: 'misc'
-change-template: '- $TITLE @$AUTHOR (#$NUMBER)'
+      - "fix"
+      - "bugfix"
+      - "bug"
+  - title: "🧰 Maintenance"
+    label: "chore"
+  - title: "🧺 Miscellaneous" #Everything except ABAP
+    label: "misc"
+change-template: "- $TITLE @$AUTHOR (#$NUMBER)"
 change-title-escapes: '\<*_&' # You can add # and @ to disable mentions, and add ` to disable code blocks.
 version-resolver:
   major:
     labels:
-      - 'major'
+      - "major"
   minor:
     labels:
-      - 'minor'
+      - "minor"
   patch:
     labels:
-      - 'patch'
+      - "patch"
   default: patch
 template: |
   ## Changes
@@ -93,6 +93,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 ```
+
 # Configure gren
 
 The releases are published manually at certain times. This trigger [this](https://github.com/abap-observability-tools/abap-log-exporter/blob/main/.github/workflows/update-changelog.yml) configuration.
@@ -107,21 +108,21 @@ jobs:
   update-changelog:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
+      - uses: actions/checkout@v2
 
-    - name: Update changelog
-      run: |
-        npm install github-release-notes
-        export GREN_GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}
-        npm run overrideChangelog
-    - name: Create Pull Request
-      uses: peter-evans/create-pull-request@v3
-      with:
-        commit-message: update changelog
-        title: Update Changelog
-        body: Update changelog to reflect release changes
-        branch: update-changelog
-        base: main
+      - name: Update changelog
+        run: |
+          npm install github-release-notes
+          export GREN_GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}
+          npm run overrideChangelog
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v3
+        with:
+          commit-message: update changelog
+          title: Update Changelog
+          body: Update changelog to reflect release changes
+          branch: update-changelog
+          base: main
 ```
 
 The command `"overrideChangelog": "gren changelog --override"` from the [package.json](https://github.com/abap-observability-tools/abap-log-exporter/blob/main/package.json) update then the changelog.md.
@@ -146,8 +147,6 @@ The result in the CHANGELOG.md.
 
 ![changelog](./changelog.png)
 
-
 # Code
 
 [https://github.com/abap-observability-tools](https://github.com/abap-observability-tools)
-

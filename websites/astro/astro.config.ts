@@ -10,30 +10,30 @@ import tailwindcss from "@tailwindcss/vite";
 
 // https://astro.build/config
 export default defineConfig({
-	site: "https://johanneskonings.dev",
+  site: "https://johanneskonings.dev",
 
-	markdown: {
-		syntaxHighlight: false,
-		rehypePlugins: [
-			rehypeAstroRelativeMarkdownLinks,
-			[
-				rehypePrettyCode,
-				{
-					// theme: moonlightTheme,
-					transformers: [
-						transformerCopyButton({
-							visibility: "always",
-							feedbackDuration: 2_500,
-						}),
-					],
-				},
-			],
-		],
-	},
+  markdown: {
+    syntaxHighlight: false,
+    rehypePlugins: [
+      rehypeAstroRelativeMarkdownLinks,
+      [
+        rehypePrettyCode,
+        {
+          // theme: moonlightTheme,
+          transformers: [
+            transformerCopyButton({
+              visibility: "always",
+              feedbackDuration: 2_500,
+            }),
+          ],
+        },
+      ],
+    ],
+  },
 
-	integrations: [mdx(), sitemap(), solidJs()],
+  integrations: [mdx(), sitemap(), solidJs()],
 
-	vite: {
-		plugins: [tailwindcss()],
-	},
+  vite: {
+    plugins: [tailwindcss()],
+  },
 });

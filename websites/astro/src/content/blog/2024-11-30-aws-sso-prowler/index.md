@@ -16,7 +16,7 @@ tags:
 
 You want to run [prowler](https://docs.prowler.com/projects/prowler-open-source/en/latest/) scans for different AWS accounts, which AWS SSO manages.
 
-## Approach 
+## Approach
 
 To scan multiple AWS accounts with prowler is described here: https://docs.prowler.com/projects/prowler-open-source/en/latest/tutorials/aws/multiaccount/
 Therefore, it's necessary to have permission to assume a role in every account.
@@ -58,14 +58,14 @@ docker run --entrypoint /bin/bash -it \
 --mount type=bind,source="${PWD}/.env",target=/workspace/.env \
 --mount type=bind,source="${PWD}/output",target=/workspace/output \
 --name prowler \
-prowler 
+prowler
 ```
 
 These are the commands to use the container again `docker start -a prowler` and `docker exec -it prowler /bin/bash`.
 
 ## Initial configuration after container creation
 
-The command for running the container mounted the folder `scripts` and `.env` file to the container. 
+The command for running the container mounted the folder `scripts` and `.env` file to the container.
 
 One of the scripts is `./scripts/create-aws-config.sh` which creates the file `~/.aws/config`, with the SSO session values.
 
@@ -120,7 +120,6 @@ Then, allow the access.
 After confirmation, the config file is created.
 
 ![aws config created](./aws-config-created.png)
-
 
 ## Prowler scans
 
@@ -185,9 +184,3 @@ This example used the Prowler [quick inventory](https://docs.prowler.com/project
 E.g. for [compliance scans](https://docs.prowler.com/projects/prowler-open-source/en/latest/tutorials/compliance/).
 
 That's it. Now you can scan all your AWS accounts with Prowler and AWS SSO 🥳
-
-
-
-
-
-
