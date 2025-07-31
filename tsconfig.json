@@ -1,0 +1,33 @@
+{
+  "compilerOptions": {
+    "target": "esnext",
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "strict": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "skipLibCheck": true,
+    "declaration": true,
+    "noEmit": true,
+    "baseUrl": ".",
+    "paths": {
+      "@astro/*": ["websites/astro/src/*"],
+      "@tanstack/*": ["websites/tanstack/*"]
+    }
+  },
+  "include": [
+    "websites/*/src/**/*.ts",
+    "websites/*/src/**/*.tsx",
+    "scripts/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "**/dist",
+    "**/build",
+    "**/.astro"
+  ],
+  "references": [
+    { "path": "./websites/astro" },
+    { "path": "./websites/tanstack" }
+  ]
+}

@@ -13,14 +13,12 @@
     "editor.minimap.enabled": false
   },
   "editor.formatOnSave": true,
-  "editor.defaultFormatter": "biomejs.biome",
   "[html]": {
     "editor.defaultFormatter": "vscode.html-language-features"
   },
-  "[typescript]": {
-    "editor.defaultFormatter": "biomejs.biome"
-  },
-  "[jsonc]": {
-    "editor.defaultFormatter": "biomejs.biome"
-  }
+
+  // TypeScript-Go Configuration
+  "typescript.experimental.useTsgo": true,
+  "typescript.preferences.includePackageJsonAutoImports": "off",
+  "oxc.enable": true
 }
