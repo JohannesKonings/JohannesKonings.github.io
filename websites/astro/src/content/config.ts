@@ -53,4 +53,9 @@ const legal = defineCollection({
   }),
 });
 
-export const collections = { blog, notes, legal, infoSlsManagementGovernance };
+export const collections: Record<string, any> = {
+  blog,
+  notes,
+  legal,
+  infoSlsManagementGovernance,
+};

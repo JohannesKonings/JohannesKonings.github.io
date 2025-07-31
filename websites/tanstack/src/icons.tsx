@@ -1,7 +1,8 @@
 import type { SVGProps } from "react";
+import type { JSX } from "react";
 
 // https://icon-sets.iconify.design/fa6-brands/bluesky/
-export function Fa6BrandsBluesky(props: SVGProps<SVGSVGElement>) {
+export function Fa6BrandsBluesky(props: SVGProps<SVGSVGElement>): JSX.Element {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -20,7 +21,7 @@ export function Fa6BrandsBluesky(props: SVGProps<SVGSVGElement>) {
 }
 
 // https://icon-sets.iconify.design/mdi/github/
-export function MdiGithub(props: SVGProps<SVGSVGElement>) {
+export function MdiGithub(props: SVGProps<SVGSVGElement>): JSX.Element {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"

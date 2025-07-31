@@ -1,14 +1,24 @@
 {
   "extends": "astro/tsconfigs/strict",
   "compilerOptions": {
+    "target": "esnext",
+    "module": "esnext",
+    "moduleResolution": "bundler",
     "strictNullChecks": true,
-    "baseUrl": ".",
+    "composite": true,
+    "declaration": true,
+    "declarationMap": true,
+    "outDir": "./dist",
     "paths": {
-      "@*": ["src/*"]
+      "@*": ["./src/*"],
+      "@consts": ["./src/consts.ts"],
+      "@lib/*": ["./src/lib/*"],
+      "@components/*": ["./src/components/*"],
+      "@layouts/*": ["./src/layouts/*"]
     },
     "jsx": "preserve",
     "jsxImportSource": "solid-js"
   },
   "include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.astro"],
-  "exclude": ["dist", "node_modules"]
+  "exclude": ["dist", "node_modules", ".astro"]
 }

@@ -35,5 +35,15 @@ export default defineConfig({
 
   vite: {
     plugins: [tailwindcss()],
+    resolve: {
+      alias: {
+        "@": "/src",
+        "@consts": "/src/consts.ts",
+        "@lib": "/src/lib",
+        "@components": "/src/components",
+        "@layouts": "/src/layouts",
+        "@styles": "/src/styles",
+      },
+    },
   },
 });
