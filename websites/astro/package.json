@@ -7,11 +7,11 @@
     "dev": "pnpm sync && astro dev",
     "dev:network": "astro dev --host",
     "start": "astro dev",
-    "build": "pnpm sync && tsgo --noEmit && astro build",
+    "build": "pnpm sync && tsc --noEmit && astro build",
     "preview": "astro preview",
     "preview:network": "astro dev --host",
     "astro": "astro",
-    "type-check": "tsgo --noEmit"
+    "type-check": "tsc --noEmit"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.4",
@@ -38,6 +38,7 @@
   },
   "devDependencies": {
     "@types/markdown-it": "14.1.2",
-    "@types/sanitize-html": "2.16.0"
+    "@types/sanitize-html": "2.16.0",
+    "typescript": "5.7.3"
   }
 }

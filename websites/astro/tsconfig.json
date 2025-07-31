@@ -9,9 +9,12 @@
     "declaration": true,
     "declarationMap": true,
     "outDir": "./dist",
-    "baseUrl": ".",
     "paths": {
-      "@*": ["src/*"]
+      "@*": ["./src/*"],
+      "@consts": ["./src/consts.ts"],
+      "@lib/*": ["./src/lib/*"],
+      "@components/*": ["./src/components/*"],
+      "@layouts/*": ["./src/layouts/*"]
     },
     "jsx": "preserve",
     "jsxImportSource": "solid-js"

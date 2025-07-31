@@ -1,12 +1,13 @@
 import { formatDate } from "@lib/utils";
 import type { CollectionEntry } from "astro:content";
+import type { JSX } from "solid-js";
 
 type Props = {
   entry: CollectionEntry<"notes">;
   pill?: boolean;
 };
 
-export default function ArrowCardNote({ entry, pill }: Props) {
+export default function ArrowCardNote({ entry, pill }: Props): JSX.Element {
   return (
     <a
       href={`/${entry.collection}/${entry.slug}`}
