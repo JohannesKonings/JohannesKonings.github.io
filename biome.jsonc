@@ -1,14 +1,14 @@
 {
-	"$schema": "https://biomejs.dev/schemas/1.8.3/schema.json",
+	"$schema": "https://biomejs.dev/schemas/2.1.3/schema.json",
 	"files": {
-		"ignore": [
-			"next-blog/.next/**",
-			"next-blog/out/**",
-			".astro",
-			"**/dist/**",
-			//tanstack
-			".vinxi",
-			".output"
+		"includes": [
+			"**/*",
+			"!**/next-blog/.next/**",
+			"!**/next-blog/out/**",
+			"!**/.astro",
+			"!**/dist/**",
+			"!**/.vinxi",
+			"!**/.output"
 		]
 	},
 	"formatter": {
@@ -17,8 +17,5 @@
 	"linter": {
 		"enabled": true,
 		"rules": { "recommended": true }
-	},
-	"organizeImports": {
-		"enabled": true
 	}
 }

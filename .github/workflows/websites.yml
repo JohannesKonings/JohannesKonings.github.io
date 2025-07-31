@@ -83,15 +83,9 @@ jobs:
             --base "${{ steps.pages.outputs.base_path }}"
           cp ${{ env.WEBSITE_ASTRO_PATH }}/ads.txt  ${{ env.WEBSITE_ASTRO_PATH }}/dist
         working-directory: ${{ env.BUILD_PATH }}
-      # - name: Build with Tanstack
-      #   run: |
-      #     ${{ steps.detect-package-manager.outputs.runner }} build:tanstack \
-      #       --site "${{ steps.pages.outputs.origin }}" \
-      #       --base "${{ steps.pages.outputs.base_path }}/tanstack"
-      #   working-directory: ${{ env.BUILD_PATH }}
       - name: Build with Tanstack
         run: |
-          ${{ steps.detect-package-manager.outputs.runner }} build:tanstack
+          NODE_ENV=production ${{ steps.detect-package-manager.outputs.runner }} build:tanstack
         working-directory: ${{ env.BUILD_PATH }}
       - name: Combine build artifacts
         run: |
@@ -99,10 +93,18 @@ jobs:
           mkdir -p ${{ env.BUILD_PATH }}/dist
           cp -r ${{ env.WEBSITE_ASTRO_PATH }}/dist/* ${{ env.BUILD_PATH }}/dist
           mkdir -p ${{ env.BUILD_PATH }}/dist/tanstack
-          cp -r ${{ env.WEBSITE_TANSTACK_PATH }}/.output/public/* ${{ env.BUILD_PATH }}/dist/tanstack
+          cp -r ${{ env.WEBSITE_TANSTACK_PATH }}/.output/public/* ${{ env.BUILD_PATH }}/dist/tanstack/
 
-          # tmp for debugging
-          echo '<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Tanstack WIP</title></head><body><h1>Tanstack site is a work in progress.</h1></body></html>' > ${{ env.BUILD_PATH }}/dist/tanstack/index.html
+          # Create .nojekyll to prevent GitHub Pages from processing as Jekyll
+          touch ${{ env.BUILD_PATH }}/dist/.nojekyll
+
+          # For SPA routing support, copy index.html as 404.html in tanstack folder
+          cp ${{ env.BUILD_PATH }}/dist/tanstack/index.html ${{ env.BUILD_PATH }}/dist/tanstack/404.html
+
+          # Debug: List build structure
+          echo "=== Build structure ==="
+          find ${{ env.BUILD_PATH }}/dist -type f -name "*.html" | head -10 || echo "No HTML files found"
+          find ${{ env.BUILD_PATH }}/dist -type f -name "index.*" | head -10 || echo "No index files found"
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
