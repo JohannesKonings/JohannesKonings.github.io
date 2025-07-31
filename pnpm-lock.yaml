@@ -9,13 +9,13 @@ importers:
   .:
     devDependencies:
       '@prettier/plugin-oxc':
-        specifier: ^0.0.4
+        specifier: 0.0.4
         version: 0.0.4
       '@types/node':
         specifier: 22.17.0
         version: 22.17.0
       '@typescript/native-preview':
-        specifier: ^7.0.0-dev.20250731.1
+        specifier: 7.0.0-dev.20250731.1
         version: 7.0.0-dev.20250731.1
       execa:
         specifier: 9.6.0
@@ -24,11 +24,11 @@ importers:
         specifier: 5.62.0
         version: 5.62.0(@types/node@22.17.0)(typescript@5.8.3)
       oxlint:
-        specifier: ^1.9.0
+        specifier: 1.9.0
         version: 1.9.0
       prettier:
-        specifier: ^3.4.2
-        version: 3.5.3
+        specifier: 3.4.2
+        version: 3.4.2
       tsx:
         specifier: 4.20.3
         version: 4.20.3
@@ -99,7 +99,7 @@ importers:
         specifier: ^3.3.1
         version: 3.3.1
       tailwindcss:
-        specifier: ^4.1.10
+        specifier: 4.1.10
         version: 4.1.10
     devDependencies:
       '@types/markdown-it':
@@ -4589,6 +4589,11 @@ packages:
   prettier@2.8.7:
     resolution: {integrity: sha512-yPngTo3aXUUmyuTjeTUT75txrf+aMh9FiD7q9ZE/i6r0bPb22g4FsE6Y338PQX1bmfy08i9QQCB7/rcUAVntfw==}
     engines: {node: '>=10.13.0'}
+    hasBin: true
+
+  prettier@3.4.2:
+    resolution: {integrity: sha512-e9MewbtFo+Fevyuxn/4rrcDAaq0IYxPGLvObpQjiZBMAzB9IGmzlnG9RZy3FFas+eBMu2vA0CszMeduow5dIuQ==}
+    engines: {node: '>=14'}
     hasBin: true
 
   prettier@3.5.3:
@@ -10964,6 +10969,8 @@ snapshots:
 
   prettier@2.8.7:
     optional: true
+
+  prettier@3.4.2: {}
 
   prettier@3.5.3: {}
 
