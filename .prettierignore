@@ -1,0 +1,19 @@
+# Build outputs
+**/next-blog/.next/**
+**/next-blog/out/**
+**/.astro
+**/dist/**
+**/.vinxi
+**/.output
+
+# Dependencies
+node_modules/
+
+# Generated files
+*.min.js
+*.min.css
+
+# Lock files
+pnpm-lock.yaml
+package-lock.json
+yarn.lock

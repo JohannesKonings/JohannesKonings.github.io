@@ -11,10 +11,9 @@ tags:
   - Application Manager
 ---
 
-
 ## Blog posts
 
-* [AWS Application Manager: A Birds Eye View of your CloudFormation Stack](https://juinquok.medium.com/aws-application-manager-a-birds-eye-view-of-your-cloudformation-stack-4370beff4f7c)
+- [AWS Application Manager: A Birds Eye View of your CloudFormation Stack](https://juinquok.medium.com/aws-application-manager-a-birds-eye-view-of-your-cloudformation-stack-4370beff4f7c)
 
 ## Videos
 
@@ -23,6 +22,7 @@ tags:
 <iframe width="560" height="315" src="https://www.youtube.com/embed/WrNBOx0yduE?si=fyGrLnco3Ln0P1T_" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
 <!-- ## Tools -->
+
 ## Misc
 
 <blockquote class="bluesky-embed" data-bluesky-uri="at://did:plc:dtdgmfaxl7fosnlnda74tp2o/app.bsky.feed.post/3lebjavrnck2j" data-bluesky-cid="bafyreiheymrqvk465hy33xndaknsjnkkheanzucuet5tnofk7p2wjim4ui"><p lang="en">When you use fetch in Node 20 or later, the X-Ray SDK doesn&#x27;t propagate trace headers downstream.
@@ -33,7 +33,6 @@ This is the two-line fix you need. (you need to install the aws-xray-sdk-fetch m
 
 <blockquote class="bluesky-embed" data-bluesky-uri="at://did:plc:2off3grpe3yr55sagqn7dpvn/app.bsky.feed.post/3lcxkzp2s5c2t" data-bluesky-cid="bafyreiguuq2u7mvs774u6ousf4dsvco24r6kl7lfmlmog2ozc6ydfkpg74"><p lang="en">This article about #AWS myApplication unfortunately lacks the CDK setup. I have you covered (code in alt text).
 
-aws.amazon.com/blogs/mt/aut... 
+aws.amazon.com/blogs/mt/aut...
 
 #ListenToTheHeroes<br><br><a href="https://bsky.app/profile/did:plc:2off3grpe3yr55sagqn7dpvn/post/3lcxkzp2s5c2t?ref_src=embed">[image or embed]</a></p>&mdash; Philipp Garbe (<a href="https://bsky.app/profile/did:plc:2off3grpe3yr55sagqn7dpvn?ref_src=embed">@pgarbe.bsky.social</a>) <a href="https://bsky.app/profile/did:plc:2off3grpe3yr55sagqn7dpvn/post/3lcxkzp2s5c2t?ref_src=embed">December 10, 2024 at 4:36 PM</a></blockquote><script async src="https://embed.bsky.app/static/embed.js" charset="utf-8"></script>
-

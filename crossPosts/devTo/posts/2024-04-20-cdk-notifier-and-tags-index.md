@@ -84,7 +84,7 @@ new CdkNotfifierFeatureStackExample(
     tags: {
       branch: branchName,
     },
-  }
+  },
 );
 ```
 

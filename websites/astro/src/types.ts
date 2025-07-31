@@ -1,20 +1,20 @@
 export type Page = {
-	TITLE: string;
-	DESCRIPTION: string;
+  TITLE: string;
+  DESCRIPTION: string;
 };
 
 export interface Site extends Page {
-	AUTHOR: string;
+  AUTHOR: string;
 }
 
 export type Links = {
-	TEXT: string;
-	HREF: string;
+  TEXT: string;
+  HREF: string;
 }[];
 
 export type Socials = {
-	NAME: "Email" | "Github" | "LinkedIn" | "Bluesky" | "Mastodon" | "dev";
-	ICON: "email" | "github" | "linkedin" | "bluesky" | "mastodon" | "dev";
-	TEXT: string;
-	HREF: string;
+  NAME: "Email" | "Github" | "LinkedIn" | "Bluesky" | "Mastodon" | "dev";
+  ICON: "email" | "github" | "linkedin" | "bluesky" | "mastodon" | "dev";
+  TEXT: string;
+  HREF: string;
 }[];

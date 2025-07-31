@@ -2,7 +2,7 @@
 
 ## blog post distribution
 
-* build process for dev.to, hashnode and medium incl. image optimization
+- build process for dev.to, hashnode and medium incl. image optimization
 
 `nlx tsx ./scripts/syncCrossPosts.ts`
 
@@ -17,4 +17,3 @@
 ## astro
 
 ## next
-

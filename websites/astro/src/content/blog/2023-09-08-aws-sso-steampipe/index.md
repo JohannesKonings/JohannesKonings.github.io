@@ -140,4 +140,4 @@ And now it's possible to run the queries with steampipe 🥳
 
 ## Sources
 
-* [aws-sso-util](https://github.com/benkehoe/aws-sso-util)
+- [aws-sso-util](https://github.com/benkehoe/aws-sso-util)

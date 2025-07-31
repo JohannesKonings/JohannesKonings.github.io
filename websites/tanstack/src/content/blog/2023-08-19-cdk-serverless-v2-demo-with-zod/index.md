@@ -1,5 +1,4 @@
 ---
-
 title: Example how to use zod with CDK serverless v2
 date: 2023-08-19 08:15:18
 published: true
@@ -143,7 +142,7 @@ const apiKeyComponent = registry.registerComponent(
     type: "apiKey",
     name: "x-api-key",
     in: "header",
-  }
+  },
 );
 
 registry.register("Todo", schemaTodoApi.openapi({}));
@@ -361,7 +360,7 @@ function deriveAttributes(shapeType: z.ZodType<any, any>) {
     required = true;
     defaultValue = shapeType._def.defaultValue();
     const { type: typeInnerType, enumValues: enumInnerType } = deriveAttributes(
-      shapeType._def.innerType
+      shapeType._def.innerType,
     );
     type = typeInnerType;
     enumValues = enumInnerType as string[];
@@ -414,7 +413,7 @@ const onetable = {
 
 fs.writeFileSync(
   "./src/definitions/mymodel-zod.json",
-  JSON.stringify(onetable, null, 2)
+  JSON.stringify(onetable, null, 2),
 );
 ```
 

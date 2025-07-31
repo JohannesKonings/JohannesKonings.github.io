@@ -5,9 +5,9 @@ summary: Description of the change from a self sign up to user management from a
 categories: aws
 thumbnail: amplify
 tags:
-    - aws
-    - AWS Amplify
-    - AWS Amplify Admin UI
+  - aws
+  - AWS Amplify
+  - AWS Amplify Admin UI
 published: true
 ---
 
@@ -30,9 +30,10 @@ To hide the signup link is just one line.
 
 ```html
 <AmplifyAuthenticator>
-    <AmplifySignIn hideSignUp="true" slot="sign-in" />
+  <AmplifySignIn hideSignUp="true" slot="sign-in" />
 </AmplifyAuthenticator>
 ```
+
 More options are described in the [docs](https://docs.amplify.aws/ui/auth/authenticator/q/framework/react#sign-in)
 
 Then it looks like that.
@@ -41,7 +42,7 @@ Then it looks like that.
 
 # Create a new user via Amplify Admin UI
 
-If a new user is needed, you can create on via the Amplify Admin UI. 
+If a new user is needed, you can create on via the Amplify Admin UI.
 That you can use the Admin UI, it is just a click in the Amplify [Console](https://console.aws.amazon.com/amplify/home).
 
 ![enabled admin ui]({{ site.baseurl }}/img/2020-12-06-amplify_admin_ui_user_management/enabled_admin_ui.png)
@@ -88,5 +89,3 @@ See details [here](https://docs.amplify.aws/console/adminui/access-management).
 # Code
 
 [https://github.com/JohannesKonings/fff-badminton](https://github.com/JohannesKonings/fff-badminton)
-
-

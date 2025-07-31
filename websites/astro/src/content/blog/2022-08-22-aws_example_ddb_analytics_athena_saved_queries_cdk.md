@@ -1,15 +1,16 @@
 ---
-title:      Example how to create Athena saved queries with CDK
-date:       '2022-08-22 08:15:18'
-published:  true
-summary:    This post is about how saved queries are created with CDK. This is useful to have important queries prepared for any users.
+title: Example how to create Athena saved queries with CDK
+date: "2022-08-22 08:15:18"
+published: true
+summary: This post is about how saved queries are created with CDK. This is useful to have important queries prepared for any users.
 categories: aws
 thumbnail: aws_kinesis
 tags:
- - aws
- - aws athena
- - aws cdk
+  - aws
+  - aws athena
+  - aws cdk
 ---
+
 In [this]({{ site.baseurl }}/aws/2021/08/27/aws_example_ddb_analytics/) post is a example of a Athena query to get the the current data of the DynamoDb table.
 
 This post explains how to provide this query with CDK as a saved query in Athena to have the query stored "nearby" the editor and that the query fits to the current deployment regarding the naming of the DB and table.
@@ -42,20 +43,16 @@ WHERE (eventname = 'INSERT'
     WHERE persons2.dynamodb.newimage.pk.s = persons1.dynamodb.newimage.pk.s);
 ```
 
-
 # Saved Query Construct
 
 Like the SQL file, the CDK definition of the saved query is in an [extra](https://github.com/JohannesKonings/test-aws-dynamodb-athena-cdk/blob/main/cdk/lib/saved-queries/saved-queries.ts)[ file](https://github.com/JohannesKonings/test-aws-dynamodb-athena-cdk/blob/main/cdk/lib/saved-queries/saved-queries.ts) as a CDK construct.
 
-
 ```typescript
-import { Construct } from 'constructs'
-import {
-  aws_athena as athenaCfn
-} from 'aws-cdk-lib'
-import * as glue from '@aws-cdk/aws-glue-alpha'
-import { readFileSync } from 'fs';
-import { join } from 'path';
+import { Construct } from "constructs";
+import { aws_athena as athenaCfn } from "aws-cdk-lib";
+import * as glue from "@aws-cdk/aws-glue-alpha";
+import { readFileSync } from "fs";
+import { join } from "path";
 
 export interface SavedQueriesProps {
   glueDb: glue.IDatabase;
@@ -65,29 +62,37 @@ export interface SavedQueriesProps {
 
 export class SavedQueries extends Construct {
   constructor(scope: Construct, id: string, props: SavedQueriesProps) {
-    super(scope, id)
+    super(scope, id);
 
     const getSqlString = (file: string): string => {
-      let personsDdbStateSqlCommand = readFileSync(join(__dirname, `${file}`), 'utf-8').toString()
-      const athenaDbName = props.glueDb.databaseName
+      let personsDdbStateSqlCommand = readFileSync(
+        join(__dirname, `${file}`),
+        "utf-8",
+      ).toString();
+      const athenaDbName = props.glueDb.databaseName;
       let athenaTableName = props.athenaTableName;
-      athenaTableName = athenaTableName.replace(/-/g, '_')
-      personsDdbStateSqlCommand = personsDdbStateSqlCommand.replace(/athenaDbName/g, athenaDbName)
-      personsDdbStateSqlCommand = personsDdbStateSqlCommand.replace(/athenaTableName/g, athenaTableName)
-      return personsDdbStateSqlCommand
-    }
+      athenaTableName = athenaTableName.replace(/-/g, "_");
+      personsDdbStateSqlCommand = personsDdbStateSqlCommand.replace(
+        /athenaDbName/g,
+        athenaDbName,
+      );
+      personsDdbStateSqlCommand = personsDdbStateSqlCommand.replace(
+        /athenaTableName/g,
+        athenaTableName,
+      );
+      return personsDdbStateSqlCommand;
+    };
 
-    let queryString = getSqlString('ddb-state.sql')
+    let queryString = getSqlString("ddb-state.sql");
 
     // eslint-disable-next-line no-new
-    new athenaCfn.CfnNamedQuery(this, 'query-current-ddb-state', {
+    new athenaCfn.CfnNamedQuery(this, "query-current-ddb-state", {
       database: props.glueDb.databaseName,
       queryString: queryString,
-      description: 'query the current state from the ddb table',
-      name: 'current-ddb-state',
-      workGroup: props.athenaWorkgroupName
-    })
-
+      description: "query the current state from the ddb table",
+      name: "current-ddb-state",
+      workGroup: props.athenaWorkgroupName,
+    });
   }
 }
 ```
@@ -98,7 +103,7 @@ This needs the query as a string. The function `getSqlString` converts and trans
 
 So that the placeholders are replaced with the resources, which are deployed.
 
-The Athena table name will be created during the glue crawler process. The convention is that the table name configured prefix of the S3 bucket with an underscore ("_") instead of dashes ("-").
+The Athena table name will be created during the glue crawler process. The convention is that the table name configured prefix of the S3 bucket with an underscore ("\_") instead of dashes ("-").
 
 The database name and the workgroup name are passed from the stack to the construct.
 
@@ -111,17 +116,17 @@ The needed information are passed as props to the construct.
 The saved queries are depending on the workgroup. That has to be defined in CDK. Otherwise, the deployment will fail.
 
 ```typescript
-const savedQueries = new SavedQueries(this, 'saved-queries', {
-      glueDb: glueDb,
-      athenaTableName: firehoseBucketName,
-      athenaWorkgroupName: athenaWorkgroup.name,
-    })
+const savedQueries = new SavedQueries(this, "saved-queries", {
+  glueDb: glueDb,
+  athenaTableName: firehoseBucketName,
+  athenaWorkgroupName: athenaWorkgroup.name,
+});
 
-    savedQueries.node.addDependency(athenaWorkgroup);
+savedQueries.node.addDependency(athenaWorkgroup);
 ```
 
-
 # Result
+
 After the deployment, the new query is listed here and can be chosen for query in the editor.
 
 ![athena save query deployed]({{ site.baseurl }}/img/2022-08-22-aws_example_ddb_analytics_athena_saved_queries_cdk/athena_saved_query_deployed.png)
@@ -131,4 +136,3 @@ After the deployment, the new query is listed here and can be chosen for query i
 # Code
 
 [https://github.com/JohannesKonings/test-aws-dynamodb-athena-cdk](https://github.com/JohannesKonings/test-aws-dynamodb-athena-cdk)
-

@@ -1,3 +1,4 @@
+// oxlint-disable-next-line no-unused-vars
 const USER_NAME = "johanneskonings";
 
 // export const articles = await fetch(

@@ -1,14 +1,14 @@
 {
-	"astro-blog": { "public": {} },
-	"img": {},
-	"websites": { "tanstack": {}, "astro": {} },
-	"_posts": {
-		"2024-11-30-aws-sso-prowler": {},
-		"2024-12-07-aws-vscode-private-ec2-instance": {},
-		"2024-12-28-api-gw-sigv4-different-api-clients": {},
-		"2023-09-08-aws-sso-steampipe": {},
-		"2025-01-02-aws-application-config-lambda-cdk": {},
-		"2025-01-02-aws-application-signals-config-transaction-search-cdk": {},
-		"2025-06-14-aws-cdk-ephemeral-stacks-cleanup": {}
-	}
+  "astro-blog": { "public": {} },
+  "img": {},
+  "websites": { "tanstack": {}, "astro": {} },
+  "_posts": {
+    "2024-11-30-aws-sso-prowler": {},
+    "2024-12-07-aws-vscode-private-ec2-instance": {},
+    "2024-12-28-api-gw-sigv4-different-api-clients": {},
+    "2023-09-08-aws-sso-steampipe": {},
+    "2025-01-02-aws-application-config-lambda-cdk": {},
+    "2025-01-02-aws-application-signals-config-transaction-search-cdk": {},
+    "2025-06-14-aws-cdk-ephemeral-stacks-cleanup": {}
+  }
 }
