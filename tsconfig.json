@@ -20,12 +20,7 @@
     "websites/*/src/**/*.tsx",
     "scripts/**/*.ts"
   ],
-  "exclude": [
-    "node_modules",
-    "**/dist",
-    "**/build",
-    "**/.astro"
-  ],
+  "exclude": ["node_modules", "**/dist", "**/build", "**/.astro"],
   "references": [
     { "path": "./websites/astro" },
     { "path": "./websites/tanstack" }

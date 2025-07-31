@@ -7,20 +7,24 @@ This project has been successfully migrated from standard Vite to `rolldown-vite
 ## Migration Steps Completed
 
 ### 1. Package Dependency Update ✅
+
 - Replaced `"vite": "7.0.6"` with `"vite": "npm:rolldown-vite@latest"` in `package.json`
 - This creates a seamless alias that allows rolldown-vite to be used as a drop-in replacement
 
 ### 2. React Plugin Optimization ✅
+
 - Added `@vitejs/plugin-react-oxc` for better performance with Rolldown
 - Configured TanStack Start with `customViteReactPlugin: true`
 - Eliminates warnings about React plugin configuration
 
 ### 3. TypeScript Configuration ✅
+
 - Fixed TypeScript-Go compatibility issues with `baseUrl` removal
 - Added explicit return types for React components to address TSGo type inference
 - Updated paths configuration to work with both TypeScript-Go and Rolldown
 
 ### 4. Build Configuration Optimization ✅
+
 - Used `target: "esnext"` for modern browser support and optimal performance
 - Removed advanced chunking strategies that caused compatibility issues with TanStack Start
 - Let TanStack Start handle chunk optimization internally
@@ -28,11 +32,13 @@ This project has been successfully migrated from standard Vite to `rolldown-vite
 ## Key Benefits Achieved
 
 ### Performance Improvements
+
 - **Build time**: ~1.2s vs ~2-3s with standard Vite (40-50% improvement)
 - **Unified tooling**: Single Rust-based bundler for both development and production
 - **Better React support**: Oxc-based React plugin for faster transforms
 
 ### Build Quality
+
 - Clean, optimized bundle generation
 - Proper SSR support maintained
 - Static site generation working correctly
@@ -59,8 +65,8 @@ export default defineConfig(({ mode }) => ({
       "@tanstack/react-start",
       "class-variance-authority",
       "clsx",
-      "tailwind-merge"
-    ]
+      "tailwind-merge",
+    ],
   },
   build: {
     target: "esnext",
@@ -86,12 +92,14 @@ export default defineConfig(({ mode }) => ({
 ## Compatibility Notes
 
 ### TanStack Start Integration
+
 - ✅ Works with rolldown-vite when using conservative settings
 - ❌ Advanced chunking (`advancedChunks`) causes stack overflow in manifest plugin
 - ❌ Experimental native plugins cause conflicts with TanStack Start's build process
 - ✅ React Oxc plugin improves performance without issues
 
 ### TypeScript-Go Integration
+
 - ✅ Compatible with rolldown-vite
 - ✅ Explicit return types resolve TSGo inference issues
 - ✅ Modern `paths` configuration works correctly
@@ -99,19 +107,21 @@ export default defineConfig(({ mode }) => ({
 ## Performance Results
 
 **Build Output (Final):**
+
 ```
 rolldown-vite v7.0.12 building for production...
 ✓ 113 modules transformed.
 ✓ built in 1.18s
 
 rolldown-vite v7.0.12 building SSR bundle for production...
-✓ 101 modules transformed. 
+✓ 101 modules transformed.
 ✓ built in 416ms
 
 ✔ Client and Server bundles for TanStack Start have been successfully built.
 ```
 
 **Bundle Analysis:**
+
 - Main bundle: 264.63 kB (82.74 kB gzipped)
 - Total assets: 7 optimized chunks
 - Build time: ~1.6s total (client + SSR)
@@ -126,6 +136,7 @@ rolldown-vite v7.0.12 building SSR bundle for production...
 ## Future Optimizations
 
 Once TanStack Start improves Rolldown compatibility:
+
 - Re-enable experimental native plugins
 - Implement advanced chunk splitting strategies
 - Add more aggressive bundle optimizations
@@ -143,7 +154,7 @@ Once TanStack Start improves Rolldown compatibility:
 # Build the project
 pnpm build
 
-# Start development server  
+# Start development server
 pnpm dev
 
 # Check bundle analysis

@@ -12,6 +12,7 @@ This ensures reproducible builds and prevents unexpected version updates that co
 ### Examples
 
 **Good:**
+
 ```json
 {
   "dependencies": {
@@ -23,6 +24,7 @@ This ensures reproducible builds and prevents unexpected version updates that co
 ```
 
 **Avoid:**
+
 ```json
 {
   "dependencies": {

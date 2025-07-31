@@ -5,10 +5,13 @@ This project is now configured to use TypeScript-Go (tsgo) for both command-line
 ## VS Code Configuration
 
 ### 1. Install Required Extension
+
 VS Code will now prompt you to install the **TypeScript (Native Preview)** extension when you open the workspace. This extension enables TypeScript-Go integration in VS Code.
 
 ### 2. Extension Configuration
+
 The workspace is already configured with:
+
 ```json
 {
   "typescript.experimental.useTsgo": true
@@ -16,6 +19,7 @@ The workspace is already configured with:
 ```
 
 This setting tells VS Code to use TypeScript-Go instead of the built-in TypeScript language service for:
+
 - Type checking
 - IntelliSense
 - Error reporting
@@ -23,6 +27,7 @@ This setting tells VS Code to use TypeScript-Go instead of the built-in TypeScri
 - Refactoring
 
 ### 3. Workspace Layout
+
 The configuration is applied at multiple levels:
 
 - **Root workspace** (`.vscode/settings.json`): Global TypeScript-Go settings
@@ -37,7 +42,7 @@ With TypeScript-Go enabled, you'll get:
 ✅ **Same TypeScript compatibility** - Full TS 5.8 feature support  
 ✅ **Better error messages** - Improved diagnostic output  
 ✅ **Incremental compilation** - Faster rebuilds  
-✅ **Modern module resolution** - Enhanced ESM support  
+✅ **Modern module resolution** - Enhanced ESM support
 
 ## Verification
 
@@ -50,19 +55,25 @@ To verify TypeScript-Go is working in VS Code:
 ## Troubleshooting
 
 ### Extension Not Installing
+
 If the extension doesn't install automatically:
+
 ```bash
 code --install-extension TypeScriptTeam.native-preview
 ```
 
 ### Fallback to Regular TypeScript
+
 If you need to temporarily disable TypeScript-Go:
+
 1. Open Command Palette (`Cmd/Ctrl + Shift + P`)
 2. Run `TypeScript (Native Preview): Disable (Experimental)`
 3. Or remove `"typescript.experimental.useTsgo": true` from settings
 
 ### Performance Issues
+
 If you experience performance issues:
+
 1. Restart the TypeScript service: `Cmd/Ctrl + Shift + P` → `TypeScript: Restart TS Server`
 2. Check TypeScript-Go version: `npx tsgo --version`
 3. Ensure you're using `target: "esnext"` in tsconfig.json
@@ -87,7 +98,7 @@ pnpm build:tanstack
 ## Benefits Over Regular TypeScript
 
 1. **Performance**: 2-5x faster compilation in large projects
-2. **Memory**: Lower memory usage for large codebases  
+2. **Memory**: Lower memory usage for large codebases
 3. **Features**: Better support for modern ECMAScript features
 4. **Compatibility**: 100% compatible with existing TypeScript code
 5. **Future-proof**: Microsoft's next-generation TypeScript implementation
