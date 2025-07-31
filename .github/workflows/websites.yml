@@ -7,7 +7,8 @@ name: Deploy websites to Pages
 on:
   # Runs on pushes targeting the default branch
   push:
-    branches: ["main"]
+    # branches: ["main"]
+    branches: ["tanstack-update"]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -83,15 +84,9 @@ jobs:
             --base "${{ steps.pages.outputs.base_path }}"
           cp ${{ env.WEBSITE_ASTRO_PATH }}/ads.txt  ${{ env.WEBSITE_ASTRO_PATH }}/dist
         working-directory: ${{ env.BUILD_PATH }}
-      # - name: Build with Tanstack
-      #   run: |
-      #     ${{ steps.detect-package-manager.outputs.runner }} build:tanstack \
-      #       --site "${{ steps.pages.outputs.origin }}" \
-      #       --base "${{ steps.pages.outputs.base_path }}/tanstack"
-      #   working-directory: ${{ env.BUILD_PATH }}
       - name: Build with Tanstack
         run: |
-          ${{ steps.detect-package-manager.outputs.runner }} build:tanstack
+          NODE_ENV=production ${{ steps.detect-package-manager.outputs.runner }} build:tanstack
         working-directory: ${{ env.BUILD_PATH }}
       - name: Combine build artifacts
         run: |
@@ -102,7 +97,7 @@ jobs:
           cp -r ${{ env.WEBSITE_TANSTACK_PATH }}/.output/public/* ${{ env.BUILD_PATH }}/dist/tanstack
 
           # tmp for debugging
-          echo '<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Tanstack WIP</title></head><body><h1>Tanstack site is a work in progress.</h1></body></html>' > ${{ env.BUILD_PATH }}/dist/tanstack/index.html
+          # echo '<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Tanstack WIP</title></head><body><h1>Tanstack site is a work in progress.</h1></body></html>' > ${{ env.BUILD_PATH }}/dist/tanstack/index.html
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
