@@ -6,6 +6,7 @@
   "type": "module",
   "scripts": {
     "sync": "pnpm tsx ./../../scripts/syncWebsites.ts tanstack",
+    "sync-content": "cp -r src/content public/",
     "dev": "pnpm sync && vite dev",
     "build": "pnpm sync && tsgo --noEmit && vite build",
     "start": "pnpm sync && vite start",
@@ -16,7 +17,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@emotion/styled": "^11.14.1",
+    "@emotion/styled": "11.14.1",
     "@tanstack/react-router": "1.130.9",
     "@tanstack/react-start": "1.130.9",
     "class-variance-authority": "0.7.1",
@@ -30,15 +31,20 @@
     "vite": "npm:rolldown-vite@latest"
   },
   "devDependencies": {
+    "@content-collections/core": "0.10.0",
+    "@content-collections/vite": "0.2.6",
     "@iconify/react": "6.0.0",
     "@tailwindcss/postcss": "4.1.11",
     "@types/react": "19.1.9",
     "@types/react-dom": "19.1.7",
     "@vitejs/plugin-react": "4.7.0",
-    "@vitejs/plugin-react-oxc": "^0.3.0",
+    "@vitejs/plugin-react-oxc": "0.3.0",
     "autoprefixer": "10.4.21",
+    "date-fns": "4.1.0",
     "postcss": "8.5.6",
+    "reading-time": "1.5.0",
     "tailwindcss": "4.1.11",
-    "vite-tsconfig-paths": "5.1.4"
+    "vite-tsconfig-paths": "5.1.4",
+    "zod": "4.0.14"
   }
 }

@@ -2,12 +2,76 @@ import { defineConfig } from "vite";
 import tsConfigPaths from "vite-tsconfig-paths";
 import { tanstackStart } from "@tanstack/react-start/plugin/vite";
 import react from "@vitejs/plugin-react-oxc";
+import contentCollections from "@content-collections/vite";
+import { copyFileSync, mkdirSync, existsSync, readdirSync, statSync } from "fs";
+import { join, dirname } from "path";
+
+// Plugin to sync src/content to public/content
+function syncContentPlugin() {
+  const copyDirectory = (src: string, dest: string) => {
+    if (!existsSync(dest)) {
+      mkdirSync(dest, { recursive: true });
+    }
+
+    const items = readdirSync(src);
+    for (const item of items) {
+      const srcPath = join(src, item);
+      const destPath = join(dest, item);
+
+      if (statSync(srcPath).isDirectory()) {
+        copyDirectory(srcPath, destPath);
+      } else {
+        // Only copy if file doesn't exist or is newer
+        if (
+          !existsSync(destPath) ||
+          statSync(srcPath).mtime > statSync(destPath).mtime
+        ) {
+          mkdirSync(dirname(destPath), { recursive: true });
+          copyFileSync(srcPath, destPath);
+        }
+      }
+    }
+  };
+
+  return {
+    name: "sync-content",
+    buildStart() {
+      // Initial sync on build start
+      copyDirectory("src/content", "public/content");
+    },
+    handleHotUpdate({ file }: { file: string }) {
+      // Sync when content files change
+      if (file.includes("src/content")) {
+        try {
+          copyDirectory("src/content", "public/content");
+          console.log("✅ Synced content to public directory");
+        } catch (error) {
+          console.error("❌ Failed to sync content:", error);
+        }
+      }
+    },
+  };
+}
 
 export default defineConfig(({ mode }) => ({
   base: mode === "production" ? "/tanstack/" : "/",
   server: {
     port: 3000,
+    fs: {
+      allow: [".."],
+    },
   },
+  // Serve content directory as static assets for images
+  publicDir: "public",
+  assetsInclude: [
+    "**/*.png",
+    "**/*.jpg",
+    "**/*.jpeg",
+    "**/*.gif",
+    "**/*.svg",
+    "**/*.avif",
+    "**/*.webp",
+  ],
   // Disable experimental features for TanStack Start compatibility
   // experimental: {
   //   enableNativePlugin: true,
@@ -46,6 +110,10 @@ export default defineConfig(({ mode }) => ({
     // }
   },
   plugins: [
+    // Sync content directory to public for static serving
+    syncContentPlugin(),
+    // Add Content Collections plugin first
+    contentCollections(),
     // Use Oxc-based React plugin for better Rolldown performance
     react(),
     tsConfigPaths(),

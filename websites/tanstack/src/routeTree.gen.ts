@@ -12,6 +12,8 @@ import { Route as rootRouteImport } from "./routes/__root";
 import { Route as IndexRouteImport } from "./routes/index";
 import { Route as BlogIndexRouteImport } from "./routes/blog/index";
 import { Route as BlogPostIdRouteImport } from "./routes/blog/$postId";
+import { Route as BlogTagTagRouteImport } from "./routes/blog/tag/$tag";
+import { Route as BlogCategoryCategoryRouteImport } from "./routes/blog/category/$category";
 
 const IndexRoute = IndexRouteImport.update({
   id: "/",
@@ -28,35 +30,69 @@ const BlogPostIdRoute = BlogPostIdRouteImport.update({
   path: "/blog/$postId",
   getParentRoute: () => rootRouteImport,
 } as any);
+const BlogTagTagRoute = BlogTagTagRouteImport.update({
+  id: "/blog/tag/$tag",
+  path: "/blog/tag/$tag",
+  getParentRoute: () => rootRouteImport,
+} as any);
+const BlogCategoryCategoryRoute = BlogCategoryCategoryRouteImport.update({
+  id: "/blog/category/$category",
+  path: "/blog/category/$category",
+  getParentRoute: () => rootRouteImport,
+} as any);
 
 export interface FileRoutesByFullPath {
   "/": typeof IndexRoute;
   "/blog/$postId": typeof BlogPostIdRoute;
   "/blog": typeof BlogIndexRoute;
+  "/blog/category/$category": typeof BlogCategoryCategoryRoute;
+  "/blog/tag/$tag": typeof BlogTagTagRoute;
 }
 export interface FileRoutesByTo {
   "/": typeof IndexRoute;
   "/blog/$postId": typeof BlogPostIdRoute;
   "/blog": typeof BlogIndexRoute;
+  "/blog/category/$category": typeof BlogCategoryCategoryRoute;
+  "/blog/tag/$tag": typeof BlogTagTagRoute;
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport;
   "/": typeof IndexRoute;
   "/blog/$postId": typeof BlogPostIdRoute;
   "/blog/": typeof BlogIndexRoute;
+  "/blog/category/$category": typeof BlogCategoryCategoryRoute;
+  "/blog/tag/$tag": typeof BlogTagTagRoute;
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath;
-  fullPaths: "/" | "/blog/$postId" | "/blog";
+  fullPaths:
+    | "/"
+    | "/blog/$postId"
+    | "/blog"
+    | "/blog/category/$category"
+    | "/blog/tag/$tag";
   fileRoutesByTo: FileRoutesByTo;
-  to: "/" | "/blog/$postId" | "/blog";
-  id: "__root__" | "/" | "/blog/$postId" | "/blog/";
+  to:
+    | "/"
+    | "/blog/$postId"
+    | "/blog"
+    | "/blog/category/$category"
+    | "/blog/tag/$tag";
+  id:
+    | "__root__"
+    | "/"
+    | "/blog/$postId"
+    | "/blog/"
+    | "/blog/category/$category"
+    | "/blog/tag/$tag";
   fileRoutesById: FileRoutesById;
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute;
   BlogPostIdRoute: typeof BlogPostIdRoute;
   BlogIndexRoute: typeof BlogIndexRoute;
+  BlogCategoryCategoryRoute: typeof BlogCategoryCategoryRoute;
+  BlogTagTagRoute: typeof BlogTagTagRoute;
 }
 
 declare module "@tanstack/react-router" {
@@ -82,6 +118,20 @@ declare module "@tanstack/react-router" {
       preLoaderRoute: typeof BlogPostIdRouteImport;
       parentRoute: typeof rootRouteImport;
     };
+    "/blog/tag/$tag": {
+      id: "/blog/tag/$tag";
+      path: "/blog/tag/$tag";
+      fullPath: "/blog/tag/$tag";
+      preLoaderRoute: typeof BlogTagTagRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
+    "/blog/category/$category": {
+      id: "/blog/category/$category";
+      path: "/blog/category/$category";
+      fullPath: "/blog/category/$category";
+      preLoaderRoute: typeof BlogCategoryCategoryRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
   }
 }
 
@@ -89,6 +139,8 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   BlogPostIdRoute: BlogPostIdRoute,
   BlogIndexRoute: BlogIndexRoute,
+  BlogCategoryCategoryRoute: BlogCategoryCategoryRoute,
+  BlogTagTagRoute: BlogTagTagRoute,
 };
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

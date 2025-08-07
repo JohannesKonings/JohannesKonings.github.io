@@ -52,6 +52,12 @@ const syncAstro = async () => {
 const syncTanstack = async () => {
   const pathPrefix = "websites/tanstack/src/content";
   await sync("_posts", "blog", pathPrefix);
+
+  // Also copy content to public directory for static serving
+  console.log("Copying content to public directory for static serving");
+  const { stdout: stdoutPublicCopy } =
+    await execa`cp -r ./../../websites/tanstack/src/content ./../../websites/tanstack/public/`;
+  console.log("public content copied", stdoutPublicCopy);
 };
 
 const website = process.argv[2];

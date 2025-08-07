@@ -15,7 +15,8 @@
     "allowSyntheticDefaultImports": true,
     "paths": {
       "*": ["./*"],
-      "@/*": ["./*"]
+      "@/*": ["./*"],
+      "content-collections": ["./.content-collections/generated"]
     }
   },
   "include": ["src/**/*.ts", "src/**/*.tsx", "**/*.ts", "**/*.tsx"],
