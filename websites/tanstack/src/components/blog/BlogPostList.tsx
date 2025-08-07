@@ -4,53 +4,69 @@ import { useState, useMemo } from "react";
 import type { JSX } from "react";
 
 interface BlogPostListProps {
-  posts: (typeof allPosts);
+  posts: typeof allPosts;
   showFilters?: boolean;
 }
 
-export function BlogPostList({ posts, showFilters = true }: BlogPostListProps): JSX.Element {
+export function BlogPostList({
+  posts,
+  showFilters = true,
+}: BlogPostListProps): JSX.Element {
   const [selectedTags, setSelectedTags] = useState<Set<string>>(new Set());
-  const [selectedCategories, setSelectedCategories] = useState<Set<string>>(new Set());
+  const [selectedCategories, setSelectedCategories] = useState<Set<string>>(
+    new Set(),
+  );
   const [searchQuery, setSearchQuery] = useState("");
 
   // Get all unique tags and categories
   const allTags = useMemo(() => {
     const tags = new Set<string>();
-    posts.forEach(post => post.tags.forEach(tag => tags.add(tag)));
+    posts.forEach((post) => post.tags.forEach((tag) => tags.add(tag)));
     return Array.from(tags).sort();
   }, [posts]);
 
   const allCategories = useMemo(() => {
     const categories = new Set<string>();
-    posts.forEach(post => post.categories.forEach(cat => categories.add(cat)));
+    posts.forEach((post) =>
+      post.categories.forEach((cat) => categories.add(cat)),
+    );
     return Array.from(categories).sort();
   }, [posts]);
 
   // Filter posts based on selected filters
   const filteredPosts = useMemo(() => {
-    return posts.filter(post => {
+    return posts.filter((post) => {
       // Search query filter
       if (searchQuery) {
         const query = searchQuery.toLowerCase();
         const matchesTitle = post.title.toLowerCase().includes(query);
         const matchesSummary = post.summary.toLowerCase().includes(query);
         const matchesContent = post.excerpt.toLowerCase().includes(query);
-        const matchesTags = post.tags.some(tag => tag.toLowerCase().includes(query));
-        
-        if (!matchesTitle && !matchesSummary && !matchesContent && !matchesTags) {
+        const matchesTags = post.tags.some((tag) =>
+          tag.toLowerCase().includes(query),
+        );
+
+        if (
+          !matchesTitle &&
+          !matchesSummary &&
+          !matchesContent &&
+          !matchesTags
+        ) {
           return false;
         }
       }
 
       // Tag filter
       if (selectedTags.size > 0) {
-        const hasMatchingTag = post.tags.some(tag => selectedTags.has(tag));
+        const hasMatchingTag = post.tags.some((tag) => selectedTags.has(tag));
         if (!hasMatchingTag) return false;
       }
 
       // Category filter
       if (selectedCategories.size > 0) {
-        const hasMatchingCategory = post.categories.some(cat => selectedCategories.has(cat));
+        const hasMatchingCategory = post.categories.some((cat) =>
+          selectedCategories.has(cat),
+        );
         if (!hasMatchingCategory) return false;
       }
 
@@ -99,9 +115,11 @@ export function BlogPostList({ posts, showFilters = true }: BlogPostListProps): 
             {/* Tags */}
             {allTags.length > 0 && (
               <div>
-                <h3 className="text-sm font-medium bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent mb-3">Tags</h3>
+                <h3 className="text-sm font-medium bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent mb-3">
+                  Tags
+                </h3>
                 <div className="flex flex-wrap gap-2">
-                  {allTags.map(tag => (
+                  {allTags.map((tag) => (
                     <button
                       key={tag}
                       onClick={() => toggleTag(tag)}
@@ -121,9 +139,11 @@ export function BlogPostList({ posts, showFilters = true }: BlogPostListProps): 
             {/* Categories */}
             {allCategories.length > 0 && (
               <div>
-                <h3 className="text-sm font-medium bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent mb-3">Categories</h3>
+                <h3 className="text-sm font-medium bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent mb-3">
+                  Categories
+                </h3>
                 <div className="flex flex-wrap gap-2">
-                  {allCategories.map(category => (
+                  {allCategories.map((category) => (
                     <button
                       key={category}
                       onClick={() => toggleCategory(category)}
@@ -142,7 +162,9 @@ export function BlogPostList({ posts, showFilters = true }: BlogPostListProps): 
           </div>
 
           {/* Clear filters */}
-          {(selectedTags.size > 0 || selectedCategories.size > 0 || searchQuery) && (
+          {(selectedTags.size > 0 ||
+            selectedCategories.size > 0 ||
+            searchQuery) && (
             <button
               onClick={() => {
                 setSelectedTags(new Set());
@@ -168,8 +190,12 @@ export function BlogPostList({ posts, showFilters = true }: BlogPostListProps): 
       {filteredPosts.length === 0 ? (
         <div className="text-center py-12">
           <div className="bg-gradient-to-r from-gray-800/50 to-gray-700/50 backdrop-blur-sm p-8 rounded-xl border border-gray-600/30">
-            <p className="text-gray-400 text-lg">No posts found in the digital archive.</p>
-            <p className="text-gray-500 text-sm mt-2">Try adjusting your search criteria.</p>
+            <p className="text-gray-400 text-lg">
+              No posts found in the digital archive.
+            </p>
+            <p className="text-gray-500 text-sm mt-2">
+              Try adjusting your search criteria.
+            </p>
           </div>
         </div>
       ) : (

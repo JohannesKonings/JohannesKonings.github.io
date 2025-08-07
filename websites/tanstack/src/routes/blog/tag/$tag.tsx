@@ -8,11 +8,11 @@ export const Route = createFileRoute("/blog/tag/$tag")({
   beforeLoad: ({ params }) => {
     const { tag } = params;
     const allTags = getAllTags();
-    
+
     if (!allTags.includes(tag)) {
       throw notFound();
     }
-    
+
     const posts = getPostsByTag(tag);
     return { posts, tag };
   },
@@ -32,11 +32,11 @@ function RouteComponent() {
             Tag: {tag}
           </h2>
           <p className="text-blue-700 dark:text-blue-300">
-            {posts.length} post{posts.length !== 1 ? 's' : ''} found
+            {posts.length} post{posts.length !== 1 ? "s" : ""} found
           </p>
         </div>
       </div>
-      
+
       <BlogPostList posts={posts} showFilters={false} />
     </BlogLayout>
   );

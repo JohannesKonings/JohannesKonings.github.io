@@ -44,7 +44,7 @@ function Home() {
           <div className="absolute bottom-20 right-20 w-40 h-40 bg-blue-400/5 rounded-full blur-xl animate-gentle-pulse animation-delay-2000"></div>
           <div className="absolute top-1/2 left-1/3 w-24 h-24 bg-gray-400/8 rounded-full blur-lg animate-subtle-glow animation-delay-3000"></div>
         </div>
-        
+
         {/* Avatar Section - now below navigation */}
         <div className="relative z-10 pt-16 pb-12">
           <div className="container mx-auto px-4">
@@ -52,13 +52,13 @@ function Home() {
               {/* Avatar with subtle glow effect */}
               <div className="relative mb-6 group">
                 <div className="absolute inset-0 bg-gradient-to-r from-cyan-400/20 to-blue-400/20 rounded-full blur-lg opacity-0 group-hover:opacity-100 transition-opacity duration-700 animate-subtle-glow"></div>
-                <img 
-                  src={avatar} 
-                  alt="Avatar" 
-                  className="relative z-10 rounded-full border-2 border-gray-600/50 shadow-2xl transform transition-transform duration-500 group-hover:scale-105" 
+                <img
+                  src={avatar}
+                  alt="Avatar"
+                  className="relative z-10 rounded-full border-2 border-gray-600/50 shadow-2xl transform transition-transform duration-500 group-hover:scale-105"
                 />
               </div>
-              
+
               {/* Social links with neon effects - smaller size */}
               <div className="flex items-center justify-center mb-6 space-x-6">
                 <a
@@ -80,7 +80,7 @@ function Home() {
                   <Fa6BrandsBluesky className="relative z-10 text-4xl text-gray-300 group-hover:text-blue-400 transition-all duration-300 transform group-hover:scale-110 group-hover:drop-shadow-[0_0_10px_rgba(59,130,246,0.5)]" />
                 </a>
               </div>
-              
+
               {/* Name with metallic effect */}
               <h1 className="mb-6 text-4xl font-bold bg-gradient-to-r from-gray-200 via-gray-100 to-gray-200 bg-clip-text text-transparent drop-shadow-lg animate-pulse">
                 Johannes Konings
@@ -97,13 +97,13 @@ function Home() {
                 Latest Blog Posts
               </h2>
             </div>
-            
+
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {recentPosts.map((post) => (
                 <BlogPostCard key={post.slug} post={post} />
               ))}
             </div>
-            
+
             {/* View All Posts Link */}
             <div className="text-center mt-12">
               <a

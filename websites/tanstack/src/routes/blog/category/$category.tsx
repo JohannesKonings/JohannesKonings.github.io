@@ -1,5 +1,8 @@
 import { createFileRoute, notFound } from "@tanstack/react-router";
-import { getPostsByCategory, getAllCategories } from "../../../lib/content-utils";
+import {
+  getPostsByCategory,
+  getAllCategories,
+} from "../../../lib/content-utils";
 import { BlogLayout } from "../../../components/blog/BlogLayout";
 import { BlogPostList } from "../../../components/blog/BlogPostList";
 
@@ -8,11 +11,11 @@ export const Route = createFileRoute("/blog/category/$category")({
   beforeLoad: ({ params }) => {
     const { category } = params;
     const allCategories = getAllCategories();
-    
+
     if (!allCategories.includes(category)) {
       throw notFound();
     }
-    
+
     const posts = getPostsByCategory(category);
     return { posts, category };
   },
@@ -32,11 +35,11 @@ function RouteComponent() {
             Category: {category}
           </h2>
           <p className="text-green-700 dark:text-green-300">
-            {posts.length} post{posts.length !== 1 ? 's' : ''} found
+            {posts.length} post{posts.length !== 1 ? "s" : ""} found
           </p>
         </div>
       </div>
-      
+
       <BlogPostList posts={posts} showFilters={false} />
     </BlogLayout>
   );

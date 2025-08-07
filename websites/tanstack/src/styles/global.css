@@ -22,16 +22,24 @@ h3 {
 }
 
 @keyframes neonGlow {
-  0%, 100% {
-    box-shadow: 0 0 5px rgba(34, 211, 238, 0.1), 0 0 10px rgba(34, 211, 238, 0.1), 0 0 15px rgba(34, 211, 238, 0.1);
+  0%,
+  100% {
+    box-shadow:
+      0 0 5px rgba(34, 211, 238, 0.1),
+      0 0 10px rgba(34, 211, 238, 0.1),
+      0 0 15px rgba(34, 211, 238, 0.1);
   }
   50% {
-    box-shadow: 0 0 8px rgba(34, 211, 238, 0.2), 0 0 16px rgba(34, 211, 238, 0.2), 0 0 24px rgba(34, 211, 238, 0.2);
+    box-shadow:
+      0 0 8px rgba(34, 211, 238, 0.2),
+      0 0 16px rgba(34, 211, 238, 0.2),
+      0 0 24px rgba(34, 211, 238, 0.2);
   }
 }
 
 @keyframes pulseMetallic {
-  0%, 100% {
+  0%,
+  100% {
     opacity: 0.1;
     transform: scale(1);
   }
@@ -51,7 +59,8 @@ h3 {
 }
 
 @keyframes subtleGlow {
-  0%, 100% {
+  0%,
+  100% {
     opacity: 0.05;
   }
   50% {
@@ -60,7 +69,8 @@ h3 {
 }
 
 @keyframes gentlePulse {
-  0%, 100% {
+  0%,
+  100% {
     opacity: 0.2;
     transform: scale(1);
   }
@@ -93,7 +103,12 @@ h3 {
 
 .animate-shimmer {
   animation: shimmer 3s linear infinite;
-  background: linear-gradient(90deg, transparent, rgba(34, 211, 238, 0.1), transparent);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(34, 211, 238, 0.1),
+    transparent
+  );
   background-size: 200px 100%;
 }
 

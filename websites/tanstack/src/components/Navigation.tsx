@@ -14,37 +14,43 @@ export function Navigation(): JSX.Element {
             <Link
               to="/"
               className={`relative px-6 py-2 text-sm font-medium transition-all duration-700 ease-out transform group ${
-                currentPath === '/' 
-                  ? 'text-cyan-400 scale-105 hover:scale-110 hover:text-cyan-300' 
-                  : 'text-gray-300 hover:text-cyan-400 hover:scale-105'
+                currentPath === "/"
+                  ? "text-cyan-400 scale-105 hover:scale-110 hover:text-cyan-300"
+                  : "text-gray-300 hover:text-cyan-400 hover:scale-105"
               }`}
             >
               <span className="relative z-10">Home</span>
               <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/8 to-blue-500/8 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-700 blur-sm"></div>
-              <div className={`absolute bottom-0 left-0 h-0.5 bg-gradient-to-r from-cyan-400 to-blue-400 transition-all duration-700 ${
-                currentPath === '/' ? 'w-full' : 'w-0 group-hover:w-full'
-              }`}></div>
+              <div
+                className={`absolute bottom-0 left-0 h-0.5 bg-gradient-to-r from-cyan-400 to-blue-400 transition-all duration-700 ${
+                  currentPath === "/" ? "w-full" : "w-0 group-hover:w-full"
+                }`}
+              ></div>
             </Link>
-            
+
             {/* Blog Link */}
             <Link
               to="/blog"
               className={`relative px-6 py-2 text-sm font-medium transition-all duration-700 ease-out transform group ${
-                currentPath.startsWith('/blog') 
-                  ? 'text-cyan-400 scale-105 hover:scale-110 hover:text-cyan-300' 
-                  : 'text-gray-300 hover:text-cyan-400 hover:scale-105'
+                currentPath.startsWith("/blog")
+                  ? "text-cyan-400 scale-105 hover:scale-110 hover:text-cyan-300"
+                  : "text-gray-300 hover:text-cyan-400 hover:scale-105"
               }`}
             >
               <span className="relative z-10">Blog</span>
               <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/8 to-blue-500/8 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-700 blur-sm"></div>
-              <div className={`absolute bottom-0 left-0 h-0.5 bg-gradient-to-r from-cyan-400 to-blue-400 transition-all duration-700 ${
-                currentPath.startsWith('/blog') ? 'w-full' : 'w-0 group-hover:w-full'
-              }`}></div>
+              <div
+                className={`absolute bottom-0 left-0 h-0.5 bg-gradient-to-r from-cyan-400 to-blue-400 transition-all duration-700 ${
+                  currentPath.startsWith("/blog")
+                    ? "w-full"
+                    : "w-0 group-hover:w-full"
+                }`}
+              ></div>
             </Link>
           </div>
         </div>
       </div>
-      
+
       {/* Animated background glow effect - more subtle */}
       <div className="absolute inset-0 bg-gradient-to-r from-transparent via-cyan-500/2 to-transparent animate-subtle-glow pointer-events-none"></div>
     </nav>

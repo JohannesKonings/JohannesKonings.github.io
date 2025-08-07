@@ -12,7 +12,7 @@ function RouteComponent() {
   // Filter for published posts and sort by date (newest first)
   const publishedPosts = React.useMemo(() => {
     return allPosts
-      .filter(post => post.published)
+      .filter((post) => post.published)
       .sort((a, b) => b.date.getTime() - a.date.getTime());
   }, []);
 

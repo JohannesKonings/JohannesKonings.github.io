@@ -8,7 +8,7 @@ export const Route = createFileRoute("/blog/$postId")({
   component: RouteComponent,
   beforeLoad: ({ params }) => {
     const { postId } = params;
-    
+
     // Ignore image requests
     if (
       postId.endsWith(".png") ||
@@ -18,13 +18,13 @@ export const Route = createFileRoute("/blog/$postId")({
     ) {
       throw notFound();
     }
-    
+
     // Find the post by slug
-    const post = allPosts.find(p => p.slug === postId);
+    const post = allPosts.find((p) => p.slug === postId);
     if (!post || !post.published) {
       throw notFound();
     }
-    
+
     return { post };
   },
 });
@@ -38,7 +38,7 @@ function RouteComponent() {
     (match, altText, imagePath) => {
       // Update image path to point to the correct location
       return `![${altText}](/content/blog/${post.slug}/${imagePath})`;
-    }
+    },
   );
 
   return (
@@ -50,7 +50,7 @@ function RouteComponent() {
             <h1 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-4">
               {post.title}
             </h1>
-            
+
             <div className="flex items-center justify-center gap-4 text-gray-600 dark:text-gray-400 mb-6">
               <time dateTime={post.date.toISOString()}>
                 {format(post.date, "MMMM d, yyyy")}
@@ -58,14 +58,14 @@ function RouteComponent() {
               <span>•</span>
               <span>{post.readingTime.text}</span>
             </div>
-            
+
             {post.summary && (
               <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
                 {post.summary}
               </p>
             )}
           </div>
-          
+
           {/* Tags */}
           {post.tags.length > 0 && (
             <div className="flex flex-wrap justify-center gap-2 mb-8">
@@ -134,10 +134,12 @@ function RouteComponent() {
             <p className="text-gray-600 dark:text-gray-400">
               Published on {format(post.date, "MMMM d, yyyy")}
             </p>
-            
+
             {post.categories.length > 0 && (
               <div className="mt-4">
-                <span className="text-sm text-gray-500 dark:text-gray-400">Categories: </span>
+                <span className="text-sm text-gray-500 dark:text-gray-400">
+                  Categories:{" "}
+                </span>
                 {post.categories.map((category, index) => (
                   <span key={category}>
                     <a
