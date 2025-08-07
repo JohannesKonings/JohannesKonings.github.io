@@ -6,6 +6,8 @@
 **/.vinxi
 **/.output
 **/.tanstack
+**/.content-collections
+**/.nitro
 
 # Dependencies
 node_modules/
