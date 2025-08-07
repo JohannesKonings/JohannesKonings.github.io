@@ -5,6 +5,7 @@
 **/dist/**
 **/.vinxi
 **/.output
+**/.tanstack
 
 # Dependencies
 node_modules/
