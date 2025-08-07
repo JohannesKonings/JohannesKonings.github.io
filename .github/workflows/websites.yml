@@ -63,11 +63,11 @@ jobs:
           fi
       - uses: pnpm/action-setup@v4
         with:
-          version: 9
+          version: 10
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: "20"
+          node-version: "22"
           cache: ${{ steps.detect-package-manager.outputs.manager }}
           cache-dependency-path: ${{ env.BUILD_PATH }}/${{ steps.detect-package-manager.outputs.lockfile }}
       - name: Setup Pages
