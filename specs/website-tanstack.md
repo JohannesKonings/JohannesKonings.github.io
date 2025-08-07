@@ -92,7 +92,14 @@ This document provides a comprehensive specification of the TanStack website imp
 
 ### ✅ Phase 2: Core Blog Components (COMPLETED)
 - **BlogPostCard**: Feature-complete post preview component
-  - Cover image display with fallback to thumbnail
+  - Optimized cover image display with 16:9 aspect ratio for better image compatibility
+  - Smart object positioning (center top) to show most important parts of images
+  - Proper image fitting with object-cover ensuring full container coverage
+  - Graceful fallback design for posts without images
+  - Loading states with delayed spinner animation and error handling
+  - Lazy loading for performance optimization
+  - Smooth transitions and hover effects with image scaling
+  - Image optimization with proper object positioning and rendering hints
   - Reading time and publication date
   - Clickable tags and "read more" functionality
   - Responsive design with neon metallic theme
