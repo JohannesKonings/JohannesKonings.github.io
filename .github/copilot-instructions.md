@@ -9,6 +9,19 @@ When adding dependencies to package.json files, always use exact versions withou
 
 This ensures reproducible builds and prevents unexpected version updates that could introduce breaking changes.
 
+## Project Documentation
+
+When creating implementation documentation or project specifications, always save them in the top-level `specs/` folder:
+
+- ✅ Create documentation in: `/specs/project-name-spec.md`
+- ✅ Use descriptive filenames like `tanstack-blog-implementation.md`
+- ✅ Document current implementation status, completed features, pending tasks
+- ✅ Include technical details: architecture decisions, dependencies, file structure
+- ✅ Structure specs with clear sections for implemented vs. pending features
+- ❌ Don't save specs in other folders or as temporary files
+
+This ensures all project documentation is centralized and serves as both implementation reference and roadmap for future development.
+
 ### Examples
 
 **Good:**

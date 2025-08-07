@@ -1,4 +1,5 @@
 .nitro/
 .output/
 .tanstack/
+.content-collections/
 app.config.timestamp*

@@ -20,9 +20,102 @@ h3 {
     background-position: 100% 50%;
   }
 }
+
+@keyframes neonGlow {
+  0%, 100% {
+    box-shadow: 0 0 5px rgba(34, 211, 238, 0.1), 0 0 10px rgba(34, 211, 238, 0.1), 0 0 15px rgba(34, 211, 238, 0.1);
+  }
+  50% {
+    box-shadow: 0 0 8px rgba(34, 211, 238, 0.2), 0 0 16px rgba(34, 211, 238, 0.2), 0 0 24px rgba(34, 211, 238, 0.2);
+  }
+}
+
+@keyframes pulseMetallic {
+  0%, 100% {
+    opacity: 0.1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.3;
+    transform: scale(1.02);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200px 0;
+  }
+  100% {
+    background-position: 200px 0;
+  }
+}
+
+@keyframes subtleGlow {
+  0%, 100% {
+    opacity: 0.05;
+  }
+  50% {
+    opacity: 0.15;
+  }
+}
+
+@keyframes gentlePulse {
+  0%, 100% {
+    opacity: 0.2;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.4;
+    transform: scale(1.01);
+  }
+}
+
 .animate-fade {
-  animation: fade 5s infinite alternate;
+  animation: fade 8s infinite alternate;
   background-size: 200% 200%;
+}
+
+.animate-neon-glow {
+  animation: neonGlow 4s ease-in-out infinite;
+}
+
+.animate-pulse-metallic {
+  animation: pulseMetallic 6s ease-in-out infinite;
+}
+
+.animate-subtle-glow {
+  animation: subtleGlow 8s ease-in-out infinite;
+}
+
+.animate-gentle-pulse {
+  animation: gentlePulse 10s ease-in-out infinite;
+}
+
+.animate-shimmer {
+  animation: shimmer 3s linear infinite;
+  background: linear-gradient(90deg, transparent, rgba(34, 211, 238, 0.1), transparent);
+  background-size: 200px 100%;
+}
+
+/* Animation delays for staggered effects */
+.animation-delay-500 {
+  animation-delay: 0.5s;
+}
+
+.animation-delay-1000 {
+  animation-delay: 1s;
+}
+
+.animation-delay-1500 {
+  animation-delay: 1.5s;
+}
+
+.animation-delay-2000 {
+  animation-delay: 2s;
+}
+
+.animation-delay-3000 {
+  animation-delay: 3s;
 }
 
 :root {
