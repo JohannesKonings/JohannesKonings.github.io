@@ -29,14 +29,14 @@
   "homepage": "johanneskonings.dev",
   "devDependencies": {
     "@prettier/plugin-oxc": "0.0.4",
-    "@types/node": "22.17.0",
-    "@typescript/native-preview": "7.0.0-dev.20250731.1",
+    "@types/node": "22.17.2",
+    "@typescript/native-preview": "7.0.0-dev.20250915.1",
     "execa": "9.6.0",
-    "knip": "5.62.0",
-    "oxlint": "1.9.0",
-    "prettier": "3.4.2",
-    "tsx": "4.20.3",
-    "typescript": "5.8.3"
+    "knip": "5.63.1",
+    "oxlint": "1.15.0",
+    "prettier": "3.6.2",
+    "tsx": "4.20.5",
+    "typescript": "5.9.2"
   },
   "type": "module"
 }
