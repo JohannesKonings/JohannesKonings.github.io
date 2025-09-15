@@ -63,7 +63,6 @@ This document provides a comprehensive specification of the TanStack blog implem
 ### ✅ Phase 1: Content Collections Setup (COMPLETED)
 
 - **Content Collections Integration**: Successfully installed and configured
-
   - Dependencies: `@content-collections/core@0.10.0`, `@content-collections/vite@0.2.6`, `zod@4.0.14`
   - Vite plugin configured and working
   - TypeScript path aliases set up
@@ -72,7 +71,6 @@ This document provides a comprehensive specification of the TanStack blog implem
   - **Note**: Content Collections processes synchronized copies from `src/content/blog/`, not original `_posts/`
 
 - **Content Synchronization**: Automated sync from master sources
-
   - Posts synchronized from root `_posts/` directory via `syncWebsites.ts`
   - Notes synchronized from root `_notes/` directory via `syncWebsites.ts`
   - Automatic sync during development workflow for each website
@@ -384,13 +382,11 @@ websites/tanstack/
 ### 🎯 Next Priority Tasks
 
 1. **High Priority**:
-
    - Implement tag route (`/blog/tag/$tag`)
    - Add related posts to individual post pages
    - Fix router 404 warnings
 
 2. **Medium Priority**:
-
    - Implement RSS feed generation
    - Add pagination for blog listing
    - Enhance search with highlighting
