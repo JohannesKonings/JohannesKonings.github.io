@@ -37,7 +37,7 @@ alias pnpm="NPQ_PKG_MGR=pnpm sfw npq-hero"
 ```
 find . -name "node_modules" -type d -prune -exec rm -rf '{}' +
 pnpm store prune
-rm -rf $(pnpm store path) # more agressive
+rm -rf $(pnpm store path) # more aggressive
 ```
 
 ## sources
