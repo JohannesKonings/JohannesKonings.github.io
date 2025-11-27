@@ -32,7 +32,7 @@ alias pnpm="NPQ_PKG_MGR=pnpm sfw npq-hero"
 
 ### delete packages incl. cache
 
-⚠️ be carefull
+⚠️ be careful
 
 ```
 find . -name "node_modules" -type d -prune -exec rm -rf '{}' +
