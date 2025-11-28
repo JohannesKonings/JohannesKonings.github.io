@@ -40,7 +40,6 @@ new PolicyStatement({
       }),
 ```
 
-
 ### Example Failure
 
 An IAM5 failure typically looks like this:
@@ -59,7 +58,7 @@ Suppressing the entire resource or the entire rule hides legitimate issues and l
 ```typescript
 // Bad: over-broad, hides everything
 NagSuppressions.addResourceSuppressions(role, [
-  { id: 'AwsSolutions-IAM5', reason: 'needs wildcard' },
+  { id: "AwsSolutions-IAM5", reason: "needs wildcard" },
 ]);
 ```
 
@@ -90,20 +89,22 @@ You can find the source code here: [iam5NagSuppressions.ts](https://github.com/J
 
 **Important:** There are two fundamentally different approaches to granular IAM5 suppressions, each offering different levels of safety:
 
-#### 1. cdk-nag's Built-in `appliesTo` 
+#### 1. cdk-nag's Built-in `appliesTo`
 
 The standard cdk-nag approach (see Example 6 in the [cdk-nag docs](https://github.com/cdklabs/cdk-nag?tab=readme-ov-file#suppressing-a-rule)) relies on string patterns:
 
 ```typescript
-NagSuppressions.addResourceSuppressions(lambda, [
-  {
-    id: 'AwsSolutions-IAM5',
-    reason: 'X-Ray requires wildcard',
-    appliesTo: [
-      'Resource::*',
-    ]
-  }
-], true);
+NagSuppressions.addResourceSuppressions(
+  lambda,
+  [
+    {
+      id: "AwsSolutions-IAM5",
+      reason: "X-Ray requires wildcard",
+      appliesTo: ["Resource::*"],
+    },
+  ],
+  true,
+);
 ```
 
 **The Problem:** This suppresses `Resource::*` and the specified actions **anywhere they appear** in the construct tree. If you later add a new policy statement like:
@@ -111,33 +112,33 @@ NagSuppressions.addResourceSuppressions(lambda, [
 ```typescript
 // This will be silently suppressed!
 new PolicyStatement({
-  actions: ['xray:PutTelemetryRecords'],  // Matches the suppression
-  resources: ['*'],                        // Matches the suppression
+  actions: ["xray:PutTelemetryRecords"], // Matches the suppression
+  resources: ["*"], // Matches the suppression
   effect: Effect.ALLOW,
 });
 ```
 
 The suppression hides it because the **strings match**, even though this might be an unintended permission you added months later.
 
-#### 2. cdk-nag-custom-nag-pack's Statement Validation 
+#### 2. cdk-nag-custom-nag-pack's Statement Validation
 
 The [cdk-nag-custom-nag-pack approach](https://github.com/JohannesKonings/cdk-nag-custom-nag-pack?tab=readme-ov-file#granular-awssolutions-iam5-suppressions) requires exact statement matching:
 
 ```typescript
 const policyStatementForSuppression: PolicyStatementProps = {
-  actions: ['xray:PutTelemetryRecords', 'xray:PutTraceSegments'],
-  resources: ['*'],
+  actions: ["xray:PutTelemetryRecords", "xray:PutTraceSegments"],
+  resources: ["*"],
   effect: Effect.ALLOW,
 };
 
 Iam5NagSuppressions.addIam5StatementResourceSuppressions(
   lambda,
   {
-    id: 'AwsSolutions-IAM5',
-    reason: 'X-Ray requires wildcard',
+    id: "AwsSolutions-IAM5",
+    reason: "X-Ray requires wildcard",
     appliesTo: [policyStatementForSuppression],
   },
-  true
+  true,
 );
 ```
 
@@ -146,8 +147,8 @@ Iam5NagSuppressions.addIam5StatementResourceSuppressions(
 ```typescript
 // This will NOT be suppressed - it will be flagged!
 new PolicyStatement({
-  actions: ['xray:PutTelemetryRecords', 's3:*'],  // Different actions
-  resources: ['*'],
+  actions: ["xray:PutTelemetryRecords", "s3:*"], // Different actions
+  resources: ["*"],
   effect: Effect.ALLOW,
 });
 ```
@@ -165,17 +166,16 @@ This statement-based approach:
 - Produces review-ready evidence via `appliesTo`
 - **Prevents accidental suppression of future wildcard permissions**
 
-
 ### Lambda Construct Wildcard Scenario
 
 The `aws-lambda.Function` construct (and its default execution role or managed policies) often introduces unavoidable wildcard permissions, such as those required for CloudWatch Logs creation or X-Ray tracing.
 
-**The Risk:** If you suppress `AwsSolutions-IAM5` broadly at the Function or Role level, you inadvertently hide *every* future wildcard you might add (e.g., `s3:*` or `dynamodb:*`).
+**The Risk:** If you suppress `AwsSolutions-IAM5` broadly at the Function or Role level, you inadvertently hide _every_ future wildcard you might add (e.g., `s3:*` or `dynamodb:*`).
 
 **The Granular Strategy:**
 
 1.  **Isolate:** Put truly unavoidable wildcard actions (e.g., `logs:CreateLogGroup`, `xray:PutTraceSegments`) in their own dedicated `PolicyStatement`.
-2.  **Suppress:** Apply the suppression *only* to that specific statement, citing the AWS service limitation as the reason.
+2.  **Suppress:** Apply the suppression _only_ to that specific statement, citing the AWS service limitation as the reason.
 3.  **Scope:** Ensure all other actions are scoped to specific ARNs (log streams, tables, buckets, queues, etc.).
 4.  **Avoid:** Do not use parent-level suppressions, as they mask future configuration drift.
 
