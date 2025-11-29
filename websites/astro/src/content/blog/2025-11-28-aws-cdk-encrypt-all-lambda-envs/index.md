@@ -19,8 +19,6 @@ While Lambda functions that you create directly can be configured with the `envi
 
 In such cases, you can use aspects or mixins to enforce encryption on all Lambda functions in your CDK app, regardless of how they were created.
 
-
-
 ## Aspect, Property Injection or Mixin?
 
 [Aspects](https://docs.aws.amazon.com/cdk/v2/guide/aspects.html) are a way to modify the CDK synth result on a L1 level after the constructs have been created. They are executed during the Prepare phase of the CDK lifecycle, after all constructs are created.
@@ -100,7 +98,7 @@ import type { IConstruct } from "constructs";
 
 export class LambdaEnvEncryptionSetterAspect implements IAspect {
   public readonly kmsKeyArn: string;
-  
+
   constructor(kmsKeyArn: string) {
     this.kmsKeyArn = kmsKeyArn;
   }
@@ -192,7 +190,6 @@ Based on the [AWS CDK Mixins RFC](https://github.com/aws/aws-cdk-rfcs/pull/824),
 - **Mixins**: Use for making changes to constructs. However, since Mixins are still in Developer Preview, the API may change.
 
 **Recommendation for Production**: Use **Aspects** for now, as they provide a stable API and are specifically designed for this type of cross-cutting concern. Once Mixins reach general availability, they may offer additional benefits for construct composition.
-
 
 ## Sources
 
