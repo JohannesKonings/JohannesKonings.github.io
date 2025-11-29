@@ -10,6 +10,7 @@
     "2025-01-02-aws-application-config-lambda-cdk": {},
     "2025-01-02-aws-application-signals-config-transaction-search-cdk": {},
     "2025-06-14-aws-cdk-ephemeral-stacks-cleanup": {},
-    "2025-11-27-aws-cdk-nag-iam5-granular-suppresions": {}
+    "2025-11-27-aws-cdk-nag-iam5-granular-suppresions": {},
+    "2025-11-28-aws-cdk-encrypt-all-lambda-envs": {}
   }
 }

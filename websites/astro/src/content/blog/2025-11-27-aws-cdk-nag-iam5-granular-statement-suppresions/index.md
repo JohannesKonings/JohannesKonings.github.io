@@ -17,7 +17,7 @@ cdk-nag’s AwsSolutions-IAM5 rule is one of the most frequent findings in real-
 
 ## Understanding the Problem
 
-### Why IAM5 triggers so often
+### Why IAM5 triggers
 
 You’ll hit AwsSolutions-IAM5 when a policy uses an asterisk (`"*"`) in the resource or wildcards in actions. This is beneficial because least privilege is critical. However, several AWS APIs require `*` by design, or you might initially group actions broadly before refining the scope. Common examples include:
 
@@ -81,7 +81,6 @@ The repository includes a dedicated helper (`iam5NagSuppressions.ts`) that appli
 - **Statement scanning**: Iterates IAM policy statements and selects those with `Resource: *` (including arrays that contain `*`).
 - **Evidence builder**: Produces `appliesTo` entries for `Resource::*` and only the allow-listed `Action::<service:operation>` values present in the statement.
 - **Targeting**: Attaches a single `AwsSolutions-IAM5` suppression to each IAM Policy construct via its path, leaving any non-allowed wildcard actions unsuppressed (so they continue to fail until scoped).
-- **Idempotency**: Skips when no matches, safe to run once per stack or inside a custom `NagPack`.
 
 You can find the source code here: [iam5NagSuppressions.ts](https://github.com/JohannesKonings/cdk-nag-custom-nag-pack/blob/main/src/iam5NagSuppressions.ts)
 
@@ -89,7 +88,7 @@ You can find the source code here: [iam5NagSuppressions.ts](https://github.com/J
 
 **Important:** There are two fundamentally different approaches to granular IAM5 suppressions, each offering different levels of safety:
 
-#### 1. cdk-nag's Built-in `appliesTo` (String-Based - Less Safe)
+#### 1. cdk-nag's Built-in `appliesTo`
 
 The standard cdk-nag approach (see Example 6 in the [cdk-nag docs](https://github.com/cdklabs/cdk-nag?tab=readme-ov-file#suppressing-a-rule)) relies on string patterns:
 
@@ -100,11 +99,7 @@ NagSuppressions.addResourceSuppressions(
     {
       id: "AwsSolutions-IAM5",
       reason: "X-Ray requires wildcard",
-      appliesTo: [
-        "Resource::*",
-        "Action::xray:PutTelemetryRecords",
-        "Action::xray:PutTraceSegments",
-      ],
+      appliesTo: ["Resource::*"],
     },
   ],
   true,
@@ -124,7 +119,7 @@ new PolicyStatement({
 
 The suppression hides it because the **strings match**, even though this might be an unintended permission you added months later.
 
-#### 2. cdk-nag-custom-nag-pack's Statement Validation (Exact Match - Safer)
+#### 2. cdk-nag-custom-nag-pack's Statement Validation
 
 The [cdk-nag-custom-nag-pack approach](https://github.com/JohannesKonings/cdk-nag-custom-nag-pack?tab=readme-ov-file#granular-awssolutions-iam5-suppressions) requires exact statement matching:
 
@@ -169,7 +164,6 @@ This statement-based approach:
 - Keeps AwsSolutions-IAM5 active for everything else
 - Produces review-ready evidence via `appliesTo`
 - **Prevents accidental suppression of future wildcard permissions**
-- Can be automated across stacks with a custom NagPack
 
 ### Lambda Construct Wildcard Scenario
 
