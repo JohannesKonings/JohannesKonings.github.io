@@ -57,10 +57,7 @@ export class StackMain extends Stack {
 
     // Indirect Lambda from third-party library - environment encryption cannot be controlled directly
     // Note: This is a hypothetical third-party construct for demonstration purposes
-    new Lambda(this, "DummyThirdPartyLambda", {
-      enableApplicationSignals: false,
-      enableSlo: false,
-    });
+    new Lambda(this, "DummyThirdPartyLambda");
   }
 }
 ```

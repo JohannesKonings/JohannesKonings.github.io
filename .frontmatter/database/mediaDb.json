@@ -1,7 +1,16 @@
 {
   "astro-blog": { "public": {} },
   "img": {},
-  "websites": { "tanstack": {}, "astro": {} },
+  "websites": {
+    "tanstack": {},
+    "astro": {
+      "src": {
+        "content": {
+          "blog": { "2025-11-30-tanstack-start-aws-serverless": {} }
+        }
+      }
+    }
+  },
   "_posts": {
     "2024-11-30-aws-sso-prowler": {},
     "2024-12-07-aws-vscode-private-ec2-instance": {},
@@ -11,6 +20,7 @@
     "2025-01-02-aws-application-signals-config-transaction-search-cdk": {},
     "2025-06-14-aws-cdk-ephemeral-stacks-cleanup": {},
     "2025-11-27-aws-cdk-nag-iam5-granular-suppresions": {},
-    "2025-11-28-aws-cdk-encrypt-all-lambda-envs": {}
+    "2025-11-28-aws-cdk-encrypt-all-lambda-envs": {},
+    "2025-11-30-tanstack-start-aws-serverless": {}
   }
 }
