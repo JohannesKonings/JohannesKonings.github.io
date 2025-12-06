@@ -256,7 +256,6 @@ export class WebappApi extends Construct {
 **Critical configuration:**
 
 - **`ResponseTransferMode.STREAM`**: Enables streaming responses from Lambda, essential for SSR and AI streaming
-- **`EndpointType.REGIONAL`**: Creates a regional endpoint (recommended for CloudFront integration)
 - **`LambdaRestApi`**: Automatically creates proxy integration for all routes
 
 ### CloudFront Distribution
