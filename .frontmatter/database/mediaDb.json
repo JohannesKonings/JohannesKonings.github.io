@@ -22,6 +22,7 @@
     "2025-11-27-aws-cdk-nag-iam5-granular-suppresions": {},
     "2025-11-28-aws-cdk-encrypt-all-lambda-envs": {},
     "2025-11-30-tanstack-start-aws-serverless": {},
-    "2025-12-06-cdk-notifier-feature-stacks-change-set": {}
+    "2025-12-06-cdk-notifier-feature-stacks-change-set": {},
+    "2025-12-13-cdk-monitor-multiple-resources-using-single-alarm": {}
   }
 }
