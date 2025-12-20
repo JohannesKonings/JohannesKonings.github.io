@@ -41,17 +41,17 @@ This is a very simple configuration, just to store the todos.
 To keep the example focused, the table uses a generic partition key and sort key (`pk`/`sk`). That makes it easy to evolve into a single-table design later, while keeping the code here minimal.
 
 ```typescript
-import { AttributeType, BillingMode, Table } from 'aws-cdk-lib/aws-dynamodb';
-import { Construct } from 'constructs';
+import { AttributeType, BillingMode, Table } from "aws-cdk-lib/aws-dynamodb";
+import { Construct } from "constructs";
 
 export class DatabaseTodos extends Construct {
   public readonly dbTodos: Table;
   constructor(scope: Construct, id: string) {
     super(scope, id);
 
-    this.dbTodos = new Table(this, 'Todos', {
-      partitionKey: { name: 'pk', type: AttributeType.STRING },
-      sortKey: { name: 'sk', type: AttributeType.STRING },
+    this.dbTodos = new Table(this, "Todos", {
+      partitionKey: { name: "pk", type: AttributeType.STRING },
+      sortKey: { name: "sk", type: AttributeType.STRING },
       billingMode: BillingMode.PAY_PER_REQUEST,
     });
   }
@@ -66,14 +66,15 @@ In the web app construct, the table construct is added.
 The Lambda is allowed to read and write data to the table.
 
 Concretely, that means (1) creating the table, (2) passing the table name into the server function, and (3) granting the function read/write permissions.
+
 ```typescript
-    const databaseTodos = new DatabaseTodos(this, 'DatabaseTodos');
+const databaseTodos = new DatabaseTodos(this, "DatabaseTodos");
 
-    const webappServer = new WebappServer(this, 'WebappServer', {
-      tableName: databaseTodos.dbTodos.tableName,
-    });
+const webappServer = new WebappServer(this, "WebappServer", {
+  tableName: databaseTodos.dbTodos.tableName,
+});
 
-    databaseTodos.dbTodos.grantReadWriteData(webappServer.webappServer);
+databaseTodos.dbTodos.grantReadWriteData(webappServer.webappServer);
 ```
 
 https://github.com/JohannesKonings/tanstack-aws/blob/main/lib/constructs/Webapp.ts
@@ -83,20 +84,23 @@ The passed table name is exposed as an environment variable in the Lambda functi
 This keeps the application code decoupled from CDK: the Lambda only needs to know an env var, and CDK is responsible for wiring that value at deploy time.
 
 ```typescript
-    this.webappServer = new Function(this, 'WebappServer', {
-      code: Code.fromAsset(
-        path.join(path.dirname(new URL(import.meta.url).pathname), '../../.output/server'),
-      ),
-      // functionName: PhysicalName.GENERATE_IF_NEEDED,
-      handler: 'index.handler',
-      memorySize: 2048,
-      runtime: Runtime.NODEJS_24_X,
-      // oxlint-disable-next-line no-magic-numbers
-      timeout: Duration.seconds(60),
-      environment: {
-        DDB_TODOS_TABLE_NAME: tableName,
-      },
-    });
+this.webappServer = new Function(this, "WebappServer", {
+  code: Code.fromAsset(
+    path.join(
+      path.dirname(new URL(import.meta.url).pathname),
+      "../../.output/server",
+    ),
+  ),
+  // functionName: PhysicalName.GENERATE_IF_NEEDED,
+  handler: "index.handler",
+  memorySize: 2048,
+  runtime: Runtime.NODEJS_24_X,
+  // oxlint-disable-next-line no-magic-numbers
+  timeout: Duration.seconds(60),
+  environment: {
+    DDB_TODOS_TABLE_NAME: tableName,
+  },
+});
 ```
 
 https://github.com/JohannesKonings/tanstack-aws/blob/main/lib/constructs/WebappServer.ts
@@ -111,18 +115,18 @@ The client below implements the four operations the demo needs: list todos, crea
 Here is the environment variable used for the table name.
 
 ```typescript
-import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
+import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
 import {
   BatchWriteCommand,
   DynamoDBDocumentClient,
   PutCommand,
   QueryCommand,
   UpdateCommand,
-} from '@aws-sdk/lib-dynamodb';
-import { type Todo, todoSchema, type TodoUpdate } from '@/webapp/types/todo';
+} from "@aws-sdk/lib-dynamodb";
+import { type Todo, todoSchema, type TodoUpdate } from "@/webapp/types/todo";
 
-const TODOS_PK = 'TODO';
-const TODOS_TABLE_ENV = 'DDB_TODOS_TABLE_NAME';
+const TODOS_PK = "TODO";
+const TODOS_TABLE_ENV = "DDB_TODOS_TABLE_NAME";
 const EMPTY_LENGTH = 0;
 const INITIAL_ATTEMPT = 0;
 const NEXT_ATTEMPT_INCREMENT = 1;
@@ -197,7 +201,10 @@ const retryBatchWrite = async (args: {
   );
 
   const unprocessedItems = response.UnprocessedItems;
-  if (!unprocessedItems || Object.keys(unprocessedItems).length === EMPTY_LENGTH) {
+  if (
+    !unprocessedItems ||
+    Object.keys(unprocessedItems).length === EMPTY_LENGTH
+  ) {
     return;
   }
 
@@ -221,12 +228,12 @@ export const createTodosDdbClient = (): TodosDdbClient => {
       const result = await ddbDoc.send(
         new QueryCommand({
           TableName: tableName,
-          KeyConditionExpression: '#pk = :pk',
+          KeyConditionExpression: "#pk = :pk",
           ExpressionAttributeNames: {
-            '#pk': 'pk',
+            "#pk": "pk",
           },
           ExpressionAttributeValues: {
-            ':pk': TODOS_PK,
+            ":pk": TODOS_PK,
           },
         }),
       );
@@ -262,21 +269,21 @@ export const createTodosDdbClient = (): TodosDdbClient => {
         updates.map(async (update) => {
           const sets: string[] = [];
           const names: Record<string, string> = {
-            '#pk': 'pk',
-            '#sk': 'sk',
+            "#pk": "pk",
+            "#sk": "sk",
           };
           const values: Record<string, unknown> = {};
 
           if (update.changes.name !== undefined) {
-            names['#name'] = 'name';
-            values[':name'] = update.changes.name;
-            sets.push('#name = :name');
+            names["#name"] = "name";
+            values[":name"] = update.changes.name;
+            sets.push("#name = :name");
           }
 
           if (update.changes.status !== undefined) {
-            names['#status'] = 'status';
-            values[':status'] = update.changes.status;
-            sets.push('#status = :status');
+            names["#status"] = "status";
+            values[":status"] = update.changes.status;
+            sets.push("#status = :status");
           }
 
           if (sets.length === EMPTY_LENGTH) {
@@ -291,15 +298,16 @@ export const createTodosDdbClient = (): TodosDdbClient => {
                   pk: TODOS_PK,
                   sk: todoSortKey(update.id),
                 },
-                UpdateExpression: `SET ${sets.join(', ')}`,
-                ConditionExpression: 'attribute_exists(#pk) AND attribute_exists(#sk)',
+                UpdateExpression: `SET ${sets.join(", ")}`,
+                ConditionExpression:
+                  "attribute_exists(#pk) AND attribute_exists(#sk)",
                 ExpressionAttributeNames: names,
                 ExpressionAttributeValues: values,
               }),
             );
           } catch (error) {
             const errorName = (error as { name?: string } | undefined)?.name;
-            if (errorName !== 'ConditionalCheckFailedException') {
+            if (errorName !== "ConditionalCheckFailedException") {
               throw error;
             }
           }
@@ -335,26 +343,28 @@ export const createTodosDdbClient = (): TodosDdbClient => {
   };
 };
 ```
+
 https://github.com/JohannesKonings/tanstack-aws/blob/main/src/webapp/integrations/ddb-client/ddbClient.ts
 
 ## The API connection to DynamoDB
+
 With the DynamoDB client created above, you can create an API that connects TanStack DB to DynamoDB.
 
 In TanStack Start, this is a server route with standard HTTP verbs. The route validates input, calls the DynamoDB client, and returns JSON responses.
 
 ```typescript
 // oxlint-disable func-style
-import { createFileRoute } from '@tanstack/react-router';
-import { createTodosDdbClient } from '@/webapp/integrations/ddb-client/ddbClient';
+import { createFileRoute } from "@tanstack/react-router";
+import { createTodosDdbClient } from "@/webapp/integrations/ddb-client/ddbClient";
 import {
   createTodoRequestSchema,
   deleteTodosRequestSchema,
   updateTodosRequestSchema,
-} from '@/webapp/types/todo';
+} from "@/webapp/types/todo";
 
 const todosClient = createTodosDdbClient();
 
-export const Route = createFileRoute('/demo/api/ddb-todos')({
+export const Route = createFileRoute("/demo/api/ddb-todos")({
   server: {
     handlers: {
       // oxlint-disable-next-line arrow-body-style
@@ -389,6 +399,7 @@ export const Route = createFileRoute('/demo/api/ddb-todos')({
   },
 });
 ```
+
 https://github.com/JohannesKonings/tanstack-aws/blob/main/src/webapp/routes/demo/api.ddb-todos.ts
 
 ## The TanStack DB collection
@@ -398,38 +409,40 @@ The collection uses the API to fetch and mutate data in DynamoDB.
 This is the key integration point: the collection fetches via the `queryFn`, and the transaction callbacks (`onInsert`, `onUpdate`, `onDelete`) translate local writes into API calls.
 
 ```typescript
-import { queryCollectionOptions } from '@tanstack/query-db-collection';
-import { createCollection } from '@tanstack/react-db';
-import { getContext } from '@/webapp/integrations/tanstack-query/root-provider';
-import { type Todo, todoSchema } from '../types/todo';
+import { queryCollectionOptions } from "@tanstack/query-db-collection";
+import { createCollection } from "@tanstack/react-db";
+import { getContext } from "@/webapp/integrations/tanstack-query/root-provider";
+import { type Todo, todoSchema } from "../types/todo";
 
 // const todoApiPath = '/demo/api/tq-todos';
-const todoApiPath = '/demo/api/ddb-todos';
+const todoApiPath = "/demo/api/ddb-todos";
 const api = {
   async fetchTodos(): Promise<Todo[]> {
     const response = await fetch(todoApiPath);
     if (!response.ok) {
-      throw new Error('Failed to fetch todos');
+      throw new Error("Failed to fetch todos");
     }
     const data = await response.json();
     return todoSchema.array().parse(data);
   },
 
-  async createTodos(todo: Omit<Todo, 'id'>) {
+  async createTodos(todo: Omit<Todo, "id">) {
     await fetch(todoApiPath, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify(todo),
     });
   },
 
-  async updateTodos(updates: { id: number; changes: Partial<Omit<Todo, 'id'>> }[]) {
+  async updateTodos(
+    updates: { id: number; changes: Partial<Omit<Todo, "id">> }[],
+  ) {
     await fetch(todoApiPath, {
-      method: 'PUT',
+      method: "PUT",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify(updates),
     });
@@ -437,9 +450,9 @@ const api = {
 
   async deleteTodos(ids: number[]) {
     await fetch(todoApiPath, {
-      method: 'DELETE',
+      method: "DELETE",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify(ids),
     });
@@ -448,7 +461,7 @@ const api = {
 
 export const todosCollection = createCollection(
   queryCollectionOptions<Todo>({
-    queryKey: ['todos'],
+    queryKey: ["todos"],
     queryFn: () => api.fetchTodos(),
     queryClient: getContext().queryClient,
     getKey: (item) => item.id,
@@ -484,19 +497,19 @@ https://github.com/JohannesKonings/tanstack-aws/blob/main/src/webapp/db-collecti
 These hooks provide a small, UI-friendly API on top of the collection. Components can call `addTodo`/`toggleTodoStatus`/`deleteTodo`, and `useTodos` subscribes to the live query for rendering.
 
 ```typescript
-import { useLiveQuery } from '@tanstack/react-db';
+import { useLiveQuery } from "@tanstack/react-db";
 // oxlint-disable func-style
-import { todosCollection } from '@/webapp/db-collections/todos';
-import type { Todo } from '../types/todo';
+import { todosCollection } from "@/webapp/db-collections/todos";
+import type { Todo } from "../types/todo";
 
 export function useTodo() {
-  const addTodo = async ({ name, status }: Omit<Todo, 'id'>) => {
+  const addTodo = async ({ name, status }: Omit<Todo, "id">) => {
     // oxlint-disable-next-line no-magic-numbers
     const randomId = Math.floor(Math.random() * 1000000);
     todosCollection.insert({ id: randomId, name, status });
   };
 
-  const toggleTodoStatus = (id: number, status: 'pending' | 'completed') => {
+  const toggleTodoStatus = (id: number, status: "pending" | "completed") => {
     todosCollection.update(id, (draft) => {
       if (draft) {
         draft.status = status;
@@ -530,12 +543,12 @@ Finally, the UI component is just a thin layer over the hooks: render the list, 
 
 ```typescript
 // oxlint-disable func-style
-import { createFileRoute } from '@tanstack/react-router';
-import { Trash2 } from 'lucide-react';
-import { useState } from 'react';
-import { useTodo, useTodos } from '@/webapp/hooks/useDbTodos';
+import { createFileRoute } from "@tanstack/react-router";
+import { Trash2 } from "lucide-react";
+import { useState } from "react";
+import { useTodo, useTodos } from "@/webapp/hooks/useDbTodos";
 
-export const Route = createFileRoute('/demo/db-todo')({
+export const Route = createFileRoute("/demo/db-todo")({
   ssr: false,
   component: DbTodos,
 });
@@ -544,20 +557,20 @@ function DbTodos() {
   const todos = useTodos();
   const { addTodo, toggleTodoStatus, deleteTodo } = useTodo();
 
-  const [todo, setTodo] = useState<string>('');
+  const [todo, setTodo] = useState<string>("");
 
   const submitTodo = () => {
-    if (todo.trim() !== '') {
-      addTodo({ name: todo, status: 'pending' });
-      setTodo('');
+    if (todo.trim() !== "") {
+      addTodo({ name: todo, status: "pending" });
+      setTodo("");
     }
   };
 
   const handleTodoStatusToggle = (todoItem: (typeof todos)[number]) => {
-    if (todoItem.status === 'completed') {
-      toggleTodoStatus(todoItem.id, 'pending');
+    if (todoItem.status === "completed") {
+      toggleTodoStatus(todoItem.id, "pending");
     } else {
-      toggleTodoStatus(todoItem.id, 'completed');
+      toggleTodoStatus(todoItem.id, "completed");
     }
   };
 
@@ -566,17 +579,17 @@ function DbTodos() {
       className="flex items-center justify-center min-h-screen bg-linear-to-br from-purple-100 to-blue-100 p-4 text-white"
       style={{
         backgroundImage:
-          'radial-gradient(50% 50% at 95% 5%, #4a90c2 0%, #317eb9 50%, #1e4d72 100%)',
+          "radial-gradient(50% 50% at 95% 5%, #4a90c2 0%, #317eb9 50%, #1e4d72 100%)",
       }}
     >
       <div className="w-full max-w-2xl p-8 rounded-xl backdrop-blur-md bg-black/50 shadow-xl border-8 border-black/10">
         <h1 className="text-2xl mb-4">DB Todo list</h1>
         <ul className="mb-4 space-y-2">
           {todos?.map((todoItem) => {
-            const isCompleted = todoItem.status === 'completed';
-            let textClasses = '';
+            const isCompleted = todoItem.status === "completed";
+            let textClasses = "";
             if (isCompleted) {
-              textClasses = 'line-through opacity-60';
+              textClasses = "line-through opacity-60";
             }
             return (
               <li
@@ -589,7 +602,9 @@ function DbTodos() {
                   onChange={() => handleTodoStatusToggle(todoItem)}
                   className="w-5 h-5 cursor-pointer accent-blue-400"
                 />
-                <span className={`text-lg text-white flex-1 ${textClasses}`}>{todoItem.name}</span>
+                <span className={`text-lg text-white flex-1 ${textClasses}`}>
+                  {todoItem.name}
+                </span>
                 <button
                   type="button"
                   onClick={() => deleteTodo(todoItem.id)}
@@ -608,7 +623,7 @@ function DbTodos() {
             value={todo}
             onChange={(event) => setTodo(event.target.value)}
             onKeyDown={(event) => {
-              if (event.key === 'Enter') {
+              if (event.key === "Enter") {
                 submitTodo();
               }
             }}
@@ -647,4 +662,3 @@ From here, the next natural steps are adding authentication/authorization on the
 
 - **Examples (full implementation on GitHub)**: [github.com/JohannesKonings/tanstack-aws](https://github.com/JohannesKonings/tanstack-aws)
 - **TanStack DB documentation**: [tanstack.com/db/latest](https://tanstack.com/db/latest)
-
