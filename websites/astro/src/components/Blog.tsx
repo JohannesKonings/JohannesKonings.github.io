@@ -34,7 +34,7 @@ export default function Blog({ data, tags }: Props) {
   }
 
   return (
-    <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-16">
       <div class="col-span-3 sm:col-span-1">
         <div class="sticky top-24">
           <div class="text-sm font-semibold uppercase mb-2 text-black dark:text-white">
