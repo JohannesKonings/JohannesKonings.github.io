@@ -1,0 +1,40 @@
+---
+import type { MarkdownHeading } from "astro";
+
+type Props = {
+	headings: MarkdownHeading[];
+};
+
+const { headings } = Astro.props;
+
+// Filter to only h2 and h3 headings
+const filteredHeadings = headings.filter((h) => h.depth >= 2 && h.depth <= 3);
+
+if (filteredHeadings.length === 0) {
+	// No headings to display
+}
+---
+
+{
+	filteredHeadings.length > 0 && (
+		<nav class="not-prose mb-2 p-4 bg-black/5 dark:bg-white/5 rounded-lg border border-black/10 dark:border-white/10">
+			<div class="text-sm font-semibold mb-3 text-black dark:text-white">Table of Contents</div>
+			<ul class="space-y-2 text-sm">
+				{filteredHeadings.map((heading) => (
+					<li
+						class={`${
+							heading.depth === 2 ? "" : "ml-4"
+						} transition-colors duration-200`}
+					>
+						<a
+							href={`#${heading.slug}`}
+							class="text-black/70 dark:text-white/70 hover:text-black dark:hover:text-white transition-colors duration-200"
+						>
+							{heading.text}
+						</a>
+					</li>
+				))}
+			</ul>
+		</nav>
+	)
+}

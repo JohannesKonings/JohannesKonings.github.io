@@ -269,3 +269,11 @@ article img {
 #meteors .shower.ul {
   @apply rotate-315;
 }
+
+/* Scroll margin for headings to account for fixed header */
+h2,
+h3,
+h4 {
+  scroll-margin-top: 5rem;
+}
+

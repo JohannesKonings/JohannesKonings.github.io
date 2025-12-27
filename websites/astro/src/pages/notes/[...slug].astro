@@ -19,12 +19,13 @@ export async function getStaticPaths() {
 type Props = CollectionEntry<"notes">;
 const post = Astro.props;
 const { title, summary } = post.data;
+const { headings } = await post.render();
 ---
 
 <PageLayout title={title} description={summary}>
   <TopLayout>
     <div class="animate">
-      <ArticleTopLayout entry={post} />
+      <ArticleTopLayout entry={post} headings={headings} />
     </div>
   </TopLayout>
   <BottomLayout>
