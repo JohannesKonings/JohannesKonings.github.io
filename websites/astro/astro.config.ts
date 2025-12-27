@@ -5,6 +5,7 @@ import solidJs from "@astrojs/solid-js";
 import rehypeAstroRelativeMarkdownLinks from "astro-rehype-relative-markdown-links";
 import { rehypePrettyCode } from "rehype-pretty-code";
 import { transformerCopyButton } from "@rehype-pretty/transformers";
+import rehypeMermaid from "rehype-mermaid";
 
 import tailwindcss from "@tailwindcss/vite";
 
@@ -16,6 +17,7 @@ export default defineConfig({
     syntaxHighlight: false,
     rehypePlugins: [
       rehypeAstroRelativeMarkdownLinks,
+      rehypeMermaid,
       [
         rehypePrettyCode,
         {

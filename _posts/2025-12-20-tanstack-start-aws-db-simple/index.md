@@ -9,6 +9,7 @@ tags:
   - aws
   - cdk
   - tanstack
+series: tanstack-aws
 ---
 
 ## Introduction
