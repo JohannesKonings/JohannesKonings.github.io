@@ -12,7 +12,6 @@ tags:
 series: tanstack-aws
 ---
 
-
 ## Introduction
 
 In [Simple example of TanStack DB with DynamoDB on AWS](/blog/2025-12-20-tanstack-start-aws-db-simple/), I describe how to use TanStack DB with a single entity in combination with DynamoDB.
@@ -36,7 +35,7 @@ erDiagram
     PERSON ||--o{ BANKACCOUNT : has
     PERSON ||--o{ CONTACTINFO : has
     PERSON ||--o{ EMPLOYMENT : has
-    
+
     PERSON {
         string id PK
         string firstName
@@ -46,7 +45,7 @@ erDiagram
         string createdAt
         string updatedAt
     }
-    
+
     ADDRESS {
         string id PK
         string personId FK
@@ -58,7 +57,7 @@ erDiagram
         string country
         boolean isPrimary
     }
-    
+
     BANKACCOUNT {
         string id PK
         string personId FK
@@ -69,7 +68,7 @@ erDiagram
         string bic
         boolean isPrimary
     }
-    
+
     CONTACTINFO {
         string id PK
         string personId FK
@@ -78,7 +77,7 @@ erDiagram
         boolean isPrimary
         boolean isVerified
     }
-    
+
     EMPLOYMENT {
         string id PK
         string personId FK
@@ -99,13 +98,13 @@ All entities are stored in a single DynamoDB table using a carefully designed ke
 
 ### Key Structure
 
-| Entity | Partition Key (pk) | Sort Key (sk) | Description |
-|--------|-------------------|---------------|-------------|
-| Person | `PERSON#<personId>` | `PROFILE` | Person profile data |
-| Address | `PERSON#<personId>` | `ADDRESS#<addressId>` | Person's addresses |
-| BankAccount | `PERSON#<personId>` | `BANK#<bankId>` | Person's bank accounts |
-| ContactInfo | `PERSON#<personId>` | `CONTACT#<contactId>` | Person's contact info |
-| Employment | `PERSON#<personId>` | `EMPLOYMENT#<employmentId>` | Person's employment history |
+| Entity      | Partition Key (pk)  | Sort Key (sk)               | Description                 |
+| ----------- | ------------------- | --------------------------- | --------------------------- |
+| Person      | `PERSON#<personId>` | `PROFILE`                   | Person profile data         |
+| Address     | `PERSON#<personId>` | `ADDRESS#<addressId>`       | Person's addresses          |
+| BankAccount | `PERSON#<personId>` | `BANK#<bankId>`             | Person's bank accounts      |
+| ContactInfo | `PERSON#<personId>` | `CONTACT#<contactId>`       | Person's contact info       |
+| Employment  | `PERSON#<personId>` | `EMPLOYMENT#<employmentId>` | Person's employment history |
 
 This structure groups all data for a single person under the same partition key, allowing efficient retrieval of a person and all their related entities in a single query.
 
@@ -113,21 +112,22 @@ This structure groups all data for a single person under the same partition key,
 
 The design supports the following access patterns:
 
-| Access Pattern | Key Condition | Description |
-|----------------|---------------|-------------|
-| Get all persons | GSI1: `gsi1pk = PERSONS` | List all persons |
-| Get person by ID | `pk = PERSON#<id>`, `sk = PROFILE` | Single person lookup |
-| Get person with all data | `pk = PERSON#<id>` | Get person + all related entities (collection query) |
-| Get person's addresses | `pk = PERSON#<id>`, `sk begins_with ADDRESS#` | All addresses for a person |
-| Get person's bank accounts | `pk = PERSON#<id>`, `sk begins_with BANK#` | All bank accounts for a person |
-| Get person's contacts | `pk = PERSON#<id>`, `sk begins_with CONTACT#` | All contacts for a person |
-| Get person's employment | `pk = PERSON#<id>`, `sk begins_with EMPLOYMENT#` | All employment records for a person |
+| Access Pattern             | Key Condition                                    | Description                                          |
+| -------------------------- | ------------------------------------------------ | ---------------------------------------------------- |
+| Get all persons            | GSI1: `gsi1pk = PERSONS`                         | List all persons                                     |
+| Get person by ID           | `pk = PERSON#<id>`, `sk = PROFILE`               | Single person lookup                                 |
+| Get person with all data   | `pk = PERSON#<id>`                               | Get person + all related entities (collection query) |
+| Get person's addresses     | `pk = PERSON#<id>`, `sk begins_with ADDRESS#`    | All addresses for a person                           |
+| Get person's bank accounts | `pk = PERSON#<id>`, `sk begins_with BANK#`       | All bank accounts for a person                       |
+| Get person's contacts      | `pk = PERSON#<id>`, `sk begins_with CONTACT#`    | All contacts for a person                            |
+| Get person's employment    | `pk = PERSON#<id>`, `sk begins_with EMPLOYMENT#` | All employment records for a person                  |
 
 The table entries will look a little bit different as ElectroDB will take care of the attribute mapping.
 
 ### Global Secondary Indexes
 
 **GSI1: List All Persons**
+
 - Partition Key: `gsi1pk = "PERSONS"` (constant for all person entities)
 - Sort Key: `gsi1sk = "PERSON#<personId>"`
 - Purpose: Efficiently list all persons without scanning the entire table
@@ -141,22 +141,23 @@ The access pattern is to first fetch all persons via GSI1, then from the applica
 The schema looks like this:
 
 ```typescript
-import { getDdbDocClient } from '#src/webapp/integrations/ddb-client/ddbClient.ts';
-import { zodToElectroDBAttributes } from '#src/webapp/integrations/electrodb/zod-to-electrodb.ts';
+import { getDdbDocClient } from "#src/webapp/integrations/ddb-client/ddbClient.ts";
+import { zodToElectroDBAttributes } from "#src/webapp/integrations/electrodb/zod-to-electrodb.ts";
 import {
   AddressSchema,
   BankAccountSchema,
   ContactInfoSchema,
   EmploymentSchema,
   PersonSchema,
-} from '#src/webapp/types/person.ts';
-import { Entity, type EntityConfiguration, Service } from 'electrodb';
+} from "#src/webapp/types/person.ts";
+import { Entity, type EntityConfiguration, Service } from "electrodb";
 
 // =============================================================================
 // Table Configuration
 // =============================================================================
 
-const TABLE_NAME = process.env.DDB_PERSONS_TABLE_NAME ?? 'TanstackAwsStack-db-persons';
+const TABLE_NAME =
+  process.env.DDB_PERSONS_TABLE_NAME ?? "TanstackAwsStack-db-persons";
 
 const getEntityConfig = (): EntityConfiguration => ({
   client: getDdbDocClient(),
@@ -180,21 +181,21 @@ const employmentAttributes = zodToElectroDBAttributes(EmploymentSchema);
 export const PersonEntity = new Entity(
   {
     model: {
-      entity: 'Person',
-      version: '1',
-      service: 'persons',
+      entity: "Person",
+      version: "1",
+      service: "persons",
     },
     attributes: personAttributes,
     indexes: {
       primary: {
-        pk: { field: 'pk', composite: ['id'] },
-        sk: { field: 'sk', composite: [] },
+        pk: { field: "pk", composite: ["id"] },
+        sk: { field: "sk", composite: [] },
       },
       // GSI1: List all persons
       allPersons: {
-        index: 'GSI1',
-        pk: { field: 'gsi1pk', composite: [], template: 'PERSONS' },
-        sk: { field: 'gsi1sk', composite: ['lastName', 'firstName', 'id'] },
+        index: "GSI1",
+        pk: { field: "gsi1pk", composite: [], template: "PERSONS" },
+        sk: { field: "gsi1sk", composite: ["lastName", "firstName", "id"] },
       },
     },
   },
@@ -208,15 +209,15 @@ export const PersonEntity = new Entity(
 export const AddressEntity = new Entity(
   {
     model: {
-      entity: 'Address',
-      version: '1',
-      service: 'persons',
+      entity: "Address",
+      version: "1",
+      service: "persons",
     },
     attributes: addressAttributes,
     indexes: {
       primary: {
-        pk: { field: 'pk', composite: ['personId'] },
-        sk: { field: 'sk', composite: ['id'] },
+        pk: { field: "pk", composite: ["personId"] },
+        sk: { field: "sk", composite: ["id"] },
       },
     },
   },
@@ -230,15 +231,15 @@ export const AddressEntity = new Entity(
 export const BankAccountEntity = new Entity(
   {
     model: {
-      entity: 'BankAccount',
-      version: '1',
-      service: 'persons',
+      entity: "BankAccount",
+      version: "1",
+      service: "persons",
     },
     attributes: bankAccountAttributes,
     indexes: {
       primary: {
-        pk: { field: 'pk', composite: ['personId'] },
-        sk: { field: 'sk', composite: ['id'] },
+        pk: { field: "pk", composite: ["personId"] },
+        sk: { field: "sk", composite: ["id"] },
       },
     },
   },
@@ -252,15 +253,15 @@ export const BankAccountEntity = new Entity(
 export const ContactInfoEntity = new Entity(
   {
     model: {
-      entity: 'ContactInfo',
-      version: '1',
-      service: 'persons',
+      entity: "ContactInfo",
+      version: "1",
+      service: "persons",
     },
     attributes: contactInfoAttributes,
     indexes: {
       primary: {
-        pk: { field: 'pk', composite: ['personId'] },
-        sk: { field: 'sk', composite: ['id'] },
+        pk: { field: "pk", composite: ["personId"] },
+        sk: { field: "sk", composite: ["id"] },
       },
     },
   },
@@ -274,15 +275,15 @@ export const ContactInfoEntity = new Entity(
 export const EmploymentEntity = new Entity(
   {
     model: {
-      entity: 'Employment',
-      version: '1',
-      service: 'persons',
+      entity: "Employment",
+      version: "1",
+      service: "persons",
     },
     attributes: employmentAttributes,
     indexes: {
       primary: {
-        pk: { field: 'pk', composite: ['personId'] },
-        sk: { field: 'sk', composite: ['id'] },
+        pk: { field: "pk", composite: ["personId"] },
+        sk: { field: "sk", composite: ["id"] },
       },
     },
   },
@@ -320,7 +321,6 @@ export type AddressItem = ReturnType<typeof AddressEntity.parse>;
 export type BankAccountItem = ReturnType<typeof BankAccountEntity.parse>;
 export type ContactInfoItem = ReturnType<typeof ContactInfoEntity.parse>;
 export type EmploymentItem = ReturnType<typeof EmploymentEntity.parse>;
-
 ```
 
 Certain fields are derived from Zod schemas to ensure type safety throughout the stack and have a single source of truth
@@ -346,14 +346,14 @@ import type {
   ContactInfo,
   Employment,
   Person,
-} from '#src/webapp/types/person.ts';
+} from "#src/webapp/types/person.ts";
 import {
   AddressEntity,
   BankAccountEntity,
   ContactInfoEntity,
   EmploymentEntity,
   PersonEntity,
-} from '#src/webapp/integrations/electrodb/entities.ts';
+} from "#src/webapp/integrations/electrodb/entities.ts";
 
 // =============================================================================
 // Types for All Data Response
@@ -393,10 +393,13 @@ export const createPerson = async (person: Person): Promise<Person> => {
 /**
  * Update a person
  */
-export const updatePerson = async (personId: string, updates: Partial<Person>): Promise<Person> => {
+export const updatePerson = async (
+  personId: string,
+  updates: Partial<Person>,
+): Promise<Person> => {
   const result = await PersonEntity.patch({ id: personId })
     .set(updates)
-    .go({ response: 'all_new' });
+    .go({ response: "all_new" });
   return result.data as Person;
 };
 
@@ -414,10 +417,18 @@ export const deletePerson = async (personId: string): Promise<void> => {
 
   // Delete all related items
   await Promise.all([
-    ...addresses.data.map((addr) => AddressEntity.delete({ personId, id: addr.id }).go()),
-    ...bankAccounts.data.map((bank) => BankAccountEntity.delete({ personId, id: bank.id }).go()),
-    ...contacts.data.map((contact) => ContactInfoEntity.delete({ personId, id: contact.id }).go()),
-    ...employments.data.map((emp) => EmploymentEntity.delete({ personId, id: emp.id }).go()),
+    ...addresses.data.map((addr) =>
+      AddressEntity.delete({ personId, id: addr.id }).go(),
+    ),
+    ...bankAccounts.data.map((bank) =>
+      BankAccountEntity.delete({ personId, id: bank.id }).go(),
+    ),
+    ...contacts.data.map((contact) =>
+      ContactInfoEntity.delete({ personId, id: contact.id }).go(),
+    ),
+    ...employments.data.map((emp) =>
+      EmploymentEntity.delete({ personId, id: emp.id }).go(),
+    ),
     PersonEntity.delete({ id: personId }).go(),
   ]);
 };
@@ -426,7 +437,9 @@ export const deletePerson = async (personId: string): Promise<void> => {
 // Address Operations
 // =============================================================================
 
-export const getAddressesByPersonId = async (personId: string): Promise<Address[]> => {
+export const getAddressesByPersonId = async (
+  personId: string,
+): Promise<Address[]> => {
   const result = await AddressEntity.query.primary({ personId }).go();
   return result.data as Address[];
 };
@@ -441,7 +454,10 @@ export const updateAddress = async (address: Address): Promise<Address> => {
   return result.data as Address;
 };
 
-export const deleteAddress = async (personId: string, addressId: string): Promise<void> => {
+export const deleteAddress = async (
+  personId: string,
+  addressId: string,
+): Promise<void> => {
   await AddressEntity.delete({ personId, id: addressId }).go();
 };
 
@@ -449,22 +465,31 @@ export const deleteAddress = async (personId: string, addressId: string): Promis
 // BankAccount Operations
 // =============================================================================
 
-export const getBankAccountsByPersonId = async (personId: string): Promise<BankAccount[]> => {
+export const getBankAccountsByPersonId = async (
+  personId: string,
+): Promise<BankAccount[]> => {
   const result = await BankAccountEntity.query.primary({ personId }).go();
   return result.data as BankAccount[];
 };
 
-export const createBankAccount = async (bankAccount: BankAccount): Promise<BankAccount> => {
+export const createBankAccount = async (
+  bankAccount: BankAccount,
+): Promise<BankAccount> => {
   const result = await BankAccountEntity.put(bankAccount).go();
   return result.data as BankAccount;
 };
 
-export const updateBankAccount = async (bankAccount: BankAccount): Promise<BankAccount> => {
+export const updateBankAccount = async (
+  bankAccount: BankAccount,
+): Promise<BankAccount> => {
   const result = await BankAccountEntity.put(bankAccount).go();
   return result.data as BankAccount;
 };
 
-export const deleteBankAccount = async (personId: string, bankAccountId: string): Promise<void> => {
+export const deleteBankAccount = async (
+  personId: string,
+  bankAccountId: string,
+): Promise<void> => {
   await BankAccountEntity.delete({ personId, id: bankAccountId }).go();
 };
 
@@ -472,22 +497,31 @@ export const deleteBankAccount = async (personId: string, bankAccountId: string)
 // ContactInfo Operations
 // =============================================================================
 
-export const getContactsByPersonId = async (personId: string): Promise<ContactInfo[]> => {
+export const getContactsByPersonId = async (
+  personId: string,
+): Promise<ContactInfo[]> => {
   const result = await ContactInfoEntity.query.primary({ personId }).go();
   return result.data as ContactInfo[];
 };
 
-export const createContact = async (contact: ContactInfo): Promise<ContactInfo> => {
+export const createContact = async (
+  contact: ContactInfo,
+): Promise<ContactInfo> => {
   const result = await ContactInfoEntity.put(contact).go();
   return result.data as ContactInfo;
 };
 
-export const updateContact = async (contact: ContactInfo): Promise<ContactInfo> => {
+export const updateContact = async (
+  contact: ContactInfo,
+): Promise<ContactInfo> => {
   const result = await ContactInfoEntity.put(contact).go();
   return result.data as ContactInfo;
 };
 
-export const deleteContact = async (personId: string, contactId: string): Promise<void> => {
+export const deleteContact = async (
+  personId: string,
+  contactId: string,
+): Promise<void> => {
   await ContactInfoEntity.delete({ personId, id: contactId }).go();
 };
 
@@ -501,25 +535,37 @@ const normalizeEmployment = (employment: Employment) => ({
   endDate: employment.endDate ?? undefined,
 });
 
-export const getEmploymentsByPersonId = async (personId: string): Promise<Employment[]> => {
+export const getEmploymentsByPersonId = async (
+  personId: string,
+): Promise<Employment[]> => {
   const result = await EmploymentEntity.query.primary({ personId }).go();
   return result.data as Employment[];
 };
 
-export const createEmployment = async (employment: Employment): Promise<Employment> => {
-  const result = await EmploymentEntity.put(normalizeEmployment(employment)).go();
+export const createEmployment = async (
+  employment: Employment,
+): Promise<Employment> => {
+  const result = await EmploymentEntity.put(
+    normalizeEmployment(employment),
+  ).go();
   return result.data as Employment;
 };
 
-export const updateEmployment = async (employment: Employment): Promise<Employment> => {
-  const result = await EmploymentEntity.put(normalizeEmployment(employment)).go();
+export const updateEmployment = async (
+  employment: Employment,
+): Promise<Employment> => {
+  const result = await EmploymentEntity.put(
+    normalizeEmployment(employment),
+  ).go();
   return result.data as Employment;
 };
 
-export const deleteEmployment = async (personId: string, employmentId: string): Promise<void> => {
+export const deleteEmployment = async (
+  personId: string,
+  employmentId: string,
+): Promise<void> => {
   await EmploymentEntity.delete({ personId, id: employmentId }).go();
 };
-
 ```
 
 ## The new GSI for DynamoDB
@@ -529,29 +575,33 @@ The DynamoDB table was extended by the GSI needed for listing all persons.
 **Full implementation**: [DatabasePersons.ts](https://github.com/JohannesKonings/tanstack-aws/blob/2025-12-27-tanstack-start-aws-db-multiple-entities/lib/constructs/DatabasePersons.ts)
 
 ```typescript
-import { AttributeType, BillingMode, ProjectionType, Table } from 'aws-cdk-lib/aws-dynamodb';
-import { Construct } from 'constructs';
+import {
+  AttributeType,
+  BillingMode,
+  ProjectionType,
+  Table,
+} from "aws-cdk-lib/aws-dynamodb";
+import { Construct } from "constructs";
 
 export class DatabasePersons extends Construct {
   public readonly dbPersons: Table;
   constructor(scope: Construct, id: string) {
     super(scope, id);
 
-    this.dbPersons = new Table(this, 'Persons', {
-      partitionKey: { name: 'pk', type: AttributeType.STRING },
-      sortKey: { name: 'sk', type: AttributeType.STRING },
+    this.dbPersons = new Table(this, "Persons", {
+      partitionKey: { name: "pk", type: AttributeType.STRING },
+      sortKey: { name: "sk", type: AttributeType.STRING },
       billingMode: BillingMode.PAY_PER_REQUEST,
     });
 
     // GSI1: For listing all persons
     // Example gsi1pk = "PERSONS", gsi1sk = "PERSON#<personId>"
     this.dbPersons.addGlobalSecondaryIndex({
-      indexName: 'GSI1',
-      partitionKey: { name: 'gsi1pk', type: AttributeType.STRING },
-      sortKey: { name: 'gsi1sk', type: AttributeType.STRING },
+      indexName: "GSI1",
+      partitionKey: { name: "gsi1pk", type: AttributeType.STRING },
+      sortKey: { name: "gsi1sk", type: AttributeType.STRING },
       projectionType: ProjectionType.ALL,
     });
-
   }
 }
 ```
@@ -563,8 +613,8 @@ The collection is defined as follows:
 **Full implementation**: [persons.ts (collections)](https://github.com/JohannesKonings/tanstack-aws/blob/2025-12-27-tanstack-start-aws-db-multiple-entities/src/webapp/db-collections/persons.ts)
 
 ```typescript
-import * as electrodbClient from '#src/webapp/integrations/electrodb/personsClient';
-import { getContext } from '#src/webapp/integrations/tanstack-query/root-provider';
+import * as electrodbClient from "#src/webapp/integrations/electrodb/personsClient";
+import { getContext } from "#src/webapp/integrations/tanstack-query/root-provider";
 import {
   type Address,
   AddressSchema,
@@ -576,10 +626,10 @@ import {
   EmploymentSchema,
   type Person,
   PersonSchema,
-} from '#src/webapp/types/person';
-import { queryCollectionOptions } from '@tanstack/query-db-collection';
-import { createCollection } from '@tanstack/react-db';
-import { createServerFn } from '@tanstack/react-start';
+} from "#src/webapp/types/person";
+import { queryCollectionOptions } from "@tanstack/query-db-collection";
+import { createCollection } from "@tanstack/react-db";
+import { createServerFn } from "@tanstack/react-start";
 
 // =============================================================================
 // Server Functions
@@ -588,102 +638,124 @@ import { createServerFn } from '@tanstack/react-start';
 /**
  * Get all persons (profile only)
  */
-const fetchPersons = createServerFn({ method: 'GET' }).handler(async () =>
+const fetchPersons = createServerFn({ method: "GET" }).handler(async () =>
   electrodbClient.getAllPersons(),
 );
 
 /**
  * Create a new person
  */
-const createPersonFn = createServerFn({ method: 'POST' })
+const createPersonFn = createServerFn({ method: "POST" })
   .inputValidator((input: Person) => PersonSchema.parse(input))
   .handler(async ({ data }) => electrodbClient.createPerson(data));
 
 /**
  * Update a person
  */
-const updatePersonFn = createServerFn({ method: 'POST' })
-  .inputValidator((input: { personId: string; updates: Partial<Person> }) => input)
-  .handler(async ({ data }) => electrodbClient.updatePerson(data.personId, data.updates));
+const updatePersonFn = createServerFn({ method: "POST" })
+  .inputValidator(
+    (input: { personId: string; updates: Partial<Person> }) => input,
+  )
+  .handler(async ({ data }) =>
+    electrodbClient.updatePerson(data.personId, data.updates),
+  );
 
 /**
  * Delete a person
  */
-const deletePersonFn = createServerFn({ method: 'POST' })
+const deletePersonFn = createServerFn({ method: "POST" })
   .inputValidator((input: string) => input)
-  .handler(async ({ data: personId }) => electrodbClient.deletePerson(personId));
+  .handler(async ({ data: personId }) =>
+    electrodbClient.deletePerson(personId),
+  );
 
 // --- Address Server Functions ---
 
-const fetchAddresses = createServerFn({ method: 'GET' })
+const fetchAddresses = createServerFn({ method: "GET" })
   .inputValidator((input: string) => input)
-  .handler(async ({ data: personId }) => electrodbClient.getAddressesByPersonId(personId));
+  .handler(async ({ data: personId }) =>
+    electrodbClient.getAddressesByPersonId(personId),
+  );
 
-const createAddressFn = createServerFn({ method: 'POST' })
+const createAddressFn = createServerFn({ method: "POST" })
   .inputValidator((input: Address) => AddressSchema.parse(input))
   .handler(async ({ data }) => electrodbClient.createAddress(data));
 
-const updateAddressFn = createServerFn({ method: 'POST' })
+const updateAddressFn = createServerFn({ method: "POST" })
   .inputValidator((input: Address) => AddressSchema.parse(input))
   .handler(async ({ data }) => electrodbClient.updateAddress(data));
 
-const deleteAddressFn = createServerFn({ method: 'POST' })
+const deleteAddressFn = createServerFn({ method: "POST" })
   .inputValidator((input: { personId: string; addressId: string }) => input)
-  .handler(async ({ data }) => electrodbClient.deleteAddress(data.personId, data.addressId));
+  .handler(async ({ data }) =>
+    electrodbClient.deleteAddress(data.personId, data.addressId),
+  );
 
 // --- BankAccount Server Functions ---
 
-const fetchBankAccounts = createServerFn({ method: 'GET' })
+const fetchBankAccounts = createServerFn({ method: "GET" })
   .inputValidator((input: string) => input)
-  .handler(async ({ data: personId }) => electrodbClient.getBankAccountsByPersonId(personId));
+  .handler(async ({ data: personId }) =>
+    electrodbClient.getBankAccountsByPersonId(personId),
+  );
 
-const createBankAccountFn = createServerFn({ method: 'POST' })
+const createBankAccountFn = createServerFn({ method: "POST" })
   .inputValidator((input: BankAccount) => BankAccountSchema.parse(input))
   .handler(async ({ data }) => electrodbClient.createBankAccount(data));
 
-const updateBankAccountFn = createServerFn({ method: 'POST' })
+const updateBankAccountFn = createServerFn({ method: "POST" })
   .inputValidator((input: BankAccount) => BankAccountSchema.parse(input))
   .handler(async ({ data }) => electrodbClient.updateBankAccount(data));
 
-const deleteBankAccountFn = createServerFn({ method: 'POST' })
+const deleteBankAccountFn = createServerFn({ method: "POST" })
   .inputValidator((input: { personId: string; bankId: string }) => input)
-  .handler(async ({ data }) => electrodbClient.deleteBankAccount(data.personId, data.bankId));
+  .handler(async ({ data }) =>
+    electrodbClient.deleteBankAccount(data.personId, data.bankId),
+  );
 
 // --- ContactInfo Server Functions ---
 
-const fetchContacts = createServerFn({ method: 'GET' })
+const fetchContacts = createServerFn({ method: "GET" })
   .inputValidator((input: string) => input)
-  .handler(async ({ data: personId }) => electrodbClient.getContactsByPersonId(personId));
+  .handler(async ({ data: personId }) =>
+    electrodbClient.getContactsByPersonId(personId),
+  );
 
-const createContactFn = createServerFn({ method: 'POST' })
+const createContactFn = createServerFn({ method: "POST" })
   .inputValidator((input: ContactInfo) => ContactInfoSchema.parse(input))
   .handler(async ({ data }) => electrodbClient.createContact(data));
 
-const updateContactFn = createServerFn({ method: 'POST' })
+const updateContactFn = createServerFn({ method: "POST" })
   .inputValidator((input: ContactInfo) => ContactInfoSchema.parse(input))
   .handler(async ({ data }) => electrodbClient.updateContact(data));
 
-const deleteContactFn = createServerFn({ method: 'POST' })
+const deleteContactFn = createServerFn({ method: "POST" })
   .inputValidator((input: { personId: string; contactId: string }) => input)
-  .handler(async ({ data }) => electrodbClient.deleteContact(data.personId, data.contactId));
+  .handler(async ({ data }) =>
+    electrodbClient.deleteContact(data.personId, data.contactId),
+  );
 
 // --- Employment Server Functions ---
 
-const fetchEmployments = createServerFn({ method: 'GET' })
+const fetchEmployments = createServerFn({ method: "GET" })
   .inputValidator((input: string) => input)
-  .handler(async ({ data: personId }) => electrodbClient.getEmploymentsByPersonId(personId));
+  .handler(async ({ data: personId }) =>
+    electrodbClient.getEmploymentsByPersonId(personId),
+  );
 
-const createEmploymentFn = createServerFn({ method: 'POST' })
+const createEmploymentFn = createServerFn({ method: "POST" })
   .inputValidator((input: Employment) => EmploymentSchema.parse(input))
   .handler(async ({ data }) => electrodbClient.createEmployment(data));
 
-const updateEmploymentFn = createServerFn({ method: 'POST' })
+const updateEmploymentFn = createServerFn({ method: "POST" })
   .inputValidator((input: Employment) => EmploymentSchema.parse(input))
   .handler(async ({ data }) => electrodbClient.updateEmployment(data));
 
-const deleteEmploymentFn = createServerFn({ method: 'POST' })
+const deleteEmploymentFn = createServerFn({ method: "POST" })
   .inputValidator((input: { personId: string; employmentId: string }) => input)
-  .handler(async ({ data }) => electrodbClient.deleteEmployment(data.personId, data.employmentId));
+  .handler(async ({ data }) =>
+    electrodbClient.deleteEmployment(data.personId, data.employmentId),
+  );
 
 // =============================================================================
 // TanStack DB Collections
@@ -694,7 +766,7 @@ const deleteEmploymentFn = createServerFn({ method: 'POST' })
  */
 export const personsCollection = createCollection(
   queryCollectionOptions<Person>({
-    queryKey: ['persons'],
+    queryKey: ["persons"],
     queryFn: () => fetchPersons(),
     queryClient: getContext().queryClient,
     getKey: (item) => item.id,
@@ -719,7 +791,9 @@ export const personsCollection = createCollection(
     },
     onDelete: async ({ transaction }) => {
       await Promise.all(
-        transaction.mutations.map((mutation) => deletePersonFn({ data: mutation.key as string })),
+        transaction.mutations.map((mutation) =>
+          deletePersonFn({ data: mutation.key as string }),
+        ),
       );
     },
   }),
@@ -732,7 +806,7 @@ export const personsCollection = createCollection(
 export const createAddressesCollection = (personId: string) =>
   createCollection(
     queryCollectionOptions<Address>({
-      queryKey: ['persons', personId, 'addresses'],
+      queryKey: ["persons", personId, "addresses"],
       queryFn: () => fetchAddresses({ data: personId }),
       queryClient: getContext().queryClient,
       getKey: (item) => item.id,
@@ -768,7 +842,7 @@ export const createAddressesCollection = (personId: string) =>
 export const createBankAccountsCollection = (personId: string) =>
   createCollection(
     queryCollectionOptions<BankAccount>({
-      queryKey: ['persons', personId, 'bankAccounts'],
+      queryKey: ["persons", personId, "bankAccounts"],
       queryFn: () => fetchBankAccounts({ data: personId }),
       queryClient: getContext().queryClient,
       getKey: (item) => item.id,
@@ -804,7 +878,7 @@ export const createBankAccountsCollection = (personId: string) =>
 export const createContactsCollection = (personId: string) =>
   createCollection(
     queryCollectionOptions<ContactInfo>({
-      queryKey: ['persons', personId, 'contacts'],
+      queryKey: ["persons", personId, "contacts"],
       queryFn: () => fetchContacts({ data: personId }),
       queryClient: getContext().queryClient,
       getKey: (item) => item.id,
@@ -840,7 +914,7 @@ export const createContactsCollection = (personId: string) =>
 export const createEmploymentsCollection = (personId: string) =>
   createCollection(
     queryCollectionOptions<Employment>({
-      queryKey: ['persons', personId, 'employments'],
+      queryKey: ["persons", personId, "employments"],
       queryFn: () => fetchEmployments({ data: personId }),
       queryClient: getContext().queryClient,
       getKey: (item) => item.id,
@@ -887,18 +961,18 @@ import type {
   ContactInfo,
   Employment,
   Person,
-} from '#src/webapp/types/person';
+} from "#src/webapp/types/person";
 import {
   createAddressesCollection,
   createBankAccountsCollection,
   createContactsCollection,
   createEmploymentsCollection,
   personsCollection,
-} from '#src/webapp/db-collections/persons';
+} from "#src/webapp/db-collections/persons";
 // oxlint-disable no-magic-numbers
 // oxlint-disable func-style
-import { useLiveQuery } from '@tanstack/react-db';
-import { useMemo } from 'react';
+import { useLiveQuery } from "@tanstack/react-db";
+import { useMemo } from "react";
 
 // =============================================================================
 // Persons List Hook
@@ -944,11 +1018,14 @@ export function usePersons() {
  * Hook for accessing addresses of a specific person
  */
 function usePersonAddresses(personId: string) {
-  const collection = useMemo(() => createAddressesCollection(personId), [personId]);
+  const collection = useMemo(
+    () => createAddressesCollection(personId),
+    [personId],
+  );
 
   const query = useLiveQuery(collection);
 
-  const addAddress = (address: Omit<Address, 'id' | 'personId'>) => {
+  const addAddress = (address: Omit<Address, "id" | "personId">) => {
     const newAddress: Address = {
       ...address,
       id: crypto.randomUUID(),
@@ -981,11 +1058,14 @@ function usePersonAddresses(personId: string) {
  * Hook for accessing bank accounts of a specific person
  */
 function usePersonBankAccounts(personId: string) {
-  const collection = useMemo(() => createBankAccountsCollection(personId), [personId]);
+  const collection = useMemo(
+    () => createBankAccountsCollection(personId),
+    [personId],
+  );
 
   const query = useLiveQuery(collection);
 
-  const addBankAccount = (account: Omit<BankAccount, 'id' | 'personId'>) => {
+  const addBankAccount = (account: Omit<BankAccount, "id" | "personId">) => {
     const newAccount: BankAccount = {
       ...account,
       id: crypto.randomUUID(),
@@ -994,7 +1074,10 @@ function usePersonBankAccounts(personId: string) {
     collection.insert(newAccount);
   };
 
-  const updateBankAccount = (accountId: string, changes: Partial<BankAccount>) => {
+  const updateBankAccount = (
+    accountId: string,
+    changes: Partial<BankAccount>,
+  ) => {
     collection.update(accountId, (draft) => {
       Object.assign(draft, changes);
     });
@@ -1018,11 +1101,14 @@ function usePersonBankAccounts(personId: string) {
  * Hook for accessing contacts of a specific person
  */
 function usePersonContacts(personId: string) {
-  const collection = useMemo(() => createContactsCollection(personId), [personId]);
+  const collection = useMemo(
+    () => createContactsCollection(personId),
+    [personId],
+  );
 
   const query = useLiveQuery(collection);
 
-  const addContact = (contact: Omit<ContactInfo, 'id' | 'personId'>) => {
+  const addContact = (contact: Omit<ContactInfo, "id" | "personId">) => {
     const newContact: ContactInfo = {
       ...contact,
       id: crypto.randomUUID(),
@@ -1055,11 +1141,14 @@ function usePersonContacts(personId: string) {
  * Hook for accessing employments of a specific person
  */
 function usePersonEmployments(personId: string) {
-  const collection = useMemo(() => createEmploymentsCollection(personId), [personId]);
+  const collection = useMemo(
+    () => createEmploymentsCollection(personId),
+    [personId],
+  );
 
   const query = useLiveQuery(collection);
 
-  const addEmployment = (employment: Omit<Employment, 'id' | 'personId'>) => {
+  const addEmployment = (employment: Omit<Employment, "id" | "personId">) => {
     const newEmployment: Employment = {
       ...employment,
       id: crypto.randomUUID(),
@@ -1068,7 +1157,10 @@ function usePersonEmployments(personId: string) {
     collection.insert(newEmployment);
   };
 
-  const updateEmployment = (employmentId: string, changes: Partial<Employment>) => {
+  const updateEmployment = (
+    employmentId: string,
+    changes: Partial<Employment>,
+  ) => {
     collection.update(employmentId, (draft) => {
       Object.assign(draft, changes);
     });
@@ -1097,7 +1189,10 @@ function usePersonEmployments(personId: string) {
  */
 export function usePersonDetail(personId: string) {
   const { persons, updatePerson, deletePerson } = usePersons();
-  const person = useMemo(() => persons.find((p) => p.id === personId), [persons, personId]);
+  const person = useMemo(
+    () => persons.find((p) => p.id === personId),
+    [persons, personId],
+  );
 
   const addresses = usePersonAddresses(personId);
   const bankAccounts = usePersonBankAccounts(personId);
@@ -1105,7 +1200,10 @@ export function usePersonDetail(personId: string) {
   const employments = usePersonEmployments(personId);
 
   const isLoading =
-    addresses.isLoading || bankAccounts.isLoading || contacts.isLoading || employments.isLoading;
+    addresses.isLoading ||
+    bankAccounts.isLoading ||
+    contacts.isLoading ||
+    employments.isLoading;
 
   return {
     person,
@@ -1135,7 +1233,6 @@ export function usePersonDetail(personId: string) {
     deleteEmployment: employments.deleteEmployment,
   };
 }
-
 ```
 
 ## Seed the database
@@ -1160,8 +1257,12 @@ A seed script populates the DynamoDB table with realistic test data using Faker.
  *   pnpm seed:persons --clear # Clear existing data first
  */
 
-import type { ContactInfo, Employment, PersonWithRelations } from '#src/webapp/types/person.ts';
-import { generatePersons, initFaker } from '#src/webapp/data/fake-persons.ts';
+import type {
+  ContactInfo,
+  Employment,
+  PersonWithRelations,
+} from "#src/webapp/types/person.ts";
+import { generatePersons, initFaker } from "#src/webapp/data/fake-persons.ts";
 import {
   createAddress,
   createBankAccount,
@@ -1170,7 +1271,7 @@ import {
   createPerson,
   deletePerson,
   getAllPersons,
-} from '#src/webapp/integrations/electrodb/personsClient.ts';
+} from "#src/webapp/integrations/electrodb/personsClient.ts";
 
 // =============================================================================
 // Configuration
@@ -1186,14 +1287,14 @@ const LOG_INTERVAL = 10;
 
 const normalizeContactInfo = (
   contact: ContactInfo,
-): Omit<ContactInfo, 'isVerified'> & { isVerified: boolean } => ({
+): Omit<ContactInfo, "isVerified"> & { isVerified: boolean } => ({
   ...contact,
   isVerified: contact.isVerified ?? false,
 });
 
 const normalizeEmployment = (
   employment: Employment,
-): Omit<Employment, 'endDate'> & { endDate: string | undefined } => ({
+): Omit<Employment, "endDate"> & { endDate: string | undefined } => ({
   ...employment,
   endDate: employment.endDate ?? undefined,
 });
@@ -1204,7 +1305,9 @@ const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 // Seed Functions
 // =============================================================================
 
-const seedOnePerson = async (personData: PersonWithRelations): Promise<void> => {
+const seedOnePerson = async (
+  personData: PersonWithRelations,
+): Promise<void> => {
   // Create the person
   await createPerson({
     id: personData.id,
@@ -1220,12 +1323,18 @@ const seedOnePerson = async (personData: PersonWithRelations): Promise<void> => 
   await Promise.all([
     ...personData.addresses.map((addr) => createAddress(addr)),
     ...personData.bankAccounts.map((bank) => createBankAccount(bank)),
-    ...personData.contacts.map((contact) => createContact(normalizeContactInfo(contact))),
-    ...personData.employments.map((emp) => createEmployment(normalizeEmployment(emp))),
+    ...personData.contacts.map((contact) =>
+      createContact(normalizeContactInfo(contact)),
+    ),
+    ...personData.employments.map((emp) =>
+      createEmployment(normalizeEmployment(emp)),
+    ),
   ]);
 };
 
-const seedPersonsBatch = async (persons: PersonWithRelations[]): Promise<number> => {
+const seedPersonsBatch = async (
+  persons: PersonWithRelations[],
+): Promise<number> => {
   let successCount = 0;
 
   for (const person of persons) {
@@ -1241,7 +1350,7 @@ const seedPersonsBatch = async (persons: PersonWithRelations[]): Promise<number>
 };
 
 const clearAllPersons = async (): Promise<number> => {
-  console.log('Clearing existing persons...');
+  console.log("Clearing existing persons...");
 
   const existingPersons = await getAllPersons();
   let deletedCount = 0;
@@ -1251,7 +1360,9 @@ const clearAllPersons = async (): Promise<number> => {
       await deletePerson(person.id);
       deletedCount++;
       if (deletedCount % LOG_INTERVAL === 0) {
-        console.log(`  Deleted ${deletedCount}/${existingPersons.length} persons...`);
+        console.log(
+          `  Deleted ${deletedCount}/${existingPersons.length} persons...`,
+        );
       }
     } catch (error) {
       console.error(`Failed to delete person ${person.id}:`, error);
@@ -1269,22 +1380,22 @@ const clearAllPersons = async (): Promise<number> => {
 const main = async () => {
   // Parse arguments
   const args = process.argv.slice(2);
-  const shouldClear = args.includes('--clear');
-  const countArg = args.find((arg) => !arg.startsWith('--'));
+  const shouldClear = args.includes("--clear");
+  const countArg = args.find((arg) => !arg.startsWith("--"));
   let count = DEFAULT_COUNT;
   if (countArg) {
     count = parseInt(countArg, 10);
   }
 
-  console.log('='.repeat(60));
-  console.log('DB Persons Seed Script');
-  console.log('='.repeat(60));
+  console.log("=".repeat(60));
+  console.log("DB Persons Seed Script");
+  console.log("=".repeat(60));
 
   // Check for table name
   const tableName = process.env.DDB_PERSONS_TABLE_NAME;
   if (!tableName) {
-    console.error('Error: DDB_PERSONS_TABLE_NAME environment variable not set');
-    console.log('\nRun: export DDB_PERSONS_TABLE_NAME=<your-table-name>');
+    console.error("Error: DDB_PERSONS_TABLE_NAME environment variable not set");
+    console.log("\nRun: export DDB_PERSONS_TABLE_NAME=<your-table-name>");
     process.exit(1);
   }
   console.log(`Table: ${tableName}`);
@@ -1292,7 +1403,7 @@ const main = async () => {
   // Clear if requested
   if (shouldClear) {
     await clearAllPersons();
-    console.log('');
+    console.log("");
   }
 
   // Generate fake data
@@ -1316,17 +1427,16 @@ const main = async () => {
     await sleep(100);
   }
 
-  console.log('');
-  console.log('='.repeat(60));
+  console.log("");
+  console.log("=".repeat(60));
   console.log(`Seed Complete: ${totalSeeded} persons created`);
-  console.log('='.repeat(60));
+  console.log("=".repeat(60));
 };
 
 main().catch((error) => {
-  console.error('Seed script failed:', error);
+  console.error("Seed script failed:", error);
   process.exit(1);
 });
-
 ```
 
 ![result ddb](./result-ddb.png)
@@ -1344,7 +1454,6 @@ At least for the described data model and access patterns.
 
 At this size of around 10 persons, this is enough. With much more data, filtering, pagination, and search will be needed.
 Then, the TanStack DB collections can be extended with more advanced query functions.
-
 
 ## Sources and References
 
