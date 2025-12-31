@@ -10,9 +10,16 @@ const posts = (await getCollection("blog"))
 	.filter((post) => post.data.published)
 	.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
 
-const tags = [...new Set(posts.flatMap((post) => post.data.tags))].sort(
-	(a, b) => a.localeCompare(b),
-);
+const tagCounts = posts.reduce((acc, post) => {
+	post.data.tags.forEach((tag: string) => {
+		acc[tag] = (acc[tag] || 0) + 1;
+	});
+	return acc;
+}, {} as Record<string, number>);
+
+const tags = Object.entries(tagCounts)
+	.sort((a, b) => b[1] - a[1])
+	.map(([tag, count]) => ({ name: tag, count }));
 ---
 
 <PageLayout title={BLOG.TITLE} description={BLOG.DESCRIPTION}>

@@ -9,7 +9,7 @@ thumbnail: aws_kinesis
 tags:
   - aws
   - aws athena
-  - aws cdk
+  - cdk
 ---
 
 In [this]({{ site.baseurl }}/aws/2021/08/27/aws_example_ddb_analytics/) post is a example of a Athena query to get the the current data of the DynamoDb table.

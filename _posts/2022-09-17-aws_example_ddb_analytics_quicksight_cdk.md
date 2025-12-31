@@ -10,7 +10,7 @@ tags:
   - aws
   - aws kinesis
   - aws athena
-  - aws cdk
+  - cdk
   - aws quicksight
 ---
 

@@ -2,6 +2,8 @@
 
 @plugin "@tailwindcss/typography";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 @theme {
   --animation-twinkle: twinkle 2s ease-in-out forwards;
   --animation-meteor: meteor 3s ease-in-out forwards;

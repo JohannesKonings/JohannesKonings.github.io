@@ -13,13 +13,14 @@ tags:
 
 ## Introduction
 
-In some cases, the CDK bootstrap resources need changes beyond what's possible with the standard bootstrap parameters. While AWS provides [customization options](https://docs.aws.amazon.com/cdk/v2/guide/bootstrapping-customizing.html), certain configurations require a fully customized template.
+In some cases, the CDK bootstrap resources need changes beyond what's possible with the standard bootstrap parameters. While the CDK provides [customization options](https://docs.aws.amazon.com/cdk/v2/guide/bootstrapping-customizing.html), certain configurations require customizing of the template.
 
 This post demonstrates how to:
 
 - Encrypt the staging bucket with a custom KMS key
 - Enable server access logs for the staging bucket
 - Validate CloudFormation templates with cdk-nag before deployment
+- Use the CDK Toolkit library to orchestrate the entire process in TypeScript
 
 While the KMS key can be configured via bootstrap parameters, server access logging requires template customization. Since TypeScript is used for the CDK setup, all scripting will also be in TypeScript using the [AWS CDK Toolkit library](https://docs.aws.amazon.com/cdk/api/toolkit-lib/).
 
@@ -32,7 +33,7 @@ Before customizing the bootstrap template, we need to create supporting resource
 1. A KMS key for encrypting the staging bucket
 2. A log bucket for storing server access logs
 
-These resources will be referenced during the bootstrap process.
+These resources will be referenced during the bootstrap process via CloudFormation exports.
 
 ### KMS Key Template
 
@@ -450,7 +451,8 @@ try {
 
 ### Get the Default Template
 
-Customizations should be based on the standard CDK bootstrap template. First, retrieve the default template using the CDK CLI.
+Customizations should be based on the standard CDK bootstrap template to ensure all necessary resources are included and the process remains compatible with future CDK versions.
+First, retrieve the default template using the CDK CLI.
 
 Since the Toolkit library doesn't provide functionality to retrieve the standard template, we use the CDK CLI via a child process.
 
@@ -540,7 +542,7 @@ writeFileSync(
 
 Finally, execute the CDK bootstrap process with the customized template using the Toolkit library.
 
-Since the KMS key was created via CloudFormation, its ID must be retrieved using the CloudFormation `DescribeStacks` API call. The script:
+Since the KMS key was created via CloudFormation, its ID must be retrieved using the CloudFormation Stack Outputs. The script:
 
 1. Extracts environments (account/region pairs) from the CDK app
 2. Retrieves the KMS key ID for each region from CloudFormation outputs
