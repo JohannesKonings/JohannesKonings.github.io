@@ -25,6 +25,7 @@
     "2025-12-06-cdk-notifier-feature-stacks-change-set": {},
     "2025-12-13-cdk-monitor-multiple-resources-using-single-alarm": {},
     "2025-12-20-tanstack-start-aws-db-simple": {},
-    "2025-12-27-tanstack-start-aws-db-multiple-entities": {}
+    "2025-12-27-tanstack-start-aws-db-multiple-entities": {},
+    "2025-12-31-cdk-bootstrap-customized-template": {}
   }
 }
