@@ -8,8 +8,8 @@ categories: aws
 thumbnail: null
 tags:
   - aws
-  - AWS Amplify
-  - AWS Amplify Console
+  - aws amplify
+  - aws amplify console
 slug: aws-amplify-console-changed-master-branchenv-main
 ---
 

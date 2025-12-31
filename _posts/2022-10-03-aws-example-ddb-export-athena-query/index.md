@@ -9,7 +9,7 @@ thumbnail: aws_athena
 tags:
   - aws
   - aws athena
-  - aws cdk
+  - cdk
   - aws dynamodb
 ---
 
