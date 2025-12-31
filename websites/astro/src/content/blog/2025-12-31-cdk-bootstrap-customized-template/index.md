@@ -16,6 +16,7 @@ tags:
 In some cases, the CDK bootstrap resources need changes beyond what's possible with the standard bootstrap parameters. While AWS provides [customization options](https://docs.aws.amazon.com/cdk/v2/guide/bootstrapping-customizing.html), certain configurations require a fully customized template.
 
 This post demonstrates how to:
+
 - Encrypt the staging bucket with a custom KMS key
 - Enable server access logs for the staging bucket
 - Validate CloudFormation templates with cdk-nag before deployment
@@ -27,6 +28,7 @@ Additionally, we'll use cdk-nag to bridge the gap between CloudFormation templat
 ## Create the Resources for Bootstrap via CloudFormation
 
 Before customizing the bootstrap template, we need to create supporting resources via CloudFormation:
+
 1. A KMS key for encrypting the staging bucket
 2. A log bucket for storing server access logs
 
@@ -183,7 +185,6 @@ Outputs:
     Value: !Ref LogBucket
     Export:
       Name: log-bucket-name
-
 ```
 
 </details>
@@ -370,7 +371,6 @@ async function main(): Promise<void> {
 }
 
 main();
-
 ```
 
 </details>
@@ -382,6 +382,7 @@ Resources within a CDK app can be validated with [cdk-nag](https://github.com/cd
 As described in the [cdk-nag documentation](https://github.com/cdklabs/cdk-nag?tab=readme-ov-file#using-on-cloudformation-templates), CloudFormation templates can be included via the `CfnInclude` construct and validated using cdk-nag aspects.
 
 This approach ensures:
+
 - The same validation rules are applied consistently
 - The same suppression mechanisms can be used
 - All infrastructure code follows the same security standards
@@ -462,15 +463,20 @@ import { mkdirSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { CDK_STANDDARD_TEMPLATE_FILE_NAME } from "./bootstrap";
 
-const resultCdkStandardTemplate = execSync("pnpm exec cdk bootstrap --show-template", {
-  encoding: "utf8",
-});
+const resultCdkStandardTemplate = execSync(
+  "pnpm exec cdk bootstrap --show-template",
+  {
+    encoding: "utf8",
+  },
+);
 
 const generatedDir = join(import.meta.dirname, "..", "generated");
 mkdirSync(generatedDir, { recursive: true });
 
-writeFileSync(join(generatedDir, CDK_STANDDARD_TEMPLATE_FILE_NAME), resultCdkStandardTemplate);
-
+writeFileSync(
+  join(generatedDir, CDK_STANDDARD_TEMPLATE_FILE_NAME),
+  resultCdkStandardTemplate,
+);
 ```
 
 </details>
@@ -488,10 +494,18 @@ The log bucket configuration is embedded into the template using the CloudFormat
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { parse, stringify } from "yaml";
-import { CDK_CUSTOMIZED_TEMPLATE_FILE_NAME, CDK_STANDDARD_TEMPLATE_FILE_NAME } from "./bootstrap";
+import {
+  CDK_CUSTOMIZED_TEMPLATE_FILE_NAME,
+  CDK_STANDDARD_TEMPLATE_FILE_NAME,
+} from "./bootstrap";
 
 const cdkStandardTemplate = readFileSync(
-  join(import.meta.dirname, "..", "generated", CDK_STANDDARD_TEMPLATE_FILE_NAME),
+  join(
+    import.meta.dirname,
+    "..",
+    "generated",
+    CDK_STANDDARD_TEMPLATE_FILE_NAME,
+  ),
   {
     encoding: "utf8",
   },
@@ -504,10 +518,11 @@ if (!cdkBootstrapTemplate) {
 
 // Add LoggingConfiguration to StagingBucket using Fn::ImportValue
 if (cdkBootstrapTemplate.Resources?.StagingBucket?.Properties) {
-  cdkBootstrapTemplate.Resources.StagingBucket.Properties.LoggingConfiguration = {
-    DestinationBucketName: { "Fn::ImportValue": "log-bucket-name" },
-    LogFilePrefix: "staging-bucket-logs/",
-  };
+  cdkBootstrapTemplate.Resources.StagingBucket.Properties.LoggingConfiguration =
+    {
+      DestinationBucketName: { "Fn::ImportValue": "log-bucket-name" },
+      LogFilePrefix: "staging-bucket-logs/",
+    };
 }
 
 const generatedDir = join(import.meta.dirname, "..", "generated");
@@ -517,7 +532,6 @@ writeFileSync(
   join(generatedDir, CDK_CUSTOMIZED_TEMPLATE_FILE_NAME),
   stringify(cdkBootstrapTemplate),
 );
-
 ```
 
 </details>
@@ -527,6 +541,7 @@ writeFileSync(
 Finally, execute the CDK bootstrap process with the customized template using the Toolkit library.
 
 Since the KMS key was created via CloudFormation, its ID must be retrieved using the CloudFormation `DescribeStacks` API call. The script:
+
 1. Extracts environments (account/region pairs) from the CDK app
 2. Retrieves the KMS key ID for each region from CloudFormation outputs
 3. Passes the KMS key ID as a parameter to the bootstrap process
@@ -537,13 +552,22 @@ Note that the log bucket configuration is already embedded in the customized tem
 <summary>Show bootstrap script</summary>
 
 ```typescript
-import { BootstrapEnvironments, BootstrapStackParameters, Toolkit } from "@aws-cdk/toolkit-lib";
-import { CloudFormationClient, DescribeStacksCommand } from "@aws-sdk/client-cloudformation";
+import {
+  BootstrapEnvironments,
+  BootstrapStackParameters,
+  Toolkit,
+} from "@aws-cdk/toolkit-lib";
+import {
+  CloudFormationClient,
+  DescribeStacksCommand,
+} from "@aws-sdk/client-cloudformation";
 import path from "node:path";
 import { join } from "node:path";
 
-export const CDK_STANDDARD_TEMPLATE_FILE_NAME = "resultCdkStandardTemplate.yaml";
-export const CDK_CUSTOMIZED_TEMPLATE_FILE_NAME = "resultCdkCustomizedTemplate.yaml";
+export const CDK_STANDDARD_TEMPLATE_FILE_NAME =
+  "resultCdkStandardTemplate.yaml";
+export const CDK_CUSTOMIZED_TEMPLATE_FILE_NAME =
+  "resultCdkCustomizedTemplate.yaml";
 
 const toolkit = new Toolkit();
 
@@ -562,12 +586,17 @@ const cloudAssemblySource = await toolkit.fromCdkApp(`pnpx tsx ${appPath}`);
 const cloudAssembly = await toolkit.synth(cloudAssemblySource);
 const list = await toolkit.list(cloudAssembly);
 const environmentsFromApp = list.map((stack) => {
-  return { account: stack.environment.account, region: stack.environment.region };
+  return {
+    account: stack.environment.account,
+    region: stack.environment.region,
+  };
 });
 
 for (const environmentFromApp of environmentsFromApp) {
   // Get KMS Key ID from stack output
-  const cfnClient = new CloudFormationClient({ region: environmentFromApp.region });
+  const cfnClient = new CloudFormationClient({
+    region: environmentFromApp.region,
+  });
   const describeStacksResponse = await cfnClient.send(
     new DescribeStacksCommand({
       StackName: "cdk-bootstrap-kms-key",
@@ -616,6 +645,7 @@ After executing this script, the staging bucket will have:
 With a customized CDK bootstrap template, you can extend the bootstrap resources beyond what's possible with standard parameters. The CDK Toolkit library is an excellent tool for orchestrating the entire workflow in TypeScript, from extracting environments to deploying customized bootstrap stacks.
 
 This approach enables:
+
 - Advanced security configurations like custom KMS encryption and access logging
 - Consistent validation using cdk-nag across both CDK and CloudFormation resources
 - Type-safe, programmatic control over the bootstrap process
