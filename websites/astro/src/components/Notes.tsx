@@ -28,7 +28,9 @@ export default function Notes({ data, tags }: Props) {
     setFilter(
       (prev) =>
         new Set(
-          prev.has(tagName) ? [...prev].filter((t) => t !== tagName) : [...prev, tagName],
+          prev.has(tagName)
+            ? [...prev].filter((t) => t !== tagName)
+            : [...prev, tagName],
         ),
     );
   }
@@ -75,16 +77,21 @@ export default function Notes({ data, tags }: Props) {
                         class={cn(
                           "size-5 fill-black/50 dark:fill-white/50",
                           "transition-colors duration-300 ease-in-out",
-                          filter().has(tag.name) && "fill-black dark:fill-white",
+                          filter().has(tag.name) &&
+                            "fill-black dark:fill-white",
                         )}
                       >
                         <use
                           href={`/ui.svg#square`}
-                          class={cn(!filter().has(tag.name) ? "block" : "hidden")}
+                          class={cn(
+                            !filter().has(tag.name) ? "block" : "hidden",
+                          )}
                         />
                         <use
                           href={`/ui.svg#square-check`}
-                          class={cn(filter().has(tag.name) ? "block" : "hidden")}
+                          class={cn(
+                            filter().has(tag.name) ? "block" : "hidden",
+                          )}
                         />
                       </svg>
                       <span>{tag.name}</span>
