@@ -146,15 +146,16 @@ The table entries will look a little bit different as ElectroDB will take care o
 
 GSI1 is shared by ALL entity types using different partition key templates. This single GSI handles all "get all entities of type X" queries efficiently without table scans.
 
-| Entity      | gsi1pk Template | gsi1sk                    | Query Method                                    |
-| ----------- | --------------- | ------------------------- | ----------------------------------------------- |
-| Person      | `PERSONS`       | `lastName#firstName#id`   | `PersonEntity.query.allPersons({})`             |
-| Address     | `ADDRESSES`     | `personId#id`             | `AddressEntity.query.allAddresses({})`          |
-| BankAccount | `BANKACCOUNTS`  | `personId#id`             | `BankAccountEntity.query.allBankAccounts({})`   |
-| ContactInfo | `CONTACTS`      | `personId#id`             | `ContactInfoEntity.query.allContacts({})`       |
-| Employment  | `EMPLOYMENTS`   | `personId#id`             | `EmploymentEntity.query.allEmployments({})`     |
+| Entity      | gsi1pk Template | gsi1sk                  | Query Method                                  |
+| ----------- | --------------- | ----------------------- | --------------------------------------------- |
+| Person      | `PERSONS`       | `lastName#firstName#id` | `PersonEntity.query.allPersons({})`           |
+| Address     | `ADDRESSES`     | `personId#id`           | `AddressEntity.query.allAddresses({})`        |
+| BankAccount | `BANKACCOUNTS`  | `personId#id`           | `BankAccountEntity.query.allBankAccounts({})` |
+| ContactInfo | `CONTACTS`      | `personId#id`           | `ContactInfoEntity.query.allContacts({})`     |
+| Employment  | `EMPLOYMENTS`   | `personId#id`           | `EmploymentEntity.query.allEmployments({})`   |
 
 **Benefits of Single GSI1 for All Entities:**
+
 - ✅ **No scans** - Each entity type query uses an efficient Query operation
 - ✅ **Single GSI** - Reduces infrastructure complexity and costs
 - ✅ **Template-based partitioning** - Clean separation by entity type
@@ -720,8 +721,8 @@ const fetchAllAddresses = createServerFn({ method: "GET" }).handler(async () =>
 /**
  * Get all bank accounts (global)
  */
-const fetchAllBankAccounts = createServerFn({ method: "GET" }).handler(async () =>
-  electrodbClient.getAllBankAccounts(),
+const fetchAllBankAccounts = createServerFn({ method: "GET" }).handler(
+  async () => electrodbClient.getAllBankAccounts(),
 );
 
 /**
@@ -734,8 +735,8 @@ const fetchAllContacts = createServerFn({ method: "GET" }).handler(async () =>
 /**
  * Get all employments (global)
  */
-const fetchAllEmployments = createServerFn({ method: "GET" }).handler(async () =>
-  electrodbClient.getAllEmployments(),
+const fetchAllEmployments = createServerFn({ method: "GET" }).handler(
+  async () => electrodbClient.getAllEmployments(),
 );
 
 // ... mutation server functions (createPersonFn, updatePersonFn, etc.)
@@ -956,40 +957,45 @@ export function usePersonDetail(personId: string) {
   // Query person by ID using eq() from global collection
   const personQuery = useLiveQuery(
     (query) =>
-      query.from({ persons: personsCollection })
-           .where(({ persons }) => eq(persons.id, personId)),
+      query
+        .from({ persons: personsCollection })
+        .where(({ persons }) => eq(persons.id, personId)),
     [personId],
   );
 
   // Query addresses for this person from global collection
   const addressesQuery = useLiveQuery(
     (query) =>
-      query.from({ addresses: addressesCollection })
-           .where(({ addresses }) => eq(addresses.personId, personId)),
+      query
+        .from({ addresses: addressesCollection })
+        .where(({ addresses }) => eq(addresses.personId, personId)),
     [personId],
   );
 
   // Query bank accounts for this person from global collection
   const bankAccountsQuery = useLiveQuery(
     (query) =>
-      query.from({ bankAccounts: bankAccountsCollection })
-           .where(({ bankAccounts }) => eq(bankAccounts.personId, personId)),
+      query
+        .from({ bankAccounts: bankAccountsCollection })
+        .where(({ bankAccounts }) => eq(bankAccounts.personId, personId)),
     [personId],
   );
 
   // Query contacts for this person from global collection
   const contactsQuery = useLiveQuery(
     (query) =>
-      query.from({ contacts: contactsCollection })
-           .where(({ contacts }) => eq(contacts.personId, personId)),
+      query
+        .from({ contacts: contactsCollection })
+        .where(({ contacts }) => eq(contacts.personId, personId)),
     [personId],
   );
 
   // Query employments for this person from global collection
   const employmentsQuery = useLiveQuery(
     (query) =>
-      query.from({ employments: employmentsCollection })
-           .where(({ employments }) => eq(employments.personId, personId)),
+      query
+        .from({ employments: employmentsCollection })
+        .where(({ employments }) => eq(employments.personId, personId)),
     [personId],
   );
 
@@ -1056,20 +1062,20 @@ export const addressesCollection = createCollection({
 
 ### Performance comparison
 
-| Metric                          | Factory Collections    | Global Collections       |
-| ------------------------------- | ---------------------- | ------------------------ |
-| Network requests per navigation | 4-5 (one per entity)   | 0 (data already loaded)  |
-| Time to show person details     | 100-500ms              | <1ms                     |
-| Memory efficiency               | Duplicate per person   | Normalized, shared data  |
-| Cache reuse                     | None                   | Full TanStack Query cache|
+| Metric                          | Factory Collections  | Global Collections        |
+| ------------------------------- | -------------------- | ------------------------- |
+| Network requests per navigation | 4-5 (one per entity) | 0 (data already loaded)   |
+| Time to show person details     | 100-500ms            | <1ms                      |
+| Memory efficiency               | Duplicate per person | Normalized, shared data   |
+| Cache reuse                     | None                 | Full TanStack Query cache |
 
 ### When to use which approach
 
-| Data Size     | Recommended Mode | Reason                                    |
-| ------------- | ---------------- | ----------------------------------------- |
-| < 10k rows    | Eager (global)   | Load everything upfront, instant queries  |
-| 10k-50k rows  | Progressive      | Fast first paint, background sync         |
-| > 50k rows    | On-demand        | Query-driven loading with predicate push  |
+| Data Size    | Recommended Mode | Reason                                   |
+| ------------ | ---------------- | ---------------------------------------- |
+| < 10k rows   | Eager (global)   | Load everything upfront, instant queries |
+| 10k-50k rows | Progressive      | Fast first paint, background sync        |
+| > 50k rows   | On-demand        | Query-driven loading with predicate push |
 
 Our persons example uses **Eager mode** since typical datasets are well under 10k entities.
 
