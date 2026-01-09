@@ -6,7 +6,10 @@
     "astro": {
       "src": {
         "content": {
-          "blog": { "2025-11-30-tanstack-start-aws-serverless": {} }
+          "blog": {
+            "2025-11-30-tanstack-start-aws-serverless": {},
+            "2026-01-08-tanstack-start-aws-db-multiple-entities-sse": {}
+          }
         }
       }
     }
@@ -26,6 +29,7 @@
     "2025-12-13-cdk-monitor-multiple-resources-using-single-alarm": {},
     "2025-12-20-tanstack-start-aws-db-simple": {},
     "2025-12-27-tanstack-start-aws-db-multiple-entities": {},
-    "2025-12-31-cdk-bootstrap-customized-template": {}
+    "2025-12-31-cdk-bootstrap-customized-template": {},
+    "2026-01-08-tanstack-start-aws-db-multiple-entities-sse": {}
   }
 }
