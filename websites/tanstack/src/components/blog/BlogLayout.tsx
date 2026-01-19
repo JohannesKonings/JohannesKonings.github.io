@@ -51,7 +51,7 @@ export function BlogLayout({
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="text-center">
             <p className="bg-gradient-to-r from-gray-400 to-gray-300 bg-clip-text text-transparent">
-              © 2025 Johannes Konings. All rights reserved.
+              © 2026 Johannes Konings. All rights reserved.
             </p>
           </div>
         </div>
