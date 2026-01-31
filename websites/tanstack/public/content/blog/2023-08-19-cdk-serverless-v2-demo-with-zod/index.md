@@ -7,7 +7,7 @@ categories: aws
 thumbnail: zod
 tags:
   - aws
-  - aws cdk
+  - cdk
   - projen
   - zod
 cover_image: ./cover-image.png

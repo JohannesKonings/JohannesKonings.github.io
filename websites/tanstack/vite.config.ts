@@ -115,17 +115,15 @@ export default defineConfig(({ mode }) => ({
     // Add Content Collections plugin first
     contentCollections(),
     // Use Oxc-based React plugin for better Rolldown performance
-    react(),
-    tsConfigPaths(),
     tanstackStart({
-      target: "static",
       // Tell TanStack Start we're providing a custom React plugin
-      customViteReactPlugin: true,
       prerender: {
         enabled: true,
         crawlLinks: true,
         autoSubfolderIndex: true,
       },
     }),
+    react(),
+    tsConfigPaths(),
   ],
 }));

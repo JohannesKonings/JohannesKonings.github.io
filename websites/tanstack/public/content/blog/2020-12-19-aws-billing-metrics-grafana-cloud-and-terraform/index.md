@@ -14,7 +14,7 @@ tags:
 
 # Why Terraform?
 
-In this [post](./aws_billing_metrics_and_grafana_cloud/) I described how to display AWS Billing metrics in Grafana Cloud. Therefore it was necessary to create manually the data source and the dashboard.
+In this [post](/blog/how-to-display-aws-billing-metrics-in-grafana-cloud) I described how to display AWS Billing metrics in Grafana Cloud. Therefore it was necessary to create manually the data source and the dashboard.
 With Terraform, you can describe the setup as code and benefit from the full advantages of [IaC](https://en.wikipedia.org/wiki/Infrastructure_as_code).
 
 # Terraform

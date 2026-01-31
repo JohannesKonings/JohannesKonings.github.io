@@ -77,3 +77,7 @@ After the merge, the feature stack will be destroyed, and the main stack will be
 ## Code
 
 [https://github.com/JohannesKonings/cdk-notifier-examples](https://github.com/JohannesKonings/cdk-notifier-examples)
+
+## Follow-up Post
+
+For an extended example that adds CloudFormation change set validation alongside `cdk diff`, see: [cdk-notifier with CloudFormation change sets](/blog/2025-12-06-cdk-notifier-feature-stacks-change-set)

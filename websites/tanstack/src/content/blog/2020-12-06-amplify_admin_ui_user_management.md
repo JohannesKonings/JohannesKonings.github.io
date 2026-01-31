@@ -6,8 +6,8 @@ categories: aws
 thumbnail: amplify
 tags:
   - aws
-  - AWS Amplify
-  - AWS Amplify Admin UI
+  - aws amplify
+  - aws amplify admin ui
 published: true
 ---
 

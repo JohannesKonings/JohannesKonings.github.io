@@ -3,3 +3,4 @@
 .tanstack/
 .content-collections/
 app.config.timestamp*
+dist/
