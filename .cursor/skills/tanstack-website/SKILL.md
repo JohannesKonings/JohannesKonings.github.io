@@ -13,14 +13,14 @@ Before calling any tool, read its descriptor from `mcps/user-tanstack/tools/<too
 
 ## Tool reference
 
-| Tool | Purpose | Key parameters |
-|------|---------|----------------|
-| **tanstack_search_docs** | Find docs by query | `query` (required); optional: `library`, `framework`, `limit` |
-| **tanstack_doc** | Fetch a doc page | `library`, `path` (required); optional: `version` |
-| **tanstack_list_libraries** | List libraries | optional: `group` (state, headlessUI, performance, tooling) |
-| **tanstack_ecosystem** | Ecosystem partners | optional: `category`, `library` |
-| **listTanStackAddOns** | Add-ons for new apps | `framework` (required; React or Solid) |
-| **createTanStackApplication** | Create TanStack app | `framework`, `projectName`, `cwd`, `addOns`, `targetDir` (required); optional: `addOnOptions` |
+| Tool                          | Purpose              | Key parameters                                                                                |
+| ----------------------------- | -------------------- | --------------------------------------------------------------------------------------------- |
+| **tanstack_search_docs**      | Find docs by query   | `query` (required); optional: `library`, `framework`, `limit`                                 |
+| **tanstack_doc**              | Fetch a doc page     | `library`, `path` (required); optional: `version`                                             |
+| **tanstack_list_libraries**   | List libraries       | optional: `group` (state, headlessUI, performance, tooling)                                   |
+| **tanstack_ecosystem**        | Ecosystem partners   | optional: `category`, `library`                                                               |
+| **listTanStackAddOns**        | Add-ons for new apps | `framework` (required; React or Solid)                                                        |
+| **createTanStackApplication** | Create TanStack app  | `framework`, `projectName`, `cwd`, `addOns`, `targetDir` (required); optional: `addOnOptions` |
 
 **When to use which**: Need a doc snippet → `tanstack_search_docs`. Need full page → `tanstack_doc`. Scaffolding app → `listTanStackAddOns` then `createTanStackApplication`.
 
