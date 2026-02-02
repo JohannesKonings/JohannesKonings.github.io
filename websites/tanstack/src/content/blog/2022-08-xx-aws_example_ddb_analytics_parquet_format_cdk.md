@@ -10,7 +10,7 @@ tags:
   - aws
   - aws kinesis
   - aws athena
-  - aws cdk
+  - cdk
 ---
 
 This is the same like described [here]({{ site.baseurl }}/aws/2021/08/27/aws_example_ddb_analytics/), but instead of terraform it's build with [CDK](https://aws.amazon.com/cdk/).

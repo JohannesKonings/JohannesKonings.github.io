@@ -1,7 +1,8 @@
 import { defineConfig } from "vite";
 import tsConfigPaths from "vite-tsconfig-paths";
+import tailwindcss from "@tailwindcss/vite";
 import { tanstackStart } from "@tanstack/react-start/plugin/vite";
-import react from "@vitejs/plugin-react-oxc";
+import react from "@vitejs/plugin-react";
 import contentCollections from "@content-collections/vite";
 import { copyFileSync, mkdirSync, existsSync, readdirSync, statSync } from "fs";
 import { join, dirname } from "path";
@@ -110,22 +111,18 @@ export default defineConfig(({ mode }) => ({
     // }
   },
   plugins: [
-    // Sync content directory to public for static serving
+    tailwindcss(),
     syncContentPlugin(),
-    // Add Content Collections plugin first
     contentCollections(),
-    // Use Oxc-based React plugin for better Rolldown performance
-    react(),
-    tsConfigPaths(),
+    // TanStack Start before React plugin (per official docs)
     tanstackStart({
-      target: "static",
-      // Tell TanStack Start we're providing a custom React plugin
-      customViteReactPlugin: true,
       prerender: {
         enabled: true,
         crawlLinks: true,
         autoSubfolderIndex: true,
       },
     }),
+    react(),
+    tsConfigPaths(),
   ],
 }));
