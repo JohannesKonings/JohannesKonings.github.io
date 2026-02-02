@@ -14,7 +14,7 @@ series: tanstack-aws
 
 ## Introduction
 
-As described in [Simple example of TanStack DB with DynamoDB on AWS with multiple entities](/blog/2025-12-27-tanstack-start-aws-db-multiple-entities), we set up a multi-entity data model using ElectroDB and TanStack DB collections. In this post, we will explore how to keep our TanStack DB in sync with AWS DynamoDB using Server Sent Events (SSE).
+As described in [Simple example of TanStack DB with DynamoDB on AWS with multiple entities](./2025-12-27-tanstack-start-aws-db-multiple-entities), we set up a multi-entity data model using ElectroDB and TanStack DB collections. In this post, we will explore how to keep our TanStack DB in sync with AWS DynamoDB using Server Sent Events (SSE).
 
 TanStack DB has the advantage that it can update specific database entries without needing to refetch all the data. This capability enables real-time synchronization across multiple sessions when another user or process modifies the data. Instead of polling the database constantly or refreshing entire datasets, SSE allows the server to push only the changes that occurred, making the application more efficient and responsive.
 

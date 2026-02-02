@@ -15,7 +15,7 @@ type: default
 
 ## Use case
 
-As described here [Use cdk-notifier to compare changes in pull requests](/blog/use-cdk-notifier-to-compare-changes-in-pull-requests), the cdk-notifier displays the diff between the feature branch and the main branch.
+As described here [Use cdk-notifier to compare changes in pull requests](./cdk-notifier-feature-stacks.html), the cdk-notifier displays the diff between the feature branch and the main branch.
 In case of using tags in the CDK there a two ways to tag resources, which will have different consequences in the diff output of the cdk-notifier.
 
 ## Tagging with Tags.of()

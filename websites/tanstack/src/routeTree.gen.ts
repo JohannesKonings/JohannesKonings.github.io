@@ -44,7 +44,7 @@ const BlogCategoryCategoryRoute = BlogCategoryCategoryRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/blog/$postId': typeof BlogPostIdRoute
-  '/blog/': typeof BlogIndexRoute
+  '/blog': typeof BlogIndexRoute
   '/blog/category/$category': typeof BlogCategoryCategoryRoute
   '/blog/tag/$tag': typeof BlogTagTagRoute
 }
@@ -68,7 +68,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/blog/$postId'
-    | '/blog/'
+    | '/blog'
     | '/blog/category/$category'
     | '/blog/tag/$tag'
   fileRoutesByTo: FileRoutesByTo
@@ -107,7 +107,7 @@ declare module '@tanstack/react-router' {
     '/blog/': {
       id: '/blog/'
       path: '/blog'
-      fullPath: '/blog/'
+      fullPath: '/blog'
       preLoaderRoute: typeof BlogIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
@@ -145,12 +145,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { createStart } from '@tanstack/react-start'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-  }
-}
