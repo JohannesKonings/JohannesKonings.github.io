@@ -101,8 +101,13 @@ jobs:
           # Create .nojekyll to prevent GitHub Pages from processing as Jekyll
           touch ${{ env.BUILD_PATH }}/dist/.nojekyll
 
-          # For SPA routing support, copy index.html as 404.html in tanstack folder
-          cp ${{ env.BUILD_PATH }}/dist/tanstack/index.html ${{ env.BUILD_PATH }}/dist/tanstack/404.html
+          # For SPA routing support, copy index.html as 404.html in tanstack folder (if it exists)
+          if [ -f "${{ env.BUILD_PATH }}/dist/tanstack/index.html" ]; then
+            cp ${{ env.BUILD_PATH }}/dist/tanstack/index.html ${{ env.BUILD_PATH }}/dist/tanstack/404.html
+            echo "✅ Created 404.html for SPA routing"
+          else
+            echo "⚠️  index.html not found, skipping 404.html creation"
+          fi
 
           # Debug: List build structure
           echo "=== Build structure ==="
