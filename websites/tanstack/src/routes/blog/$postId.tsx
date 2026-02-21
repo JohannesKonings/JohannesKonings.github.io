@@ -106,13 +106,14 @@ function RouteComponent() {
           {post.tags.length > 0 && (
             <div className="flex flex-wrap justify-center gap-2 mb-8">
               {post.tags.map((tag) => (
-                <a
+                <Link
                   key={tag}
-                  href={`/blog/tag/${encodeURIComponent(tag)}`}
+                  to="/blog/tag/$tag"
+                  params={{ tag }}
                   className="px-3 py-1 text-sm bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-full hover:bg-blue-200 dark:hover:bg-blue-900/50 transition-colors"
                 >
                   {tag}
-                </a>
+                </Link>
               ))}
             </div>
           )}
@@ -228,12 +229,13 @@ function RouteComponent() {
                 </span>
                 {post.categories.map((category, index) => (
                   <span key={category}>
-                    <a
-                      href={`/blog/category/${encodeURIComponent(category)}`}
+                    <Link
+                      to="/blog/category/$category"
+                      params={{ category }}
                       className="text-sm text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
                     >
                       {category}
-                    </a>
+                    </Link>
                     {index < post.categories.length - 1 && ", "}
                   </span>
                 ))}
