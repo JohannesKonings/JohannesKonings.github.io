@@ -61,6 +61,7 @@ export function Search({ items }: SearchProps) {
       }
       const { hits } = await search(db, {
         term: q,
+        properties: ["title", "summary", "excerpt", "tags"],
         limit: 50,
       });
       const out = hits
