@@ -1,4 +1,4 @@
-import { useEffect, type ReactNode } from "react";
+import { lazy, useEffect, type ReactNode } from "react";
 import {
   Outlet,
   createRootRoute,
@@ -8,7 +8,17 @@ import {
 } from "@tanstack/react-router";
 import globalCss from "@/src/styles/global.css?url";
 import { Navigation } from "../components/Navigation";
+import { BackToTop } from "../components/BackToTop";
 import { ThemeProvider, useTheme } from "../contexts/ThemeContext";
+
+const TanStackRouterDevtools =
+  process.env.NODE_ENV === "production"
+    ? () => null
+    : lazy(() =>
+        import("@tanstack/react-router-devtools").then((res) => ({
+          default: res.TanStackRouterDevtools,
+        })),
+      );
 
 export const Route = createRootRoute({
   head: () => ({
@@ -59,7 +69,7 @@ function RootComponent() {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   return (
     <RootDocument>
-      <main key={pathname} className="animate-route-fade">
+      <main id="main-content" key={pathname} className="animate-route-fade">
         <Outlet />
       </main>
     </RootDocument>
@@ -82,6 +92,12 @@ function RootDocument({ children }: Readonly<{ children: ReactNode }>) {
         <HeadContent />
       </head>
       <body>
+        <a
+          href="#main-content"
+          className="skip-link"
+        >
+          Skip to content
+        </a>
         <script src="/theme-init.js" suppressHydrationWarning />
         <ThemeProvider>
           <ThemeSync />
@@ -95,7 +111,9 @@ function RootDocument({ children }: Readonly<{ children: ReactNode }>) {
           <Navigation />
           <div className="relative z-10 min-h-screen bg-gray-50/80 dark:bg-gray-800/50 backdrop-blur-sm transition-colors duration-300">
             {children}
+            <BackToTop />
             <Scripts />
+            <TanStackRouterDevtools position="bottom-right" />
           </div>
         </div>
         </ThemeProvider>

@@ -1,11 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 
-// import { Icon } from "@iconify/react";
-// import {
-// 	faTwitter,
-// 	faGithub,
-// 	faBluesky,
-// } from "@fortawesome/free-brands-svg-icons";
 import avatar from "../images/avatar.png";
 import { Fa6BrandsBluesky, MdiGithub } from "../icons";
 import { Mail, Linkedin } from "lucide-react";
@@ -21,26 +15,9 @@ const SOCIALS = [
   { href: "https://dev.to/johanneskonings", label: "dev.to", Icon: null },
 ] as const;
 
-// import "@fortawesome/fontawesome-svg-core/styles.css";
-
-// import { config } from "@fortawesome/fontawesome-svg-core";
-// config.autoAddCss = false; /* eslint-disable import/first */
-
 export const Route = createFileRoute("/")({
-  // component: React.lazy(() =>
-  // 	import("./index").then((module) => ({ default: module.Home })),
-  // ),
   component: Home,
-  // loader: async () => await getCount(),
-  notFoundComponent: () => <div>Page Not Found</div>,
 });
-// const rootRoute = createRootRoute({
-// });
-// export const Route = createRoute({
-// 	path: "/tanstack",
-// 	component: Home,
-// 	getParentRoute: () => rootRoute,
-// });
 
 function Home() {
   const recentPosts = getRecentPosts(3);
@@ -118,9 +95,9 @@ function Home() {
             <div className="text-center mt-12">
               <Link
                 to="/blog"
-                className="inline-flex items-center px-8 py-4 bg-gradient-to-r from-cyan-500/20 to-blue-500/20 text-cyan-300 rounded-full border border-cyan-500/30 hover:border-cyan-400/60 hover:bg-gradient-to-r hover:from-cyan-500/30 hover:to-blue-500/30 transition-all duration-300 transform hover:scale-105 font-semibold text-lg"
+                className="inline-flex items-center px-8 py-4 bg-cyan-50 dark:bg-cyan-500/20 text-cyan-700 dark:text-cyan-300 rounded-full border border-cyan-200 dark:border-cyan-500/30 hover:bg-cyan-100 dark:hover:bg-cyan-500/30 hover:border-cyan-300 dark:hover:border-cyan-400/60 transition-all duration-300 transform hover:scale-105 font-semibold text-lg"
               >
-                <span className="bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">
+                <span className="text-cyan-700 dark:text-transparent dark:bg-gradient-to-r dark:from-cyan-400 dark:to-blue-400 dark:bg-clip-text">
                   View All Posts
                 </span>
                 <svg
@@ -141,6 +118,25 @@ function Home() {
           </div>
         </div>
       </div>
+
+      {/* Footer */}
+      <footer className="relative z-10 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border-t border-gray-200 dark:border-gray-600/50 shadow-lg">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          <div className="text-center flex flex-wrap justify-center items-center gap-4">
+            <a
+              href="/rss.xml"
+              className="text-gray-600 dark:text-gray-400 hover:text-cyan-500 dark:hover:text-cyan-400 transition-colors"
+              aria-label="RSS feed"
+            >
+              RSS
+            </a>
+            <span className="text-gray-400 dark:text-gray-500">|</span>
+            <p className="text-gray-600 dark:text-gray-400">
+              © 2026 Johannes Konings. All rights reserved.
+            </p>
+          </div>
+        </div>
+      </footer>
     </>
   );
 }

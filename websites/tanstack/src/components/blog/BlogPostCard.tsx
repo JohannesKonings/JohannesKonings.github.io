@@ -120,13 +120,13 @@ export function BlogPostCard({ post }: BlogPostCardProps): JSX.Element {
                 <a
                   key={tag}
                   href={`/blog/tag/${encodeURIComponent(tag)}`}
-                  className="px-3 py-1.5 text-xs bg-gradient-to-r from-cyan-500/20 to-blue-500/20 text-cyan-300 rounded-full border border-cyan-500/30 hover:border-cyan-400/60 hover:bg-gradient-to-r hover:from-cyan-500/30 hover:to-blue-500/30 transition-all duration-300 transform hover:scale-105"
+                  className="px-3 py-1.5 text-xs bg-cyan-50 dark:bg-cyan-500/20 text-cyan-700 dark:text-cyan-300 rounded-full border border-cyan-200 dark:border-cyan-500/30 hover:bg-cyan-100 dark:hover:bg-cyan-500/30 transition-all duration-300"
                 >
                   {tag}
                 </a>
               ))}
               {post.tags.length > 3 && (
-                <span className="px-3 py-1.5 text-xs bg-gradient-to-r from-gray-600/50 to-gray-700/50 text-gray-300 rounded-full border border-gray-500/30">
+                <span className="px-3 py-1.5 text-xs bg-gray-100 dark:bg-gray-600/50 text-gray-600 dark:text-gray-300 rounded-full border border-gray-300 dark:border-gray-500/30">
                   +{post.tags.length - 3} more
                 </span>
               )}
@@ -136,8 +136,9 @@ export function BlogPostCard({ post }: BlogPostCardProps): JSX.Element {
           <Link
             to={post.url}
             className="inline-flex items-center text-cyan-400 hover:text-cyan-300 font-medium group-hover:translate-x-1 transition-all duration-300"
+            aria-label={`Read more about ${post.title}`}
           >
-            <span className="bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent font-semibold">
+            <span className="bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent font-semibold" aria-hidden="true">
               Read more
             </span>
             <svg
@@ -145,6 +146,7 @@ export function BlogPostCard({ post }: BlogPostCardProps): JSX.Element {
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
+              aria-hidden="true"
             >
               <path
                 strokeLinecap="round"

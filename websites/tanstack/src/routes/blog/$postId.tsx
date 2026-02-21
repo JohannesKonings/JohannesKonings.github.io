@@ -6,14 +6,17 @@ import { format } from "date-fns";
 import { BlogLayout } from "../../components/blog/BlogLayout";
 import { CodeBlock } from "../../components/blog/CodeBlock";
 import { Giscus } from "../../components/Giscus";
-import { getSeriesContext } from "../../lib/content-utils";
+import { TableOfContents } from "../../components/blog/TableOfContents";
+import { RelatedPosts } from "../../components/blog/RelatedPosts";
+import { ReadingProgressBar } from "../../components/blog/ReadingProgressBar";
+import { ShareButtons } from "../../components/blog/ShareButtons";
+import { getSeriesContext, getRelatedPosts } from "../../lib/content-utils";
 
 export const Route = createFileRoute("/blog/$postId")({
   component: RouteComponent,
   beforeLoad: ({ params }) => {
     const { postId } = params;
 
-    // Ignore image requests
     if (
       postId.endsWith(".png") ||
       postId.endsWith(".jpg") ||
@@ -23,7 +26,6 @@ export const Route = createFileRoute("/blog/$postId")({
       throw notFound();
     }
 
-    // Find the post by slug
     const post = allPosts.find((p) => p.slug === postId);
     if (!post || !post.published) {
       throw notFound();
@@ -36,17 +38,32 @@ export const Route = createFileRoute("/blog/$postId")({
 function RouteComponent() {
   const { post } = Route.useRouteContext();
 
-  // Strip Jekyll liquid so URLs and links work (e.g. {{ site.baseurl }}/img/... → /img/...)
   const processedContent = post.content.replace(
     /\{\{\s*site\.baseurl\s*\}\}/g,
     "",
   );
 
   const seriesContext = getSeriesContext(post);
+  const relatedPosts = getRelatedPosts(post, 3);
 
   return (
+    <>
+    <ReadingProgressBar />
     <BlogLayout title={post.title} description={post.summary}>
       <article className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Back link */}
+        <nav className="mb-6">
+          <Link
+            to="/blog"
+            className="inline-flex items-center text-sm text-gray-600 dark:text-gray-400 hover:text-cyan-600 dark:hover:text-cyan-400 transition-colors"
+          >
+            <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+            </svg>
+            Back to Blog
+          </Link>
+        </nav>
+
         {/* Series banner */}
         {seriesContext && (
           <div className="mb-6 py-2 px-4 rounded-lg bg-cyan-500/10 dark:bg-cyan-400/10 border border-cyan-500/20 dark:border-cyan-400/20">
@@ -101,11 +118,27 @@ function RouteComponent() {
           )}
         </header>
 
+        <TableOfContents content={processedContent} />
+
         {/* Article content */}
         <div className="prose prose-lg dark:prose-invert max-w-none">
           <Markdown
             options={{
               overrides: {
+                h2: {
+                  component: ({ children, ...props }) => {
+                    const text = typeof children === "string" ? children : String(children);
+                    const id = text.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+                    return <h2 {...props} id={id}>{children}</h2>;
+                  },
+                },
+                h3: {
+                  component: ({ children, ...props }) => {
+                    const text = typeof children === "string" ? children : String(children);
+                    const id = text.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+                    return <h3 {...props} id={id}>{children}</h3>;
+                  },
+                },
                 pre: {
                   component: ({ children, ...props }) => {
                     const child = Array.isArray(children) ? children[0] : children;
@@ -127,7 +160,6 @@ function RouteComponent() {
                     );
                   },
                 },
-                // Custom styling for inline code
                 code: {
                   component: ({ children, ...props }) => (
                     <code
@@ -138,7 +170,6 @@ function RouteComponent() {
                     </code>
                   ),
                 },
-                // Custom styling for images
                 img: {
                   component: ({ src, alt, ...props }) => (
                     <img
@@ -163,6 +194,7 @@ function RouteComponent() {
             <p className="text-gray-600 dark:text-gray-400">
               Published on {format(post.date, "MMMM d, yyyy")}
             </p>
+            <ShareButtons title={post.title} url={post.url} />
 
             {seriesContext && (seriesContext.prev || seriesContext.next) && (
               <nav className="mt-4 flex flex-wrap justify-center gap-6 text-sm">
@@ -209,9 +241,11 @@ function RouteComponent() {
             )}
           </div>
 
+          <RelatedPosts posts={relatedPosts} />
           <Giscus category="blog" />
         </footer>
       </article>
     </BlogLayout>
+    </>
   );
 }

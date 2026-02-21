@@ -50,6 +50,7 @@ const posts = defineCollection({
     thumbnail: z.string().nullable().optional(),
     cover_image: z.string().nullable().optional(),
     series: z.string().optional(),
+    content: z.string(),
   }),
   transform: (data) => {
     const readingStats = calculateReadingTime(data.content);
@@ -100,6 +101,7 @@ const notes = defineCollection({
       .union([z.string(), z.array(z.string())])
       .transform((val) => (Array.isArray(val) ? val : [val]))
       .default([]),
+    content: z.string(),
   }),
   transform: (data) => {
     const readingStats = calculateReadingTime(data.content);

@@ -17,8 +17,9 @@ export function BlogPostList({
     new Set(),
   );
   const [searchQuery, setSearchQuery] = useState("");
+  const [tagsExpanded, setTagsExpanded] = useState(false);
+  const VISIBLE_TAGS = 12;
 
-  // Get all unique tags and categories
   const allTags = useMemo(() => {
     const tags = new Set<string>();
     posts.forEach((post) => post.tags.forEach((tag) => tags.add(tag)));
@@ -32,6 +33,24 @@ export function BlogPostList({
     );
     return Array.from(categories).sort();
   }, [posts]);
+
+  const tagCounts = useMemo(() => {
+    const counts = new Map<string, number>();
+    posts.forEach((post) =>
+      post.tags.forEach((tag) => counts.set(tag, (counts.get(tag) ?? 0) + 1)),
+    );
+    return counts;
+  }, [posts]);
+
+  const categoryCounts = useMemo(() => {
+    const counts = new Map<string, number>();
+    posts.forEach((post) =>
+      post.categories.forEach((cat) => counts.set(cat, (counts.get(cat) ?? 0) + 1)),
+    );
+    return counts;
+  }, [posts]);
+
+  const visibleTags = tagsExpanded ? allTags : allTags.slice(0, VISIBLE_TAGS);
 
   // Filter posts based on selected filters
   const filteredPosts = useMemo(() => {
@@ -97,7 +116,7 @@ export function BlogPostList({
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       {showFilters && (
-        <div className="mb-8 space-y-6 bg-gradient-to-r from-gray-800/50 to-gray-700/50 backdrop-blur-sm p-6 rounded-xl border border-gray-600/30">
+        <div className="mb-8 space-y-6 bg-white/80 dark:bg-gray-800/50 backdrop-blur-sm p-6 rounded-xl border border-gray-200 dark:border-gray-600/30 shadow-sm">
           {/* Search */}
           <div className="relative">
             <input
@@ -105,9 +124,8 @@ export function BlogPostList({
               placeholder="Search the digital archive..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full px-4 py-3 bg-gradient-to-r from-gray-900/80 to-gray-800/80 border border-gray-600/50 rounded-lg text-gray-100 placeholder-gray-400 focus:ring-2 focus:ring-cyan-500/50 focus:border-cyan-500/50 transition-all duration-300 backdrop-blur-sm"
+              className="w-full px-4 py-3 bg-gray-100 dark:bg-gray-900/80 border border-gray-300 dark:border-gray-600/50 rounded-lg text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-cyan-500/50 focus:border-cyan-500/50 transition-all duration-300"
             />
-            <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/5 to-blue-500/5 rounded-lg pointer-events-none opacity-0 focus-within:opacity-100 transition-opacity duration-300"></div>
           </div>
 
           {/* Filters */}
@@ -119,19 +137,27 @@ export function BlogPostList({
                   Tags
                 </h3>
                 <div className="flex flex-wrap gap-2">
-                  {allTags.map((tag) => (
+                  {visibleTags.map((tag) => (
                     <button
                       key={tag}
                       onClick={() => toggleTag(tag)}
-                      className={`px-3 py-1.5 text-sm rounded-full transition-all duration-300 transform hover:scale-105 ${
+                      className={`px-3 py-1.5 text-sm rounded-full transition-all duration-300 ${
                         selectedTags.has(tag)
-                          ? "bg-gradient-to-r from-cyan-500 to-blue-500 text-white shadow-lg shadow-cyan-500/25"
-                          : "bg-gradient-to-r from-gray-700/50 to-gray-600/50 text-gray-300 border border-gray-600/30 hover:border-cyan-500/50 hover:text-cyan-300"
+                        ? "bg-gradient-to-r from-cyan-500 to-blue-500 text-white shadow-lg shadow-cyan-500/25"
+                        : "bg-gray-100 dark:bg-gray-700/50 text-gray-700 dark:text-gray-300 border border-gray-300 dark:border-gray-600/30 hover:border-cyan-500/50 hover:text-cyan-600 dark:hover:text-cyan-300"
                       }`}
                     >
-                      {tag}
+                      {tag} ({tagCounts.get(tag)})
                     </button>
                   ))}
+                  {allTags.length > VISIBLE_TAGS && (
+                    <button
+                      onClick={() => setTagsExpanded((v) => !v)}
+                      className="px-3 py-1.5 text-sm text-cyan-600 dark:text-cyan-400 hover:underline"
+                    >
+                      {tagsExpanded ? "Show less" : `+${allTags.length - VISIBLE_TAGS} more`}
+                    </button>
+                  )}
                 </div>
               </div>
             )}
@@ -149,11 +175,11 @@ export function BlogPostList({
                       onClick={() => toggleCategory(category)}
                       className={`px-3 py-1.5 text-sm rounded-full transition-all duration-300 transform hover:scale-105 ${
                         selectedCategories.has(category)
-                          ? "bg-gradient-to-r from-blue-500 to-purple-500 text-white shadow-lg shadow-blue-500/25"
-                          : "bg-gradient-to-r from-gray-700/50 to-gray-600/50 text-gray-300 border border-gray-600/30 hover:border-blue-500/50 hover:text-blue-300"
+                        ? "bg-gradient-to-r from-blue-500 to-purple-500 text-white shadow-lg shadow-blue-500/25"
+                        : "bg-gray-100 dark:bg-gray-700/50 text-gray-700 dark:text-gray-300 border border-gray-300 dark:border-gray-600/30 hover:border-blue-500/50 hover:text-blue-600 dark:hover:text-blue-300"
                       }`}
                     >
-                      {category}
+                      {category} ({categoryCounts.get(category)})
                     </button>
                   ))}
                 </div>
@@ -171,7 +197,7 @@ export function BlogPostList({
                 setSelectedCategories(new Set());
                 setSearchQuery("");
               }}
-              className="px-4 py-2 text-sm bg-gradient-to-r from-red-500/20 to-orange-500/20 text-red-300 border border-red-500/30 rounded-lg hover:border-red-400/60 hover:bg-gradient-to-r hover:from-red-500/30 hover:to-orange-500/30 transition-all duration-300 transform hover:scale-105"
+              className="px-4 py-2 text-sm bg-red-50 dark:bg-red-500/20 text-red-600 dark:text-red-300 border border-red-300 dark:border-red-500/30 rounded-lg hover:bg-red-100 dark:hover:bg-red-500/30 transition-all duration-300"
             >
               Clear all filters
             </button>
@@ -181,7 +207,7 @@ export function BlogPostList({
 
       {/* Results count */}
       <div className="mb-6">
-        <p className="text-sm bg-gradient-to-r from-gray-400 to-gray-300 bg-clip-text text-transparent">
+        <p className="text-sm text-gray-600 dark:text-gray-400">
           Showing {filteredPosts.length} of {posts.length} posts
         </p>
       </div>
@@ -189,8 +215,8 @@ export function BlogPostList({
       {/* Posts grid */}
       {filteredPosts.length === 0 ? (
         <div className="text-center py-12">
-          <div className="bg-gradient-to-r from-gray-800/50 to-gray-700/50 backdrop-blur-sm p-8 rounded-xl border border-gray-600/30">
-            <p className="text-gray-400 text-lg">
+            <div className="bg-white/80 dark:bg-gray-800/50 backdrop-blur-sm p-8 rounded-xl border border-gray-200 dark:border-gray-600/30">
+            <p className="text-gray-600 dark:text-gray-400 text-lg">
               No posts found in the digital archive.
             </p>
             <p className="text-gray-500 text-sm mt-2">
