@@ -4,7 +4,7 @@ import { routeTree } from "./routeTree.gen";
 
 export function createRouter() {
   const router = createTanStackRouter({
-    basepath: import.meta.env.PROD ? "/tanstack" : undefined, // Use /tanstack for production (GitHub Pages)
+    basepath: undefined, // TanStack at deployment root
     routeTree,
     scrollRestoration: true,
   });

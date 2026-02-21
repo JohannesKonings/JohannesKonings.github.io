@@ -1,11 +1,34 @@
 @import "tailwindcss";
 
+/* Class-based dark mode for theme toggle */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* Cascadia Mono (monospace for code and body) – woff2 in public/fonts, preload in __root */
+@font-face {
+  font-family: "CascadiaMonoNF";
+  src: url("/fonts/CascadiaMonoNF.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "CascadiaMonoNF-SemiBold";
+  src: url("/fonts/CascadiaMonoNF-SemiBold.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
 body {
-  font-family:
-    Cascadia Code,
-    sans-serif;
+  font-family: "CascadiaMonoNF", Cascadia Code, monospace, sans-serif;
   margin: 0;
   padding: 0;
+}
+
+pre,
+code {
+  font-family: "CascadiaMonoNF", Cascadia Code, monospace, sans-serif;
 }
 
 h3 {
@@ -131,6 +154,22 @@ h3 {
 
 .animation-delay-3000 {
   animation-delay: 3s;
+}
+
+/* Route transition - subtle movement when navigating */
+@keyframes routeFade {
+  from {
+    opacity: 0.7;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-route-fade {
+  animation: routeFade 0.25s ease-out;
 }
 
 :root {

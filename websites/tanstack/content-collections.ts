@@ -49,26 +49,29 @@ const posts = defineCollection({
       .default([]),
     thumbnail: z.string().nullable().optional(),
     cover_image: z.string().nullable().optional(),
+    series: z.string().optional(),
   }),
   transform: (data) => {
     const readingStats = calculateReadingTime(data.content);
     const excerpt = generateExcerpt(data.content);
 
-    // For now, we'll generate slug from title, we'll fix this later when we understand the context structure
-    const slug = data.title
-      .toLowerCase()
-      .replace(/[^a-z0-9]+/g, "-")
-      .replace(/^-|-$/g, "");
+    // Use directory name as slug so URLs match existing site (e.g. /blog/2026-02-02-tanstack-ai-bedrock-simple)
+    const filePathParts = data._meta.filePath.split("/");
+    const slug =
+      filePathParts.length >= 2
+        ? filePathParts[filePathParts.length - 2]
+        : (filePathParts[0] ?? "").replace(/\.(md|mdx)$/i, "") ||
+          data.title
+            .toLowerCase()
+            .replace(/[^a-z0-9]+/g, "-")
+            .replace(/^-|-$/g, "");
 
     // Process cover_image path - convert relative paths to importable paths
     let processedCoverImage = data.cover_image;
     if (data.cover_image && data.cover_image.startsWith("./")) {
-      // Extract directory name from the file path (assuming posts are in directories like "2025-06-18-title/")
-      const filePathParts = data._meta.filePath.split("/");
-      const directoryName = filePathParts[filePathParts.length - 2]; // Get the parent directory name
       const fileName = data.cover_image.replace("./", "");
       // Create a path that can be imported by Vite - this will be processed as a static asset
-      processedCoverImage = `/content/blog/${directoryName}/${fileName}`;
+      processedCoverImage = `/content/blog/${slug}/${fileName}`;
     }
 
     return {

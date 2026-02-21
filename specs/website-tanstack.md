@@ -1,5 +1,9 @@
 # TanStack Website Implementation Specification
 
+## Deployment Role
+
+**TanStack is the primary site** served at the deployment root (e.g. `https://johanneskonings.github.io`). Astro is the secondary site at `/astro`. All canonicals, sitemaps, and SEO point to the root; ads.txt and robots.txt are at the root.
+
 ## Copilot Usage Policy
 
 **All Copilot requests and code changes MUST strictly adhere to the requirements and decisions documented in this specification.**
@@ -39,7 +43,7 @@ pnpm --filter tanstack sync-content # Sync content to public directory
 ## UI/UX Requirements
 
 - **Navigation Bar**: The main site navigation must be positioned at the top of the page and centered horizontally. This applies to all blog and site layouts.
-- **Navigation Content**: The top navigation bar must contain only two links: "Home" and "Blog". No additional navigation items should be included in the main navigation.
+- **Navigation Content**: The top navigation bar contains "Home", "Blog", and "Search". Search links to the global search page (`/search`).
 - **Navigation Styling**: Use consistent hover states and active indicators for navigation links. Active navigation items should maintain hover effects with enhanced scaling (110% vs 105% for inactive items).
 - **Design Theme**: Use a neon metallic gray design theme with animated background effects and glowing elements.
 - **Color Palette**: Primary colors are cyan (#22d3ee) and blue (#3b82f6) for accents, with dark gray gradients (#1f2937, #374151, #4b5563) for backgrounds.

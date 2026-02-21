@@ -23,7 +23,7 @@ export function generateSEOTags({
   tags,
 }: SEOProps) {
   const siteName = "Johannes Konings";
-  const baseUrl = "https://johanneskonings.github.io/tanstack";
+  const baseUrl = "https://johanneskonings.github.io";
   const fullUrl = url ? `${baseUrl}${url}` : baseUrl;
   const fullTitle = title.includes(siteName) ? title : `${title} | ${siteName}`;
 
@@ -66,7 +66,7 @@ export function generatePostSEO(post: (typeof allPosts)[0]) {
 
 // Generate structured data for a blog post
 export function generatePostStructuredData(post: (typeof allPosts)[0]) {
-  const baseUrl = "https://johanneskonings.github.io/tanstack";
+  const baseUrl = "https://johanneskonings.github.io";
 
   return {
     "@context": "https://schema.org",
@@ -104,7 +104,7 @@ export function generatePostStructuredData(post: (typeof allPosts)[0]) {
 
 // Generate structured data for blog listing
 export function generateBlogListingStructuredData() {
-  const baseUrl = "https://johanneskonings.github.io/tanstack";
+  const baseUrl = "https://johanneskonings.github.io";
 
   return {
     "@context": "https://schema.org",

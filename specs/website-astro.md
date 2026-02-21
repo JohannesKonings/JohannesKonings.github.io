@@ -1,5 +1,9 @@
 # Astro Website Implementation Specification
 
+## Deployment Role
+
+**Astro is the secondary site** served at `/astro` (e.g. `https://johanneskonings.github.io/astro`). TanStack is the primary site at the deployment root. Astro is built with `--base "/astro"` so assets and routes live under `/astro`; sitemap and canonicals use the same base.
+
 ## Copilot Usage Policy
 
 **All Copilot requests and code changes MUST strictly adhere to the requirements and decisions documented in this specification.**

@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 
 // import { Icon } from "@iconify/react";
 // import {
@@ -8,8 +8,18 @@ import { createFileRoute } from "@tanstack/react-router";
 // } from "@fortawesome/free-brands-svg-icons";
 import avatar from "../images/avatar.png";
 import { Fa6BrandsBluesky, MdiGithub } from "../icons";
+import { Mail, Linkedin } from "lucide-react";
 import { getRecentPosts } from "../lib/content-utils";
 import { BlogPostCard } from "../components/blog/BlogPostCard";
+
+const SOCIALS = [
+  { href: "mailto:mail@johanneskonings.dev", label: "Email", Icon: Mail },
+  { href: "https://github.com/JohannesKonings", label: "GitHub", Icon: MdiGithub },
+  { href: "https://www.linkedin.com/in/JohannesKonings/", label: "LinkedIn", Icon: Linkedin },
+  { href: "https://bsky.app/profile/johanneskonings.dev", label: "Bluesky", Icon: Fa6BrandsBluesky },
+  { href: "https://mastodon.social/@KoningsJohannes", label: "Mastodon", Icon: null },
+  { href: "https://dev.to/johanneskonings", label: "dev.to", Icon: null },
+] as const;
 
 // import "@fortawesome/fontawesome-svg-core/styles.css";
 
@@ -37,12 +47,12 @@ function Home() {
 
   return (
     <>
-      {/* Animated metallic background effects - more subtle */}
-      <div className="min-h-screen bg-gradient-to-br from-gray-900/60 via-gray-800/40 to-gray-900/60 relative">
+      {/* Animated background - light/dark aware */}
+      <div className="min-h-screen bg-gray-50 dark:bg-gradient-to-br dark:from-gray-900/60 dark:via-gray-800/40 dark:to-gray-900/60 relative">
         <div className="absolute inset-0">
-          <div className="absolute top-20 left-20 w-32 h-32 bg-cyan-400/5 rounded-full blur-xl animate-gentle-pulse animation-delay-1000"></div>
-          <div className="absolute bottom-20 right-20 w-40 h-40 bg-blue-400/5 rounded-full blur-xl animate-gentle-pulse animation-delay-2000"></div>
-          <div className="absolute top-1/2 left-1/3 w-24 h-24 bg-gray-400/8 rounded-full blur-lg animate-subtle-glow animation-delay-3000"></div>
+          <div className="absolute top-20 left-20 w-32 h-32 bg-cyan-400/10 dark:bg-cyan-400/5 rounded-full blur-xl animate-gentle-pulse animation-delay-1000" />
+          <div className="absolute bottom-20 right-20 w-40 h-40 bg-blue-400/10 dark:bg-blue-400/5 rounded-full blur-xl animate-gentle-pulse animation-delay-2000" />
+          <div className="absolute top-1/2 left-1/3 w-24 h-24 bg-cyan-300/10 dark:bg-gray-400/8 rounded-full blur-lg animate-subtle-glow animation-delay-3000" />
         </div>
 
         {/* Avatar Section - now below navigation */}
@@ -59,32 +69,32 @@ function Home() {
                 />
               </div>
 
-              {/* Social links with neon effects - smaller size */}
-              <div className="flex items-center justify-center mb-6 space-x-6">
-                <a
-                  href="https://github.com/johanneskonings"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="relative group"
-                >
-                  <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/30 to-blue-500/30 rounded-lg opacity-0 group-hover:opacity-100 transition-all duration-300 blur-md transform group-hover:scale-110"></div>
-                  <MdiGithub className="relative z-10 text-4xl text-gray-300 group-hover:text-cyan-400 transition-all duration-300 transform group-hover:scale-110 group-hover:drop-shadow-[0_0_10px_rgba(34,211,238,0.5)]" />
-                </a>
-                <a
-                  href="https://bsky.app/profile/johanneskonings.dev"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="relative group"
-                >
-                  <div className="absolute inset-0 bg-gradient-to-r from-blue-500/30 to-cyan-500/30 rounded-lg opacity-0 group-hover:opacity-100 transition-all duration-300 blur-md transform group-hover:scale-110"></div>
-                  <Fa6BrandsBluesky className="relative z-10 text-4xl text-gray-300 group-hover:text-blue-400 transition-all duration-300 transform group-hover:scale-110 group-hover:drop-shadow-[0_0_10px_rgba(59,130,246,0.5)]" />
-                </a>
+              {/* Social links - same as johanneskonings.dev */}
+              <div className="flex flex-wrap items-center justify-center gap-4 mb-6">
+                {SOCIALS.map(({ href, label, Icon }) => (
+                  <a
+                    key={label}
+                    href={href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="relative group p-2 rounded-lg text-gray-600 dark:text-gray-400 hover:text-cyan-500 dark:hover:text-cyan-400 transition-colors"
+                    aria-label={label}
+                  >
+                    {Icon ? (
+                      <Icon className="w-6 h-6 text-current" />
+                    ) : (
+                      <span className="text-sm font-medium">{label}</span>
+                    )}
+                  </a>
+                ))}
               </div>
 
-              {/* Name with metallic effect */}
-              <h1 className="mb-6 text-4xl font-bold bg-gradient-to-r from-gray-200 via-gray-100 to-gray-200 bg-clip-text text-transparent drop-shadow-lg animate-pulse">
+              <h1 className="mb-2 text-4xl font-bold text-gray-800 dark:text-gray-100 bg-gradient-to-r from-cyan-600 to-blue-600 dark:from-cyan-400 dark:to-blue-400 bg-clip-text text-transparent drop-shadow-lg">
                 Johannes Konings
               </h1>
+              <p className="mb-6 text-sm text-gray-500 dark:text-gray-400 max-w-md text-center">
+                Notes and posts on AWS and TanStack.
+              </p>
             </div>
           </div>
         </div>
@@ -93,8 +103,8 @@ function Home() {
         <div className="relative z-10 pb-16">
           <div className="container mx-auto px-4">
             <div className="text-center mb-8">
-              <h2 className="text-3xl font-bold bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent mb-3">
-                Latest Blog Posts
+              <h2 className="text-3xl font-bold text-gray-800 dark:text-gray-100 bg-gradient-to-r from-cyan-500 to-blue-500 dark:from-cyan-400 dark:to-blue-400 bg-clip-text text-transparent mb-3">
+                Recent posts
               </h2>
             </div>
 
@@ -106,8 +116,8 @@ function Home() {
 
             {/* View All Posts Link */}
             <div className="text-center mt-12">
-              <a
-                href="/blog"
+              <Link
+                to="/blog"
                 className="inline-flex items-center px-8 py-4 bg-gradient-to-r from-cyan-500/20 to-blue-500/20 text-cyan-300 rounded-full border border-cyan-500/30 hover:border-cyan-400/60 hover:bg-gradient-to-r hover:from-cyan-500/30 hover:to-blue-500/30 transition-all duration-300 transform hover:scale-105 font-semibold text-lg"
               >
                 <span className="bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">
@@ -126,7 +136,7 @@ function Home() {
                     d="M9 5l7 7-7 7"
                   />
                 </svg>
-              </a>
+              </Link>
             </div>
           </div>
         </div>

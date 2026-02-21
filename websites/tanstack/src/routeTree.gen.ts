@@ -8,140 +8,224 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
-import { Route as rootRouteImport } from "./routes/__root";
-import { Route as IndexRouteImport } from "./routes/index";
-import { Route as BlogIndexRouteImport } from "./routes/blog/index";
-import { Route as BlogPostIdRouteImport } from "./routes/blog/$postId";
-import { Route as BlogTagTagRouteImport } from "./routes/blog/tag/$tag";
-import { Route as BlogCategoryCategoryRouteImport } from "./routes/blog/category/$category";
+import { Route as rootRouteImport } from './routes/__root'
+import { Route as SearchRouteImport } from './routes/search'
+import { Route as IndexRouteImport } from './routes/index'
+import { Route as NotesIndexRouteImport } from './routes/notes/index'
+import { Route as BlogIndexRouteImport } from './routes/blog/index'
+import { Route as NotesNoteIdRouteImport } from './routes/notes/$noteId'
+import { Route as BlogPostIdRouteImport } from './routes/blog/$postId'
+import { Route as BlogTagTagRouteImport } from './routes/blog/tag/$tag'
+import { Route as BlogSeriesSeriesSlugRouteImport } from './routes/blog/series/$seriesSlug'
+import { Route as BlogCategoryCategoryRouteImport } from './routes/blog/category/$category'
 
+const SearchRoute = SearchRouteImport.update({
+  id: '/search',
+  path: '/search',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
-  id: "/",
-  path: "/",
+  id: '/',
+  path: '/',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
+const NotesIndexRoute = NotesIndexRouteImport.update({
+  id: '/notes/',
+  path: '/notes/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const BlogIndexRoute = BlogIndexRouteImport.update({
-  id: "/blog/",
-  path: "/blog/",
+  id: '/blog/',
+  path: '/blog/',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
+const NotesNoteIdRoute = NotesNoteIdRouteImport.update({
+  id: '/notes/$noteId',
+  path: '/notes/$noteId',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const BlogPostIdRoute = BlogPostIdRouteImport.update({
-  id: "/blog/$postId",
-  path: "/blog/$postId",
+  id: '/blog/$postId',
+  path: '/blog/$postId',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const BlogTagTagRoute = BlogTagTagRouteImport.update({
-  id: "/blog/tag/$tag",
-  path: "/blog/tag/$tag",
+  id: '/blog/tag/$tag',
+  path: '/blog/tag/$tag',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
+const BlogSeriesSeriesSlugRoute = BlogSeriesSeriesSlugRouteImport.update({
+  id: '/blog/series/$seriesSlug',
+  path: '/blog/series/$seriesSlug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const BlogCategoryCategoryRoute = BlogCategoryCategoryRouteImport.update({
-  id: "/blog/category/$category",
-  path: "/blog/category/$category",
+  id: '/blog/category/$category',
+  path: '/blog/category/$category',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 
 export interface FileRoutesByFullPath {
-  "/": typeof IndexRoute;
-  "/blog/$postId": typeof BlogPostIdRoute;
-  "/blog": typeof BlogIndexRoute;
-  "/blog/category/$category": typeof BlogCategoryCategoryRoute;
-  "/blog/tag/$tag": typeof BlogTagTagRoute;
+  '/': typeof IndexRoute
+  '/search': typeof SearchRoute
+  '/blog/$postId': typeof BlogPostIdRoute
+  '/notes/$noteId': typeof NotesNoteIdRoute
+  '/blog': typeof BlogIndexRoute
+  '/notes': typeof NotesIndexRoute
+  '/blog/category/$category': typeof BlogCategoryCategoryRoute
+  '/blog/series/$seriesSlug': typeof BlogSeriesSeriesSlugRoute
+  '/blog/tag/$tag': typeof BlogTagTagRoute
 }
 export interface FileRoutesByTo {
-  "/": typeof IndexRoute;
-  "/blog/$postId": typeof BlogPostIdRoute;
-  "/blog": typeof BlogIndexRoute;
-  "/blog/category/$category": typeof BlogCategoryCategoryRoute;
-  "/blog/tag/$tag": typeof BlogTagTagRoute;
+  '/': typeof IndexRoute
+  '/search': typeof SearchRoute
+  '/blog/$postId': typeof BlogPostIdRoute
+  '/notes/$noteId': typeof NotesNoteIdRoute
+  '/blog': typeof BlogIndexRoute
+  '/notes': typeof NotesIndexRoute
+  '/blog/category/$category': typeof BlogCategoryCategoryRoute
+  '/blog/series/$seriesSlug': typeof BlogSeriesSeriesSlugRoute
+  '/blog/tag/$tag': typeof BlogTagTagRoute
 }
 export interface FileRoutesById {
-  __root__: typeof rootRouteImport;
-  "/": typeof IndexRoute;
-  "/blog/$postId": typeof BlogPostIdRoute;
-  "/blog/": typeof BlogIndexRoute;
-  "/blog/category/$category": typeof BlogCategoryCategoryRoute;
-  "/blog/tag/$tag": typeof BlogTagTagRoute;
+  __root__: typeof rootRouteImport
+  '/': typeof IndexRoute
+  '/search': typeof SearchRoute
+  '/blog/$postId': typeof BlogPostIdRoute
+  '/notes/$noteId': typeof NotesNoteIdRoute
+  '/blog/': typeof BlogIndexRoute
+  '/notes/': typeof NotesIndexRoute
+  '/blog/category/$category': typeof BlogCategoryCategoryRoute
+  '/blog/series/$seriesSlug': typeof BlogSeriesSeriesSlugRoute
+  '/blog/tag/$tag': typeof BlogTagTagRoute
 }
 export interface FileRouteTypes {
-  fileRoutesByFullPath: FileRoutesByFullPath;
+  fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    | "/"
-    | "/blog/$postId"
-    | "/blog"
-    | "/blog/category/$category"
-    | "/blog/tag/$tag";
-  fileRoutesByTo: FileRoutesByTo;
+    | '/'
+    | '/search'
+    | '/blog/$postId'
+    | '/notes/$noteId'
+    | '/blog'
+    | '/notes'
+    | '/blog/category/$category'
+    | '/blog/series/$seriesSlug'
+    | '/blog/tag/$tag'
+  fileRoutesByTo: FileRoutesByTo
   to:
-    | "/"
-    | "/blog/$postId"
-    | "/blog"
-    | "/blog/category/$category"
-    | "/blog/tag/$tag";
+    | '/'
+    | '/search'
+    | '/blog/$postId'
+    | '/notes/$noteId'
+    | '/blog'
+    | '/notes'
+    | '/blog/category/$category'
+    | '/blog/series/$seriesSlug'
+    | '/blog/tag/$tag'
   id:
-    | "__root__"
-    | "/"
-    | "/blog/$postId"
-    | "/blog/"
-    | "/blog/category/$category"
-    | "/blog/tag/$tag";
-  fileRoutesById: FileRoutesById;
+    | '__root__'
+    | '/'
+    | '/search'
+    | '/blog/$postId'
+    | '/notes/$noteId'
+    | '/blog/'
+    | '/notes/'
+    | '/blog/category/$category'
+    | '/blog/series/$seriesSlug'
+    | '/blog/tag/$tag'
+  fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute;
-  BlogPostIdRoute: typeof BlogPostIdRoute;
-  BlogIndexRoute: typeof BlogIndexRoute;
-  BlogCategoryCategoryRoute: typeof BlogCategoryCategoryRoute;
-  BlogTagTagRoute: typeof BlogTagTagRoute;
+  IndexRoute: typeof IndexRoute
+  SearchRoute: typeof SearchRoute
+  BlogPostIdRoute: typeof BlogPostIdRoute
+  NotesNoteIdRoute: typeof NotesNoteIdRoute
+  BlogIndexRoute: typeof BlogIndexRoute
+  NotesIndexRoute: typeof NotesIndexRoute
+  BlogCategoryCategoryRoute: typeof BlogCategoryCategoryRoute
+  BlogSeriesSeriesSlugRoute: typeof BlogSeriesSeriesSlugRoute
+  BlogTagTagRoute: typeof BlogTagTagRoute
 }
 
-declare module "@tanstack/react-router" {
+declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    "/": {
-      id: "/";
-      path: "/";
-      fullPath: "/";
-      preLoaderRoute: typeof IndexRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/blog/": {
-      id: "/blog/";
-      path: "/blog";
-      fullPath: "/blog";
-      preLoaderRoute: typeof BlogIndexRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/blog/$postId": {
-      id: "/blog/$postId";
-      path: "/blog/$postId";
-      fullPath: "/blog/$postId";
-      preLoaderRoute: typeof BlogPostIdRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/blog/tag/$tag": {
-      id: "/blog/tag/$tag";
-      path: "/blog/tag/$tag";
-      fullPath: "/blog/tag/$tag";
-      preLoaderRoute: typeof BlogTagTagRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/blog/category/$category": {
-      id: "/blog/category/$category";
-      path: "/blog/category/$category";
-      fullPath: "/blog/category/$category";
-      preLoaderRoute: typeof BlogCategoryCategoryRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
+    '/search': {
+      id: '/search'
+      path: '/search'
+      fullPath: '/search'
+      preLoaderRoute: typeof SearchRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/notes/': {
+      id: '/notes/'
+      path: '/notes'
+      fullPath: '/notes'
+      preLoaderRoute: typeof NotesIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/blog/': {
+      id: '/blog/'
+      path: '/blog'
+      fullPath: '/blog'
+      preLoaderRoute: typeof BlogIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/notes/$noteId': {
+      id: '/notes/$noteId'
+      path: '/notes/$noteId'
+      fullPath: '/notes/$noteId'
+      preLoaderRoute: typeof NotesNoteIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/blog/$postId': {
+      id: '/blog/$postId'
+      path: '/blog/$postId'
+      fullPath: '/blog/$postId'
+      preLoaderRoute: typeof BlogPostIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/blog/tag/$tag': {
+      id: '/blog/tag/$tag'
+      path: '/blog/tag/$tag'
+      fullPath: '/blog/tag/$tag'
+      preLoaderRoute: typeof BlogTagTagRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/blog/series/$seriesSlug': {
+      id: '/blog/series/$seriesSlug'
+      path: '/blog/series/$seriesSlug'
+      fullPath: '/blog/series/$seriesSlug'
+      preLoaderRoute: typeof BlogSeriesSeriesSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/blog/category/$category': {
+      id: '/blog/category/$category'
+      path: '/blog/category/$category'
+      fullPath: '/blog/category/$category'
+      preLoaderRoute: typeof BlogCategoryCategoryRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  SearchRoute: SearchRoute,
   BlogPostIdRoute: BlogPostIdRoute,
+  NotesNoteIdRoute: NotesNoteIdRoute,
   BlogIndexRoute: BlogIndexRoute,
+  NotesIndexRoute: NotesIndexRoute,
   BlogCategoryCategoryRoute: BlogCategoryCategoryRoute,
+  BlogSeriesSeriesSlugRoute: BlogSeriesSeriesSlugRoute,
   BlogTagTagRoute: BlogTagTagRoute,
-};
+}
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
-  ._addFileTypes<FileRouteTypes>();
+  ._addFileTypes<FileRouteTypes>()
