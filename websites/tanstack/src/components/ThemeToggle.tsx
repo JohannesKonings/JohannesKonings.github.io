@@ -1,37 +1,12 @@
-import { useEffect, useState } from "react";
+import { useTheme } from "../contexts/ThemeContext";
 
 export function ThemeToggle() {
-  const [dark, setDark] = useState(false);
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-    const isDark =
-      document.documentElement.classList.contains("dark");
-    setDark(isDark);
-  }, []);
+  const { theme, setTheme } = useTheme();
+  const dark = theme === "dark";
 
   const toggle = () => {
-    const next = !document.documentElement.classList.contains("dark");
-    document.documentElement.classList.toggle("dark", next);
-    localStorage.setItem("theme", next ? "dark" : "light");
-    setDark(next);
+    setTheme(dark ? "light" : "dark");
   };
-
-  if (!mounted) {
-    return (
-      <button
-        type="button"
-        aria-label="Toggle theme"
-        className="p-2 rounded-lg bg-gray-200/50 dark:bg-gray-700/50 text-gray-600 dark:text-gray-400"
-      >
-        <span className="sr-only">Theme</span>
-        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
-        </svg>
-      </button>
-    );
-  }
 
   return (
     <button

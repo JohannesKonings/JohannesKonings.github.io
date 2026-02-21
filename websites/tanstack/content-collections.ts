@@ -85,6 +85,40 @@ const posts = defineCollection({
   },
 });
 
+// Notes collection - simpler schema for quick reference notes
+const notes = defineCollection({
+  name: "notes",
+  directory: "src/content/notes",
+  include: "**/*.md",
+  schema: z.object({
+    title: z.string(),
+    summary: z.string().default(""),
+    date: z.coerce.date(),
+    published: z.boolean().default(false),
+    tags: z.array(z.string()).default([]),
+    categories: z
+      .union([z.string(), z.array(z.string())])
+      .transform((val) => (Array.isArray(val) ? val : [val]))
+      .default([]),
+  }),
+  transform: (data) => {
+    const readingStats = calculateReadingTime(data.content);
+    const excerpt = generateExcerpt(data.content);
+
+    // Slug is the filename without extension (flat structure only)
+    const fileName = data._meta.filePath.split("/").pop() ?? "";
+    const slug = fileName.replace(/\.md$/i, "");
+
+    return {
+      ...data,
+      slug,
+      readingTime: readingStats,
+      excerpt,
+      url: `/notes/${slug}`,
+    };
+  },
+});
+
 export default defineConfig({
-  collections: [posts],
+  collections: [posts, notes],
 });

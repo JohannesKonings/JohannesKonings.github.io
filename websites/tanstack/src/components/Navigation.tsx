@@ -17,7 +17,7 @@ export function Navigation(): JSX.Element {
               className={`relative px-6 py-2 text-sm font-medium transition-all duration-700 ease-out transform group ${
                 currentPath === "/"
                   ? "text-cyan-500 dark:text-cyan-400 scale-105 hover:scale-110 hover:text-cyan-600 dark:hover:text-cyan-300"
-                  : "text-gray-600 dark:text-gray-300 hover:text-cyan-500 dark:hover:text-cyan-400 hover:scale-105"
+                  : "text-gray-700 dark:text-gray-200 hover:text-cyan-500 dark:hover:text-cyan-400 hover:scale-105"
               }`}
             >
               <span className="relative z-10">Home</span>
@@ -35,7 +35,7 @@ export function Navigation(): JSX.Element {
               className={`relative px-6 py-2 text-sm font-medium transition-all duration-700 ease-out transform group ${
                 currentPath.startsWith("/blog")
                   ? "text-cyan-500 dark:text-cyan-400 scale-105 hover:scale-110 hover:text-cyan-600 dark:hover:text-cyan-300"
-                  : "text-gray-600 dark:text-gray-300 hover:text-cyan-500 dark:hover:text-cyan-400 hover:scale-105"
+                  : "text-gray-700 dark:text-gray-200 hover:text-cyan-500 dark:hover:text-cyan-400 hover:scale-105"
               }`}
             >
               <span className="relative z-10">Blog</span>
@@ -55,7 +55,7 @@ export function Navigation(): JSX.Element {
               className={`relative px-6 py-2 text-sm font-medium transition-all duration-700 ease-out transform group ${
                 currentPath.startsWith("/notes")
                   ? "text-cyan-500 dark:text-cyan-400 scale-105 hover:scale-110 hover:text-cyan-600 dark:hover:text-cyan-300"
-                  : "text-gray-600 dark:text-gray-300 hover:text-cyan-500 dark:hover:text-cyan-400 hover:scale-105"
+                  : "text-gray-700 dark:text-gray-200 hover:text-cyan-500 dark:hover:text-cyan-400 hover:scale-105"
               }`}
             >
               <span className="relative z-10">Notes</span>
@@ -75,7 +75,7 @@ export function Navigation(): JSX.Element {
               className={`relative px-6 py-2 text-sm font-medium transition-all duration-700 ease-out transform group ${
                 currentPath === "/search"
                   ? "text-cyan-500 dark:text-cyan-400 scale-105 hover:scale-110 hover:text-cyan-600 dark:hover:text-cyan-300"
-                  : "text-gray-600 dark:text-gray-300 hover:text-cyan-500 dark:hover:text-cyan-400 hover:scale-105"
+                  : "text-gray-700 dark:text-gray-200 hover:text-cyan-500 dark:hover:text-cyan-400 hover:scale-105"
               }`}
             >
               <span className="relative z-10">Search</span>

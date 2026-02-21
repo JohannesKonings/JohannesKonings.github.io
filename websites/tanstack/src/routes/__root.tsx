@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import { useEffect, type ReactNode } from "react";
 import {
   Outlet,
   createRootRoute,
@@ -8,6 +8,7 @@ import {
 } from "@tanstack/react-router";
 import globalCss from "@/src/styles/global.css?url";
 import { Navigation } from "../components/Navigation";
+import { ThemeProvider, useTheme } from "../contexts/ThemeContext";
 
 export const Route = createRootRoute({
   head: () => ({
@@ -65,6 +66,15 @@ function RootComponent() {
   );
 }
 
+/** Syncs React theme state to document.documentElement so Tailwind dark: works. */
+function ThemeSync() {
+  const { theme } = useTheme();
+  useEffect(() => {
+    document.documentElement.classList.toggle("dark", theme === "dark");
+  }, [theme]);
+  return null;
+}
+
 function RootDocument({ children }: Readonly<{ children: ReactNode }>) {
   return (
     <html lang="en" suppressHydrationWarning>
@@ -73,7 +83,9 @@ function RootDocument({ children }: Readonly<{ children: ReactNode }>) {
       </head>
       <body>
         <script src="/theme-init.js" suppressHydrationWarning />
-        <div className="min-h-screen bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-300 relative overflow-hidden">
+        <ThemeProvider>
+          <ThemeSync />
+          <div className="min-h-screen bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-300 relative overflow-hidden">
           {/* Animated background - gradient shift and orbs */}
           <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/10 via-transparent to-blue-500/10 dark:from-cyan-500/5 dark:via-transparent dark:to-blue-500/5 animate-fade bg-[length:200%_200%]" />
           <div className="absolute top-0 left-1/4 w-96 h-96 bg-cyan-400/10 dark:bg-cyan-500/5 rounded-full blur-3xl animate-gentle-pulse animation-delay-2000" />
@@ -86,6 +98,7 @@ function RootDocument({ children }: Readonly<{ children: ReactNode }>) {
             <Scripts />
           </div>
         </div>
+        </ThemeProvider>
       </body>
     </html>
   );

@@ -77,7 +77,7 @@ function Home() {
                     href={href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="relative group p-2 rounded-lg text-gray-600 dark:text-gray-400 hover:text-cyan-500 dark:hover:text-cyan-400 transition-colors"
+                    className="relative group p-2 rounded-lg text-gray-700 dark:text-gray-200 hover:text-cyan-500 dark:hover:text-cyan-400 transition-colors"
                     aria-label={label}
                   >
                     {Icon ? (
@@ -92,7 +92,7 @@ function Home() {
               <h1 className="mb-2 text-4xl font-bold text-gray-800 dark:text-gray-100 bg-gradient-to-r from-cyan-600 to-blue-600 dark:from-cyan-400 dark:to-blue-400 bg-clip-text text-transparent drop-shadow-lg">
                 Johannes Konings
               </h1>
-              <p className="mb-6 text-sm text-gray-500 dark:text-gray-400 max-w-md text-center">
+              <p className="mb-6 text-sm text-gray-700 dark:text-gray-200 max-w-md text-center">
                 Notes and posts on AWS and TanStack.
               </p>
             </div>

@@ -1,12 +1,13 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { allPosts } from "content-collections";
+import { allPosts, allNotes } from "content-collections";
 import { BlogLayout } from "../components/blog/BlogLayout";
 import { Search as SearchComponent } from "../components/search/Search";
 
 export const Route = createFileRoute("/search")({
   component: SearchPage,
   loader: () => {
-    const items = allPosts
+    // Map blog posts to search items
+    const postItems = allPosts
       .filter((p) => p.published)
       .map((post) => ({
         type: "blog" as const,
@@ -17,6 +18,22 @@ export const Route = createFileRoute("/search")({
         tags: post.tags.join(" "),
         url: post.url,
       }));
+
+    // Map notes to search items
+    const noteItems = allNotes
+      .filter((n) => n.published)
+      .map((note) => ({
+        type: "note" as const,
+        slug: note.slug,
+        title: note.title,
+        summary: note.summary,
+        excerpt: note.excerpt,
+        tags: note.tags.join(" "),
+        url: note.url,
+      }));
+
+    // Combine both into a single searchable array
+    const items = [...postItems, ...noteItems];
     return { items };
   },
 });

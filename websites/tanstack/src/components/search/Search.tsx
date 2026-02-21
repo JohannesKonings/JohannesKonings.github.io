@@ -5,7 +5,7 @@ import { Link } from "@tanstack/react-router";
 const MIN_QUERY_LENGTH = 2;
 
 export type SearchItem = {
-  type: "blog";
+  type: "blog" | "note";
   slug: string;
   title: string;
   summary: string;

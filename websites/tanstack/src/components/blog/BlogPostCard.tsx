@@ -49,16 +49,13 @@ export function BlogPostCard({ post }: BlogPostCardProps): JSX.Element {
             </div>
           )}
 
-          {/* Image with smart object-fit strategy */}
+          {/* Image contained within aspect box to avoid overflow/crop */}
           <img
             src={imageUrl}
             alt={post.title}
             loading="lazy"
-            className="w-full h-full object-cover object-center transition-all duration-300 group-hover:scale-105"
-            style={{
-              aspectRatio: "16/10",
-              imageRendering: "auto",
-            }}
+            className="w-full max-h-full object-contain object-center transition-all duration-300 group-hover:scale-105"
+            style={{ imageRendering: "auto" }}
             onLoad={handleImageLoad}
             onError={handleImageError}
           />

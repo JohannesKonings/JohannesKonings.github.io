@@ -36,13 +36,10 @@ export const Route = createFileRoute("/blog/$postId")({
 function RouteComponent() {
   const { post } = Route.useRouteContext();
 
-  // Process markdown content to fix image paths
+  // Strip Jekyll liquid so URLs and links work (e.g. {{ site.baseurl }}/img/... → /img/...)
   const processedContent = post.content.replace(
-    /!\[([^\]]*)\]\(([^)]+\.png)\)/g,
-    (match, altText, imagePath) => {
-      // Update image path to point to the correct location
-      return `![${altText}](/content/blog/${post.slug}/${imagePath})`;
-    },
+    /\{\{\s*site\.baseurl\s*\}\}/g,
+    "",
   );
 
   const seriesContext = getSeriesContext(post);
@@ -148,7 +145,7 @@ function RouteComponent() {
                       {...props}
                       src={src}
                       alt={alt}
-                      className="rounded-lg shadow-md mx-auto"
+                      className="max-w-full h-auto rounded-lg shadow-md mx-auto"
                       loading="lazy"
                     />
                   ),
