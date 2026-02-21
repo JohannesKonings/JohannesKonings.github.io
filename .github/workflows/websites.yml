@@ -90,13 +90,17 @@ jobs:
         run: |
           NODE_ENV=production ${{ steps.detect-package-manager.outputs.runner }} build:tanstack
         working-directory: ${{ env.BUILD_PATH }}
+      - name: Export Tanstack static pages
+        run: |
+          ${{ steps.detect-package-manager.outputs.runner }} tsx ./scripts/exportTanstackStatic.ts
+        working-directory: ${{ env.BUILD_PATH }}
       - name: Combine build artifacts
         run: |
           set -e
           # tanstack is primary at root, astro is secondary at /astro
           # Use source/. not source/* so empty dirs don't make glob fail in bash
           mkdir -p ${{ env.BUILD_PATH }}/dist
-          cp -r ${{ env.WEBSITE_TANSTACK_PATH }}/.output/public/. ${{ env.BUILD_PATH }}/dist/
+          cp -r ${{ env.WEBSITE_TANSTACK_PATH }}/.output/static-export/. ${{ env.BUILD_PATH }}/dist/
           mkdir -p ${{ env.BUILD_PATH }}/dist/astro
           cp -r ${{ env.WEBSITE_ASTRO_PATH }}/dist/. ${{ env.BUILD_PATH }}/dist/astro/
 
