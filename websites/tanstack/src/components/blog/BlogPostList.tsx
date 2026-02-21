@@ -2,10 +2,24 @@ import type { allPosts } from "content-collections";
 import { BlogPostCard } from "./BlogPostCard";
 import { useState, useMemo } from "react";
 import type { JSX } from "react";
+import { useInView } from "../../hooks/useInView";
 
 interface BlogPostListProps {
   posts: typeof allPosts;
   showFilters?: boolean;
+}
+
+function RevealCard({ post, index }: { post: (typeof allPosts)[0]; index: number }) {
+  const { ref, inView } = useInView({ rootMargin: "0px 0px -20px 0px" });
+  const stagger = (index % 3) + 1;
+  return (
+    <div
+      ref={ref}
+      className={`reveal ${inView ? "visible" : ""} stagger-${stagger}`}
+    >
+      <BlogPostCard post={post} />
+    </div>
+  );
 }
 
 export function BlogPostList({
@@ -226,8 +240,8 @@ export function BlogPostList({
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {filteredPosts.map((post) => (
-            <BlogPostCard key={post.slug} post={post} />
+          {filteredPosts.map((post, i) => (
+            <RevealCard key={post.slug} post={post} index={i} />
           ))}
         </div>
       )}

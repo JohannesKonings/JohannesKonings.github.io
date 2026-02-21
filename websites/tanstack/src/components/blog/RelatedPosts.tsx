@@ -1,23 +1,29 @@
 import { Link } from "@tanstack/react-router";
 import { format } from "date-fns";
 import type { allPosts } from "content-collections";
+import { useInView } from "../../hooks/useInView";
 
 interface RelatedPostsProps {
   posts: (typeof allPosts)[number][];
 }
 
 export function RelatedPosts({ posts }: RelatedPostsProps) {
+  const { ref, inView } = useInView();
+
   if (posts.length === 0) return null;
 
   return (
-    <section className="mt-12 pt-8 border-t border-gray-200 dark:border-gray-700">
+    <section
+      ref={ref}
+      className={`mt-12 pt-8 border-t border-gray-200 dark:border-gray-700 reveal-fade reveal ${inView ? "visible" : ""}`}
+    >
       <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-6">Related Posts</h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        {posts.map((post) => (
+        {posts.map((post, i) => (
           <Link
             key={post.slug}
             to={post.url}
-            className="block p-4 rounded-lg bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 hover:border-cyan-500/50 dark:hover:border-cyan-400/50 transition-colors"
+            className={`block p-4 rounded-lg bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 hover:border-cyan-500/50 dark:hover:border-cyan-400/50 hover:-translate-y-0.5 transition-all duration-300 stagger-${i + 1}`}
           >
             <time className="text-xs text-gray-500 dark:text-gray-400">
               {format(post.date, "MMM d, yyyy")}

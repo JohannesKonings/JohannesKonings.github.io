@@ -5,6 +5,7 @@ import { Fa6BrandsBluesky, MdiGithub } from "../icons";
 import { Mail, Linkedin } from "lucide-react";
 import { getRecentPosts } from "../lib/content-utils";
 import { BlogPostCard } from "../components/blog/BlogPostCard";
+import { useInView } from "../hooks/useInView";
 
 const SOCIALS = [
   { href: "mailto:mail@johanneskonings.dev", label: "Email", Icon: Mail },
@@ -21,6 +22,9 @@ export const Route = createFileRoute("/")({
 
 function Home() {
   const recentPosts = getRecentPosts(3);
+  const hero = useInView();
+  const cards = useInView();
+  const cta = useInView();
 
   return (
     <>
@@ -32,8 +36,11 @@ function Home() {
           <div className="absolute top-1/2 left-1/3 w-24 h-24 bg-cyan-300/10 dark:bg-gray-400/8 rounded-full blur-lg animate-subtle-glow animation-delay-3000" />
         </div>
 
-        {/* Avatar Section - now below navigation */}
-        <div className="relative z-10 pt-16 pb-12">
+        {/* Avatar Section */}
+        <div
+          ref={hero.ref}
+          className={`relative z-10 pt-16 pb-12 reveal ${hero.inView ? "visible" : ""}`}
+        >
           <div className="container mx-auto px-4">
             <div className="flex flex-col items-center">
               {/* Avatar with subtle glow effect */}
@@ -46,7 +53,7 @@ function Home() {
                 />
               </div>
 
-              {/* Social links - same as johanneskonings.dev */}
+              {/* Social links */}
               <div className="flex flex-wrap items-center justify-center gap-4 mb-6">
                 {SOCIALS.map(({ href, label, Icon }) => (
                   <a
@@ -54,7 +61,7 @@ function Home() {
                     href={href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="relative group p-2 rounded-lg text-gray-700 dark:text-gray-200 hover:text-cyan-500 dark:hover:text-cyan-400 transition-colors"
+                    className="relative group p-2 rounded-lg text-gray-700 dark:text-gray-200 hover:text-cyan-500 dark:hover:text-cyan-400 transition-all duration-300 hover:-translate-y-0.5"
                     aria-label={label}
                   >
                     {Icon ? (
@@ -85,17 +92,28 @@ function Home() {
               </h2>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {recentPosts.map((post) => (
-                <BlogPostCard key={post.slug} post={post} />
+            <div
+              ref={cards.ref}
+              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+            >
+              {recentPosts.map((post, i) => (
+                <div
+                  key={post.slug}
+                  className={`reveal ${cards.inView ? "visible" : ""} stagger-${i + 1}`}
+                >
+                  <BlogPostCard post={post} />
+                </div>
               ))}
             </div>
 
             {/* View All Posts Link */}
-            <div className="text-center mt-12">
+            <div
+              ref={cta.ref}
+              className={`text-center mt-12 reveal-scale reveal ${cta.inView ? "visible" : ""}`}
+            >
               <Link
                 to="/blog"
-                className="inline-flex items-center px-8 py-4 bg-cyan-50 dark:bg-cyan-500/20 text-cyan-700 dark:text-cyan-300 rounded-full border border-cyan-200 dark:border-cyan-500/30 hover:bg-cyan-100 dark:hover:bg-cyan-500/30 hover:border-cyan-300 dark:hover:border-cyan-400/60 transition-all duration-300 transform hover:scale-105 font-semibold text-lg"
+                className="group inline-flex items-center px-8 py-4 bg-cyan-50 dark:bg-cyan-500/20 text-cyan-700 dark:text-cyan-300 rounded-full border border-cyan-200 dark:border-cyan-500/30 hover:bg-cyan-100 dark:hover:bg-cyan-500/30 hover:border-cyan-300 dark:hover:border-cyan-400/60 transition-all duration-300 transform hover:scale-105 font-semibold text-lg"
               >
                 <span className="text-cyan-700 dark:text-transparent dark:bg-gradient-to-r dark:from-cyan-400 dark:to-blue-400 dark:bg-clip-text">
                   View All Posts

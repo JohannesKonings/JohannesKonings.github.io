@@ -37,7 +37,7 @@ export function BlogPostCard({ post }: BlogPostCardProps): JSX.Element {
   };
 
   return (
-    <article className="bg-white/90 dark:bg-gray-800/80 backdrop-blur-sm rounded-xl shadow-xl overflow-hidden border border-gray-200 dark:border-gray-600/30 hover:border-cyan-500/50 transition-all duration-500 transform hover:scale-[1.02] hover:shadow-cyan-500/20 group">
+    <article className="bg-white/90 dark:bg-gray-800/80 backdrop-blur-sm rounded-xl shadow-lg overflow-hidden border border-gray-200 dark:border-gray-600/30 hover:border-cyan-400/60 transition-all duration-500 transform hover:scale-[1.02] hover:-translate-y-1 hover:shadow-xl hover:shadow-cyan-500/15 group">
       {imageUrl && !imageError ? (
         <div className="aspect-video bg-gray-200 dark:bg-gradient-to-r dark:from-gray-700 dark:to-gray-800 relative overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/8 to-blue-500/8 opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>

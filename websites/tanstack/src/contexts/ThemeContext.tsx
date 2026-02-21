@@ -2,7 +2,7 @@ import {
   createContext,
   useCallback,
   useContext,
-  useState,
+  useSyncExternalStore,
   type ReactNode,
 } from "react";
 
@@ -13,22 +13,32 @@ const ThemeContext = createContext<{
   setTheme: (theme: Theme) => void;
 } | null>(null);
 
-function getInitialTheme(): Theme {
-  if (typeof document === "undefined") return "light";
-  // Match theme-init.js: prefer DOM class so we don't overwrite it on first paint
-  if (document.documentElement.classList.contains("dark")) return "dark";
-  const stored = localStorage.getItem("theme");
-  if (stored === "dark" || stored === "light") return stored;
-  return window.matchMedia?.("(prefers-color-scheme: dark)").matches
-    ? "dark"
-    : "light";
+function getThemeSnapshot(): Theme {
+  return document.documentElement.classList.contains("dark") ? "dark" : "light";
+}
+
+function getServerSnapshot(): Theme {
+  return "light";
+}
+
+function subscribeToTheme(callback: () => void): () => void {
+  const observer = new MutationObserver(callback);
+  observer.observe(document.documentElement, {
+    attributes: true,
+    attributeFilter: ["class"],
+  });
+  return () => observer.disconnect();
 }
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
-  const [theme, setThemeState] = useState<Theme>(getInitialTheme);
+  const theme = useSyncExternalStore(
+    subscribeToTheme,
+    getThemeSnapshot,
+    getServerSnapshot,
+  );
 
   const setTheme = useCallback((next: Theme) => {
-    setThemeState(next);
+    document.documentElement.classList.toggle("dark", next === "dark");
     localStorage.setItem("theme", next);
   }, []);
 

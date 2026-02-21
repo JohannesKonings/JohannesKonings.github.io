@@ -1,4 +1,4 @@
-import { lazy, useEffect, type ReactNode } from "react";
+import { lazy, type ReactNode } from "react";
 import {
   Outlet,
   createRootRoute,
@@ -9,7 +9,7 @@ import {
 import globalCss from "@/src/styles/global.css?url";
 import { Navigation } from "../components/Navigation";
 import { BackToTop } from "../components/BackToTop";
-import { ThemeProvider, useTheme } from "../contexts/ThemeContext";
+import { ThemeProvider } from "../contexts/ThemeContext";
 
 const TanStackRouterDevtools =
   process.env.NODE_ENV === "production"
@@ -76,15 +76,6 @@ function RootComponent() {
   );
 }
 
-/** Syncs React theme state to document.documentElement so Tailwind dark: works. */
-function ThemeSync() {
-  const { theme } = useTheme();
-  useEffect(() => {
-    document.documentElement.classList.toggle("dark", theme === "dark");
-  }, [theme]);
-  return null;
-}
-
 function RootDocument({ children }: Readonly<{ children: ReactNode }>) {
   return (
     <html lang="en" suppressHydrationWarning>
@@ -100,7 +91,6 @@ function RootDocument({ children }: Readonly<{ children: ReactNode }>) {
         </a>
         <script src="/theme-init.js" suppressHydrationWarning />
         <ThemeProvider>
-          <ThemeSync />
           <div className="min-h-screen bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-300 relative overflow-hidden">
           {/* Animated background - gradient shift and orbs */}
           <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/10 via-transparent to-blue-500/10 dark:from-cyan-500/5 dark:via-transparent dark:to-blue-500/5 animate-fade bg-[length:200%_200%]" />
