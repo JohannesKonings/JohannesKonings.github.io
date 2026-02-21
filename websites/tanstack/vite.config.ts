@@ -2,7 +2,7 @@ import { defineConfig } from "vite";
 import tsConfigPaths from "vite-tsconfig-paths";
 import tailwindcss from "@tailwindcss/vite";
 import { tanstackStart } from "@tanstack/react-start/plugin/vite";
-import react from "@vitejs/plugin-react";
+
 import contentCollections from "@content-collections/vite";
 import { copyFileSync, mkdirSync, existsSync, readdirSync, statSync } from "fs";
 import { join, dirname } from "path";
@@ -114,7 +114,7 @@ export default defineConfig(({ mode }) => ({
     tailwindcss(),
     syncContentPlugin(),
     contentCollections(),
-    // TanStack Start before React plugin (per official docs)
+    // TanStack Start includes its own React plugin — no separate @vitejs/plugin-react needed
     tanstackStart({
       prerender: {
         enabled: true,
@@ -122,7 +122,6 @@ export default defineConfig(({ mode }) => ({
         autoSubfolderIndex: true,
       },
     }),
-    react(),
     tsConfigPaths(),
   ],
 }));

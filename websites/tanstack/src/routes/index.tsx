@@ -5,7 +5,6 @@ import { Fa6BrandsBluesky, MdiGithub } from "../icons";
 import { Mail, Linkedin } from "lucide-react";
 import { getRecentPosts } from "../lib/content-utils";
 import { BlogPostCard } from "../components/blog/BlogPostCard";
-import { useInView } from "../hooks/useInView";
 
 const SOCIALS = [
   { href: "mailto:mail@johanneskonings.dev", label: "Email", Icon: Mail },
@@ -22,14 +21,10 @@ export const Route = createFileRoute("/")({
 
 function Home() {
   const recentPosts = getRecentPosts(3);
-  const hero = useInView();
-  const cards = useInView();
-  const cta = useInView();
 
   return (
     <>
-      {/* Animated background - light/dark aware */}
-      <div className="min-h-screen bg-gray-50 dark:bg-gradient-to-br dark:from-gray-900/60 dark:via-gray-800/40 dark:to-gray-900/60 relative">
+      <div className="bg-gray-50 dark:bg-gradient-to-br dark:from-gray-900/60 dark:via-gray-800/40 dark:to-gray-900/60 relative">
         <div className="absolute inset-0">
           <div className="absolute top-20 left-20 w-32 h-32 bg-cyan-400/10 dark:bg-cyan-400/5 rounded-full blur-xl animate-gentle-pulse animation-delay-1000" />
           <div className="absolute bottom-20 right-20 w-40 h-40 bg-blue-400/10 dark:bg-blue-400/5 rounded-full blur-xl animate-gentle-pulse animation-delay-2000" />
@@ -37,13 +32,9 @@ function Home() {
         </div>
 
         {/* Avatar Section */}
-        <div
-          ref={hero.ref}
-          className={`relative z-10 pt-16 pb-12 reveal ${hero.inView ? "visible" : ""}`}
-        >
+        <div className="relative z-10 pt-16 pb-12">
           <div className="container mx-auto px-4">
             <div className="flex flex-col items-center">
-              {/* Avatar with subtle glow effect */}
               <div className="relative mb-6 group">
                 <div className="absolute inset-0 bg-gradient-to-r from-cyan-400/20 to-blue-400/20 rounded-full blur-lg opacity-0 group-hover:opacity-100 transition-opacity duration-700 animate-subtle-glow"></div>
                 <img
@@ -53,7 +44,6 @@ function Home() {
                 />
               </div>
 
-              {/* Social links */}
               <div className="flex flex-wrap items-center justify-center gap-4 mb-6">
                 {SOCIALS.map(({ href, label, Icon }) => (
                   <a
@@ -92,25 +82,13 @@ function Home() {
               </h2>
             </div>
 
-            <div
-              ref={cards.ref}
-              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
-            >
-              {recentPosts.map((post, i) => (
-                <div
-                  key={post.slug}
-                  className={`reveal ${cards.inView ? "visible" : ""} stagger-${i + 1}`}
-                >
-                  <BlogPostCard post={post} />
-                </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {recentPosts.map((post) => (
+                <BlogPostCard key={post.slug} post={post} />
               ))}
             </div>
 
-            {/* View All Posts Link */}
-            <div
-              ref={cta.ref}
-              className={`text-center mt-12 reveal-scale reveal ${cta.inView ? "visible" : ""}`}
-            >
+            <div className="text-center mt-12">
               <Link
                 to="/blog"
                 className="group inline-flex items-center px-8 py-4 bg-cyan-50 dark:bg-cyan-500/20 text-cyan-700 dark:text-cyan-300 rounded-full border border-cyan-200 dark:border-cyan-500/30 hover:bg-cyan-100 dark:hover:bg-cyan-500/30 hover:border-cyan-300 dark:hover:border-cyan-400/60 transition-all duration-300 transform hover:scale-105 font-semibold text-lg"
