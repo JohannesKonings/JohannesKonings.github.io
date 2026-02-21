@@ -2,7 +2,6 @@ import {
   createContext,
   useCallback,
   useContext,
-  useEffect,
   useState,
   type ReactNode,
 } from "react";
@@ -27,16 +26,6 @@ function getInitialTheme(): Theme {
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
   const [theme, setThemeState] = useState<Theme>(getInitialTheme);
-
-  // Sync from localStorage on mount (in case we were server-rendered as light)
-  useEffect(() => {
-    const stored = localStorage.getItem("theme");
-    const prefersDark =
-      typeof window !== "undefined" &&
-      window.matchMedia?.("(prefers-color-scheme: dark)").matches;
-    const dark = stored === "dark" || (!stored && prefersDark);
-    setThemeState(dark ? "dark" : "light");
-  }, []);
 
   const setTheme = useCallback((next: Theme) => {
     setThemeState(next);
