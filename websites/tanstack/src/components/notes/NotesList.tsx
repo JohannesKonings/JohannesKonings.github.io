@@ -89,4 +89,3 @@ export function NotesList({ notes }: NotesListProps): JSX.Element {
     </div>
   );
 }
-

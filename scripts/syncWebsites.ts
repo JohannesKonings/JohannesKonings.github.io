@@ -49,9 +49,7 @@ function getMarkdownFiles(targetPath: string): string[] {
 
 function toContentSlug(filePath: string, basePath: string): string {
   const relativePath = path.relative(basePath, filePath).replaceAll("\\", "/");
-  return relativePath
-    .replace(/\/index\.md$/, "")
-    .replace(/\.md$/, "");
+  return relativePath.replace(/\/index\.md$/, "").replace(/\.md$/, "");
 }
 
 function parseFrontmatter(markdownContent: string): Record<string, string> {
@@ -71,7 +69,10 @@ function parseFrontmatter(markdownContent: string): Record<string, string> {
     }
 
     const key = line.slice(0, dividerIndex).trim();
-    const value = line.slice(dividerIndex + 1).trim().replace(/^["']|["']$/g, "");
+    const value = line
+      .slice(dividerIndex + 1)
+      .trim()
+      .replace(/^["']|["']$/g, "");
     if (key) {
       values[key] = value;
     }

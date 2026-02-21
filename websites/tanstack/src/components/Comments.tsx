@@ -16,7 +16,10 @@ export function Comments(): JSX.Element {
     script.src = "https://giscus.app/client.js";
     script.async = true;
     script.crossOrigin = "anonymous";
-    script.setAttribute("data-repo", "JohannesKonings/JohannesKonings.github.io");
+    script.setAttribute(
+      "data-repo",
+      "JohannesKonings/JohannesKonings.github.io",
+    );
     script.setAttribute("data-repo-id", "MDEwOlJlcG9zaXRvcnkyODQyNTQyNjc=");
     script.setAttribute("data-category", "Blog Post Comments");
     script.setAttribute("data-category-id", "DIC_kwDOEPFgO84CgLJN");
@@ -34,4 +37,3 @@ export function Comments(): JSX.Element {
 
   return <div ref={commentsRef} className="giscus mx-auto mt-12 w-full" />;
 }
-

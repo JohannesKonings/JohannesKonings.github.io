@@ -57,7 +57,9 @@ export function generatePostSEO(post: (typeof allPosts)[0]) {
     title: post.title,
     description: post.summary,
     url: post.url,
-    image: post.cover_image ?? (post.thumbnail ? `/img/${post.thumbnail}.png` : undefined),
+    image:
+      post.cover_image ??
+      (post.thumbnail ? `/img/${post.thumbnail}.png` : undefined),
     type: "article",
     publishedTime: post.date.toISOString(),
     tags: [...post.tags, ...post.categories],

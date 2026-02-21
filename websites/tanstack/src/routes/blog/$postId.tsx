@@ -31,7 +31,9 @@ function getNodeText(children: ReactNode): string {
   }
 
   if (children && typeof children === "object" && "props" in children) {
-    return getNodeText((children as { props?: { children?: ReactNode } }).props?.children);
+    return getNodeText(
+      (children as { props?: { children?: ReactNode } }).props?.children,
+    );
   }
 
   return "";
@@ -199,9 +201,7 @@ function RouteComponent() {
 
             {post.categories.length > 0 && (
               <div className="mt-4">
-                <span className="text-sm text-gray-400">
-                  Categories:{" "}
-                </span>
+                <span className="text-sm text-gray-400">Categories: </span>
                 {post.categories.map((category, index) => (
                   <span key={category}>
                     <a

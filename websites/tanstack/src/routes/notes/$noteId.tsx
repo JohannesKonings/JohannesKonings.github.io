@@ -26,7 +26,9 @@ function getNodeText(children: ReactNode): string {
   }
 
   if (children && typeof children === "object" && "props" in children) {
-    return getNodeText((children as { props?: { children?: ReactNode } }).props?.children);
+    return getNodeText(
+      (children as { props?: { children?: ReactNode } }).props?.children,
+    );
   }
 
   return "";
@@ -131,4 +133,3 @@ function NoteRouteComponent() {
     </BlogLayout>
   );
 }
-

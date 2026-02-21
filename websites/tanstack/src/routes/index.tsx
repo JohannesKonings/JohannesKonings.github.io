@@ -26,8 +26,8 @@ function Home() {
               Johannes Konings
             </h1>
             <p className="mx-auto mb-6 max-w-2xl text-gray-300">
-              Blog posts and notes about AWS, TanStack, TypeScript, and practical
-              engineering patterns.
+              Blog posts and notes about AWS, TanStack, TypeScript, and
+              practical engineering patterns.
             </p>
 
             <div className="mb-6 flex items-center justify-center gap-6">
@@ -73,8 +73,13 @@ function Home() {
 
           <section className="mt-10">
             <div className="mb-5 flex items-center justify-between">
-              <h2 className="text-2xl font-semibold text-cyan-200">Latest Posts</h2>
-              <a href="/blog" className="text-sm text-cyan-300 hover:text-cyan-200">
+              <h2 className="text-2xl font-semibold text-cyan-200">
+                Latest Posts
+              </h2>
+              <a
+                href="/blog"
+                className="text-sm text-cyan-300 hover:text-cyan-200"
+              >
                 View all posts →
               </a>
             </div>
@@ -87,8 +92,13 @@ function Home() {
 
           <section className="mt-12">
             <div className="mb-5 flex items-center justify-between">
-              <h2 className="text-2xl font-semibold text-blue-200">Latest Notes</h2>
-              <a href="/notes" className="text-sm text-blue-300 hover:text-blue-200">
+              <h2 className="text-2xl font-semibold text-blue-200">
+                Latest Notes
+              </h2>
+              <a
+                href="/notes"
+                className="text-sm text-blue-300 hover:text-blue-200"
+              >
                 View all notes →
               </a>
             </div>

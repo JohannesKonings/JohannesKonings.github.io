@@ -45,4 +45,3 @@ export function NoteCard({ note }: NoteCardProps): JSX.Element {
     </article>
   );
 }
-

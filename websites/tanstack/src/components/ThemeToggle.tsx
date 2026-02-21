@@ -30,11 +30,14 @@ export function ThemeToggle(): JSX.Element {
     <button
       type="button"
       aria-label="Toggle light and dark theme"
-      onClick={() => setTheme((previousTheme) => (previousTheme === "dark" ? "light" : "dark"))}
+      onClick={() =>
+        setTheme((previousTheme) =>
+          previousTheme === "dark" ? "light" : "dark",
+        )
+      }
       className="rounded-full border border-cyan-500/30 bg-gray-900/70 px-3 py-1.5 text-xs text-cyan-200 transition-all duration-300 hover:border-cyan-400/60 hover:text-cyan-100"
     >
       {theme === "dark" ? "🌙 Dark" : "☀️ Light"}
     </button>
   );
 }
-

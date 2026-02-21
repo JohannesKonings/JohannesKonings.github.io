@@ -18,7 +18,9 @@ export function PrevNextNav({ prev, next }: PrevNextNavProps): JSX.Element {
           href={prev.url}
           className="group rounded-xl border border-cyan-500/20 bg-gray-900/50 p-4 transition-all duration-300 hover:border-cyan-400/60 hover:bg-gray-900/70"
         >
-          <p className="text-xs uppercase tracking-wide text-cyan-300">Previous</p>
+          <p className="text-xs uppercase tracking-wide text-cyan-300">
+            Previous
+          </p>
           <p className="mt-3 text-gray-100 transition-colors duration-300 group-hover:text-cyan-200">
             {prev.title}
           </p>
@@ -43,4 +45,3 @@ export function PrevNextNav({ prev, next }: PrevNextNavProps): JSX.Element {
     </div>
   );
 }
-

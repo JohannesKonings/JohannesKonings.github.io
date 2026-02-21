@@ -42,4 +42,3 @@ export function ContentTOC({ headings }: ContentTOCProps): JSX.Element | null {
     </nav>
   );
 }
-

@@ -28,9 +28,7 @@ function RouteComponent() {
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-8">
         <div className="rounded-lg border border-blue-500/25 bg-blue-500/10 p-6">
-          <h2 className="mb-2 text-2xl font-bold text-blue-100">
-            Tag: {tag}
-          </h2>
+          <h2 className="mb-2 text-2xl font-bold text-blue-100">Tag: {tag}</h2>
           <p className="text-blue-200">
             {posts.length} post{posts.length !== 1 ? "s" : ""} found
           </p>

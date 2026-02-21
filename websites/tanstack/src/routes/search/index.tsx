@@ -19,7 +19,10 @@ function SearchRouteComponent() {
       description="Search across posts and notes by keyword."
     >
       <div className="mx-auto max-w-4xl">
-        <label htmlFor="site-search" className="mb-2 block text-sm text-gray-300">
+        <label
+          htmlFor="site-search"
+          className="mb-2 block text-sm text-gray-300"
+        >
           Search query
         </label>
         <input
@@ -69,4 +72,3 @@ function SearchRouteComponent() {
     </BlogLayout>
   );
 }
-

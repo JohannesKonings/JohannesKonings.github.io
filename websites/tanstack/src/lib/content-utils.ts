@@ -52,7 +52,9 @@ export function getNotesByTag(tag: string) {
 // Get posts by category
 export function getPostsByCategory(category: string) {
   return sortByDateDesc(
-    allPosts.filter((post) => post.published && post.categories.includes(category)),
+    allPosts.filter(
+      (post) => post.published && post.categories.includes(category),
+    ),
   );
 }
 
@@ -228,7 +230,9 @@ export function getPostStats() {
     totalReadingTime: totalMinutes,
     totalNoteReadingTime: totalNoteMinutes,
     averageWordsPerPost:
-      publishedPosts.length > 0 ? Math.round(totalWords / publishedPosts.length) : 0,
+      publishedPosts.length > 0
+        ? Math.round(totalWords / publishedPosts.length)
+        : 0,
     averageReadingTime:
       publishedPosts.length > 0
         ? Math.round(totalMinutes / publishedPosts.length)
