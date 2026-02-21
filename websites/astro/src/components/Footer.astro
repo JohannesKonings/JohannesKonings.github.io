@@ -1,5 +1,9 @@
 ---
 import Container from "@components/Container.astro";
+import { withBase } from "@lib/base";
+const legalTermsPath = withBase("/legal/terms");
+const legalPrivacyPath = withBase("/legal/privacy");
+const socialSpritePath = withBase("/social.svg");
 ---
 
 <footer class="relative bg-white dark:bg-black">
@@ -55,13 +59,13 @@ import Container from "@components/Container.astro";
           >
             <div class="legal">
               <a
-                href="/legal/terms"
+                href={legalTermsPath}
                 class="text-current hover:text-black dark:hover:text-white transition-colors duration-300 ease-in-out"
               >
                 Terms
               </a> |
               <a
-                href="/legal/privacy"
+                href={legalPrivacyPath}
                 class="text-current hover:text-black dark:hover:text-white transition-colors duration-300 ease-in-out"
               >
                 Privacy
@@ -81,7 +85,7 @@ import Container from "@components/Container.astro";
                 <svg
                   class="size-full fill-current group-hover:fill-black group-hover:dark:fill-white blend"
                 >
-                  <use href="/social.svg#github"></use>
+                  <use href={`${socialSpritePath}#github`}></use>
                 </svg>
               </a>
             </div>

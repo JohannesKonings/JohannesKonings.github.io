@@ -37,3 +37,6 @@ jobs:
 
       - name: Run astro build
         run: pnpm run build:astro
+
+      - name: Run tanstack build
+        run: pnpm run build:tanstack

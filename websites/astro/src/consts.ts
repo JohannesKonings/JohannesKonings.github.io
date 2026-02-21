@@ -1,4 +1,5 @@
 import type { Site, Page, Links, Socials } from "@types";
+import { withBase } from "@lib/base";
 
 // Global
 export const SITE: Site = {
@@ -29,15 +30,15 @@ export const SEARCH: Page = {
 export const LINKS: Links = [
   {
     TEXT: "Home",
-    HREF: "/",
+    HREF: withBase("/"),
   },
   {
     TEXT: "Blog",
-    HREF: "/blog",
+    HREF: withBase("/blog"),
   },
   {
     TEXT: "Notes",
-    HREF: "/notes",
+    HREF: withBase("/notes"),
   },
 ];
 

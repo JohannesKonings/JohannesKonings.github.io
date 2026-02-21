@@ -18,6 +18,11 @@ export async function GET(context: Context) {
     (a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime(),
   );
 
+  const basePath =
+    import.meta.env.BASE_URL === "/"
+      ? ""
+      : import.meta.env.BASE_URL.replace(/\/$/, "");
+
   return rss({
     title: SITE.TITLE,
     description: SITE.DESCRIPTION,
@@ -26,7 +31,7 @@ export async function GET(context: Context) {
       title: item.data.title,
       description: item.data.summary,
       pubDate: item.data.date,
-      link: `/blog/${item.slug}/`,
+      link: `${basePath}/blog/${item.slug}/`,
       content: sanitizeHtml(parser.render(item.body), {
         allowedTags: sanitizeHtml.defaults.allowedTags.concat(["img"]),
       }),

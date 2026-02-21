@@ -1,11 +1,36 @@
 @import "tailwindcss";
 
+html {
+  color-scheme: dark;
+}
+
+html,
+body {
+  min-height: 100%;
+}
+
 body {
   font-family:
     Cascadia Code,
     sans-serif;
   margin: 0;
   padding: 0;
+  line-height: 1.6;
+}
+
+a,
+button,
+input,
+textarea {
+  outline: none;
+}
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible {
+  box-shadow: 0 0 0 2px rgba(34, 211, 238, 0.45);
+  border-radius: 0.5rem;
 }
 
 h3 {

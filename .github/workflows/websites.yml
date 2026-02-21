@@ -83,7 +83,7 @@ jobs:
         run: |
           ${{ steps.detect-package-manager.outputs.runner }} build:astro \
             --site "${{ steps.pages.outputs.origin }}" \
-            --base "${{ steps.pages.outputs.base_path }}"
+            --base "/astro"
           cp ${{ env.WEBSITE_ASTRO_PATH }}/ads.txt  ${{ env.WEBSITE_ASTRO_PATH }}/dist
         working-directory: ${{ env.BUILD_PATH }}
       - name: Build with Tanstack
@@ -93,20 +93,20 @@ jobs:
       - name: Combine build artifacts
         run: |
           set -e
-          # astro is root, tanstack is in a subfolder
+          # tanstack is primary at root, astro is secondary at /astro
           # Use source/. not source/* so empty dirs don't make glob fail in bash
           mkdir -p ${{ env.BUILD_PATH }}/dist
-          cp -r ${{ env.WEBSITE_ASTRO_PATH }}/dist/. ${{ env.BUILD_PATH }}/dist/
-          mkdir -p ${{ env.BUILD_PATH }}/dist/tanstack
-          cp -r ${{ env.WEBSITE_TANSTACK_PATH }}/.output/public/. ${{ env.BUILD_PATH }}/dist/tanstack/
+          cp -r ${{ env.WEBSITE_TANSTACK_PATH }}/.output/public/. ${{ env.BUILD_PATH }}/dist/
+          mkdir -p ${{ env.BUILD_PATH }}/dist/astro
+          cp -r ${{ env.WEBSITE_ASTRO_PATH }}/dist/. ${{ env.BUILD_PATH }}/dist/astro/
 
           # Create .nojekyll to prevent GitHub Pages from processing as Jekyll
           touch ${{ env.BUILD_PATH }}/dist/.nojekyll
 
-          # For SPA routing support, copy index.html as 404.html in tanstack folder
-          TANSTACK_INDEX="${{ env.BUILD_PATH }}/dist/tanstack/index.html"
+          # For SPA routing support, copy index.html as 404.html for tanstack root
+          TANSTACK_INDEX="${{ env.BUILD_PATH }}/dist/index.html"
           if [ -f "$TANSTACK_INDEX" ]; then
-            cp "$TANSTACK_INDEX" "${{ env.BUILD_PATH }}/dist/tanstack/404.html"
+            cp "$TANSTACK_INDEX" "${{ env.BUILD_PATH }}/dist/404.html"
           fi
 
           # Debug: List build structure

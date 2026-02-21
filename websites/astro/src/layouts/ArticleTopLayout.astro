@@ -3,6 +3,7 @@ import type { CollectionEntry } from "astro:content";
 import type { MarkdownHeading } from "astro";
 import { formatDate, readingTime } from "@lib/utils";
 import TableOfContents from "@components/TableOfContents.astro";
+import { withBase } from "@lib/base";
 
 type Props = {
 	entry:
@@ -22,11 +23,13 @@ const isCoverImage = (
 	data: Record<string, unknown>,
 ): data is { cover_image: ImageMetadata } => "cover_image" in data;
 const coverImagePath = isCoverImage(entry.data) ? entry.data.cover_image : null;
+const backPath = withBase(`/${path || collection}`);
+const uiSpritePath = withBase("/ui.svg");
 ---
 
 <div>
   <a
-    href={`/${path || collection}`}
+    href={backPath}
     class="group w-fit p-1.5 gap-1.5 text-sm flex items-center border rounded hover:bg-black/5 hover:dark:bg-white/10 border-black/15 dark:border-white/20 transition-colors duration-300 ease-in-out"
   >
     <svg
@@ -61,13 +64,13 @@ const coverImagePath = isCoverImage(entry.data) ? entry.data.cover_image : null;
   <div class="flex flex-wrap text-sm uppercase mt-12 gap-3 opacity-75">
     <div class="flex items-center gap-2">
       <svg class="size-5 stroke-current">
-        <use href="/ui.svg#calendar"></use>
+        <use href={`${uiSpritePath}#calendar`}></use>
       </svg>
       {formatDate(date)}
     </div>
     <div class="flex items-center gap-2">
       <svg class="size-5 stroke-current">
-        <use href="/ui.svg#book-open"></use>
+        <use href={`${uiSpritePath}#book-open`}></use>
       </svg>
       {readingStats.text}
     </div>

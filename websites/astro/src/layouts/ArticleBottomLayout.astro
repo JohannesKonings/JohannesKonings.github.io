@@ -2,6 +2,7 @@
 import { type CollectionEntry, getCollection } from "astro:content";
 import PostComments from "@components/PostComments.astro";
 import NoteComments from "@components/NoteComments.astro";
+import { withBase } from "@lib/base";
 
 type Props = {
 	entry:
@@ -22,6 +23,8 @@ const items = (await getCollection(collection))
 const index = items.findIndex((x) => x.slug === entry.slug);
 const prev = items[(index - 1 + items.length) % items.length];
 const next = items[(index + 1) % items.length];
+const prevPath = withBase(`/${prev.collection}/${prev.slug}`);
+const nextPath = withBase(`/${next.collection}/${next.slug}`);
 ---
 
 <div>
@@ -37,7 +40,7 @@ const next = items[(index + 1) % items.length];
   </article>
   <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
     <a
-      href={`/${prev.collection}/${prev.slug}`}
+      href={prevPath}
       class="group p-4 gap-3 flex items-center border rounded-lg hover:bg-black/5 hover:dark:bg-white/10 border-black/15 dark:border-white/20 blend"
     >
       <div
@@ -75,7 +78,7 @@ const next = items[(index + 1) % items.length];
       </svg>
     </a>
     <a
-      href={`/${next.collection}/${next.slug}`}
+      href={nextPath}
       class="group p-4 gap-3 flex items-center border rounded-lg hover:bg-black/5 hover:dark:bg-white/10 border-black/15 dark:border-white/20 transition-colors duration-300 ease-in-out"
     >
       <div

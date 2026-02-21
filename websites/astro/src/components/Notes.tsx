@@ -2,6 +2,7 @@ import type { CollectionEntry } from "astro:content";
 import { createEffect, createSignal, For } from "solid-js";
 import ArrowCardNote from "@components/ArrowCardNote";
 import { cn } from "@lib/utils";
+import { withBase } from "@lib/base";
 
 type Props = {
   tags: { name: string; count: number }[];
@@ -9,6 +10,8 @@ type Props = {
 };
 
 export default function Notes({ data, tags }: Props) {
+  const uiSpritePath = withBase("/ui.svg");
+
   const [filter, setFilter] = createSignal(new Set<string>());
   const [notes, setNotes] = createSignal<CollectionEntry<"notes">[]>([]);
 
@@ -82,13 +85,13 @@ export default function Notes({ data, tags }: Props) {
                         )}
                       >
                         <use
-                          href={`/ui.svg#square`}
+                          href={`${uiSpritePath}#square`}
                           class={cn(
                             !filter().has(tag.name) ? "block" : "hidden",
                           )}
                         />
                         <use
-                          href={`/ui.svg#square-check`}
+                          href={`${uiSpritePath}#square-check`}
                           class={cn(
                             filter().has(tag.name) ? "block" : "hidden",
                           )}

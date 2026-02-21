@@ -3,6 +3,7 @@ import { createEffect, createSignal } from "solid-js";
 import Fuse from "fuse.js";
 import ArrowCardPost from "@components/ArrowCardPost";
 import ArrowCardNote from "@components/ArrowCardNote";
+import { withBase } from "@lib/base";
 
 type Props = {
   data: CollectionEntry<"blog"> | CollectionEntry<"notes">;
@@ -10,6 +11,8 @@ type Props = {
 };
 
 export default function Search({ data }: Props) {
+  const uiSpritePath = withBase("/ui.svg");
+
   const [query, setQuery] = createSignal("");
   const [results, setResults] = createSignal<
     CollectionEntry<"blog">[] | CollectionEntry<"notes">[]
@@ -53,7 +56,7 @@ export default function Search({ data }: Props) {
           class="w-full px-2.5 py-1.5 pl-10 rounded outline-none text-black dark:text-white bg-black/5 dark:bg-white/15 border border-black/10 dark:border-white/20 focus:border-black focus:dark:border-white"
         />
         <svg class="absolute size-6 left-1.5 top-1/2 -translate-y-1/2 stroke-current">
-          <use href={`/ui.svg#search`} />
+          <use href={`${uiSpritePath}#search`} />
         </svg>
       </div>
       {query().length >= 2 && results().length >= 1 && (

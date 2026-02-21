@@ -1,4 +1,5 @@
 import { formatDate } from "@lib/utils";
+import { withBase } from "@lib/base";
 import type { CollectionEntry } from "astro:content";
 import type { JSX } from "solid-js";
 
@@ -12,10 +13,11 @@ export default function ArrowCardPost({ entry, pill }: Props): JSX.Element {
   const coverImagePath = isCoverImage
     ? (entry.data.cover_image as ImageMetadata)
     : null;
+  const entryPath = withBase(`/${entry.collection}/${entry.slug}`);
 
   return (
     <a
-      href={`/${entry.collection}/${entry.slug}`}
+      href={entryPath}
       class="group p-4 gap-3 flex items-center border rounded-lg hover:bg-black/5 hover:dark:bg-white/10 border-black/15 dark:border-white/20 transition-colors duration-300 ease-in-out"
     >
       <div class="w-full group-hover:text-black group-hover:dark:text-white blend">
@@ -36,15 +38,11 @@ export default function ArrowCardPost({ entry, pill }: Props): JSX.Element {
 
         <div class="text-sm line-clamp-2">{entry.data.summary}</div>
         <ul class="flex flex-wrap mt-2 gap-1">
-          {entry.data.tags.map(
-            (
-              tag: string, // this line has an error; Parameter 'tag' implicitly has an 'any' type.ts(7006)
-            ) => (
-              <li class="text-xs uppercase py-0.5 px-1 rounded bg-black/5 dark:bg-white/20 text-black/75 dark:text-white/75">
-                {tag}
-              </li>
-            ),
-          )}
+          {entry.data.tags.map((tag: string) => (
+            <li class="text-xs uppercase py-0.5 px-1 rounded bg-black/5 dark:bg-white/20 text-black/75 dark:text-white/75">
+              {tag}
+            </li>
+          ))}
         </ul>
       </div>
       <svg

@@ -1,4 +1,6 @@
 ---
+import { withBase } from "@lib/base";
+
 interface Props {
 	title: string;
 	description: string;
@@ -11,27 +13,36 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 const {
 	title,
 	description,
-	image = "/open-graph.jpg",
+	image = withBase("/open-graph.jpg"),
 	coverImageSrc,
 } = Astro.props;
+
+const faviconPath = withBase("/favicon.ico");
+const primaryFontPath = withBase("/fonts/CascadiaMonoNF.woff2");
+const secondaryFontPath = withBase("/fonts/CascadiaMonoNF-SemiBold.woff2");
+const sitemapPath = withBase("/sitemap-index.xml");
+const rssPath = withBase("/rss.xml");
+const themeScriptPath = withBase("/js/theme.js");
+const scrollScriptPath = withBase("/js/scroll.js");
+const animateScriptPath = withBase("/js/animate.js");
 ---
 
 <!-- Global Metadata -->
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<link rel="icon" type="image/x-icon" href="/favicon.ico" />
+<link rel="icon" type="image/x-icon" href={faviconPath} />
 <meta name="generator" content={Astro.generator} />
 
 <link
   rel="preload"
-  href="/fonts/CascadiaMonoNF.woff2"
+  href={primaryFontPath}
   as="font"
   type="font/woff2"
   crossorigin
 />
 <link
   rel="preload"
-  href="/fonts/CascadiaMonoNF-SemiBold.woff2"
+  href={secondaryFontPath}
   as="font"
   type="font/woff2"
   crossorigin
@@ -70,20 +81,20 @@ const {
 
 
 <!-- Sitemap -->
-<link rel="sitemap" href="/sitemap-index.xml" />
+<link rel="sitemap" href={sitemapPath} />
 
 <!-- RSS Feed -->
 <link
   rel="alternate"
   type="application/rss+xml"
   title={title}
-  href={`${Astro.site}rss.xml`}
+  href={rssPath}
 />
 
 <!-- Global Scripts -->
-<script is:inline src="/js/theme.js"></script>
-<script is:inline src="/js/scroll.js"></script>
-<script is:inline src="/js/animate.js"></script>
+<script is:inline src={themeScriptPath}></script>
+<script is:inline src={scrollScriptPath}></script>
+<script is:inline src={animateScriptPath}></script>
 
 <!-- <ViewTransitions  /> -->
 

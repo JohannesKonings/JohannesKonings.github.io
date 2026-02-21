@@ -23,7 +23,7 @@ export function generateSEOTags({
   tags,
 }: SEOProps) {
   const siteName = "Johannes Konings";
-  const baseUrl = "https://johanneskonings.github.io/tanstack";
+  const baseUrl = "https://johanneskonings.dev";
   const fullUrl = url ? `${baseUrl}${url}` : baseUrl;
   const fullTitle = title.includes(siteName) ? title : `${title} | ${siteName}`;
 
@@ -57,7 +57,7 @@ export function generatePostSEO(post: (typeof allPosts)[0]) {
     title: post.title,
     description: post.summary,
     url: post.url,
-    image: post.thumbnail ? `/img/${post.thumbnail}.png` : undefined,
+    image: post.cover_image ?? (post.thumbnail ? `/img/${post.thumbnail}.png` : undefined),
     type: "article",
     publishedTime: post.date.toISOString(),
     tags: [...post.tags, ...post.categories],
@@ -66,7 +66,7 @@ export function generatePostSEO(post: (typeof allPosts)[0]) {
 
 // Generate structured data for a blog post
 export function generatePostStructuredData(post: (typeof allPosts)[0]) {
-  const baseUrl = "https://johanneskonings.github.io/tanstack";
+  const baseUrl = "https://johanneskonings.dev";
 
   return {
     "@context": "https://schema.org",
@@ -90,10 +90,12 @@ export function generatePostStructuredData(post: (typeof allPosts)[0]) {
       "@type": "WebPage",
       "@id": `${baseUrl}${post.url}`,
     },
-    ...(post.thumbnail && {
+    ...((post.cover_image || post.thumbnail) && {
       image: {
         "@type": "ImageObject",
-        url: `${baseUrl}/img/${post.thumbnail}.png`,
+        url: post.cover_image
+          ? `${baseUrl}${post.cover_image}`
+          : `${baseUrl}/img/${post.thumbnail}.png`,
       },
     }),
     keywords: [...post.tags, ...post.categories].join(", "),
@@ -104,7 +106,7 @@ export function generatePostStructuredData(post: (typeof allPosts)[0]) {
 
 // Generate structured data for blog listing
 export function generateBlogListingStructuredData() {
-  const baseUrl = "https://johanneskonings.github.io/tanstack";
+  const baseUrl = "https://johanneskonings.dev";
 
   return {
     "@context": "https://schema.org",

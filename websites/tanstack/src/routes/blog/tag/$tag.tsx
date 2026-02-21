@@ -27,11 +27,11 @@ function RouteComponent() {
       description={`All blog posts tagged with ${tag}`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-8">
-        <div className="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-6">
-          <h2 className="text-2xl font-bold text-blue-900 dark:text-blue-100 mb-2">
+        <div className="rounded-lg border border-blue-500/25 bg-blue-500/10 p-6">
+          <h2 className="mb-2 text-2xl font-bold text-blue-100">
             Tag: {tag}
           </h2>
-          <p className="text-blue-700 dark:text-blue-300">
+          <p className="text-blue-200">
             {posts.length} post{posts.length !== 1 ? "s" : ""} found
           </p>
         </div>

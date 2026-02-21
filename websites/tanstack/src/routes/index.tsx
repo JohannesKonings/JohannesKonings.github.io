@@ -1,136 +1,115 @@
 import { createFileRoute } from "@tanstack/react-router";
-
-// import { Icon } from "@iconify/react";
-// import {
-// 	faTwitter,
-// 	faGithub,
-// 	faBluesky,
-// } from "@fortawesome/free-brands-svg-icons";
 import avatar from "../images/avatar.png";
 import { Fa6BrandsBluesky, MdiGithub } from "../icons";
-import { getRecentPosts } from "../lib/content-utils";
+import { getRecentNotes, getRecentPosts } from "../lib/content-utils";
 import { BlogPostCard } from "../components/blog/BlogPostCard";
-
-// import "@fortawesome/fontawesome-svg-core/styles.css";
-
-// import { config } from "@fortawesome/fontawesome-svg-core";
-// config.autoAddCss = false; /* eslint-disable import/first */
+import { NoteCard } from "../components/notes/NoteCard";
 
 export const Route = createFileRoute("/")({
-  // component: React.lazy(() =>
-  // 	import("./index").then((module) => ({ default: module.Home })),
-  // ),
   component: Home,
-  // loader: async () => await getCount(),
   notFoundComponent: () => <div>Page Not Found</div>,
 });
-// const rootRoute = createRootRoute({
-// });
-// export const Route = createRoute({
-// 	path: "/tanstack",
-// 	component: Home,
-// 	getParentRoute: () => rootRoute,
-// });
 
 function Home() {
   const recentPosts = getRecentPosts(3);
+  const recentNotes = getRecentNotes(2);
 
   return (
-    <>
-      {/* Animated metallic background effects - more subtle */}
-      <div className="min-h-screen bg-gradient-to-br from-gray-900/60 via-gray-800/40 to-gray-900/60 relative">
-        <div className="absolute inset-0">
-          <div className="absolute top-20 left-20 w-32 h-32 bg-cyan-400/5 rounded-full blur-xl animate-gentle-pulse animation-delay-1000"></div>
-          <div className="absolute bottom-20 right-20 w-40 h-40 bg-blue-400/5 rounded-full blur-xl animate-gentle-pulse animation-delay-2000"></div>
-          <div className="absolute top-1/2 left-1/3 w-24 h-24 bg-gray-400/8 rounded-full blur-lg animate-subtle-glow animation-delay-3000"></div>
-        </div>
-
-        {/* Avatar Section - now below navigation */}
-        <div className="relative z-10 pt-16 pb-12">
-          <div className="container mx-auto px-4">
-            <div className="flex flex-col items-center">
-              {/* Avatar with subtle glow effect */}
-              <div className="relative mb-6 group">
-                <div className="absolute inset-0 bg-gradient-to-r from-cyan-400/20 to-blue-400/20 rounded-full blur-lg opacity-0 group-hover:opacity-100 transition-opacity duration-700 animate-subtle-glow"></div>
-                <img
-                  src={avatar}
-                  alt="Avatar"
-                  className="relative z-10 rounded-full border-2 border-gray-600/50 shadow-2xl transform transition-transform duration-500 group-hover:scale-105"
-                />
-              </div>
-
-              {/* Social links with neon effects - smaller size */}
-              <div className="flex items-center justify-center mb-6 space-x-6">
-                <a
-                  href="https://github.com/johanneskonings"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="relative group"
-                >
-                  <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/30 to-blue-500/30 rounded-lg opacity-0 group-hover:opacity-100 transition-all duration-300 blur-md transform group-hover:scale-110"></div>
-                  <MdiGithub className="relative z-10 text-4xl text-gray-300 group-hover:text-cyan-400 transition-all duration-300 transform group-hover:scale-110 group-hover:drop-shadow-[0_0_10px_rgba(34,211,238,0.5)]" />
-                </a>
-                <a
-                  href="https://bsky.app/profile/johanneskonings.dev"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="relative group"
-                >
-                  <div className="absolute inset-0 bg-gradient-to-r from-blue-500/30 to-cyan-500/30 rounded-lg opacity-0 group-hover:opacity-100 transition-all duration-300 blur-md transform group-hover:scale-110"></div>
-                  <Fa6BrandsBluesky className="relative z-10 text-4xl text-gray-300 group-hover:text-blue-400 transition-all duration-300 transform group-hover:scale-110 group-hover:drop-shadow-[0_0_10px_rgba(59,130,246,0.5)]" />
-                </a>
-              </div>
-
-              {/* Name with metallic effect */}
-              <h1 className="mb-6 text-4xl font-bold bg-gradient-to-r from-gray-200 via-gray-100 to-gray-200 bg-clip-text text-transparent drop-shadow-lg animate-pulse">
-                Johannes Konings
-              </h1>
+    <div className="min-h-screen bg-gradient-to-br from-gray-950 via-gray-900 to-gray-950">
+      <div className="relative z-10 pb-16 pt-10">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <section className="rounded-2xl border border-cyan-500/20 bg-gray-900/60 p-6 text-center shadow-2xl backdrop-blur sm:p-10">
+            <div className="mx-auto mb-5 h-32 w-32 overflow-hidden rounded-full border-2 border-cyan-500/40 shadow-[0_0_36px_rgba(34,211,238,0.25)]">
+              <img src={avatar} alt="Johannes Konings avatar" />
             </div>
-          </div>
-        </div>
+            <h1 className="mb-3 bg-gradient-to-r from-cyan-200 to-blue-200 bg-clip-text text-4xl font-bold text-transparent sm:text-5xl">
+              Johannes Konings
+            </h1>
+            <p className="mx-auto mb-6 max-w-2xl text-gray-300">
+              Blog posts and notes about AWS, TanStack, TypeScript, and practical
+              engineering patterns.
+            </p>
 
-        {/* Latest Blog Posts Section */}
-        <div className="relative z-10 pb-16">
-          <div className="container mx-auto px-4">
-            <div className="text-center mb-8">
-              <h2 className="text-3xl font-bold bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent mb-3">
-                Latest Blog Posts
-              </h2>
+            <div className="mb-6 flex items-center justify-center gap-6">
+              <a
+                href="https://github.com/johanneskonings"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-gray-300 transition-all duration-300 hover:scale-110 hover:text-cyan-300"
+              >
+                <MdiGithub className="text-4xl" />
+              </a>
+              <a
+                href="https://bsky.app/profile/johanneskonings.dev"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-gray-300 transition-all duration-300 hover:scale-110 hover:text-blue-300"
+              >
+                <Fa6BrandsBluesky className="text-4xl" />
+              </a>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="flex flex-wrap justify-center gap-3">
+              <a
+                href="/blog"
+                className="rounded-full border border-cyan-500/40 bg-cyan-500/15 px-5 py-2 text-sm text-cyan-200 transition-all duration-300 hover:border-cyan-300/70 hover:bg-cyan-500/25"
+              >
+                Explore Blog
+              </a>
+              <a
+                href="/notes"
+                className="rounded-full border border-blue-500/40 bg-blue-500/15 px-5 py-2 text-sm text-blue-200 transition-all duration-300 hover:border-blue-300/70 hover:bg-blue-500/25"
+              >
+                Browse Notes
+              </a>
+              <a
+                href="/search"
+                className="rounded-full border border-gray-500/40 bg-gray-800/50 px-5 py-2 text-sm text-gray-200 transition-all duration-300 hover:border-gray-300/70 hover:bg-gray-700/60"
+              >
+                Search
+              </a>
+            </div>
+          </section>
+
+          <section className="mt-10">
+            <div className="mb-5 flex items-center justify-between">
+              <h2 className="text-2xl font-semibold text-cyan-200">Latest Posts</h2>
+              <a href="/blog" className="text-sm text-cyan-300 hover:text-cyan-200">
+                View all posts →
+              </a>
+            </div>
+            <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
               {recentPosts.map((post) => (
                 <BlogPostCard key={post.slug} post={post} />
               ))}
             </div>
+          </section>
 
-            {/* View All Posts Link */}
-            <div className="text-center mt-12">
-              <a
-                href="/blog"
-                className="inline-flex items-center px-8 py-4 bg-gradient-to-r from-cyan-500/20 to-blue-500/20 text-cyan-300 rounded-full border border-cyan-500/30 hover:border-cyan-400/60 hover:bg-gradient-to-r hover:from-cyan-500/30 hover:to-blue-500/30 transition-all duration-300 transform hover:scale-105 font-semibold text-lg"
-              >
-                <span className="bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">
-                  View All Posts
-                </span>
-                <svg
-                  className="ml-3 w-5 h-5 transition-transform duration-300 group-hover:translate-x-1"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M9 5l7 7-7 7"
-                  />
-                </svg>
+          <section className="mt-12">
+            <div className="mb-5 flex items-center justify-between">
+              <h2 className="text-2xl font-semibold text-blue-200">Latest Notes</h2>
+              <a href="/notes" className="text-sm text-blue-300 hover:text-blue-200">
+                View all notes →
               </a>
             </div>
-          </div>
+            <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+              {recentNotes.map((note) => (
+                <NoteCard key={note.slug} note={note} />
+              ))}
+            </div>
+          </section>
+
+          <footer className="mt-14 border-t border-cyan-500/15 pt-6 text-center text-sm text-gray-400">
+            <a href="/legal/terms" className="hover:text-cyan-200">
+              Terms
+            </a>{" "}
+            |{" "}
+            <a href="/legal/privacy" className="hover:text-cyan-200">
+              Privacy
+            </a>
+          </footer>
         </div>
       </div>
-    </>
+    </div>
   );
 }
