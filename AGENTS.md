@@ -6,9 +6,9 @@ This is a pnpm monorepo containing two blog websites under `websites/`. All scri
 
 ### Services
 
-| Service | Dev command | Port | Notes |
-|---|---|---|---|
-| Astro blog | `pnpm dev:astro` | 4321 | Primary blog site |
+| Service       | Dev command         | Port | Notes                                                            |
+| ------------- | ------------------- | ---- | ---------------------------------------------------------------- |
+| Astro blog    | `pnpm dev:astro`    | 4321 | Primary blog site                                                |
 | TanStack blog | `pnpm dev:tanstack` | 3000 | Secondary blog; serves at `/` in dev, `/tanstack/` in production |
 
 ### Key commands
