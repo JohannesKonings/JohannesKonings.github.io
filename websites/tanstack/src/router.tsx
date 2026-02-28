@@ -12,7 +12,7 @@ function DefaultNotFound() {
           Page not found
         </p>
         <a
-          href="/"
+          href={import.meta.env.PROD ? "/tanstack/" : "/"}
           className="inline-flex items-center px-6 py-3 bg-cyan-50 dark:bg-cyan-500/20 text-cyan-700 dark:text-cyan-300 rounded-lg border border-cyan-200 dark:border-cyan-500/30 hover:bg-cyan-100 dark:hover:bg-cyan-500/30 transition-colors"
         >
           Go home
@@ -24,7 +24,7 @@ function DefaultNotFound() {
 
 export function createRouter() {
   const router = createTanStackRouter({
-    basepath: undefined,
+    basepath: import.meta.env.PROD ? "/tanstack" : undefined,
     routeTree,
     scrollRestoration: true,
     defaultNotFoundComponent: DefaultNotFound,

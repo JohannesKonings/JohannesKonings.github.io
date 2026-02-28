@@ -55,7 +55,7 @@ function syncContentPlugin() {
 }
 
 export default defineConfig(({ mode }) => ({
-  base: "/",
+  base: mode === "production" ? "/tanstack/" : "/",
   server: {
     port: 3000,
     fs: {

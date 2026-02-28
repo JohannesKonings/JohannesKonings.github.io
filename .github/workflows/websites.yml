@@ -79,72 +79,35 @@ jobs:
       - name: Install Playwright Browsers
         run: pnpm exec playwright install chromium --with-deps
         working-directory: ${{ env.BUILD_PATH }}
-      - name: Build with Tanstack
-        run: |
-          NODE_ENV=production ${{ steps.detect-package-manager.outputs.runner }} build:tanstack
-        working-directory: ${{ env.BUILD_PATH }}
       - name: Build with Astro
         run: |
           ${{ steps.detect-package-manager.outputs.runner }} build:astro \
             --site "${{ steps.pages.outputs.origin }}" \
-            --base "/astro"
+            --base "${{ steps.pages.outputs.base_path }}"
+          cp ${{ env.WEBSITE_ASTRO_PATH }}/ads.txt  ${{ env.WEBSITE_ASTRO_PATH }}/dist
+        working-directory: ${{ env.BUILD_PATH }}
+      - name: Build with Tanstack
+        run: |
+          NODE_ENV=production ${{ steps.detect-package-manager.outputs.runner }} build:tanstack
         working-directory: ${{ env.BUILD_PATH }}
       - name: Combine build artifacts
         run: |
           set -e
-          # TanStack at root, Astro under /astro
+          # astro is root, tanstack is in a subfolder
+          # Use source/. not source/* so empty dirs don't make glob fail in bash
           mkdir -p ${{ env.BUILD_PATH }}/dist
-          cp -r ${{ env.WEBSITE_TANSTACK_PATH }}/.output/public/. ${{ env.BUILD_PATH }}/dist/
-          mkdir -p ${{ env.BUILD_PATH }}/dist/astro
-          cp -r ${{ env.WEBSITE_ASTRO_PATH }}/dist/. ${{ env.BUILD_PATH }}/dist/astro/
-
-          # ads.txt at deployment root (GEO)
-          cp ${{ env.WEBSITE_ASTRO_PATH }}/ads.txt ${{ env.BUILD_PATH }}/dist/
+          cp -r ${{ env.WEBSITE_ASTRO_PATH }}/dist/. ${{ env.BUILD_PATH }}/dist/
+          mkdir -p ${{ env.BUILD_PATH }}/dist/tanstack
+          cp -r ${{ env.WEBSITE_TANSTACK_PATH }}/.output/public/. ${{ env.BUILD_PATH }}/dist/tanstack/
 
           # Create .nojekyll to prevent GitHub Pages from processing as Jekyll
           touch ${{ env.BUILD_PATH }}/dist/.nojekyll
 
-          # TanStack Start currently emits assets into .output/public but can miss a root
-          # index.html for static hosting. Render "/" from Nitro as a fallback.
-          if [ ! -f "${{ env.BUILD_PATH }}/dist/index.html" ] && [ -f "${{ env.WEBSITE_TANSTACK_PATH }}/.output/server/index.mjs" ]; then
-            echo "No static root index.html found. Rendering from TanStack Nitro server..."
-            NITRO_HOST=127.0.0.1 NITRO_PORT=4173 node ${{ env.WEBSITE_TANSTACK_PATH }}/.output/server/index.mjs >/tmp/tanstack_nitro.log 2>&1 &
-            TANSTACK_SERVER_PID=$!
-
-            cleanup() {
-              if [ -n "${TANSTACK_SERVER_PID:-}" ] && kill -0 "$TANSTACK_SERVER_PID" 2>/dev/null; then
-                kill "$TANSTACK_SERVER_PID"
-                wait "$TANSTACK_SERVER_PID" 2>/dev/null || true
-              fi
-            }
-            trap cleanup EXIT
-
-            for i in $(seq 1 20); do
-              if curl -fsS "http://127.0.0.1:4173/" -o "${{ env.BUILD_PATH }}/dist/index.html"; then
-                break
-              fi
-              sleep 1
-            done
-
-            if [ ! -s "${{ env.BUILD_PATH }}/dist/index.html" ]; then
-              echo "Failed to render root index.html from TanStack Nitro server"
-              exit 1
-            fi
-
-            cleanup
-            trap - EXIT
+          # For SPA routing support, copy index.html as 404.html in tanstack folder
+          TANSTACK_INDEX="${{ env.BUILD_PATH }}/dist/tanstack/index.html"
+          if [ -f "$TANSTACK_INDEX" ]; then
+            cp "$TANSTACK_INDEX" "${{ env.BUILD_PATH }}/dist/tanstack/404.html"
           fi
-
-          # SPA routing: copy index.html to 404.html at root for direct/refresh URLs
-          if [ -f "${{ env.BUILD_PATH }}/dist/index.html" ]; then
-            cp "${{ env.BUILD_PATH }}/dist/index.html" "${{ env.BUILD_PATH }}/dist/404.html"
-          else
-            echo "No dist/index.html found after combine step"
-            exit 1
-          fi
-
-          # Redirect old /tanstack/* URLs to /* for SEO and existing references
-          (cd ${{ env.BUILD_PATH }} && node scripts/inject-404-redirect.mjs)
 
           # Debug: List build structure
           echo "=== Build structure ==="
