@@ -2,8 +2,15 @@ import { createFileRoute } from "@tanstack/react-router";
 import { allPosts, allNotes } from "content-collections";
 import { BlogLayout } from "../components/blog/BlogLayout";
 import { Search as SearchComponent } from "../components/search/Search";
+import { buildSEOHead } from "../lib/seo";
 
 export const Route = createFileRoute("/search")({
+  head: () =>
+    buildSEOHead({
+      title: "Search",
+      description: "Search all blog posts and notes by keyword.",
+      url: "/search",
+    }),
   component: SearchPage,
   loader: () => {
     // Map blog posts to search items
