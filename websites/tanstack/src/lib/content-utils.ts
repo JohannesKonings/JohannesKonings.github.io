@@ -32,6 +32,37 @@ export function getPostsByCategory(category: string) {
     .sort((a, b) => b.date.getTime() - a.date.getTime());
 }
 
+// Get all unique series (from published posts that have series)
+export function getAllSeries(): string[] {
+  const series = new Set<string>();
+  allPosts
+    .filter((post) => post.published && post.series)
+    .forEach((post) => series.add(post.series!));
+  return Array.from(series).sort();
+}
+
+// Get posts in a series, ordered by date (newest first)
+export function getPostsBySeries(seriesSlug: string) {
+  return allPosts
+    .filter((post) => post.published && post.series === seriesSlug)
+    .sort((a, b) => b.date.getTime() - a.date.getTime());
+}
+
+// Get series context for a post: index (1-based), total, prev, next
+export function getSeriesContext(post: (typeof allPosts)[0]) {
+  if (!post.series) return null;
+  const seriesPosts = getPostsBySeries(post.series);
+  const index = seriesPosts.findIndex((p) => p.slug === post.slug);
+  if (index < 0) return null;
+  return {
+    seriesSlug: post.series,
+    index: index + 1,
+    total: seriesPosts.length,
+    prev: seriesPosts[index + 1] ?? null,
+    next: seriesPosts[index - 1] ?? null,
+  };
+}
+
 // Get related posts based on tags and categories
 export function getRelatedPosts(currentPost: (typeof allPosts)[0], limit = 3) {
   const relatedPosts = allPosts

@@ -1,19 +1,59 @@
 import type { allPosts } from "content-collections";
 import { format } from "date-fns";
+import { Link } from "@tanstack/react-router";
 import type { JSX } from "react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
 interface BlogPostCardProps {
   post: (typeof allPosts)[0];
 }
 
 export function BlogPostCard({ post }: BlogPostCardProps): JSX.Element {
+  const resolveCoverImageUrl = (
+    coverImage: string | null | undefined,
+  ): string | null => {
+    if (!coverImage) return null;
+    if (coverImage.startsWith("http://") || coverImage.startsWith("https://")) {
+      return coverImage;
+    }
+    if (coverImage.startsWith("/")) return coverImage;
+
+    // Support frontmatter paths like "./cover-image.png" by resolving against post URL.
+    const normalizedPath = coverImage.startsWith("./")
+      ? coverImage.slice(2)
+      : coverImage;
+    const normalizedPostUrl = post.url.endsWith("/")
+      ? post.url.slice(0, -1)
+      : post.url;
+    return `${normalizedPostUrl}/${normalizedPath}`;
+  };
+
   // Prioritize cover_image over thumbnail
   const imageUrl =
-    post.cover_image || (post.thumbnail ? `/img/${post.thumbnail}.png` : null);
+    resolveCoverImageUrl(post.cover_image) ||
+    (post.thumbnail ? `/img/${post.thumbnail}.png` : null);
   const [imageLoaded, setImageLoaded] = useState(false);
   const [imageError, setImageError] = useState(false);
   const [showSpinner, setShowSpinner] = useState(false);
+  const imageRef = useRef<HTMLImageElement | null>(null);
+
+  useEffect(() => {
+    setImageLoaded(false);
+    setImageError(false);
+    setShowSpinner(false);
+
+    const imageElement = imageRef.current;
+    if (!imageUrl || !imageElement) return;
+
+    // Cached images can be complete before onLoad fires.
+    if (imageElement.complete) {
+      if (imageElement.naturalWidth > 0) {
+        setImageLoaded(true);
+      } else {
+        setImageError(true);
+      }
+    }
+  }, [imageUrl]);
 
   // Only show spinner after a short delay to avoid flashing for fast-loading images
   useEffect(() => {
@@ -36,9 +76,9 @@ export function BlogPostCard({ post }: BlogPostCardProps): JSX.Element {
   };
 
   return (
-    <article className="bg-gradient-to-br from-gray-800/80 via-gray-700/80 to-gray-800/80 backdrop-blur-sm rounded-xl shadow-2xl overflow-hidden border border-gray-600/30 hover:border-cyan-500/50 transition-all duration-500 transform hover:scale-[1.02] hover:shadow-cyan-500/20 group">
+    <article className="bg-white/90 dark:bg-gray-800/80 backdrop-blur-sm rounded-xl shadow-lg overflow-hidden border border-gray-200 dark:border-gray-600/30 hover:border-cyan-400/60 transition-all duration-500 transform hover:scale-[1.02] hover:-translate-y-1 hover:shadow-xl hover:shadow-cyan-500/15 group">
       {imageUrl && !imageError ? (
-        <div className="aspect-video bg-gradient-to-r from-gray-700 to-gray-800 relative overflow-hidden">
+        <div className="bg-gray-200 dark:bg-gradient-to-r dark:from-gray-700 dark:to-gray-800 relative overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/8 to-blue-500/8 opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
 
           {/* Loading placeholder - only show after delay */}
@@ -48,21 +88,14 @@ export function BlogPostCard({ post }: BlogPostCardProps): JSX.Element {
             </div>
           )}
 
-          {/* Image with smart object-fit strategy */}
+          {/* Image contained within aspect box to avoid overflow/crop */}
           <img
+            ref={imageRef}
             src={imageUrl}
             alt={post.title}
             loading="lazy"
-            className="w-full h-full transition-all duration-300 group-hover:scale-105"
-            style={{
-              objectFit: "cover",
-              objectPosition: "center top",
-              imageRendering: "auto",
-              backfaceVisibility: "hidden",
-              transform: "translateZ(0)",
-              minHeight: "100%",
-              minWidth: "100%",
-            }}
+            className="block w-full h-auto object-contain object-center transition-all duration-300 group-hover:scale-105"
+            style={{ imageRendering: "auto" }}
             onLoad={handleImageLoad}
             onError={handleImageError}
           />
@@ -72,7 +105,7 @@ export function BlogPostCard({ post }: BlogPostCardProps): JSX.Element {
         </div>
       ) : (
         /* Fallback design for posts without images or failed to load */
-        <div className="aspect-video bg-gradient-to-br from-gray-700 via-gray-600 to-gray-700 relative overflow-hidden flex items-center justify-center">
+        <div className="aspect-video bg-gray-200 dark:bg-gradient-to-br dark:from-gray-700 dark:via-gray-600 dark:to-gray-700 relative overflow-hidden flex items-center justify-center">
           <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/5 to-blue-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
           <div className="text-center text-gray-400 group-hover:text-gray-300 transition-colors duration-500">
             <div className="w-16 h-16 mx-auto mb-3 rounded-full bg-gradient-to-r from-cyan-500/20 to-blue-500/20 flex items-center justify-center">
@@ -100,51 +133,61 @@ export function BlogPostCard({ post }: BlogPostCardProps): JSX.Element {
         <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/2 via-transparent to-blue-500/2 opacity-0 group-hover:opacity-100 transition-opacity duration-700 rounded-b-xl"></div>
 
         <div className="relative z-10">
-          <div className="flex items-center gap-2 text-sm text-gray-400 mb-3">
-            <time dateTime={post.date.toISOString()} className="text-cyan-400">
+          <div className="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400 mb-3">
+            <time
+              dateTime={post.date.toISOString()}
+              className="text-cyan-600 dark:text-cyan-400"
+            >
               {format(post.date, "MMM d, yyyy")}
             </time>
-            <span className="text-gray-500">•</span>
-            <span className="text-blue-400">{post.readingTime.text}</span>
+            <span className="text-gray-400 dark:text-gray-500">•</span>
+            <span className="text-blue-600 dark:text-blue-400">
+              {post.readingTime.text}
+            </span>
           </div>
 
-          <h2 className="text-xl font-bold text-gray-100 mb-3 line-clamp-2 group-hover:text-cyan-300 transition-colors duration-300">
-            <a
-              href={post.url}
+          <h2 className="text-xl font-bold text-gray-800 dark:text-gray-100 mb-3 line-clamp-2 group-hover:text-cyan-600 dark:group-hover:text-cyan-300 transition-colors duration-300">
+            <Link
+              to={post.url}
               className="hover:text-cyan-400 transition-colors duration-300"
             >
               {post.title}
-            </a>
+            </Link>
           </h2>
 
-          <p className="text-gray-300 mb-4 line-clamp-3 leading-relaxed">
+          <p className="text-gray-600 dark:text-gray-300 mb-4 line-clamp-3 leading-relaxed">
             {post.excerpt}
           </p>
 
           {post.tags.length > 0 && (
             <div className="flex flex-wrap gap-2 mb-6">
               {post.tags.slice(0, 3).map((tag) => (
-                <a
+                <Link
                   key={tag}
-                  href={`/blog/tag/${encodeURIComponent(tag)}`}
-                  className="px-3 py-1.5 text-xs bg-gradient-to-r from-cyan-500/20 to-blue-500/20 text-cyan-300 rounded-full border border-cyan-500/30 hover:border-cyan-400/60 hover:bg-gradient-to-r hover:from-cyan-500/30 hover:to-blue-500/30 transition-all duration-300 transform hover:scale-105"
+                  to="/blog/tag/$tag"
+                  params={{ tag }}
+                  className="px-3 py-1.5 text-xs bg-cyan-50 dark:bg-cyan-500/20 text-cyan-700 dark:text-cyan-300 rounded-full border border-cyan-200 dark:border-cyan-500/30 hover:bg-cyan-100 dark:hover:bg-cyan-500/30 transition-all duration-300"
                 >
                   {tag}
-                </a>
+                </Link>
               ))}
               {post.tags.length > 3 && (
-                <span className="px-3 py-1.5 text-xs bg-gradient-to-r from-gray-600/50 to-gray-700/50 text-gray-300 rounded-full border border-gray-500/30">
+                <span className="px-3 py-1.5 text-xs bg-gray-100 dark:bg-gray-600/50 text-gray-600 dark:text-gray-300 rounded-full border border-gray-300 dark:border-gray-500/30">
                   +{post.tags.length - 3} more
                 </span>
               )}
             </div>
           )}
 
-          <a
-            href={post.url}
+          <Link
+            to={post.url}
             className="inline-flex items-center text-cyan-400 hover:text-cyan-300 font-medium group-hover:translate-x-1 transition-all duration-300"
+            aria-label={`Read more about ${post.title}`}
           >
-            <span className="bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent font-semibold">
+            <span
+              className="bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent font-semibold"
+              aria-hidden="true"
+            >
               Read more
             </span>
             <svg
@@ -152,6 +195,7 @@ export function BlogPostCard({ post }: BlogPostCardProps): JSX.Element {
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
+              aria-hidden="true"
             >
               <path
                 strokeLinecap="round"
@@ -160,7 +204,7 @@ export function BlogPostCard({ post }: BlogPostCardProps): JSX.Element {
                 d="M9 5l7 7-7 7"
               />
             </svg>
-          </a>
+          </Link>
         </div>
       </div>
     </article>

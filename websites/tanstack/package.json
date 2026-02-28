@@ -8,7 +8,7 @@
     "sync": "pnpm tsx ./../../scripts/syncWebsites.ts tanstack",
     "sync-content": "cp -r src/content public/",
     "dev": "pnpm sync && vite dev",
-    "build": "pnpm sync && vite build",
+    "build": "pnpm sync && pnpm tsx ../../scripts/generateTanstackSitemap.ts && pnpm tsx ../../scripts/generateTanstackRss.ts && vite build",
     "build:with-typecheck": "pnpm sync && tsgo --noEmit && vite build",
     "start": "pnpm sync && vite start",
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -19,6 +19,7 @@
   "license": "ISC",
   "dependencies": {
     "@emotion/styled": "11.14.1",
+    "@orama/orama": "1.2.4",
     "@tanstack/react-router": "1.124.0",
     "@tanstack/react-start": "1.124.0",
     "class-variance-authority": "0.7.1",
@@ -27,6 +28,7 @@
     "markdown-to-jsx": "9.6.1",
     "react": "19.2.4",
     "react-dom": "19.2.4",
+    "react-syntax-highlighter": "15.6.1",
     "tailwind-merge": "3.4.0",
     "tw-animate-css": "1.4.0"
   },
@@ -35,6 +37,7 @@
     "@content-collections/vite": "0.2.8",
     "@iconify/react": "6.0.2",
     "@tailwindcss/vite": "4.1.11",
+    "@tanstack/react-router-devtools": "^1.161.1",
     "@types/react": "19.2.10",
     "@types/react-dom": "19.2.3",
     "@vitejs/plugin-react": "5.1.2",

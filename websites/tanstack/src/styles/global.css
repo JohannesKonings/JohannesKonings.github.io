@@ -1,15 +1,134 @@
 @import "tailwindcss";
 
+/* Class-based dark mode for theme toggle */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* Cascadia Mono (monospace for code and body) – woff2 in public/fonts, preload in __root */
+@font-face {
+  font-family: "CascadiaMonoNF";
+  src: url("/fonts/CascadiaMonoNF.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "CascadiaMonoNF-SemiBold";
+  src: url("/fonts/CascadiaMonoNF-SemiBold.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
 body {
   font-family:
+    "CascadiaMonoNF",
     Cascadia Code,
+    monospace,
     sans-serif;
   margin: 0;
   padding: 0;
 }
 
+pre,
+code {
+  font-family:
+    "CascadiaMonoNF",
+    Cascadia Code,
+    monospace,
+    sans-serif;
+}
+
 h3 {
   font-size: 1.5rem;
+}
+
+/* Restore document structure for rendered markdown content */
+.markdown-content :where(p) {
+  margin: 1rem 0;
+  line-height: 1.75;
+  color: rgb(55 65 81);
+}
+
+.dark .markdown-content :where(p) {
+  color: rgb(209 213 219);
+}
+
+.markdown-content :where(h2) {
+  margin-top: 2rem;
+  margin-bottom: 0.875rem;
+  font-size: 1.75rem;
+  font-weight: 700;
+  line-height: 1.25;
+  color: rgb(17 24 39);
+}
+
+.dark .markdown-content :where(h2) {
+  color: rgb(243 244 246);
+}
+
+.markdown-content :where(h3) {
+  margin-top: 1.5rem;
+  margin-bottom: 0.75rem;
+  font-size: 1.375rem;
+  font-weight: 700;
+  line-height: 1.35;
+  color: rgb(31 41 55);
+}
+
+.dark .markdown-content :where(h3) {
+  color: rgb(229 231 235);
+}
+
+.markdown-content :where(ul, ol) {
+  margin: 1rem 0;
+  padding-left: 1.5rem;
+  color: rgb(55 65 81);
+}
+
+.dark .markdown-content :where(ul, ol) {
+  color: rgb(209 213 219);
+}
+
+.markdown-content :where(ul) {
+  list-style-type: disc;
+}
+
+.markdown-content :where(ol) {
+  list-style-type: decimal;
+}
+
+.markdown-content :where(li) {
+  margin: 0.45rem 0;
+}
+
+.markdown-content :where(a) {
+  color: rgb(8 145 178);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.markdown-content :where(a:hover) {
+  color: rgb(14 116 144);
+}
+
+.dark .markdown-content :where(a) {
+  color: rgb(103 232 249);
+}
+
+.dark .markdown-content :where(a:hover) {
+  color: rgb(165 243 252);
+}
+
+.markdown-content :where(blockquote) {
+  margin: 1rem 0;
+  border-left: 3px solid rgb(6 182 212 / 40%);
+  padding-left: 1rem;
+  color: rgb(75 85 99);
+}
+
+.dark .markdown-content :where(blockquote) {
+  color: rgb(156 163 175);
 }
 
 @keyframes fade {
@@ -61,22 +180,22 @@ h3 {
 @keyframes subtleGlow {
   0%,
   100% {
-    opacity: 0.05;
+    opacity: 0.1;
   }
   50% {
-    opacity: 0.15;
+    opacity: 0.25;
   }
 }
 
 @keyframes gentlePulse {
   0%,
   100% {
-    opacity: 0.2;
+    opacity: 0.35;
     transform: scale(1);
   }
   50% {
-    opacity: 0.4;
-    transform: scale(1.01);
+    opacity: 0.6;
+    transform: scale(1.02);
   }
 }
 
@@ -131,6 +250,42 @@ h3 {
 
 .animation-delay-3000 {
   animation-delay: 3s;
+}
+
+/* Route transition - subtle movement when navigating */
+@keyframes routeFade {
+  from {
+    opacity: 0.6;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-route-fade {
+  animation: routeFade 0.35s ease-out;
+}
+
+.skip-link {
+  position: absolute;
+  top: -100%;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 9999;
+  padding: 0.75rem 1.5rem;
+  background: white;
+  color: #0e7490;
+  border: 2px solid #0e7490;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: top 0.2s;
+}
+
+.skip-link:focus {
+  top: 1rem;
 }
 
 :root {
