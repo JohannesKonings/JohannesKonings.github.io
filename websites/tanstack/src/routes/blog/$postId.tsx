@@ -12,6 +12,27 @@ import { ReadingProgressBar } from "../../components/blog/ReadingProgressBar";
 import { ShareButtons } from "../../components/blog/ShareButtons";
 import { getSeriesContext, getRelatedPosts } from "../../lib/content-utils";
 
+const ABSOLUTE_URL_PATTERN = /^[a-z][a-z\d+\-.]*:/i;
+
+function resolveBlogImageSrc(
+  src: string | undefined,
+  postSlug: string,
+): string | undefined {
+  if (!src) return src;
+
+  if (
+    src.startsWith("/") ||
+    src.startsWith("data:") ||
+    src.startsWith("blob:") ||
+    ABSOLUTE_URL_PATTERN.test(src)
+  ) {
+    return src;
+  }
+
+  const normalizedSrc = src.replace(/^\.\//, "");
+  return `/content/blog/${postSlug}/${normalizedSrc}`;
+}
+
 export const Route = createFileRoute("/blog/$postId")({
   component: RouteComponent,
   beforeLoad: ({ params }) => {
@@ -45,11 +66,20 @@ function RouteComponent() {
 
   const seriesContext = getSeriesContext(post);
   const relatedPosts = getRelatedPosts(post, 3);
+  const getLanguage = (className?: string) => {
+    const langMatch = (className ?? "").match(/language-([\w-]+)/);
+    return langMatch ? langMatch[1] : "typescript";
+  };
+
+  const getCodeText = (children: unknown) => {
+    if (typeof children === "string") return children;
+    return String(children ?? "");
+  };
 
   return (
     <>
     <ReadingProgressBar />
-    <BlogLayout title={post.title} description={post.summary}>
+    <BlogLayout>
       <article className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Back link */}
         <nav className="mb-6">
@@ -122,7 +152,7 @@ function RouteComponent() {
         <TableOfContents content={processedContent} />
 
         {/* Article content */}
-        <div className="prose prose-lg dark:prose-invert max-w-none">
+        <div className="markdown-content max-w-none">
           <Markdown
             options={{
               overrides: {
@@ -143,39 +173,43 @@ function RouteComponent() {
                 pre: {
                   component: ({ children, ...props }) => {
                     const child = Array.isArray(children) ? children[0] : children;
-                    if (child && typeof child === "object" && "type" in child && (child as { type: string }).type === "code") {
-                      const codeProps = (child as { props?: { className?: string; children?: string } }).props;
-                      const className = codeProps?.className ?? "";
-                      const langMatch = className.match(/language-(\w+)/);
-                      const language = langMatch ? langMatch[1] : "text";
-                      const code = typeof codeProps?.children === "string" ? codeProps.children : String(codeProps?.children ?? "");
+                    if (child && typeof child === "object" && "props" in child) {
+                      const codeProps = (
+                        child as { props?: { className?: string; children?: unknown } }
+                      ).props;
+                      const language = getLanguage(codeProps?.className);
+                      const code = getCodeText(codeProps?.children);
                       return <CodeBlock code={code} language={language} />;
                     }
-                    return (
-                      <pre
-                        {...props}
-                        className="bg-gray-100 dark:bg-gray-800 rounded-lg p-4 overflow-x-auto"
-                      >
-                        {children}
-                      </pre>
-                    );
+                    const preProps = props as { className?: string };
+                    const language = getLanguage(preProps.className);
+                    const code = getCodeText(children);
+                    return <CodeBlock code={code} language={language} />;
                   },
                 },
                 code: {
-                  component: ({ children, ...props }) => (
-                    <code
-                      {...props}
-                      className="bg-gray-100 dark:bg-gray-800 px-1 py-0.5 rounded text-sm"
-                    >
-                      {children}
-                    </code>
-                  ),
+                  component: ({ children, className, ...props }) => {
+                    if (className?.includes("language-")) {
+                      const language = getLanguage(className);
+                      const code = getCodeText(children);
+                      return <CodeBlock code={code} language={language} />;
+                    }
+
+                    return (
+                      <code
+                        {...props}
+                        className="bg-gray-100 dark:bg-gray-800 px-1 py-0.5 rounded text-sm"
+                      >
+                        {children}
+                      </code>
+                    );
+                  },
                 },
                 img: {
                   component: ({ src, alt, ...props }) => (
                     <img
                       {...props}
-                      src={src}
+                      src={resolveBlogImageSrc(src, post.slug)}
                       alt={alt}
                       className="max-w-full h-auto rounded-lg shadow-md mx-auto"
                       loading="lazy"

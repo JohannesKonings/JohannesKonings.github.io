@@ -2,19 +2,54 @@ import type { allPosts } from "content-collections";
 import { format } from "date-fns";
 import { Link } from "@tanstack/react-router";
 import type { JSX } from "react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
 interface BlogPostCardProps {
   post: (typeof allPosts)[0];
 }
 
 export function BlogPostCard({ post }: BlogPostCardProps): JSX.Element {
+  const resolveCoverImageUrl = (coverImage: string | null | undefined): string | null => {
+    if (!coverImage) return null;
+    if (coverImage.startsWith("http://") || coverImage.startsWith("https://")) {
+      return coverImage;
+    }
+    if (coverImage.startsWith("/")) return coverImage;
+
+    // Support frontmatter paths like "./cover-image.png" by resolving against post URL.
+    const normalizedPath = coverImage.startsWith("./")
+      ? coverImage.slice(2)
+      : coverImage;
+    const normalizedPostUrl = post.url.endsWith("/") ? post.url.slice(0, -1) : post.url;
+    return `${normalizedPostUrl}/${normalizedPath}`;
+  };
+
   // Prioritize cover_image over thumbnail
   const imageUrl =
-    post.cover_image || (post.thumbnail ? `/img/${post.thumbnail}.png` : null);
+    resolveCoverImageUrl(post.cover_image) ||
+    (post.thumbnail ? `/img/${post.thumbnail}.png` : null);
   const [imageLoaded, setImageLoaded] = useState(false);
   const [imageError, setImageError] = useState(false);
   const [showSpinner, setShowSpinner] = useState(false);
+  const imageRef = useRef<HTMLImageElement | null>(null);
+
+  useEffect(() => {
+    setImageLoaded(false);
+    setImageError(false);
+    setShowSpinner(false);
+
+    const imageElement = imageRef.current;
+    if (!imageUrl || !imageElement) return;
+
+    // Cached images can be complete before onLoad fires.
+    if (imageElement.complete) {
+      if (imageElement.naturalWidth > 0) {
+        setImageLoaded(true);
+      } else {
+        setImageError(true);
+      }
+    }
+  }, [imageUrl]);
 
   // Only show spinner after a short delay to avoid flashing for fast-loading images
   useEffect(() => {
@@ -39,7 +74,7 @@ export function BlogPostCard({ post }: BlogPostCardProps): JSX.Element {
   return (
     <article className="bg-white/90 dark:bg-gray-800/80 backdrop-blur-sm rounded-xl shadow-lg overflow-hidden border border-gray-200 dark:border-gray-600/30 hover:border-cyan-400/60 transition-all duration-500 transform hover:scale-[1.02] hover:-translate-y-1 hover:shadow-xl hover:shadow-cyan-500/15 group">
       {imageUrl && !imageError ? (
-        <div className="aspect-video bg-gray-200 dark:bg-gradient-to-r dark:from-gray-700 dark:to-gray-800 relative overflow-hidden">
+        <div className="bg-gray-200 dark:bg-gradient-to-r dark:from-gray-700 dark:to-gray-800 relative overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/8 to-blue-500/8 opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
 
           {/* Loading placeholder - only show after delay */}
@@ -51,10 +86,11 @@ export function BlogPostCard({ post }: BlogPostCardProps): JSX.Element {
 
           {/* Image contained within aspect box to avoid overflow/crop */}
           <img
+            ref={imageRef}
             src={imageUrl}
             alt={post.title}
             loading="lazy"
-            className="w-full max-h-full object-contain object-center transition-all duration-300 group-hover:scale-105"
+            className="block w-full h-auto object-contain object-center transition-all duration-300 group-hover:scale-105"
             style={{ imageRendering: "auto" }}
             onLoad={handleImageLoad}
             onError={handleImageError}

@@ -16,9 +16,11 @@ export type SearchItem = {
 
 interface SearchProps {
   items: SearchItem[];
+  onResultClick?: () => void;
+  autoFocus?: boolean;
 }
 
-export function Search({ items }: SearchProps) {
+export function Search({ items, onResultClick, autoFocus = false }: SearchProps) {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<SearchItem[]>([]);
   const [db, setDb] = useState<Awaited<ReturnType<typeof create>> | null>(null);
@@ -84,6 +86,7 @@ export function Search({ items }: SearchProps) {
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder="What are you looking for?"
+          autoFocus={autoFocus}
           autoComplete="off"
           spellCheck={false}
           className="w-full px-4 py-3 pl-10 rounded-lg outline-none text-gray-900 dark:text-white bg-gray-100 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 focus:border-cyan-500 dark:focus:border-cyan-400 focus:ring-1 focus:ring-cyan-500/20"
@@ -114,6 +117,7 @@ export function Search({ items }: SearchProps) {
               <li key={item.url}>
                 <Link
                   to={item.url}
+                  onClick={onResultClick}
                   className="block p-4 rounded-lg bg-gray-100 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:border-cyan-500/50 dark:hover:border-cyan-400/50 transition-colors"
                 >
                   <span className="text-xs font-medium text-cyan-600 dark:text-cyan-400 uppercase tracking-wide">

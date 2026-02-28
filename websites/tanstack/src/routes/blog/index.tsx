@@ -19,7 +19,7 @@ function RouteComponent() {
   return (
     <BlogLayout
       title="Blog"
-      description="Insights on AWS, React, TypeScript, and modern web development"
+      description="Posts on aws and TanStack"
     >
       <BlogPostList posts={publishedPosts} />
     </BlogLayout>

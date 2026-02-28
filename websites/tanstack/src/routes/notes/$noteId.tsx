@@ -32,9 +32,18 @@ export const Route = createFileRoute("/notes/$noteId")({
 
 function NoteDetailPage() {
   const { note } = Route.useRouteContext();
+  const getLanguage = (className?: string) => {
+    const langMatch = (className ?? "").match(/language-([\w-]+)/);
+    return langMatch ? langMatch[1] : "typescript";
+  };
+
+  const getCodeText = (children: unknown) => {
+    if (typeof children === "string") return children;
+    return String(children ?? "");
+  };
 
   return (
-    <BlogLayout title={note.title} description={note.summary || note.excerpt}>
+    <BlogLayout>
       <article className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Note header */}
         <header className="mb-8">
@@ -77,41 +86,45 @@ function NoteDetailPage() {
         </header>
 
         {/* Note content */}
-        <div className="prose prose-lg dark:prose-invert max-w-none">
+        <div className="markdown-content max-w-none">
           <Markdown
             options={{
               overrides: {
                 pre: {
                   component: ({ children, ...props }) => {
                     const child = Array.isArray(children) ? children[0] : children;
-                    if (child && typeof child === "object" && "type" in child && (child as { type: string }).type === "code") {
-                      const codeProps = (child as { props?: { className?: string; children?: string } }).props;
-                      const className = codeProps?.className ?? "";
-                      const langMatch = className.match(/language-(\w+)/);
-                      const language = langMatch ? langMatch[1] : "text";
-                      const code = typeof codeProps?.children === "string" ? codeProps.children : String(codeProps?.children ?? "");
+                    if (child && typeof child === "object" && "props" in child) {
+                      const codeProps = (
+                        child as { props?: { className?: string; children?: unknown } }
+                      ).props;
+                      const language = getLanguage(codeProps?.className);
+                      const code = getCodeText(codeProps?.children);
                       return <CodeBlock code={code} language={language} />;
                     }
-                    return (
-                      <pre
-                        {...props}
-                        className="bg-gray-100 dark:bg-gray-800 rounded-lg p-4 overflow-x-auto"
-                      >
-                        {children}
-                      </pre>
-                    );
+                    const preProps = props as { className?: string };
+                    const language = getLanguage(preProps.className);
+                    const code = getCodeText(children);
+                    return <CodeBlock code={code} language={language} />;
                   },
                 },
                 // Custom styling for inline code
                 code: {
-                  component: ({ children, ...props }) => (
-                    <code
-                      {...props}
-                      className="bg-gray-100 dark:bg-gray-800 px-1 py-0.5 rounded text-sm"
-                    >
-                      {children}
-                    </code>
-                  ),
+                  component: ({ children, className, ...props }) => {
+                    if (className?.includes("language-")) {
+                      const language = getLanguage(className);
+                      const code = getCodeText(children);
+                      return <CodeBlock code={code} language={language} />;
+                    }
+
+                    return (
+                      <code
+                        {...props}
+                        className="bg-gray-100 dark:bg-gray-800 px-1 py-0.5 rounded text-sm"
+                      >
+                        {children}
+                      </code>
+                    );
+                  },
                 },
                 // Custom styling for images
                 img: {

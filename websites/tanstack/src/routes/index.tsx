@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 
 import avatar from "../images/avatar.png";
-import { Fa6BrandsBluesky, MdiGithub } from "../icons";
+import { Fa6BrandsBluesky, MdiGithub, SimpleIconsDevdotto } from "../icons";
 import { Mail, Linkedin } from "lucide-react";
 import { getRecentPosts } from "../lib/content-utils";
 import { BlogPostCard } from "../components/blog/BlogPostCard";
@@ -11,8 +11,7 @@ const SOCIALS = [
   { href: "https://github.com/JohannesKonings", label: "GitHub", Icon: MdiGithub },
   { href: "https://www.linkedin.com/in/JohannesKonings/", label: "LinkedIn", Icon: Linkedin },
   { href: "https://bsky.app/profile/johanneskonings.dev", label: "Bluesky", Icon: Fa6BrandsBluesky },
-  { href: "https://mastodon.social/@KoningsJohannes", label: "Mastodon", Icon: null },
-  { href: "https://dev.to/johanneskonings", label: "dev.to", Icon: null },
+  { href: "https://dev.to/johanneskonings", label: "dev.to", Icon: SimpleIconsDevdotto },
 ] as const;
 
 export const Route = createFileRoute("/")({
@@ -24,11 +23,11 @@ function Home() {
 
   return (
     <>
-      <div className="bg-gray-50 dark:bg-gradient-to-br dark:from-gray-900/60 dark:via-gray-800/40 dark:to-gray-900/60 relative">
+      <div className="bg-gray-50 dark:bg-gradient-to-br dark:from-slate-950 dark:via-zinc-900/95 dark:to-slate-950 relative">
         <div className="absolute inset-0">
-          <div className="absolute top-20 left-20 w-32 h-32 bg-cyan-400/10 dark:bg-cyan-400/5 rounded-full blur-xl animate-gentle-pulse animation-delay-1000" />
-          <div className="absolute bottom-20 right-20 w-40 h-40 bg-blue-400/10 dark:bg-blue-400/5 rounded-full blur-xl animate-gentle-pulse animation-delay-2000" />
-          <div className="absolute top-1/2 left-1/3 w-24 h-24 bg-cyan-300/10 dark:bg-gray-400/8 rounded-full blur-lg animate-subtle-glow animation-delay-3000" />
+          <div className="absolute top-20 left-20 w-32 h-32 bg-cyan-400/10 dark:bg-slate-100/10 rounded-full blur-xl animate-gentle-pulse animation-delay-1000" />
+          <div className="absolute bottom-20 right-20 w-40 h-40 bg-blue-400/10 dark:bg-zinc-100/8 rounded-full blur-xl animate-gentle-pulse animation-delay-2000" />
+          <div className="absolute top-1/2 left-1/3 w-24 h-24 bg-cyan-300/10 dark:bg-slate-200/12 rounded-full blur-lg animate-subtle-glow animation-delay-3000" />
         </div>
 
         {/* Avatar Section */}

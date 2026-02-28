@@ -110,8 +110,7 @@ export function generateBlogListingStructuredData() {
     "@context": "https://schema.org",
     "@type": "Blog",
     name: "Johannes Konings Blog",
-    description:
-      "Insights on AWS, React, TypeScript, and modern web development",
+    description: "Posts on aws and TanStack",
     url: `${baseUrl}/blog`,
     author: {
       "@type": "Person",

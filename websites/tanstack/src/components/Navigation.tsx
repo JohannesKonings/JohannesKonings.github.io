@@ -1,19 +1,88 @@
-import { useState } from "react";
+import { useMemo, useState, useEffect, useCallback } from "react";
 import { Link, useRouter } from "@tanstack/react-router";
 import type { JSX } from "react";
+import { Rss, Search, X } from "lucide-react";
+import { allNotes, allPosts } from "content-collections";
 import { ThemeToggle } from "./ThemeToggle";
+import {
+  Search as SearchComponent,
+  type SearchItem,
+} from "./search/Search";
 
 const NAV_LINKS = [
   { to: "/", label: "Home", exact: true },
   { to: "/blog", label: "Blog", exact: false },
   { to: "/notes", label: "Notes", exact: false },
-  { to: "/search", label: "Search", exact: true },
 ] as const;
 
 export function Navigation(): JSX.Element {
   const router = useRouter();
   const currentPath = router.state.location.pathname;
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+
+  const searchItems = useMemo<SearchItem[]>(() => {
+    const postItems = allPosts
+      .filter((post) => post.published)
+      .map((post) => ({
+        type: "blog" as const,
+        slug: post.slug,
+        title: post.title,
+        summary: post.summary,
+        excerpt: post.excerpt,
+        tags: post.tags.join(" "),
+        url: post.url,
+      }));
+
+    const noteItems = allNotes
+      .filter((note) => note.published)
+      .map((note) => ({
+        type: "note" as const,
+        slug: note.slug,
+        title: note.title,
+        summary: note.summary,
+        excerpt: note.excerpt,
+        tags: note.tags.join(" "),
+        url: note.url,
+      }));
+
+    return [...postItems, ...noteItems];
+  }, []);
+
+  const openSearch = useCallback(() => {
+    setIsSearchOpen(true);
+    setMobileOpen(false);
+  }, []);
+
+  const closeSearch = useCallback(() => {
+    setIsSearchOpen(false);
+  }, []);
+
+  useEffect(() => {
+    if (!isSearchOpen) return;
+
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        closeSearch();
+      }
+    };
+
+    window.addEventListener("keydown", onKeyDown);
+    return () => {
+      window.removeEventListener("keydown", onKeyDown);
+    };
+  }, [isSearchOpen, closeSearch]);
+
+  useEffect(() => {
+    if (!isSearchOpen) return;
+
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+    };
+  }, [isSearchOpen]);
 
   const isActive = (to: string, exact: boolean) =>
     exact ? currentPath === to : currentPath.startsWith(to);
@@ -25,10 +94,13 @@ export function Navigation(): JSX.Element {
         : "text-gray-700 dark:text-gray-200 hover:text-cyan-600 dark:hover:text-cyan-400"
     }`;
 
+  const iconButtonClasses =
+    "cursor-pointer p-2 rounded-lg bg-gray-200/80 dark:bg-gray-700/80 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600 hover:text-gray-900 dark:hover:text-gray-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500/60 transition-colors";
+
   return (
     <nav className="bg-white/90 dark:bg-gray-900/90 border-b border-gray-200 dark:border-gray-600 shadow-lg backdrop-blur-sm transition-colors duration-300 relative z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16 md:justify-center md:gap-4">
+        <div className="flex items-center h-16">
           {/* Mobile hamburger */}
           <button
             type="button"
@@ -47,7 +119,7 @@ export function Navigation(): JSX.Element {
           </button>
 
           {/* Desktop links */}
-          <div className="hidden md:flex items-center space-x-8">
+          <div className="hidden md:flex flex-1 items-center justify-center space-x-8">
             {NAV_LINKS.map(({ to, label, exact }) => (
               <Link key={to} to={to} className={linkClasses(to, exact)}>
                 <span className="relative z-10">{label}</span>
@@ -60,7 +132,22 @@ export function Navigation(): JSX.Element {
             ))}
           </div>
 
-          <ThemeToggle />
+          <div className="ml-auto flex items-center gap-2">
+            <a href="/rss.xml" aria-label="RSS feed" className={iconButtonClasses}>
+              <Rss className="w-5 h-5" />
+            </a>
+            <button
+              type="button"
+              onClick={openSearch}
+              aria-label="Search"
+              aria-expanded={isSearchOpen}
+              aria-controls="site-search-modal"
+              className={iconButtonClasses}
+            >
+              <Search className="w-5 h-5" />
+            </button>
+            <ThemeToggle />
+          </div>
         </div>
       </div>
 
@@ -82,6 +169,65 @@ export function Navigation(): JSX.Element {
                 {label}
               </Link>
             ))}
+            <button
+              type="button"
+              onClick={openSearch}
+              className={`block px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+                isSearchOpen
+                  ? "bg-cyan-50 dark:bg-cyan-500/10 text-cyan-700 dark:text-cyan-400"
+                  : "text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800"
+              }`}
+            >
+              Search
+            </button>
+            <a
+              href="/rss.xml"
+              onClick={() => setMobileOpen(false)}
+              className="block px-3 py-2 rounded-lg text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+            >
+              RSS
+            </a>
+          </div>
+        </div>
+      )}
+
+      {isSearchOpen && (
+        <div
+          id="site-search-modal"
+          role="dialog"
+          aria-modal="true"
+          aria-label="Search content"
+          onMouseDown={(event) => {
+            if (event.target === event.currentTarget) {
+              closeSearch();
+            }
+          }}
+          className="fixed inset-0 z-[70] flex items-start justify-center bg-gray-900/50 p-4 backdrop-blur-sm sm:p-6 md:p-10"
+        >
+          <div
+            className="relative z-10 w-full max-w-3xl rounded-2xl border border-gray-200 bg-white shadow-2xl dark:border-gray-700 dark:bg-gray-900"
+            onMouseDown={(event) => event.stopPropagation()}
+          >
+            <div className="flex items-center justify-between border-b border-gray-200 dark:border-gray-700 px-4 py-3">
+              <h2 className="text-sm font-semibold uppercase tracking-wide text-gray-700 dark:text-gray-300">
+                Search
+              </h2>
+              <button
+                type="button"
+                onClick={closeSearch}
+                aria-label="Close search"
+                className={iconButtonClasses}
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+            <div className="max-h-[70vh] overflow-y-auto px-4 py-4">
+              <SearchComponent
+                items={searchItems}
+                onResultClick={closeSearch}
+                autoFocus
+              />
+            </div>
           </div>
         </div>
       )}

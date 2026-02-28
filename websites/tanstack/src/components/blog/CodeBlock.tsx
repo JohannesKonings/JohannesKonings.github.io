@@ -11,7 +11,7 @@ interface CodeBlockProps {
   language?: string;
 }
 
-export function CodeBlock({ code, language = "text" }: CodeBlockProps) {
+export function CodeBlock({ code, language = "typescript" }: CodeBlockProps) {
   const [copied, setCopied] = useState(false);
 
   const handleCopy = useCallback(async () => {
@@ -30,6 +30,7 @@ export function CodeBlock({ code, language = "text" }: CodeBlockProps) {
         <button
           type="button"
           onClick={handleCopy}
+          aria-label="Copy code block"
           className="px-2 py-1 text-xs font-medium rounded bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
         >
           {copied ? "Copied!" : "Copy"}
