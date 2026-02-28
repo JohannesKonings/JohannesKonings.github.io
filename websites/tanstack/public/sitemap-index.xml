@@ -2,198 +2,198 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://johanneskonings.dev/</loc>
-    <lastmod>2026-02-21</lastmod>
+    <lastmod>2026-02-28</lastmod>
   </url>
   <url>
     <loc>https://johanneskonings.dev/blog</loc>
-    <lastmod>2026-02-21</lastmod>
+    <lastmod>2026-02-28</lastmod>
   </url>
   <url>
     <loc>https://johanneskonings.dev/notes</loc>
-    <lastmod>2026-02-21</lastmod>
+    <lastmod>2026-02-28</lastmod>
   </url>
   <url>
     <loc>https://johanneskonings.dev/search</loc>
-    <lastmod>2026-02-21</lastmod>
+    <lastmod>2026-02-28</lastmod>
   </url>
   <url>
     <loc>https://johanneskonings.dev/blog/2020-08-18-amplify-env-master-to-main</loc>
-    <lastmod>2026-02-21</lastmod>
+    <lastmod>2026-02-28</lastmod>
   </url>
   <url>
     <loc>https://johanneskonings.dev/blog/2020-08-31-example_react_component_props_events</loc>
-    <lastmod>2026-02-21</lastmod>
+    <lastmod>2026-02-28</lastmod>
   </url>
   <url>
     <loc>https://johanneskonings.dev/blog/2020-10-19-example_react_average_of_items_in_different_arrays</loc>
-    <lastmod>2026-02-21</lastmod>
+    <lastmod>2026-02-28</lastmod>
   </url>
   <url>
     <loc>https://johanneskonings.dev/blog/2020-11-27-aws_billing_metrics_and_grafana_cloud</loc>
-    <lastmod>2026-02-21</lastmod>
+    <lastmod>2026-02-28</lastmod>
   </url>
   <url>
     <loc>https://johanneskonings.dev/blog/2020-12-06-amplify_admin_ui_user_management</loc>
-    <lastmod>2026-02-21</lastmod>
+    <lastmod>2026-02-28</lastmod>
   </url>
   <url>
     <loc>https://johanneskonings.dev/blog/2020-12-19-aws-billing-metrics-grafana-cloud-and-terraform</loc>
-    <lastmod>2026-02-21</lastmod>
+    <lastmod>2026-02-28</lastmod>
   </url>
   <url>
     <loc>https://johanneskonings.dev/blog/2021-02-28-github-automatic-releases-and-changelog</loc>
-    <lastmod>2026-02-21</lastmod>
+    <lastmod>2026-02-28</lastmod>
   </url>
   <url>
     <loc>https://johanneskonings.dev/blog/2021-08-27-aws_example_ddb_analytics</loc>
-    <lastmod>2026-02-21</lastmod>
+    <lastmod>2026-02-28</lastmod>
   </url>
   <url>
     <loc>https://johanneskonings.dev/blog/2021-10-26-aws_example_ddb_analytics_cdk</loc>
-    <lastmod>2026-02-21</lastmod>
+    <lastmod>2026-02-28</lastmod>
   </url>
   <url>
     <loc>https://johanneskonings.dev/blog/2022-08-22-aws_example_ddb_analytics_athena_saved_queries_cdk</loc>
-    <lastmod>2026-02-21</lastmod>
+    <lastmod>2026-02-28</lastmod>
   </url>
   <url>
     <loc>https://johanneskonings.dev/blog/2022-09-17-aws_example_ddb_analytics_quicksight_cdk</loc>
-    <lastmod>2026-02-21</lastmod>
+    <lastmod>2026-02-28</lastmod>
   </url>
   <url>
     <loc>https://johanneskonings.dev/blog/2022-10-03-aws-example-ddb-export-athena-query</loc>
-    <lastmod>2026-02-21</lastmod>
+    <lastmod>2026-02-28</lastmod>
   </url>
   <url>
     <loc>https://johanneskonings.dev/blog/2023-08-19-cdk-serverless-v2-demo-with-zod</loc>
-    <lastmod>2026-02-21</lastmod>
+    <lastmod>2026-02-28</lastmod>
   </url>
   <url>
     <loc>https://johanneskonings.dev/blog/2023-09-08-aws-sso-steampipe</loc>
-    <lastmod>2026-02-21</lastmod>
+    <lastmod>2026-02-28</lastmod>
   </url>
   <url>
     <loc>https://johanneskonings.dev/blog/2023-12-16-cdk-notifier-feature-stacks</loc>
-    <lastmod>2026-02-21</lastmod>
+    <lastmod>2026-02-28</lastmod>
   </url>
   <url>
     <loc>https://johanneskonings.dev/blog/2024-04-20-cdk-notifier-and-tags</loc>
-    <lastmod>2026-02-21</lastmod>
+    <lastmod>2026-02-28</lastmod>
   </url>
   <url>
     <loc>https://johanneskonings.dev/blog/2024-11-30-aws-sso-prowler</loc>
-    <lastmod>2026-02-21</lastmod>
+    <lastmod>2026-02-28</lastmod>
   </url>
   <url>
     <loc>https://johanneskonings.dev/blog/2024-12-07-aws-vscode-private-ec2-instance</loc>
-    <lastmod>2026-02-21</lastmod>
+    <lastmod>2026-02-28</lastmod>
   </url>
   <url>
     <loc>https://johanneskonings.dev/blog/2024-12-28-api-gw-sigv4-different-api-clients</loc>
-    <lastmod>2026-02-21</lastmod>
+    <lastmod>2026-02-28</lastmod>
   </url>
   <url>
     <loc>https://johanneskonings.dev/blog/2025-01-02-aws-application-signals-config-lambda-cdk</loc>
-    <lastmod>2026-02-21</lastmod>
+    <lastmod>2026-02-28</lastmod>
   </url>
   <url>
     <loc>https://johanneskonings.dev/blog/2025-01-02-aws-application-signals-config-transaction-search-cdk</loc>
-    <lastmod>2026-02-21</lastmod>
+    <lastmod>2026-02-28</lastmod>
   </url>
   <url>
     <loc>https://johanneskonings.dev/blog/2025-01-12-aws-cdk-nag-custom-resource-singleton-suppression</loc>
-    <lastmod>2026-02-21</lastmod>
+    <lastmod>2026-02-28</lastmod>
   </url>
   <url>
     <loc>https://johanneskonings.dev/blog/2025-06-14-aws-cdk-ephemeral-stacks-cleanup</loc>
-    <lastmod>2026-02-21</lastmod>
+    <lastmod>2026-02-28</lastmod>
   </url>
   <url>
     <loc>https://johanneskonings.dev/blog/2025-11-27-aws-cdk-nag-iam5-granular-statement-suppresions</loc>
-    <lastmod>2026-02-21</lastmod>
+    <lastmod>2026-02-28</lastmod>
   </url>
   <url>
     <loc>https://johanneskonings.dev/blog/2025-11-28-aws-cdk-encrypt-all-lambda-envs</loc>
-    <lastmod>2026-02-21</lastmod>
+    <lastmod>2026-02-28</lastmod>
   </url>
   <url>
     <loc>https://johanneskonings.dev/blog/2025-11-30-tanstack-start-aws-serverless</loc>
-    <lastmod>2026-02-21</lastmod>
+    <lastmod>2026-02-28</lastmod>
   </url>
   <url>
     <loc>https://johanneskonings.dev/blog/2025-12-06-cdk-notifier-feature-stacks-change-set</loc>
-    <lastmod>2026-02-21</lastmod>
+    <lastmod>2026-02-28</lastmod>
   </url>
   <url>
     <loc>https://johanneskonings.dev/blog/2025-12-13-cdk-monitor-multiple-resources-using-single-alarm</loc>
-    <lastmod>2026-02-21</lastmod>
+    <lastmod>2026-02-28</lastmod>
   </url>
   <url>
     <loc>https://johanneskonings.dev/blog/2025-12-20-tanstack-start-aws-db-simple</loc>
-    <lastmod>2026-02-21</lastmod>
+    <lastmod>2026-02-28</lastmod>
   </url>
   <url>
     <loc>https://johanneskonings.dev/blog/2025-12-27-tanstack-start-aws-db-multiple-entities</loc>
-    <lastmod>2026-02-21</lastmod>
+    <lastmod>2026-02-28</lastmod>
   </url>
   <url>
     <loc>https://johanneskonings.dev/blog/2025-12-31-cdk-bootstrap-customized-template</loc>
-    <lastmod>2026-02-21</lastmod>
+    <lastmod>2026-02-28</lastmod>
   </url>
   <url>
     <loc>https://johanneskonings.dev/blog/2026-01-08-tanstack-start-aws-db-multiple-entities-sse</loc>
-    <lastmod>2026-02-21</lastmod>
+    <lastmod>2026-02-28</lastmod>
   </url>
   <url>
     <loc>https://johanneskonings.dev/blog/2026-01-11-aws-cdk-nag-log-bucket-tagger</loc>
-    <lastmod>2026-02-21</lastmod>
+    <lastmod>2026-02-28</lastmod>
   </url>
   <url>
     <loc>https://johanneskonings.dev/blog/2026-02-02-tanstack-ai-bedrock-simple</loc>
-    <lastmod>2026-02-21</lastmod>
+    <lastmod>2026-02-28</lastmod>
   </url>
   <url>
     <loc>https://johanneskonings.dev/notes/2020-08-02-web-development-tools</loc>
-    <lastmod>2026-02-21</lastmod>
+    <lastmod>2026-02-28</lastmod>
   </url>
   <url>
     <loc>https://johanneskonings.dev/notes/2020-08-03-aws-helper</loc>
-    <lastmod>2026-02-21</lastmod>
+    <lastmod>2026-02-28</lastmod>
   </url>
   <url>
     <loc>https://johanneskonings.dev/notes/2024-06-16-bruno</loc>
-    <lastmod>2026-02-21</lastmod>
+    <lastmod>2026-02-28</lastmod>
   </url>
   <url>
     <loc>https://johanneskonings.dev/notes/2024-06-16-cdk-nag</loc>
-    <lastmod>2026-02-21</lastmod>
+    <lastmod>2026-02-28</lastmod>
   </url>
   <url>
     <loc>https://johanneskonings.dev/notes/2024-06-16-cdk</loc>
-    <lastmod>2026-02-21</lastmod>
+    <lastmod>2026-02-28</lastmod>
   </url>
   <url>
     <loc>https://johanneskonings.dev/notes/2024-06-16-sops</loc>
-    <lastmod>2026-02-21</lastmod>
+    <lastmod>2026-02-28</lastmod>
   </url>
   <url>
     <loc>https://johanneskonings.dev/notes/2024-07-12-misc</loc>
-    <lastmod>2026-02-21</lastmod>
+    <lastmod>2026-02-28</lastmod>
   </url>
   <url>
     <loc>https://johanneskonings.dev/notes/2024-07-30-blog-list</loc>
-    <lastmod>2026-02-21</lastmod>
+    <lastmod>2026-02-28</lastmod>
   </url>
   <url>
     <loc>https://johanneskonings.dev/notes/2024-07-30-git</loc>
-    <lastmod>2026-02-21</lastmod>
+    <lastmod>2026-02-28</lastmod>
   </url>
   <url>
     <loc>https://johanneskonings.dev/notes/2024-07-30-terminal</loc>
-    <lastmod>2026-02-21</lastmod>
+    <lastmod>2026-02-28</lastmod>
   </url>
   <url>
     <loc>https://johanneskonings.dev/notes/2025-11-27-npm-supply-chain-security</loc>
-    <lastmod>2026-02-21</lastmod>
+    <lastmod>2026-02-28</lastmod>
   </url>
 </urlset>
