@@ -124,7 +124,10 @@ export default defineConfig(({ mode }) => ({
       },
       pages: [
         { path: "/", prerender: { enabled: true, outputPath: "/index.html" } },
-        { path: "/blog", prerender: { enabled: true, outputPath: "/blog.html" } },
+        {
+          path: "/blog",
+          prerender: { enabled: true, outputPath: "/blog.html" },
+        },
         {
           path: "/notes",
           prerender: { enabled: true, outputPath: "/notes.html" },
