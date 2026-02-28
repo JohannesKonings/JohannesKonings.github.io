@@ -103,11 +103,33 @@ jobs:
           # Create .nojekyll to prevent GitHub Pages from processing as Jekyll
           touch ${{ env.BUILD_PATH }}/dist/.nojekyll
 
-          # For SPA routing support, copy index.html as 404.html in tanstack folder
+          # Keep /tanstack reachable even when TanStack Start emits no static index.html
           TANSTACK_INDEX="${{ env.BUILD_PATH }}/dist/tanstack/index.html"
+          if [ ! -f "$TANSTACK_INDEX" ]; then
+            cat > "$TANSTACK_INDEX" <<'EOF'
+          <!doctype html>
+          <html lang="en">
+            <head>
+              <meta charset="utf-8" />
+              <meta name="viewport" content="width=device-width, initial-scale=1" />
+              <title>Redirecting...</title>
+              <meta http-equiv="refresh" content="0; url=/" />
+              <script>location.replace("/");</script>
+            </head>
+            <body>
+              <p>Redirecting to <a href="/">home</a>...</p>
+            </body>
+          </html>
+          EOF
+          fi
+
+          # For routing support, copy /tanstack/index.html as /tanstack/404.html
           if [ -f "$TANSTACK_INDEX" ]; then
             cp "$TANSTACK_INDEX" "${{ env.BUILD_PATH }}/dist/tanstack/404.html"
           fi
+
+          # Redirect old /tanstack/* URLs to /* for existing references
+          (cd ${{ env.BUILD_PATH }} && node scripts/inject-404-redirect.mjs)
 
           # Debug: List build structure
           echo "=== Build structure ==="
