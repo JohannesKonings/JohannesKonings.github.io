@@ -11,6 +11,7 @@ import { RelatedPosts } from "../../components/blog/RelatedPosts";
 import { ReadingProgressBar } from "../../components/blog/ReadingProgressBar";
 import { ShareButtons } from "../../components/blog/ShareButtons";
 import { getSeriesContext, getRelatedPosts } from "../../lib/content-utils";
+import { buildSEOHead, resolvePostSocialImage } from "../../lib/seo";
 
 const ABSOLUTE_URL_PATTERN = /^[a-z][a-z\d+\-.]*:/i;
 
@@ -33,7 +34,35 @@ function resolveBlogImageSrc(
   return `/content/blog/${postSlug}/${normalizedSrc}`;
 }
 
+function getPublishedPostBySlug(postId: string) {
+  return allPosts.find((post) => post.slug === postId && post.published);
+}
+
 export const Route = createFileRoute("/blog/$postId")({
+  head: ({ params }) => {
+    const post = getPublishedPostBySlug(params.postId);
+    const fallbackUrl = `/blog/${encodeURIComponent(params.postId)}`;
+
+    if (!post) {
+      return buildSEOHead({
+        title: "Blog",
+        description: "Posts on AWS and TanStack.",
+        url: fallbackUrl,
+      });
+    }
+
+    return buildSEOHead({
+      title: post.title,
+      description: post.summary || post.excerpt,
+      url: post.url,
+      image: resolvePostSocialImage(post),
+      imageAlt: post.title,
+      type: "article",
+      publishedTime: post.date.toISOString(),
+      modifiedTime: post.date.toISOString(),
+      tags: [...new Set([...post.tags, ...post.categories])],
+    });
+  },
   component: RouteComponent,
   beforeLoad: ({ params }) => {
     const { postId } = params;
@@ -47,8 +76,8 @@ export const Route = createFileRoute("/blog/$postId")({
       throw notFound();
     }
 
-    const post = allPosts.find((p) => p.slug === postId);
-    if (!post || !post.published) {
+    const post = getPublishedPostBySlug(postId);
+    if (!post) {
       throw notFound();
     }
 
