@@ -120,7 +120,20 @@ export default defineConfig(({ mode }) => ({
         enabled: true,
         crawlLinks: true,
         autoSubfolderIndex: true,
+        failOnError: true,
       },
+      pages: [
+        { path: "/", prerender: { enabled: true, outputPath: "/index.html" } },
+        { path: "/blog", prerender: { enabled: true, outputPath: "/blog.html" } },
+        {
+          path: "/notes",
+          prerender: { enabled: true, outputPath: "/notes.html" },
+        },
+        {
+          path: "/search",
+          prerender: { enabled: true, outputPath: "/search.html" },
+        },
+      ],
     }),
     tsConfigPaths(),
   ],
