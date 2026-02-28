@@ -80,6 +80,11 @@ function RootDocument({ children }: Readonly<{ children: ReactNode }>) {
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
+        <script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6554177261098317"
+          crossOrigin="anonymous"
+        />
         <HeadContent />
       </head>
       <body>
