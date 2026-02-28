@@ -83,29 +83,26 @@ function RootDocument({ children }: Readonly<{ children: ReactNode }>) {
         <HeadContent />
       </head>
       <body>
-        <a
-          href="#main-content"
-          className="skip-link"
-        >
+        <a href="#main-content" className="skip-link">
           Skip to content
         </a>
         <script src="/theme-init.js" suppressHydrationWarning />
         <ThemeProvider>
           <div className="min-h-screen bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-300 relative overflow-hidden">
-          {/* Animated background - gradient shift and orbs */}
-          <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/10 via-transparent to-blue-500/10 dark:from-cyan-500/5 dark:via-transparent dark:to-blue-500/5 animate-fade bg-[length:200%_200%]" />
-          <div className="absolute top-0 left-1/4 w-96 h-96 bg-cyan-400/10 dark:bg-cyan-500/5 rounded-full blur-3xl animate-gentle-pulse animation-delay-2000" />
-          <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-blue-400/10 dark:bg-blue-500/5 rounded-full blur-3xl animate-gentle-pulse animation-delay-3000" />
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-cyan-400/5 dark:bg-cyan-500/5 rounded-full blur-3xl animate-subtle-glow" />
+            {/* Animated background - gradient shift and orbs */}
+            <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/10 via-transparent to-blue-500/10 dark:from-cyan-500/5 dark:via-transparent dark:to-blue-500/5 animate-fade bg-[length:200%_200%]" />
+            <div className="absolute top-0 left-1/4 w-96 h-96 bg-cyan-400/10 dark:bg-cyan-500/5 rounded-full blur-3xl animate-gentle-pulse animation-delay-2000" />
+            <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-blue-400/10 dark:bg-blue-500/5 rounded-full blur-3xl animate-gentle-pulse animation-delay-3000" />
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-cyan-400/5 dark:bg-cyan-500/5 rounded-full blur-3xl animate-subtle-glow" />
 
-          <Navigation />
-          <div className="relative z-10 min-h-screen bg-gray-50/80 dark:bg-gray-800/50 backdrop-blur-sm transition-colors duration-300">
-            {children}
-            <BackToTop />
-            <Scripts />
-            <TanStackRouterDevtools position="bottom-right" />
+            <Navigation />
+            <div className="relative z-10 min-h-screen bg-gray-50/80 dark:bg-gray-800/50 backdrop-blur-sm transition-colors duration-300">
+              {children}
+              <BackToTop />
+              <Scripts />
+              <TanStackRouterDevtools position="bottom-right" />
+            </div>
           </div>
-        </div>
         </ThemeProvider>
       </body>
     </html>

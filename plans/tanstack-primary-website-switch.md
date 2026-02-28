@@ -16,7 +16,7 @@ No new tools are required; the only difference is content source: the video uses
 
 ---
 
-## 1. Content sync: keep _posts and _notes as source
+## 1. Content sync: keep \_posts and \_notes as source
 
 **Current behavior:** [scripts/syncWebsites.ts](scripts/syncWebsites.ts) syncs `_posts` → blog and `_notes` → notes for **Astro** only. For **TanStack**, it only syncs `_posts` → blog; **`_notes` is not synced**.
 
@@ -61,7 +61,7 @@ No new tools are required; the only difference is content source: the video uses
 
 **Do not break SEO/GEO:** Root must still expose the right metadata, crawler hints, and ads.
 
-- **Canonicals / meta:** TanStack already has [websites/tanstack/src/lib/seo.ts](websites/tanstack/src/lib/seo.ts) and meta in [websites/tanstack/src/routes/__root.tsx](websites/tanstack/src/routes/__root.tsx). After the baseUrl change above, canonicals and OG/Twitter URLs will point to the new root (correct).
+- **Canonicals / meta:** TanStack already has [websites/tanstack/src/lib/seo.ts](websites/tanstack/src/lib/seo.ts) and meta in [websites/tanstack/src/routes/\_\_root.tsx](websites/tanstack/src/routes/__root.tsx). After the baseUrl change above, canonicals and OG/Twitter URLs will point to the new root (correct).
 
 - **robots.txt at root:** TanStack currently has no robots.txt. Add one at the **deployment root** (e.g. in TanStack `public/robots.txt` so it ends up in `dist/`):
   - `User-agent: *` / `Allow: /`
@@ -147,21 +147,21 @@ No new tools are required; the only difference is content source: the video uses
 
 ## 7. Summary of file and config changes
 
-| Area | Action |
-|------|--------|
-| [scripts/syncWebsites.ts](scripts/syncWebsites.ts) | Add `_notes` → notes sync in `syncTanstack()`. |
-| [.github/workflows/websites.yml](.github/workflows/websites.yml) | Build TanStack then Astro; combine TanStack → dist/, Astro → dist/astro/; copy ads.txt to dist/; 404.html for TanStack at root. Pass `--base "/astro"` (and correct `--site`) for Astro. |
-| [websites/tanstack/vite.config.ts](websites/tanstack/vite.config.ts) | Production `base: "/"`. |
-| [websites/tanstack/src/router.tsx](websites/tanstack/src/router.tsx) | Production basepath: undefined (root). |
-| [websites/tanstack/src/lib/seo.ts](websites/tanstack/src/lib/seo.ts) | Set baseUrl to deployment root (no `/tanstack`). |
-| TanStack | Add `public/robots.txt` and a generated or static sitemap at root; ensure links in meta and structured data use new baseUrl. |
-| Astro | Ensure `site` + `base` so sitemap and canonicals use `/astro`. |
-| Specs/docs | Update [specs/website-tanstack.md](specs/website-tanstack.md) / [specs/website-astro.md](specs/website-astro.md) (and any README) to state TanStack = primary at root, Astro = secondary at /astro. |
-| TanStack font + code | Use Cascadia Code/Mono (or JetBrains Mono / Fira Code) with @font-face + preload; add CodeBlock with syntax highlighting + copy button; apply monospace to `pre`/`code`. |
-| Tag filtering | Keep and polish existing tag/category filters and routes on blog list; optional header filter entry. |
-| Global search | Add /search route; Search component with **Orama** over posts + notes (index at build or on client); link from nav. |
-| Giscus | Add Giscus React component; same repo/category IDs as Astro; render on blog post (and note) pages. |
-| Series | Add `series` to content-collections schema; /blog/series/$seriesSlug index; series banner and series-aware prev/next + "Part N of M" on post page. |
+| Area                                                                 | Action                                                                                                                                                                                              |
+| -------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [scripts/syncWebsites.ts](scripts/syncWebsites.ts)                   | Add `_notes` → notes sync in `syncTanstack()`.                                                                                                                                                      |
+| [.github/workflows/websites.yml](.github/workflows/websites.yml)     | Build TanStack then Astro; combine TanStack → dist/, Astro → dist/astro/; copy ads.txt to dist/; 404.html for TanStack at root. Pass `--base "/astro"` (and correct `--site`) for Astro.            |
+| [websites/tanstack/vite.config.ts](websites/tanstack/vite.config.ts) | Production `base: "/"`.                                                                                                                                                                             |
+| [websites/tanstack/src/router.tsx](websites/tanstack/src/router.tsx) | Production basepath: undefined (root).                                                                                                                                                              |
+| [websites/tanstack/src/lib/seo.ts](websites/tanstack/src/lib/seo.ts) | Set baseUrl to deployment root (no `/tanstack`).                                                                                                                                                    |
+| TanStack                                                             | Add `public/robots.txt` and a generated or static sitemap at root; ensure links in meta and structured data use new baseUrl.                                                                        |
+| Astro                                                                | Ensure `site` + `base` so sitemap and canonicals use `/astro`.                                                                                                                                      |
+| Specs/docs                                                           | Update [specs/website-tanstack.md](specs/website-tanstack.md) / [specs/website-astro.md](specs/website-astro.md) (and any README) to state TanStack = primary at root, Astro = secondary at /astro. |
+| TanStack font + code                                                 | Use Cascadia Code/Mono (or JetBrains Mono / Fira Code) with @font-face + preload; add CodeBlock with syntax highlighting + copy button; apply monospace to `pre`/`code`.                            |
+| Tag filtering                                                        | Keep and polish existing tag/category filters and routes on blog list; optional header filter entry.                                                                                                |
+| Global search                                                        | Add /search route; Search component with **Orama** over posts + notes (index at build or on client); link from nav.                                                                                 |
+| Giscus                                                               | Add Giscus React component; same repo/category IDs as Astro; render on blog post (and note) pages.                                                                                                  |
+| Series                                                               | Add `series` to content-collections schema; /blog/series/$seriesSlug index; series banner and series-aware prev/next + "Part N of M" on post page.                                                  |
 
 ---
 

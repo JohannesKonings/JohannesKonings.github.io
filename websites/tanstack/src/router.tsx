@@ -5,8 +5,12 @@ function DefaultNotFound() {
   return (
     <div className="min-h-[60vh] flex items-center justify-center px-4">
       <div className="text-center">
-        <h1 className="text-6xl font-bold text-gray-300 dark:text-gray-600 mb-4">404</h1>
-        <p className="text-xl text-gray-700 dark:text-gray-300 mb-6">Page not found</p>
+        <h1 className="text-6xl font-bold text-gray-300 dark:text-gray-600 mb-4">
+          404
+        </h1>
+        <p className="text-xl text-gray-700 dark:text-gray-300 mb-6">
+          Page not found
+        </p>
         <a
           href="/"
           className="inline-flex items-center px-6 py-3 bg-cyan-50 dark:bg-cyan-500/20 text-cyan-700 dark:text-cyan-300 rounded-lg border border-cyan-200 dark:border-cyan-500/30 hover:bg-cyan-100 dark:hover:bg-cyan-500/30 transition-colors"

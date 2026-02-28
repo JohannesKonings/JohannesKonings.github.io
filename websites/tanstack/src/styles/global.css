@@ -21,14 +21,22 @@
 }
 
 body {
-  font-family: "CascadiaMonoNF", Cascadia Code, monospace, sans-serif;
+  font-family:
+    "CascadiaMonoNF",
+    Cascadia Code,
+    monospace,
+    sans-serif;
   margin: 0;
   padding: 0;
 }
 
 pre,
 code {
-  font-family: "CascadiaMonoNF", Cascadia Code, monospace, sans-serif;
+  font-family:
+    "CascadiaMonoNF",
+    Cascadia Code,
+    monospace,
+    sans-serif;
 }
 
 h3 {

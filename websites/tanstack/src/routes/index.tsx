@@ -8,10 +8,26 @@ import { BlogPostCard } from "../components/blog/BlogPostCard";
 
 const SOCIALS = [
   { href: "mailto:mail@johanneskonings.dev", label: "Email", Icon: Mail },
-  { href: "https://github.com/JohannesKonings", label: "GitHub", Icon: MdiGithub },
-  { href: "https://www.linkedin.com/in/JohannesKonings/", label: "LinkedIn", Icon: Linkedin },
-  { href: "https://bsky.app/profile/johanneskonings.dev", label: "Bluesky", Icon: Fa6BrandsBluesky },
-  { href: "https://dev.to/johanneskonings", label: "dev.to", Icon: SimpleIconsDevdotto },
+  {
+    href: "https://github.com/JohannesKonings",
+    label: "GitHub",
+    Icon: MdiGithub,
+  },
+  {
+    href: "https://www.linkedin.com/in/JohannesKonings/",
+    label: "LinkedIn",
+    Icon: Linkedin,
+  },
+  {
+    href: "https://bsky.app/profile/johanneskonings.dev",
+    label: "Bluesky",
+    Icon: Fa6BrandsBluesky,
+  },
+  {
+    href: "https://dev.to/johanneskonings",
+    label: "dev.to",
+    Icon: SimpleIconsDevdotto,
+  },
 ] as const;
 
 export const Route = createFileRoute("/")({

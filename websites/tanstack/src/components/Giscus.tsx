@@ -58,7 +58,9 @@ export function Giscus({ category = "blog" }: GiscusProps) {
     containerRef.current.appendChild(script);
 
     return () => {
-      containerRef.current?.querySelector("script[src='" + GISCUS_SCRIPT + "']")?.remove();
+      containerRef.current
+        ?.querySelector("script[src='" + GISCUS_SCRIPT + "']")
+        ?.remove();
     };
   }, [catName, categoryId]);
 

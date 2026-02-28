@@ -17,7 +17,10 @@ const CONTENT_BLOG = path.join(ROOT, "websites/tanstack/src/content/blog");
 const CONTENT_NOTES = path.join(ROOT, "websites/tanstack/src/content/notes");
 const OUT_FILE = path.join(ROOT, "websites/tanstack/public/sitemap-index.xml");
 
-function parseFrontmatter(content: string): { title?: string; published?: boolean } {
+function parseFrontmatter(content: string): {
+  title?: string;
+  published?: boolean;
+} {
   const match = content.match(/^---\s*([\s\S]*?)\s*---/);
   if (!match) return {};
   const block = match[1];
@@ -41,7 +44,11 @@ function getPostUrls(): string[] {
       // Directory-based post (e.g., 2026-02-02-tanstack-ai-bedrock-simple/index.md)
       const dirPath = path.join(CONTENT_BLOG, ent.name);
       const files = fs.readdirSync(dirPath);
-      const mdFile = files.find((f) => f.endsWith(".md") && (f === "index.md" || f === ent.name + ".md")) ?? files.find((f) => f.endsWith(".md"));
+      const mdFile =
+        files.find(
+          (f) =>
+            f.endsWith(".md") && (f === "index.md" || f === ent.name + ".md"),
+        ) ?? files.find((f) => f.endsWith(".md"));
       if (!mdFile) continue;
 
       const content = fs.readFileSync(path.join(dirPath, mdFile), "utf-8");
@@ -53,7 +60,10 @@ function getPostUrls(): string[] {
     } else if (ent.isFile() && ent.name.endsWith(".md")) {
       // Flat .md file (e.g., 2022-09-17-aws_example_ddb_analytics_quicksight_cdk.md)
       // Skip if it's in a directory (handled above)
-      const content = fs.readFileSync(path.join(CONTENT_BLOG, ent.name), "utf-8");
+      const content = fs.readFileSync(
+        path.join(CONTENT_BLOG, ent.name),
+        "utf-8",
+      );
       const { published } = parseFrontmatter(content);
       if (published === false) continue;
 
@@ -78,7 +88,10 @@ function getNoteUrls(): string[] {
   for (const file of files) {
     if (!file.isFile() || !file.name.endsWith(".md")) continue;
 
-    const content = fs.readFileSync(path.join(CONTENT_NOTES, file.name), "utf-8");
+    const content = fs.readFileSync(
+      path.join(CONTENT_NOTES, file.name),
+      "utf-8",
+    );
     const { published } = parseFrontmatter(content);
     if (published === false) continue;
 
@@ -110,10 +123,14 @@ function main() {
 
   const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-${allUrls.map((loc) => `  <url>
+${allUrls
+  .map(
+    (loc) => `  <url>
     <loc>${loc}</loc>
     <lastmod>${today}</lastmod>
-  </url>`).join("\n")}
+  </url>`,
+  )
+  .join("\n")}
 </urlset>
 `;
 

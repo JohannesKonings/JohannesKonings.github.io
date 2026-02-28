@@ -15,6 +15,7 @@
 ### Task 1: Fix light-mode styling in BlogPostList filter section
 
 **Files:**
+
 - Modify: `websites/tanstack/src/components/blog/BlogPostList.tsx`
 
 **Step 1: Fix the filter container background**
@@ -33,20 +34,22 @@ In `BlogPostList.tsx`, replace the hardcoded dark filter container (line ~100) w
 
 ```tsx
 // OLD (line 108):
-className="w-full px-4 py-3 bg-gradient-to-r from-gray-900/80 to-gray-800/80 border border-gray-600/50 rounded-lg text-gray-100 placeholder-gray-400 focus:ring-2 focus:ring-cyan-500/50 focus:border-cyan-500/50 transition-all duration-300 backdrop-blur-sm"
+className =
+  "w-full px-4 py-3 bg-gradient-to-r from-gray-900/80 to-gray-800/80 border border-gray-600/50 rounded-lg text-gray-100 placeholder-gray-400 focus:ring-2 focus:ring-cyan-500/50 focus:border-cyan-500/50 transition-all duration-300 backdrop-blur-sm";
 
 // NEW:
-className="w-full px-4 py-3 bg-gray-100 dark:bg-gray-900/80 border border-gray-300 dark:border-gray-600/50 rounded-lg text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-cyan-500/50 focus:border-cyan-500/50 transition-all duration-300"
+className =
+  "w-full px-4 py-3 bg-gray-100 dark:bg-gray-900/80 border border-gray-300 dark:border-gray-600/50 rounded-lg text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-cyan-500/50 focus:border-cyan-500/50 transition-all duration-300";
 ```
 
 **Step 3: Fix unselected tag/category pill styling**
 
 ```tsx
 // OLD (lines 129, 153 — the unselected state for tags and categories):
-"bg-gradient-to-r from-gray-700/50 to-gray-600/50 text-gray-300 border border-gray-600/30 hover:border-cyan-500/50 hover:text-cyan-300"
+"bg-gradient-to-r from-gray-700/50 to-gray-600/50 text-gray-300 border border-gray-600/30 hover:border-cyan-500/50 hover:text-cyan-300";
 
 // NEW:
-"bg-gray-100 dark:bg-gray-700/50 text-gray-700 dark:text-gray-300 border border-gray-300 dark:border-gray-600/30 hover:border-cyan-500/50 hover:text-cyan-600 dark:hover:text-cyan-300"
+"bg-gray-100 dark:bg-gray-700/50 text-gray-700 dark:text-gray-300 border border-gray-300 dark:border-gray-600/30 hover:border-cyan-500/50 hover:text-cyan-600 dark:hover:text-cyan-300";
 ```
 
 Apply the same pattern to the category pills (line ~153).
@@ -55,10 +58,12 @@ Apply the same pattern to the category pills (line ~153).
 
 ```tsx
 // OLD (line 174):
-className="px-4 py-2 text-sm bg-gradient-to-r from-red-500/20 to-orange-500/20 text-red-300 border border-red-500/30 rounded-lg hover:border-red-400/60 hover:bg-gradient-to-r hover:from-red-500/30 hover:to-orange-500/30 transition-all duration-300 transform hover:scale-105"
+className =
+  "px-4 py-2 text-sm bg-gradient-to-r from-red-500/20 to-orange-500/20 text-red-300 border border-red-500/30 rounded-lg hover:border-red-400/60 hover:bg-gradient-to-r hover:from-red-500/30 hover:to-orange-500/30 transition-all duration-300 transform hover:scale-105";
 
 // NEW:
-className="px-4 py-2 text-sm bg-red-50 dark:bg-red-500/20 text-red-600 dark:text-red-300 border border-red-300 dark:border-red-500/30 rounded-lg hover:bg-red-100 dark:hover:bg-red-500/30 transition-all duration-300"
+className =
+  "px-4 py-2 text-sm bg-red-50 dark:bg-red-500/20 text-red-600 dark:text-red-300 border border-red-300 dark:border-red-500/30 rounded-lg hover:bg-red-100 dark:hover:bg-red-500/30 transition-all duration-300";
 ```
 
 **Step 5: Fix results count text**
@@ -84,6 +89,7 @@ className="px-4 py-2 text-sm bg-red-50 dark:bg-red-500/20 text-red-600 dark:text
 ```
 
 Also fix the sub-text on line ~199:
+
 ```tsx
 // OLD:
 <p className="text-gray-500 text-sm mt-2">
@@ -93,6 +99,7 @@ Also fix the sub-text on line ~199:
 **Step 7: Remove the focus-within gradient div (line ~110)**
 
 The gradient overlay inside the search input's parent div uses hardcoded dark colors and isn't needed:
+
 ```tsx
 // REMOVE this line entirely (line ~110):
 <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/5 to-blue-500/5 rounded-lg pointer-events-none opacity-0 focus-within:opacity-100 transition-opacity duration-300"></div>
@@ -101,6 +108,7 @@ The gradient overlay inside the search input's parent div uses hardcoded dark co
 **Step 8: Verify**
 
 Run: `pnpm dev:tanstack` → open http://localhost:3000/blog
+
 - In light mode: filter section should have white/light background, readable text, visible tags
 - In dark mode: should look the same as before (dark backgrounds, light text)
 - Toggle theme and verify both states
@@ -117,31 +125,37 @@ git commit -m "fix: light-mode styling for blog filter section"
 ### Task 2: Fix light-mode styling in BlogPostCard
 
 **Files:**
+
 - Modify: `websites/tanstack/src/components/blog/BlogPostCard.tsx`
 
 **Step 1: Fix tag pill styling**
 
 ```tsx
 // OLD (line 123):
-className="px-3 py-1.5 text-xs bg-gradient-to-r from-cyan-500/20 to-blue-500/20 text-cyan-300 rounded-full border border-cyan-500/30 hover:border-cyan-400/60 hover:bg-gradient-to-r hover:from-cyan-500/30 hover:to-blue-500/30 transition-all duration-300 transform hover:scale-105"
+className =
+  "px-3 py-1.5 text-xs bg-gradient-to-r from-cyan-500/20 to-blue-500/20 text-cyan-300 rounded-full border border-cyan-500/30 hover:border-cyan-400/60 hover:bg-gradient-to-r hover:from-cyan-500/30 hover:to-blue-500/30 transition-all duration-300 transform hover:scale-105";
 
 // NEW:
-className="px-3 py-1.5 text-xs bg-cyan-50 dark:bg-cyan-500/20 text-cyan-700 dark:text-cyan-300 rounded-full border border-cyan-200 dark:border-cyan-500/30 hover:bg-cyan-100 dark:hover:bg-cyan-500/30 transition-all duration-300"
+className =
+  "px-3 py-1.5 text-xs bg-cyan-50 dark:bg-cyan-500/20 text-cyan-700 dark:text-cyan-300 rounded-full border border-cyan-200 dark:border-cyan-500/30 hover:bg-cyan-100 dark:hover:bg-cyan-500/30 transition-all duration-300";
 ```
 
 **Step 2: Fix "+N more" badge**
 
 ```tsx
 // OLD (line 129):
-className="px-3 py-1.5 text-xs bg-gradient-to-r from-gray-600/50 to-gray-700/50 text-gray-300 rounded-full border border-gray-500/30"
+className =
+  "px-3 py-1.5 text-xs bg-gradient-to-r from-gray-600/50 to-gray-700/50 text-gray-300 rounded-full border border-gray-500/30";
 
 // NEW:
-className="px-3 py-1.5 text-xs bg-gray-100 dark:bg-gray-600/50 text-gray-600 dark:text-gray-300 rounded-full border border-gray-300 dark:border-gray-500/30"
+className =
+  "px-3 py-1.5 text-xs bg-gray-100 dark:bg-gray-600/50 text-gray-600 dark:text-gray-300 rounded-full border border-gray-300 dark:border-gray-500/30";
 ```
 
 **Step 3: Verify**
 
 Run: `pnpm dev:tanstack` → open http://localhost:3000
+
 - Light mode: tag pills should be light cyan with dark text, "+N more" badge readable
 - Dark mode: unchanged from current
 
@@ -157,16 +171,19 @@ git commit -m "fix: light-mode styling for blog post card tags"
 ### Task 3: Fix light-mode "View All Posts" button on homepage
 
 **Files:**
+
 - Modify: `websites/tanstack/src/routes/index.tsx`
 
 **Step 1: Fix button styling**
 
 ```tsx
 // OLD (line 121):
-className="inline-flex items-center px-8 py-4 bg-gradient-to-r from-cyan-500/20 to-blue-500/20 text-cyan-300 rounded-full border border-cyan-500/30 hover:border-cyan-400/60 hover:bg-gradient-to-r hover:from-cyan-500/30 hover:to-blue-500/30 transition-all duration-300 transform hover:scale-105 font-semibold text-lg"
+className =
+  "inline-flex items-center px-8 py-4 bg-gradient-to-r from-cyan-500/20 to-blue-500/20 text-cyan-300 rounded-full border border-cyan-500/30 hover:border-cyan-400/60 hover:bg-gradient-to-r hover:from-cyan-500/30 hover:to-blue-500/30 transition-all duration-300 transform hover:scale-105 font-semibold text-lg";
 
 // NEW:
-className="inline-flex items-center px-8 py-4 bg-cyan-50 dark:bg-cyan-500/20 text-cyan-700 dark:text-cyan-300 rounded-full border border-cyan-200 dark:border-cyan-500/30 hover:bg-cyan-100 dark:hover:bg-cyan-500/30 hover:border-cyan-300 dark:hover:border-cyan-400/60 transition-all duration-300 transform hover:scale-105 font-semibold text-lg"
+className =
+  "inline-flex items-center px-8 py-4 bg-cyan-50 dark:bg-cyan-500/20 text-cyan-700 dark:text-cyan-300 rounded-full border border-cyan-200 dark:border-cyan-500/30 hover:bg-cyan-100 dark:hover:bg-cyan-500/30 hover:border-cyan-300 dark:hover:border-cyan-400/60 transition-all duration-300 transform hover:scale-105 font-semibold text-lg";
 ```
 
 **Step 2: Fix button text gradient**
@@ -205,11 +222,13 @@ git commit -m "fix: light-mode View All Posts button and clean up dead code"
 ### Task 4: Add responsive mobile navigation
 
 **Files:**
+
 - Modify: `websites/tanstack/src/components/Navigation.tsx`
 
 **Step 1: Add mobile hamburger menu**
 
 Replace the entire `Navigation` component with a responsive version that:
+
 - Shows horizontal nav links on `md:` and above (current behavior)
 - Shows a hamburger button on small screens
 - Opens a slide-down menu panel when hamburger is clicked
@@ -255,11 +274,26 @@ export function Navigation(): JSX.Element {
             aria-label="Toggle navigation menu"
             aria-expanded={mobileOpen}
           >
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg
+              className="w-6 h-6"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
               {mobileOpen ? (
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M6 18L18 6M6 6l12 12"
+                />
               ) : (
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M4 6h16M4 12h16M4 18h16"
+                />
               )}
             </svg>
           </button>
@@ -325,6 +359,7 @@ git commit -m "feat: add responsive mobile navigation with hamburger menu"
 ### Task 5: Add 404 Not Found page
 
 **Files:**
+
 - Modify: `websites/tanstack/src/router.tsx`
 - Modify: `websites/tanstack/src/routes/__root.tsx`
 
@@ -340,8 +375,12 @@ function DefaultNotFound() {
   return (
     <div className="min-h-[60vh] flex items-center justify-center px-4">
       <div className="text-center">
-        <h1 className="text-6xl font-bold text-gray-300 dark:text-gray-600 mb-4">404</h1>
-        <p className="text-xl text-gray-700 dark:text-gray-300 mb-6">Page not found</p>
+        <h1 className="text-6xl font-bold text-gray-300 dark:text-gray-600 mb-4">
+          404
+        </h1>
+        <p className="text-xl text-gray-700 dark:text-gray-300 mb-6">
+          Page not found
+        </p>
         <a
           href="/"
           className="inline-flex items-center px-6 py-3 bg-cyan-50 dark:bg-cyan-500/20 text-cyan-700 dark:text-cyan-300 rounded-lg border border-cyan-200 dark:border-cyan-500/30 hover:bg-cyan-100 dark:hover:bg-cyan-500/30 transition-colors"
@@ -398,6 +437,7 @@ git commit -m "feat: add styled 404 page as default notFoundComponent"
 ### Task 6: Add skip link for accessibility
 
 **Files:**
+
 - Modify: `websites/tanstack/src/routes/__root.tsx`
 - Modify: `websites/tanstack/src/styles/global.css`
 
@@ -466,6 +506,7 @@ git commit -m "feat: add skip-to-content link for keyboard/screen reader users"
 ### Task 7: Add footer to homepage
 
 **Files:**
+
 - Modify: `websites/tanstack/src/routes/index.tsx`
 
 **Step 1: Wrap homepage content in BlogLayout**
@@ -475,7 +516,9 @@ The homepage currently renders raw JSX without `BlogLayout`, so it lacks a foote
 Add a footer section at the end of the `Home` component's return, after the "View All Posts" `</div>`:
 
 ```tsx
-{/* Footer */}
+{
+  /* Footer */
+}
 <footer className="relative z-10 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border-t border-gray-200 dark:border-gray-600/50 shadow-lg">
   <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
     <div className="text-center flex flex-wrap justify-center items-center gap-4">
@@ -492,7 +535,7 @@ Add a footer section at the end of the `Home` component's return, after the "Vie
       </p>
     </div>
   </div>
-</footer>
+</footer>;
 ```
 
 This matches the existing footer in `BlogLayout.tsx`.
@@ -513,6 +556,7 @@ git commit -m "feat: add footer to homepage matching BlogLayout footer"
 ### Task 8: Fix Content Collections deprecation warnings
 
 **Files:**
+
 - Modify: `websites/tanstack/content-collections.ts`
 
 **Step 1: Add explicit content property to both collections**
@@ -520,6 +564,7 @@ git commit -m "feat: add footer to homepage matching BlogLayout footer"
 The deprecation warning says "implicit addition of a content property" — we need to add `content: z.string()` explicitly to both schemas.
 
 In the `posts` collection schema:
+
 ```tsx
 schema: z.object({
   title: z.string(),
@@ -539,6 +584,7 @@ schema: z.object({
 ```
 
 In the `notes` collection schema:
+
 ```tsx
 schema: z.object({
   title: z.string(),
@@ -572,6 +618,7 @@ git commit -m "fix: add explicit content property to suppress CC deprecation war
 ### Task 9: Add "Back to Blog" link on blog post pages
 
 **Files:**
+
 - Modify: `websites/tanstack/src/routes/blog/$postId.tsx`
 
 **Step 1: Add navigation link above the article**
@@ -613,6 +660,7 @@ git commit -m "feat: add Back to Blog navigation link on post pages"
 ### Task 10: Add table of contents for blog posts
 
 **Files:**
+
 - Create: `websites/tanstack/src/components/blog/TableOfContents.tsx`
 - Modify: `websites/tanstack/src/routes/blog/$postId.tsx`
 
@@ -728,6 +776,7 @@ git commit -m "feat: add auto-generated table of contents for blog posts"
 ### Task 11: Add related posts section
 
 **Files:**
+
 - Create: `websites/tanstack/src/components/blog/RelatedPosts.tsx`
 - Modify: `websites/tanstack/src/routes/blog/$postId.tsx`
 
@@ -749,7 +798,9 @@ export function RelatedPosts({ posts }: RelatedPostsProps) {
 
   return (
     <section className="mt-12 pt-8 border-t border-gray-200 dark:border-gray-700">
-      <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-6">Related Posts</h2>
+      <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-6">
+        Related Posts
+      </h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {posts.map((post) => (
           <Link
@@ -803,6 +854,7 @@ git commit -m "feat: add related posts section to blog post pages"
 ### Task 12: Improve tag filter UX with counts and collapse
 
 **Files:**
+
 - Modify: `websites/tanstack/src/components/blog/BlogPostList.tsx`
 
 **Step 1: Add post count to each tag**
@@ -822,7 +874,9 @@ const tagCounts = useMemo(() => {
 const categoryCounts = useMemo(() => {
   const counts = new Map<string, number>();
   posts.forEach((post) =>
-    post.categories.forEach((cat) => counts.set(cat, (counts.get(cat) ?? 0) + 1)),
+    post.categories.forEach((cat) =>
+      counts.set(cat, (counts.get(cat) ?? 0) + 1),
+    ),
   );
   return counts;
 }, [posts]);
@@ -888,6 +942,7 @@ git commit -m "feat: add tag counts and collapsible tag list to blog filters"
 ### Task 13: Make notes tags linkable
 
 **Files:**
+
 - Modify: `websites/tanstack/src/routes/notes/index.tsx`
 
 **Step 1: Change tag spans to links**
@@ -930,6 +985,7 @@ git commit -m "feat: make notes tags clickable links to blog tag pages"
 ### Task 14: Add reading progress bar for blog posts
 
 **Files:**
+
 - Create: `websites/tanstack/src/components/blog/ReadingProgressBar.tsx`
 - Modify: `websites/tanstack/src/routes/blog/$postId.tsx`
 
@@ -946,8 +1002,11 @@ export function ReadingProgressBar() {
   useEffect(() => {
     const update = () => {
       const scrollTop = window.scrollY;
-      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-      setProgress(docHeight > 0 ? Math.min((scrollTop / docHeight) * 100, 100) : 0);
+      const docHeight =
+        document.documentElement.scrollHeight - window.innerHeight;
+      setProgress(
+        docHeight > 0 ? Math.min((scrollTop / docHeight) * 100, 100) : 0,
+      );
     };
 
     window.addEventListener("scroll", update, { passive: true });
@@ -1001,6 +1060,7 @@ git commit -m "feat: add reading progress bar to blog posts"
 ### Task 15: Improve accessible link text for "Read more"
 
 **Files:**
+
 - Modify: `websites/tanstack/src/components/blog/BlogPostCard.tsx`
 
 **Step 1: Add screen-reader-only post title to "Read more" link**
@@ -1035,6 +1095,7 @@ git commit -m "fix: add accessible aria-label to Read More links"
 ### Task 16: Fix SEO baseUrl to use johanneskonings.dev
 
 **Files:**
+
 - Modify: `websites/tanstack/src/lib/seo.ts`
 
 **Step 1: Update baseUrl**
@@ -1065,6 +1126,7 @@ git commit -m "fix: update SEO baseUrl to johanneskonings.dev"
 ### Task 17: Add TanStack Router DevTools in development
 
 **Files:**
+
 - Modify: `websites/tanstack/src/routes/__root.tsx`
 - Run: `pnpm add -D @tanstack/react-router-devtools` in `websites/tanstack/`
 
@@ -1074,7 +1136,7 @@ git commit -m "fix: update SEO baseUrl to johanneskonings.dev"
 cd websites/tanstack && pnpm add -D @tanstack/react-router-devtools
 ```
 
-**Step 2: Add lazy devtools import to __root.tsx**
+**Step 2: Add lazy devtools import to \_\_root.tsx**
 
 ```tsx
 import { lazy } from "react";
@@ -1114,6 +1176,7 @@ git commit -m "feat: add TanStack Router DevTools in development mode"
 ### Task 18: Add share buttons on blog posts
 
 **Files:**
+
 - Create: `websites/tanstack/src/components/blog/ShareButtons.tsx`
 - Modify: `websites/tanstack/src/routes/blog/$postId.tsx`
 
@@ -1177,12 +1240,32 @@ export function ShareButtons({ title, url }: ShareButtonsProps) {
         aria-label="Copy link to clipboard"
       >
         {copied ? (
-          <svg className="w-4 h-4 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+          <svg
+            className="w-4 h-4 text-green-500"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M5 13l4 4L19 7"
+            />
           </svg>
         ) : (
-          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+          <svg
+            className="w-4 h-4"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"
+            />
           </svg>
         )}
       </button>
@@ -1199,7 +1282,7 @@ In `$postId.tsx`, import and render after the published date:
 import { ShareButtons } from "../../components/blog/ShareButtons";
 
 // In the footer, after the "Published on" paragraph:
-<ShareButtons title={post.title} url={post.url} />
+<ShareButtons title={post.title} url={post.url} />;
 ```
 
 **Step 3: Verify**
@@ -1218,6 +1301,7 @@ git commit -m "feat: add share buttons (X, LinkedIn, copy link) to blog posts"
 ### Task 19: Add Back to Top button
 
 **Files:**
+
 - Create: `websites/tanstack/src/components/BackToTop.tsx`
 - Modify: `websites/tanstack/src/routes/__root.tsx`
 
@@ -1246,8 +1330,18 @@ export function BackToTop() {
       className="fixed bottom-6 right-6 z-50 p-3 rounded-full bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-600 shadow-lg text-gray-600 dark:text-gray-300 hover:text-cyan-600 dark:hover:text-cyan-400 hover:border-cyan-300 dark:hover:border-cyan-500/50 transition-all duration-300"
       aria-label="Back to top"
     >
-      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
+      <svg
+        className="w-5 h-5"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth={2}
+          d="M5 15l7-7 7 7"
+        />
       </svg>
     </button>
   );
@@ -1282,10 +1376,10 @@ git commit -m "feat: add floating Back to Top button"
 
 ## Summary
 
-| Phase | Tasks | Impact |
-|-------|-------|--------|
-| **A: Critical** | 1-8 | Fix broken light-mode UI, add mobile nav, 404 page, skip link, homepage footer, fix CC warnings |
-| **B: UX** | 9-14 | Back-to-blog link, table of contents, related posts, tag count + collapse, clickable notes tags, reading progress bar |
-| **C: A11y & SEO** | 15-19 | Accessible link text, fix SEO baseUrl, Router DevTools, share buttons, Back to Top |
+| Phase             | Tasks | Impact                                                                                                                |
+| ----------------- | ----- | --------------------------------------------------------------------------------------------------------------------- |
+| **A: Critical**   | 1-8   | Fix broken light-mode UI, add mobile nav, 404 page, skip link, homepage footer, fix CC warnings                       |
+| **B: UX**         | 9-14  | Back-to-blog link, table of contents, related posts, tag count + collapse, clickable notes tags, reading progress bar |
+| **C: A11y & SEO** | 15-19 | Accessible link text, fix SEO baseUrl, Router DevTools, share buttons, Back to Top                                    |
 
 Each task is independently committable. Phase A should be done first as it fixes broken functionality. Phases B and C can be done in any order.

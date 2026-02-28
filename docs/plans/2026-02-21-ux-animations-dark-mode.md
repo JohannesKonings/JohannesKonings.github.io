@@ -15,6 +15,7 @@
 The dark mode toggle clicks but nothing changes visually. Root cause: `ThemeSync` in `__root.tsx` toggles the `dark` class on `document.documentElement`, but the Tailwind v4 `@custom-variant dark` only generates utility classes when the generated CSS actually includes `dark:` variants — which it does. The real issue is that `ThemeSync` sets the class via `useEffect`, but on the initial client render the theme state may default to `"light"` (because `getInitialTheme` runs during SSR where `document` is undefined), so the `useEffect` immediately removes the `dark` class that `theme-init.js` set. Additionally, the `setTheme` callback does not synchronously update the DOM, causing a flash.
 
 **Files:**
+
 - Modify: `websites/tanstack/src/contexts/ThemeContext.tsx`
 
 **Step 1: Make `setTheme` synchronously toggle the DOM class**
@@ -79,6 +80,7 @@ export function useTheme() {
 ```
 
 Key changes:
+
 - Replace `useState` + `useEffect` with `useSyncExternalStore` — theme derives from the DOM class (set by `theme-init.js` before React hydrates)
 - `setTheme` synchronously toggles the class and writes to localStorage
 - No `useEffect`, no race condition, no hydration mismatch
@@ -90,6 +92,7 @@ In `websites/tanstack/src/routes/__root.tsx`, delete the `ThemeSync` component e
 **Step 3: Verify**
 
 Run: `pnpm dev:tanstack` → open http://localhost:3000/
+
 - Click the moon icon → background should change to dark, nav should darken, text should lighten
 - Click the sun icon → should revert to light
 - Refresh → theme should persist
@@ -109,6 +112,7 @@ git commit -m "fix: rewrite theme toggle with useSyncExternalStore to fix dark m
 A small Intersection Observer hook that returns a ref and a boolean `isInView`.
 
 **Files:**
+
 - Create: `websites/tanstack/src/hooks/useInView.ts`
 
 **Step 1: Write the hook**
@@ -172,6 +176,7 @@ git commit -m "feat: add useInView hook for scroll-reveal animations"
 Add `@keyframes` and utility classes for fade-up, fade-in, and slide-in effects.
 
 **Files:**
+
 - Modify: `websites/tanstack/src/styles/global.css`
 
 **Step 1: Add the reveal keyframes and classes**
@@ -236,12 +241,24 @@ Append after the existing `animation-delay-3000` block (line 157) and before the
 }
 
 /* Stagger delays for grid children */
-.stagger-1 { animation-delay: 0.1s; }
-.stagger-2 { animation-delay: 0.2s; }
-.stagger-3 { animation-delay: 0.3s; }
-.stagger-4 { animation-delay: 0.4s; }
-.stagger-5 { animation-delay: 0.5s; }
-.stagger-6 { animation-delay: 0.6s; }
+.stagger-1 {
+  animation-delay: 0.1s;
+}
+.stagger-2 {
+  animation-delay: 0.2s;
+}
+.stagger-3 {
+  animation-delay: 0.3s;
+}
+.stagger-4 {
+  animation-delay: 0.4s;
+}
+.stagger-5 {
+  animation-delay: 0.5s;
+}
+.stagger-6 {
+  animation-delay: 0.6s;
+}
 ```
 
 **Step 2: Boost background orb visibility**
@@ -315,6 +332,7 @@ git commit -m "feat: add scroll-reveal CSS animations and boost background visib
 Add fade-up animations to the avatar, social links, heading, and blog post cards on the homepage.
 
 **Files:**
+
 - Modify: `websites/tanstack/src/routes/index.tsx`
 
 **Step 1: Import the hook**
@@ -328,6 +346,7 @@ import { useInView } from "../hooks/useInView";
 **Step 2: Add reveal wrappers inside the `Home` component**
 
 Replace the `Home` function body. The key changes are:
+
 - Wrap the avatar section, social links, heading, and each blog card row in `useInView` refs
 - Add `reveal` / `visible` classes based on `inView` state
 
@@ -473,6 +492,7 @@ function Home() {
 ```
 
 Key changes:
+
 - Three `useInView` instances: hero, cards grid, CTA button
 - Cards get stagger classes (`stagger-1`, `stagger-2`, `stagger-3`) for sequential reveal
 - Social links get `hover:-translate-y-0.5` for a subtle lift on hover
@@ -481,6 +501,7 @@ Key changes:
 **Step 3: Verify**
 
 Open http://localhost:3000/ — scroll down slowly:
+
 - Hero section (avatar, name, social links) should fade-up as the page loads
 - Blog cards should stagger in one after another
 - "View All Posts" button should scale-reveal when it enters the viewport
@@ -500,6 +521,7 @@ git commit -m "feat: add scroll-reveal animations to homepage"
 Add staggered reveal to blog post cards in the grid on `/blog`.
 
 **Files:**
+
 - Modify: `websites/tanstack/src/components/blog/BlogPostList.tsx`
 
 **Step 1: Import the hook**
@@ -515,24 +537,26 @@ import { useInView } from "../../hooks/useInView";
 Replace the posts grid section (lines 227-233). Wrap each card in a reveal div:
 
 ```tsx
-      {filteredPosts.length === 0 ? (
-        <div className="text-center py-12">
-            <div className="bg-white/80 dark:bg-gray-800/50 backdrop-blur-sm p-8 rounded-xl border border-gray-200 dark:border-gray-600/30">
-            <p className="text-gray-600 dark:text-gray-400 text-lg">
-              No posts found in the digital archive.
-            </p>
-            <p className="text-gray-500 text-sm mt-2">
-              Try adjusting your search criteria.
-            </p>
-          </div>
-        </div>
-      ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {filteredPosts.map((post, i) => (
-            <RevealCard key={post.slug} post={post} index={i} />
-          ))}
-        </div>
-      )}
+{
+  filteredPosts.length === 0 ? (
+    <div className="text-center py-12">
+      <div className="bg-white/80 dark:bg-gray-800/50 backdrop-blur-sm p-8 rounded-xl border border-gray-200 dark:border-gray-600/30">
+        <p className="text-gray-600 dark:text-gray-400 text-lg">
+          No posts found in the digital archive.
+        </p>
+        <p className="text-gray-500 text-sm mt-2">
+          Try adjusting your search criteria.
+        </p>
+      </div>
+    </div>
+  ) : (
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      {filteredPosts.map((post, i) => (
+        <RevealCard key={post.slug} post={post} index={i} />
+      ))}
+    </div>
+  );
+}
 ```
 
 **Step 3: Add `RevealCard` helper component**
@@ -540,7 +564,13 @@ Replace the posts grid section (lines 227-233). Wrap each card in a reveal div:
 Add above the `BlogPostList` function:
 
 ```tsx
-function RevealCard({ post, index }: { post: (typeof allPosts)[0]; index: number }) {
+function RevealCard({
+  post,
+  index,
+}: {
+  post: (typeof allPosts)[0];
+  index: number;
+}) {
   const { ref, inView } = useInView({ rootMargin: "0px 0px -20px 0px" });
   const stagger = (index % 3) + 1;
   return (
@@ -563,6 +593,7 @@ Add the `allPosts` type import if not already present (it is — line 1).
 **Step 5: Verify**
 
 Open http://localhost:3000/blog — scroll down the page:
+
 - Blog cards should fade-up as they enter the viewport
 - Each row of 3 cards should stagger (first card appears, then second, then third)
 - Filtering/searching should still work normally
@@ -581,6 +612,7 @@ git commit -m "feat: add staggered scroll-reveal to blog post cards"
 Improve the `BlogPostCard` hover with a more pronounced shadow lift and border glow.
 
 **Files:**
+
 - Modify: `websites/tanstack/src/components/blog/BlogPostCard.tsx`
 
 **Step 1: Update the article className**
@@ -588,16 +620,21 @@ Improve the `BlogPostCard` hover with a more pronounced shadow lift and border g
 Replace the article's className (line 40):
 
 Old:
+
 ```tsx
-className="bg-white/90 dark:bg-gray-800/80 backdrop-blur-sm rounded-xl shadow-xl overflow-hidden border border-gray-200 dark:border-gray-600/30 hover:border-cyan-500/50 transition-all duration-500 transform hover:scale-[1.02] hover:shadow-cyan-500/20 group"
+className =
+  "bg-white/90 dark:bg-gray-800/80 backdrop-blur-sm rounded-xl shadow-xl overflow-hidden border border-gray-200 dark:border-gray-600/30 hover:border-cyan-500/50 transition-all duration-500 transform hover:scale-[1.02] hover:shadow-cyan-500/20 group";
 ```
 
 New:
+
 ```tsx
-className="bg-white/90 dark:bg-gray-800/80 backdrop-blur-sm rounded-xl shadow-lg overflow-hidden border border-gray-200 dark:border-gray-600/30 hover:border-cyan-400/60 transition-all duration-500 transform hover:scale-[1.02] hover:-translate-y-1 hover:shadow-xl hover:shadow-cyan-500/15 group"
+className =
+  "bg-white/90 dark:bg-gray-800/80 backdrop-blur-sm rounded-xl shadow-lg overflow-hidden border border-gray-200 dark:border-gray-600/30 hover:border-cyan-400/60 transition-all duration-500 transform hover:scale-[1.02] hover:-translate-y-1 hover:shadow-xl hover:shadow-cyan-500/15 group";
 ```
 
 Key changes:
+
 - Added `hover:-translate-y-1` for a lift effect
 - Changed from `shadow-xl` to `shadow-lg` (base) with `hover:shadow-xl` (elevated)
 - Slightly adjusted the cyan glow color
@@ -609,6 +646,7 @@ The SVG arrow (line 146-157) already has `group-hover:translate-x-1`. No change 
 **Step 3: Verify**
 
 Open http://localhost:3000/ — hover a blog post card:
+
 - Card should lift up slightly (~4px)
 - Shadow should grow and get a subtle cyan tint
 - Border should glow cyan
@@ -628,6 +666,7 @@ git commit -m "feat: enhance card hover with lift and glow effects"
 Add a smooth enter/exit transition to the BackToTop button instead of instant show/hide.
 
 **Files:**
+
 - Modify: `websites/tanstack/src/components/BackToTop.tsx`
 
 **Step 1: Replace the component**
@@ -661,8 +700,18 @@ export function BackToTop() {
       aria-label="Back to top"
       aria-hidden={!visible}
     >
-      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
+      <svg
+        className="w-5 h-5"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth={2}
+          d="M5 15l7-7 7 7"
+        />
       </svg>
     </button>
   );
@@ -670,6 +719,7 @@ export function BackToTop() {
 ```
 
 Key changes:
+
 - Always renders the button (no conditional `return null`)
 - Uses `opacity-0 translate-y-4 pointer-events-none` when hidden
 - Uses `opacity-100 translate-y-0` when visible
@@ -679,6 +729,7 @@ Key changes:
 **Step 2: Verify**
 
 Open http://localhost:3000/blog — scroll down past 400px:
+
 - Button should slide up and fade in smoothly
 - Scroll back to top — button should slide down and fade out
 - Hover should show a subtle cyan shadow glow
@@ -697,6 +748,7 @@ git commit -m "feat: add smooth enter/exit transition to BackToTop button"
 Add a subtle scroll-reveal to the related posts section at the bottom of blog posts.
 
 **Files:**
+
 - Modify: `websites/tanstack/src/components/blog/RelatedPosts.tsx`
 
 **Step 1: Import the hook and add reveal**
@@ -721,7 +773,9 @@ export function RelatedPosts({ posts }: RelatedPostsProps) {
       ref={ref}
       className={`mt-12 pt-8 border-t border-gray-200 dark:border-gray-700 reveal-fade reveal ${inView ? "visible" : ""}`}
     >
-      <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-6">Related Posts</h2>
+      <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-6">
+        Related Posts
+      </h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {posts.map((post, i) => (
           <Link
@@ -744,6 +798,7 @@ export function RelatedPosts({ posts }: RelatedPostsProps) {
 ```
 
 Key changes:
+
 - Whole section fades in when scrolled to
 - Individual cards get stagger delays
 - Cards lift slightly on hover (`hover:-translate-y-0.5`)
@@ -763,16 +818,16 @@ git commit -m "feat: add scroll-reveal to related posts section"
 
 ## Summary
 
-| Task | Type | Files | Risk |
-|------|------|-------|------|
-| 1: Fix dark mode | Bug fix | ThemeContext.tsx, __root.tsx | Medium — changes state management approach |
-| 2: Create useInView hook | New utility | hooks/useInView.ts | Low — pure addition |
-| 3: Add CSS animations | Enhancement | global.css | Low — additive CSS |
-| 4: Homepage scroll-reveal | Enhancement | routes/index.tsx | Low — className changes |
-| 5: Blog list scroll-reveal | Enhancement | BlogPostList.tsx | Low — wrapper div |
-| 6: Card hover effects | Enhancement | BlogPostCard.tsx | Low — className changes |
-| 7: BackToTop animation | Enhancement | BackToTop.tsx | Low — CSS transition |
-| 8: Related Posts reveal | Enhancement | RelatedPosts.tsx | Low — className changes |
+| Task                       | Type        | Files                          | Risk                                       |
+| -------------------------- | ----------- | ------------------------------ | ------------------------------------------ |
+| 1: Fix dark mode           | Bug fix     | ThemeContext.tsx, \_\_root.tsx | Medium — changes state management approach |
+| 2: Create useInView hook   | New utility | hooks/useInView.ts             | Low — pure addition                        |
+| 3: Add CSS animations      | Enhancement | global.css                     | Low — additive CSS                         |
+| 4: Homepage scroll-reveal  | Enhancement | routes/index.tsx               | Low — className changes                    |
+| 5: Blog list scroll-reveal | Enhancement | BlogPostList.tsx               | Low — wrapper div                          |
+| 6: Card hover effects      | Enhancement | BlogPostCard.tsx               | Low — className changes                    |
+| 7: BackToTop animation     | Enhancement | BackToTop.tsx                  | Low — CSS transition                       |
+| 8: Related Posts reveal    | Enhancement | RelatedPosts.tsx               | Low — className changes                    |
 
 **Dependencies:** Tasks 2 and 3 must be done before Tasks 4, 5, and 8 (they use the hook and CSS classes). Task 1 is independent. Tasks 6 and 7 are independent.
 

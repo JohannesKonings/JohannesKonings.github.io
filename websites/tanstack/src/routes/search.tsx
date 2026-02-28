@@ -41,10 +41,7 @@ export const Route = createFileRoute("/search")({
 function SearchPage() {
   const { items } = Route.useLoaderData();
   return (
-    <BlogLayout
-      title="Search"
-      description="Search blog posts and notes"
-    >
+    <BlogLayout title="Search" description="Search blog posts and notes">
       <div className="max-w-3xl mx-auto px-4 py-8">
         <SearchComponent items={items} />
       </div>

@@ -9,7 +9,9 @@ interface BlogPostCardProps {
 }
 
 export function BlogPostCard({ post }: BlogPostCardProps): JSX.Element {
-  const resolveCoverImageUrl = (coverImage: string | null | undefined): string | null => {
+  const resolveCoverImageUrl = (
+    coverImage: string | null | undefined,
+  ): string | null => {
     if (!coverImage) return null;
     if (coverImage.startsWith("http://") || coverImage.startsWith("https://")) {
       return coverImage;
@@ -20,7 +22,9 @@ export function BlogPostCard({ post }: BlogPostCardProps): JSX.Element {
     const normalizedPath = coverImage.startsWith("./")
       ? coverImage.slice(2)
       : coverImage;
-    const normalizedPostUrl = post.url.endsWith("/") ? post.url.slice(0, -1) : post.url;
+    const normalizedPostUrl = post.url.endsWith("/")
+      ? post.url.slice(0, -1)
+      : post.url;
     return `${normalizedPostUrl}/${normalizedPath}`;
   };
 
@@ -130,11 +134,16 @@ export function BlogPostCard({ post }: BlogPostCardProps): JSX.Element {
 
         <div className="relative z-10">
           <div className="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400 mb-3">
-            <time dateTime={post.date.toISOString()} className="text-cyan-600 dark:text-cyan-400">
+            <time
+              dateTime={post.date.toISOString()}
+              className="text-cyan-600 dark:text-cyan-400"
+            >
               {format(post.date, "MMM d, yyyy")}
             </time>
             <span className="text-gray-400 dark:text-gray-500">•</span>
-            <span className="text-blue-600 dark:text-blue-400">{post.readingTime.text}</span>
+            <span className="text-blue-600 dark:text-blue-400">
+              {post.readingTime.text}
+            </span>
           </div>
 
           <h2 className="text-xl font-bold text-gray-800 dark:text-gray-100 mb-3 line-clamp-2 group-hover:text-cyan-600 dark:group-hover:text-cyan-300 transition-colors duration-300">
@@ -175,7 +184,10 @@ export function BlogPostCard({ post }: BlogPostCardProps): JSX.Element {
             className="inline-flex items-center text-cyan-400 hover:text-cyan-300 font-medium group-hover:translate-x-1 transition-all duration-300"
             aria-label={`Read more about ${post.title}`}
           >
-            <span className="bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent font-semibold" aria-hidden="true">
+            <span
+              className="bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent font-semibold"
+              aria-hidden="true"
+            >
               Read more
             </span>
             <svg

@@ -124,9 +124,7 @@ import { type InjectionContext, type IPropertyInjector } from "aws-cdk-lib";
 import { IKey } from "aws-cdk-lib/aws-kms";
 import { Function, FunctionProps } from "aws-cdk-lib/aws-lambda";
 
-export class LambdaEnvEncryptionSetterPropertyInjector
-  implements IPropertyInjector
-{
+export class LambdaEnvEncryptionSetterPropertyInjector implements IPropertyInjector {
   public readonly constructUniqueId: string;
 
   constructor(private readonly key: IKey) {

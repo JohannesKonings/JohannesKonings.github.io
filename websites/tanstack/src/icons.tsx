@@ -40,7 +40,9 @@ export function MdiGithub(props: SVGProps<SVGSVGElement>): JSX.Element {
 }
 
 // https://icon-sets.iconify.design/simple-icons/devdotto/
-export function SimpleIconsDevdotto(props: SVGProps<SVGSVGElement>): JSX.Element {
+export function SimpleIconsDevdotto(
+  props: SVGProps<SVGSVGElement>,
+): JSX.Element {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"

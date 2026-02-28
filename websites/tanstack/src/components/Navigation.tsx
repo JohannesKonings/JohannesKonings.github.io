@@ -4,10 +4,7 @@ import type { JSX } from "react";
 import { Rss, Search, X } from "lucide-react";
 import { allNotes, allPosts } from "content-collections";
 import { ThemeToggle } from "./ThemeToggle";
-import {
-  Search as SearchComponent,
-  type SearchItem,
-} from "./search/Search";
+import { Search as SearchComponent, type SearchItem } from "./search/Search";
 
 const NAV_LINKS = [
   { to: "/", label: "Home", exact: true },
@@ -109,11 +106,26 @@ export function Navigation(): JSX.Element {
             aria-label="Toggle navigation menu"
             aria-expanded={mobileOpen}
           >
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg
+              className="w-6 h-6"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
               {mobileOpen ? (
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M6 18L18 6M6 6l12 12"
+                />
               ) : (
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M4 6h16M4 12h16M4 18h16"
+                />
               )}
             </svg>
           </button>
@@ -133,7 +145,11 @@ export function Navigation(): JSX.Element {
           </div>
 
           <div className="ml-auto flex items-center gap-2">
-            <a href="/rss.xml" aria-label="RSS feed" className={iconButtonClasses}>
+            <a
+              href="/rss.xml"
+              aria-label="RSS feed"
+              className={iconButtonClasses}
+            >
               <Rss className="w-5 h-5" />
             </a>
             <button

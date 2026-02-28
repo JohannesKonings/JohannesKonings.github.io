@@ -13,6 +13,7 @@
 ## Task 1: Fix Orama search not returning results
 
 **Files:**
+
 - Modify: `websites/tanstack/src/components/search/Search.tsx`
 
 **Step 1: Add `properties` to the Orama search call**
@@ -37,6 +38,7 @@ const { hits } = await search(db, {
 **Step 2: Verify**
 
 Run: `pnpm dev:tanstack` → open http://localhost:3000/search
+
 - Type "tanstack" in the search box
 - Results should appear showing matching blog posts and notes
 - Type "aws" — should show many results
@@ -54,6 +56,7 @@ git commit -m "fix: add properties to Orama search so results actually appear"
 ## Task 2: Fix BackToTop not appearing (SSR guard)
 
 **Files:**
+
 - Modify: `websites/tanstack/src/components/BackToTop.tsx`
 
 **Step 1: Add SSR guard to the scroll listener**
@@ -86,8 +89,18 @@ export function BackToTop() {
       className="fixed bottom-6 right-6 z-50 p-3 rounded-full bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-600 shadow-lg text-gray-600 dark:text-gray-300 hover:text-cyan-600 dark:hover:text-cyan-400 hover:border-cyan-300 dark:hover:border-cyan-500/50 transition-all duration-300"
       aria-label="Back to top"
     >
-      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
+      <svg
+        className="w-5 h-5"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth={2}
+          d="M5 15l7-7 7 7"
+        />
       </svg>
     </button>
   );
@@ -95,6 +108,7 @@ export function BackToTop() {
 ```
 
 Key changes:
+
 - Added `if (typeof window === "undefined") return;` guard inside `useEffect`
 - Added `onScroll()` call immediately after attaching the listener so the button shows if the page is already scrolled (e.g. after navigation)
 
@@ -114,6 +128,7 @@ git commit -m "fix: add SSR guard to BackToTop scroll listener"
 ## Task 3: Fix ReadingProgressBar not appearing (SSR guard)
 
 **Files:**
+
 - Modify: `websites/tanstack/src/components/blog/ReadingProgressBar.tsx`
 
 **Step 1: Add SSR guard to the scroll listener**
@@ -133,8 +148,11 @@ export function ReadingProgressBar() {
 
     const update = () => {
       const scrollTop = window.scrollY;
-      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-      setProgress(docHeight > 0 ? Math.min((scrollTop / docHeight) * 100, 100) : 0);
+      const docHeight =
+        document.documentElement.scrollHeight - window.innerHeight;
+      setProgress(
+        docHeight > 0 ? Math.min((scrollTop / docHeight) * 100, 100) : 0,
+      );
     };
 
     update();
@@ -156,6 +174,7 @@ export function ReadingProgressBar() {
 ```
 
 Key changes:
+
 - Added `if (typeof window === "undefined") return;` guard inside `useEffect`
 - Added `update()` call immediately so the bar shows if the page is already partially scrolled
 
@@ -175,6 +194,7 @@ git commit -m "fix: add SSR guard to ReadingProgressBar scroll listener"
 ## Task 4: Fix ThemeProvider redundant useEffect
 
 **Files:**
+
 - Modify: `websites/tanstack/src/contexts/ThemeContext.tsx`
 
 **Step 1: Remove the redundant useEffect that re-reads localStorage on mount**
@@ -235,6 +255,7 @@ git commit -m "fix: remove redundant useEffect in ThemeProvider that could race 
 ## Task 5: Use TanStack Router `Link` for internal tag/category navigation
 
 **Files:**
+
 - Modify: `websites/tanstack/src/components/blog/BlogPostCard.tsx`
 - Modify: `websites/tanstack/src/routes/blog/$postId.tsx`
 
@@ -334,12 +355,12 @@ git commit -m "fix: use Router Link for tag/category links instead of plain anch
 
 ## Summary
 
-| Task | Impact | Risk |
-|------|--------|------|
-| 1: Fix Orama search | Search page becomes functional | Low — adding one option |
-| 2: Fix BackToTop SSR | Button appears when scrolling | Low — adding guard |
-| 3: Fix ReadingProgressBar SSR | Progress bar visible on blog posts | Low — adding guard |
-| 4: Fix ThemeProvider timing | Theme toggle works reliably | Low — removing code |
-| 5: Use Router Link | Smooth client-side navigation for tags/categories | Low — same visual, better UX |
+| Task                          | Impact                                            | Risk                         |
+| ----------------------------- | ------------------------------------------------- | ---------------------------- |
+| 1: Fix Orama search           | Search page becomes functional                    | Low — adding one option      |
+| 2: Fix BackToTop SSR          | Button appears when scrolling                     | Low — adding guard           |
+| 3: Fix ReadingProgressBar SSR | Progress bar visible on blog posts                | Low — adding guard           |
+| 4: Fix ThemeProvider timing   | Theme toggle works reliably                       | Low — removing code          |
+| 5: Use Router Link            | Smooth client-side navigation for tags/categories | Low — same visual, better UX |
 
 All tasks are independent and can be done in any order. Each is a small, focused change.

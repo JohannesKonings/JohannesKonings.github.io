@@ -24,7 +24,8 @@ function NotesPage() {
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
           <p className="text-gray-600 dark:text-gray-400">
-            {publishedNotes.length} note{publishedNotes.length !== 1 ? "s" : ""} available
+            {publishedNotes.length} note{publishedNotes.length !== 1 ? "s" : ""}{" "}
+            available
           </p>
           <Link
             to="/search"
@@ -43,10 +44,7 @@ function NotesPage() {
             >
               <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2">
                 <div className="flex-1">
-                  <Link
-                    to={note.url}
-                    className="block group"
-                  >
+                  <Link to={note.url} className="block group">
                     <h2 className="text-lg font-semibold text-gray-900 dark:text-white group-hover:text-cyan-600 dark:group-hover:text-cyan-400 transition-colors">
                       {note.title}
                     </h2>

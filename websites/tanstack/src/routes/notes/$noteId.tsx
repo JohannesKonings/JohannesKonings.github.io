@@ -92,10 +92,18 @@ function NoteDetailPage() {
               overrides: {
                 pre: {
                   component: ({ children, ...props }) => {
-                    const child = Array.isArray(children) ? children[0] : children;
-                    if (child && typeof child === "object" && "props" in child) {
+                    const child = Array.isArray(children)
+                      ? children[0]
+                      : children;
+                    if (
+                      child &&
+                      typeof child === "object" &&
+                      "props" in child
+                    ) {
                       const codeProps = (
-                        child as { props?: { className?: string; children?: unknown } }
+                        child as {
+                          props?: { className?: string; children?: unknown };
+                        }
                       ).props;
                       const language = getLanguage(codeProps?.className);
                       const code = getCodeText(codeProps?.children);

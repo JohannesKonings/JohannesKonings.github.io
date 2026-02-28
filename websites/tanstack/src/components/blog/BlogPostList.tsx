@@ -123,7 +123,7 @@ export function BlogPostList({
       {/* Posts grid */}
       {filteredPosts.length === 0 ? (
         <div className="text-center py-12">
-            <div className="bg-white/80 dark:bg-gray-800/50 backdrop-blur-sm p-8 rounded-xl border border-gray-200 dark:border-gray-600/30">
+          <div className="bg-white/80 dark:bg-gray-800/50 backdrop-blur-sm p-8 rounded-xl border border-gray-200 dark:border-gray-600/30">
             <p className="text-gray-600 dark:text-gray-400 text-lg">
               No posts found in the digital archive.
             </p>

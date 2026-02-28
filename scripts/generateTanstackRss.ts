@@ -31,9 +31,12 @@ function escapeXml(s: string): string {
     .replace(/'/g, "&apos;");
 }
 
-function parseFrontmatter(
-  content: string,
-): { title?: string; summary?: string; date?: Date; published?: boolean } {
+function parseFrontmatter(content: string): {
+  title?: string;
+  summary?: string;
+  date?: Date;
+  published?: boolean;
+} {
   const match = content.match(/^---\s*([\s\S]*?)\s*---/);
   if (!match) return {};
   const block = match[1];
@@ -65,8 +68,7 @@ function getPostItems(): RssItem[] {
     const mdFile =
       files.find(
         (f) =>
-          f.endsWith(".md") &&
-          (f === "index.md" || f === ent.name + ".md"),
+          f.endsWith(".md") && (f === "index.md" || f === ent.name + ".md"),
       ) ?? files.find((f) => f.endsWith(".md"));
     if (!mdFile) continue;
     const content = fs.readFileSync(path.join(dirPath, mdFile), "utf-8");
