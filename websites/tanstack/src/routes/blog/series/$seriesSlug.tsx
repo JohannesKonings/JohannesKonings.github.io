@@ -1,6 +1,6 @@
-import { createFileRoute, notFound } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { Link } from "@tanstack/react-router";
-import { getPostsBySeries, getAllSeries } from "../../../lib/content-utils";
+import { getPostsBySeries } from "../../../lib/content-utils";
 import { BlogLayout } from "../../../components/blog/BlogLayout";
 import { BlogPostList } from "../../../components/blog/BlogPostList";
 import { generateSEOHead } from "../../../lib/seo";
@@ -15,10 +15,6 @@ export const Route = createFileRoute("/blog/series/$seriesSlug")({
   component: SeriesPage,
   beforeLoad: ({ params }) => {
     const { seriesSlug } = params;
-    const allSeries = getAllSeries();
-    if (!allSeries.includes(seriesSlug)) {
-      throw notFound();
-    }
     const posts = getPostsBySeries(seriesSlug);
     const seriesTitle = formatSeriesTitle(seriesSlug);
     return { posts, seriesSlug, seriesTitle };

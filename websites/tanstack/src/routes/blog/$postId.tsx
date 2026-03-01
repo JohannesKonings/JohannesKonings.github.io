@@ -16,6 +16,32 @@ import { isExternalHref, normalizeMarkdownHref } from "../../lib/markdownLinks";
 
 const ABSOLUTE_URL_PATTERN = /^[a-z][a-z\d+\-.]*:/i;
 
+function resolvePostById(postId: string) {
+  const normalizedPostId = postId
+    .replace(/\/+$/, "")
+    .replace(/\.(md|html?)$/i, "");
+  const datePrefixMatch = normalizedPostId.match(/^(\d{4}-\d{2}-\d{2})-(.+)$/i);
+  const slugWithoutDate = datePrefixMatch?.[2];
+
+  const exactMatch = allPosts.find(
+    (post) => post.slug === normalizedPostId && post.published,
+  );
+  if (exactMatch) {
+    return exactMatch;
+  }
+
+  return allPosts.find(
+    (post) =>
+      post.published &&
+      (post.slug.endsWith(`-${normalizedPostId}`) ||
+        post.slug.endsWith(`_${normalizedPostId}`) ||
+        (slugWithoutDate
+          ? post.slug.endsWith(`-${slugWithoutDate}`) ||
+            post.slug.endsWith(`_${slugWithoutDate}`)
+          : false)),
+  );
+}
+
 function resolveBlogImageSrc(
   src: string | undefined,
   postSlug: string,
@@ -37,7 +63,7 @@ function resolveBlogImageSrc(
 
 export const Route = createFileRoute("/blog/$postId")({
   head: ({ params }) => {
-    const post = allPosts.find((p) => p.slug === params.postId && p.published);
+    const post = resolvePostById(params.postId);
 
     if (!post) {
       return generateSEOHead({
@@ -62,8 +88,8 @@ export const Route = createFileRoute("/blog/$postId")({
       throw notFound();
     }
 
-    const post = allPosts.find((p) => p.slug === postId);
-    if (!post || !post.published) {
+    const post = resolvePostById(postId);
+    if (!post) {
       throw notFound();
     }
 

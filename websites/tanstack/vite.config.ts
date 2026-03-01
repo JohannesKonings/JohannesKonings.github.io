@@ -71,6 +71,7 @@ export default defineConfig(({ mode }) => ({
         crawlLinks: true,
         autoSubfolderIndex: true,
         failOnError: true,
+        filter: ({ path }) => path !== "/rss.xml",
       },
       pages: [
         { path: "/", prerender: { enabled: true, outputPath: "/index.html" } },

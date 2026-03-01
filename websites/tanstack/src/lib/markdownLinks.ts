@@ -1,5 +1,20 @@
 const ABSOLUTE_URL_PATTERN = /^[a-z][a-z\d+\-.]*:/i;
 const INTERNAL_PROTOCOLS = new Set(["mailto:", "tel:", "data:", "blob:"]);
+const ASSET_EXTENSIONS = new Set([
+  "png",
+  "jpg",
+  "jpeg",
+  "gif",
+  "webp",
+  "avif",
+  "svg",
+  "pdf",
+  "txt",
+  "json",
+  "yaml",
+  "yml",
+  "csv",
+]);
 
 function extractSlugCandidate(pathPart: string): string | null {
   const cleanPath = pathPart
@@ -38,12 +53,22 @@ export function normalizeMarkdownHref(
   const extension = relativePath.match(/\.([a-z0-9]+)$/i)?.[1]?.toLowerCase();
 
   if (
-    options?.assetBasePath &&
-    extension &&
-    extension !== "md" &&
-    extension !== "html" &&
-    extension !== "htm"
+    !rawPath.includes("/") &&
+    /^[a-z0-9.-]+\.[a-z]{2,}$/i.test(rawPath) &&
+    !rawPath.startsWith(".")
   ) {
+    return `https://${rawPath}${suffix}`;
+  }
+
+  const awsPermalinkMatch = rawPath.match(
+    /^\/aws\/(\d{4})\/(\d{2})\/(\d{2})\/([^/?#]+)\/?$/i,
+  );
+  if (awsPermalinkMatch) {
+    const [, year, month, day, slug] = awsPermalinkMatch;
+    return `/blog/${year}-${month}-${day}-${slug}${suffix}`;
+  }
+
+  if (options?.assetBasePath && extension && ASSET_EXTENSIONS.has(extension)) {
     return `${options.assetBasePath}/${relativePath}${suffix}`;
   }
 

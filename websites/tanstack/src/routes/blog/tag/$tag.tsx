@@ -1,5 +1,5 @@
-import { createFileRoute, notFound } from "@tanstack/react-router";
-import { getPostsByTag, getAllTags } from "../../../lib/content-utils";
+import { createFileRoute } from "@tanstack/react-router";
+import { getPostsByTag } from "../../../lib/content-utils";
 import { BlogLayout } from "../../../components/blog/BlogLayout";
 import { BlogPostList } from "../../../components/blog/BlogPostList";
 import { generateSEOHead } from "../../../lib/seo";
@@ -14,12 +14,6 @@ export const Route = createFileRoute("/blog/tag/$tag")({
   component: RouteComponent,
   beforeLoad: ({ params }) => {
     const { tag } = params;
-    const allTags = getAllTags();
-
-    if (!allTags.includes(tag)) {
-      throw notFound();
-    }
-
     const posts = getPostsByTag(tag);
     return { posts, tag };
   },
