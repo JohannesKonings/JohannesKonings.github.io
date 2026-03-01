@@ -32,6 +32,7 @@ const RSS_FILE = path.join(
   SITE_RSS_PATH.replace(/^\//, ""),
 );
 const ROBOTS_FILE = path.join(ROOT, "websites/tanstack/public/robots.txt");
+const LLMS_FILE = path.join(ROOT, "websites/tanstack/public/llms.txt");
 
 // ANSI color codes for output
 const colors = {
@@ -303,6 +304,14 @@ function verifyBuildOutput(): boolean {
         `robots.txt does not include canonical domain (${SITE_URL}) in sitemap entries`,
       );
     }
+  }
+
+  if (!fs.existsSync(LLMS_FILE)) {
+    error("llms.txt file not found at expected location");
+    console.log(`      Expected: ${LLMS_FILE}`);
+    hasIssues = true;
+  } else {
+    success("llms.txt file exists");
   }
 
   return !hasIssues;
