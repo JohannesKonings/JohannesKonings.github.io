@@ -14,6 +14,7 @@
     "demo:theme": "node websites/tanstack/scripts/theme-toggle-demo.mjs",
     "build:astro": "pnpm --filter astro build",
     "build:tanstack": "pnpm --filter tanstack build",
+    "lhci:tanstack": "pnpm dlx @lhci/cli collect --url=\"http://127.0.0.1:3000/\" --url=\"http://127.0.0.1:3000/blog\" --url=\"http://127.0.0.1:3000/blog/2026-02-02-tanstack-ai-bedrock-simple\" --url=\"http://127.0.0.1:3000/search\" --numberOfRuns=1 --settings.chromeFlags='--headless=new --no-sandbox --disable-dev-shm-usage --disable-gpu' --startServerCommand=\"pnpm --filter tanstack exec node .output/server/index.mjs\"",
     "verify:tanstack": "tsx scripts/verifyTanstack.ts",
     "tsc": "tsgo",
     "tsc:check": "tsgo --noEmit",
