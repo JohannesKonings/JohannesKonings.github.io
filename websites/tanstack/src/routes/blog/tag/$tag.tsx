@@ -2,8 +2,20 @@ import { createFileRoute, notFound } from "@tanstack/react-router";
 import { getPostsByTag, getAllTags } from "../../../lib/content-utils";
 import { BlogLayout } from "../../../components/blog/BlogLayout";
 import { BlogPostList } from "../../../components/blog/BlogPostList";
+import { buildSEOHead } from "../../../lib/seo";
 
 export const Route = createFileRoute("/blog/tag/$tag")({
+  head: ({ params }) => {
+    const tag = params.tag;
+    const posts = getPostsByTag(tag);
+
+    return buildSEOHead({
+      title: `Posts tagged "${tag}"`,
+      description: `${posts.length} blog post${posts.length === 1 ? "" : "s"} tagged with ${tag}.`,
+      url: `/blog/tag/${encodeURIComponent(tag)}`,
+      tags: [tag],
+    });
+  },
   component: RouteComponent,
   beforeLoad: ({ params }) => {
     const { tag } = params;

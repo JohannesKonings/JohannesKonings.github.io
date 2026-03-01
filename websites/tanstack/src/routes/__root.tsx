@@ -7,6 +7,7 @@ import {
   useRouterState,
 } from "@tanstack/react-router";
 import globalCss from "@/src/styles/global.css?url";
+import { SITE_NAME } from "../lib/seo";
 import { Navigation } from "../components/Navigation";
 import { BackToTop } from "../components/BackToTop";
 import { ThemeProvider } from "../contexts/ThemeContext";
@@ -30,21 +31,14 @@ export const Route = createRootRoute({
         name: "viewport",
         content: "width=device-width, initial-scale=1",
       },
-      {
-        title: "Johannes Konings",
-      },
-      {
-        name: "description",
-        content: "Notes and posts on AWS and TanStack.",
-      },
     ],
     links: [
       { rel: "stylesheet", href: globalCss },
       {
         rel: "alternate",
         type: "application/rss+xml",
-        title: "Johannes Konings",
-        href: "https://johanneskonings.github.io/rss.xml",
+        title: SITE_NAME,
+        href: "https://johanneskonings.dev/rss.xml",
       },
       {
         rel: "preload",

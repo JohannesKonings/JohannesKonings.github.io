@@ -5,8 +5,20 @@ import {
 } from "../../../lib/content-utils";
 import { BlogLayout } from "../../../components/blog/BlogLayout";
 import { BlogPostList } from "../../../components/blog/BlogPostList";
+import { buildSEOHead } from "../../../lib/seo";
 
 export const Route = createFileRoute("/blog/category/$category")({
+  head: ({ params }) => {
+    const category = params.category;
+    const posts = getPostsByCategory(category);
+
+    return buildSEOHead({
+      title: `Posts in "${category}" category`,
+      description: `${posts.length} blog post${posts.length === 1 ? "" : "s"} in the ${category} category.`,
+      url: `/blog/category/${encodeURIComponent(category)}`,
+      tags: [category],
+    });
+  },
   component: RouteComponent,
   beforeLoad: ({ params }) => {
     const { category } = params;

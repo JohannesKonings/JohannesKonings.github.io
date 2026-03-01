@@ -4,8 +4,37 @@ import Markdown from "markdown-to-jsx";
 import { format } from "date-fns";
 import { BlogLayout } from "../../components/blog/BlogLayout";
 import { CodeBlock } from "../../components/blog/CodeBlock";
+import { buildSEOHead, resolveNoteSocialImage } from "../../lib/seo";
+
+function getPublishedNoteBySlug(noteId: string) {
+  return allNotes.find((note) => note.slug === noteId && note.published);
+}
 
 export const Route = createFileRoute("/notes/$noteId")({
+  head: ({ params }) => {
+    const note = getPublishedNoteBySlug(params.noteId);
+    const fallbackUrl = `/notes/${encodeURIComponent(params.noteId)}`;
+
+    if (!note) {
+      return buildSEOHead({
+        title: "Notes",
+        description: "Quick reference notes on topics I care about.",
+        url: fallbackUrl,
+      });
+    }
+
+    return buildSEOHead({
+      title: note.title,
+      description: note.summary || note.excerpt,
+      url: note.url,
+      image: resolveNoteSocialImage(note),
+      imageAlt: note.title,
+      type: "article",
+      publishedTime: note.date.toISOString(),
+      modifiedTime: note.date.toISOString(),
+      tags: [...new Set([...note.tags, ...note.categories])],
+    });
+  },
   component: NoteDetailPage,
   beforeLoad: ({ params }) => {
     const { noteId } = params;
@@ -21,8 +50,8 @@ export const Route = createFileRoute("/notes/$noteId")({
     }
 
     // Find the note by slug
-    const note = allNotes.find((n) => n.slug === noteId);
-    if (!note || !note.published) {
+    const note = getPublishedNoteBySlug(noteId);
+    if (!note) {
       throw notFound();
     }
 

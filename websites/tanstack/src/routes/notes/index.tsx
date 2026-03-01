@@ -3,8 +3,15 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { allNotes } from "content-collections";
 import { BlogLayout } from "../../components/blog/BlogLayout";
 import { format } from "date-fns";
+import { buildSEOHead } from "../../lib/seo";
 
 export const Route = createFileRoute("/notes/")({
+  head: () =>
+    buildSEOHead({
+      title: "Notes",
+      description: "Quick reference notes on topics I care about.",
+      url: "/notes",
+    }),
   component: NotesPage,
 });
 
