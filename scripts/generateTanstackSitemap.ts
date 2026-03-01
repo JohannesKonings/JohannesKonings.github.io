@@ -6,16 +6,14 @@
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { SITE_SITEMAP_PATH, SITE_URL, toAbsoluteUrl } from "../websites/tanstack/lib/site";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.join(__dirname, "..");
 
-// Use environment variable or default to production domain
-const BASE_URL = process.env.SITE_URL || "https://johanneskonings.dev";
-
 const CONTENT_BLOG = path.join(ROOT, "websites/tanstack/src/content/blog");
 const CONTENT_NOTES = path.join(ROOT, "websites/tanstack/src/content/notes");
-const OUT_FILE = path.join(ROOT, "websites/tanstack/public/sitemap-index.xml");
+const OUT_FILE = path.join(ROOT, "websites/tanstack/public", SITE_SITEMAP_PATH.replace(/^\//, ""));
 
 function parseFrontmatter(content: string): {
   title?: string;
@@ -56,7 +54,7 @@ function getPostUrls(): string[] {
       if (published === false) continue;
 
       const slug = ent.name;
-      urls.push(`${BASE_URL}/blog/${slug}`);
+      urls.push(toAbsoluteUrl(`/blog/${slug}`));
     } else if (ent.isFile() && ent.name.endsWith(".md")) {
       // Flat .md file (e.g., 2022-09-17-aws_example_ddb_analytics_quicksight_cdk.md)
       // Skip if it's in a directory (handled above)
@@ -69,7 +67,7 @@ function getPostUrls(): string[] {
 
       // Slug is the filename without .md extension
       const slug = ent.name.replace(/\.md$/i, "");
-      urls.push(`${BASE_URL}/blog/${slug}`);
+      urls.push(toAbsoluteUrl(`/blog/${slug}`));
     }
   }
 
@@ -97,7 +95,7 @@ function getNoteUrls(): string[] {
 
     // Slug is the filename without .md extension
     const slug = file.name.replace(/\.md$/i, "");
-    urls.push(`${BASE_URL}/notes/${slug}`);
+    urls.push(toAbsoluteUrl(`/notes/${slug}`));
   }
 
   return urls;
@@ -106,10 +104,10 @@ function getNoteUrls(): string[] {
 function main() {
   // Static URLs
   const staticUrls = [
-    `${BASE_URL}/`,
-    `${BASE_URL}/blog`,
-    `${BASE_URL}/notes`,
-    `${BASE_URL}/search`,
+    `${SITE_URL}/`,
+    toAbsoluteUrl("/blog"),
+    toAbsoluteUrl("/notes"),
+    toAbsoluteUrl("/search"),
   ];
 
   // Content URLs

@@ -2,192 +2,192 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Johannes Konings</title>
-    <link>https://johanneskonings.github.io/</link>
-    <description>Contact, notes and some posts</description>
+    <link>https://johanneskonings.dev/</link>
+    <description>Notes and posts on AWS and TanStack.</description>
     <language>en</language>
-    <lastBuildDate>Sat, 28 Feb 2026 16:56:45 GMT</lastBuildDate>
-    <atom:link href="https://johanneskonings.github.io/rss.xml" rel="self" type="application/rss+xml"/>
+    <lastBuildDate>Sun, 01 Mar 2026 07:41:58 GMT</lastBuildDate>
+    <atom:link href="https://johanneskonings.dev/rss.xml" rel="self" type="application/rss+xml"/>
     <item>
       <title>TanStack AI with AWS Bedrock on TanStack Start (simple example)</title>
-      <link>https://johanneskonings.github.io/blog/2026-02-02-tanstack-ai-bedrock-simple</link>
+      <link>https://johanneskonings.dev/blog/2026-02-02-tanstack-ai-bedrock-simple</link>
       <description>Add TanStack AI with AWS Bedrock to your TanStack Start on AWS setup: Bedrock usage, IAM permissions, and a minimal chat example.</description>
-      <pubDate>Sun, 01 Feb 2026 23:00:00 GMT</pubDate>
-      <guid isPermaLink="true">https://johanneskonings.github.io/blog/2026-02-02-tanstack-ai-bedrock-simple</guid>
+      <pubDate>Mon, 02 Feb 2026 00:00:00 GMT</pubDate>
+      <guid isPermaLink="true">https://johanneskonings.dev/blog/2026-02-02-tanstack-ai-bedrock-simple</guid>
     </item>
     <item>
       <title>Tag log buckets created by AWS CDK for third party tools</title>
-      <link>https://johanneskonings.github.io/blog/2026-01-11-aws-cdk-nag-log-bucket-tagger</link>
+      <link>https://johanneskonings.dev/blog/2026-01-11-aws-cdk-nag-log-bucket-tagger</link>
       <description>How to tag S3 log buckets created by the AWS CDK so third-party scanners can recognize them.</description>
-      <pubDate>Sat, 10 Jan 2026 23:00:00 GMT</pubDate>
-      <guid isPermaLink="true">https://johanneskonings.github.io/blog/2026-01-11-aws-cdk-nag-log-bucket-tagger</guid>
+      <pubDate>Sun, 11 Jan 2026 00:00:00 GMT</pubDate>
+      <guid isPermaLink="true">https://johanneskonings.dev/blog/2026-01-11-aws-cdk-nag-log-bucket-tagger</guid>
     </item>
     <item>
       <title>Using Server Sent Events (SSE) to sync Tanstack Db from AWS DynamoDB</title>
-      <link>https://johanneskonings.github.io/blog/2026-01-08-tanstack-start-aws-db-multiple-entities-sse</link>
+      <link>https://johanneskonings.dev/blog/2026-01-08-tanstack-start-aws-db-multiple-entities-sse</link>
       <description>Build real-time data synchronization between AWS DynamoDB and TanStack DB using Server-Sent Events. Learn how to stream database changes via DynamoDB Streams, implement SSE endpoints with TanStack Start/Router.</description>
-      <pubDate>Wed, 07 Jan 2026 23:00:00 GMT</pubDate>
-      <guid isPermaLink="true">https://johanneskonings.github.io/blog/2026-01-08-tanstack-start-aws-db-multiple-entities-sse</guid>
+      <pubDate>Thu, 08 Jan 2026 00:00:00 GMT</pubDate>
+      <guid isPermaLink="true">https://johanneskonings.dev/blog/2026-01-08-tanstack-start-aws-db-multiple-entities-sse</guid>
     </item>
     <item>
       <title>Use a customized CDK bootstrap template</title>
-      <link>https://johanneskonings.github.io/blog/2025-12-31-cdk-bootstrap-customized-template</link>
+      <link>https://johanneskonings.dev/blog/2025-12-31-cdk-bootstrap-customized-template</link>
       <description>Learn how to customize the AWS CDK bootstrap template to add server access logging and KMS encryption to the staging bucket. Use the CDK Toolkit library to orchestrate multi-region deployments, extract environments from CDK apps, and validate CloudFormation templates with cdk-nag.</description>
-      <pubDate>Tue, 30 Dec 2025 23:00:00 GMT</pubDate>
-      <guid isPermaLink="true">https://johanneskonings.github.io/blog/2025-12-31-cdk-bootstrap-customized-template</guid>
+      <pubDate>Wed, 31 Dec 2025 00:00:00 GMT</pubDate>
+      <guid isPermaLink="true">https://johanneskonings.dev/blog/2025-12-31-cdk-bootstrap-customized-template</guid>
     </item>
     <item>
       <title>Simple example of TanStack DB with DynamoDB on AWS with multiple entities</title>
-      <link>https://johanneskonings.github.io/blog/2025-12-27-tanstack-start-aws-db-multiple-entities</link>
+      <link>https://johanneskonings.dev/blog/2025-12-27-tanstack-start-aws-db-multiple-entities</link>
       <description>Implement a multi-entity data model with TanStack DB and DynamoDB using single table design. Learn how to manage Person, Address, BankAccount, ContactInfo, and Employment entities with ElectroDB and TanStack DB collections. Includes performance optimization with global collections for instant navigation.</description>
-      <pubDate>Fri, 26 Dec 2025 23:00:00 GMT</pubDate>
-      <guid isPermaLink="true">https://johanneskonings.github.io/blog/2025-12-27-tanstack-start-aws-db-multiple-entities</guid>
+      <pubDate>Sat, 27 Dec 2025 00:00:00 GMT</pubDate>
+      <guid isPermaLink="true">https://johanneskonings.dev/blog/2025-12-27-tanstack-start-aws-db-multiple-entities</guid>
     </item>
     <item>
       <title>Simple example of TanStack DB with DynamoDB on AWS</title>
-      <link>https://johanneskonings.github.io/blog/2025-12-20-tanstack-start-aws-db-simple</link>
+      <link>https://johanneskonings.dev/blog/2025-12-20-tanstack-start-aws-db-simple</link>
       <description>Deploy a simple TanStack DB + DynamoDB setup on AWS using CDK, with a TanStack Start API route and a query collection powering a small todo UI.</description>
-      <pubDate>Fri, 19 Dec 2025 23:00:00 GMT</pubDate>
-      <guid isPermaLink="true">https://johanneskonings.github.io/blog/2025-12-20-tanstack-start-aws-db-simple</guid>
+      <pubDate>Sat, 20 Dec 2025 00:00:00 GMT</pubDate>
+      <guid isPermaLink="true">https://johanneskonings.dev/blog/2025-12-20-tanstack-start-aws-db-simple</guid>
     </item>
     <item>
       <title>Monitor multiple resources using a single CloudWatch Alarm (with CDK)</title>
-      <link>https://johanneskonings.github.io/blog/2025-12-13-cdk-monitor-multiple-resources-using-single-alarm</link>
+      <link>https://johanneskonings.dev/blog/2025-12-13-cdk-monitor-multiple-resources-using-single-alarm</link>
       <description>Use CloudWatch Metrics Insights query alarms (with tags) to monitor many resources with one alarm in AWS CDK.</description>
-      <pubDate>Fri, 12 Dec 2025 23:00:00 GMT</pubDate>
-      <guid isPermaLink="true">https://johanneskonings.github.io/blog/2025-12-13-cdk-monitor-multiple-resources-using-single-alarm</guid>
+      <pubDate>Sat, 13 Dec 2025 00:00:00 GMT</pubDate>
+      <guid isPermaLink="true">https://johanneskonings.dev/blog/2025-12-13-cdk-monitor-multiple-resources-using-single-alarm</guid>
     </item>
     <item>
       <title>Use cdk-notifier to check CloudFormation predeployment validations in pull requests</title>
-      <link>https://johanneskonings.github.io/blog/2025-12-06-cdk-notifier-feature-stacks-change-set</link>
+      <link>https://johanneskonings.dev/blog/2025-12-06-cdk-notifier-feature-stacks-change-set</link>
       <description>Extend cdk-notifier with CloudFormation change sets to validate changes before merging pull requests</description>
-      <pubDate>Fri, 05 Dec 2025 23:00:00 GMT</pubDate>
-      <guid isPermaLink="true">https://johanneskonings.github.io/blog/2025-12-06-cdk-notifier-feature-stacks-change-set</guid>
+      <pubDate>Sat, 06 Dec 2025 00:00:00 GMT</pubDate>
+      <guid isPermaLink="true">https://johanneskonings.dev/blog/2025-12-06-cdk-notifier-feature-stacks-change-set</guid>
     </item>
     <item>
       <title>Deploy TanStack Start serverless on AWS</title>
-      <link>https://johanneskonings.github.io/blog/2025-11-30-tanstack-start-aws-serverless</link>
+      <link>https://johanneskonings.dev/blog/2025-11-30-tanstack-start-aws-serverless</link>
       <description>Deploy TanStack Start on AWS with streaming API Gateway using AWS CDK</description>
-      <pubDate>Sat, 29 Nov 2025 23:00:00 GMT</pubDate>
-      <guid isPermaLink="true">https://johanneskonings.github.io/blog/2025-11-30-tanstack-start-aws-serverless</guid>
+      <pubDate>Sun, 30 Nov 2025 00:00:00 GMT</pubDate>
+      <guid isPermaLink="true">https://johanneskonings.dev/blog/2025-11-30-tanstack-start-aws-serverless</guid>
     </item>
     <item>
       <title>Encrypt All Lambda Environment Variables with AWS CDK Aspects/Mixins</title>
-      <link>https://johanneskonings.github.io/blog/2025-11-28-aws-cdk-encrypt-all-lambda-envs</link>
+      <link>https://johanneskonings.dev/blog/2025-11-28-aws-cdk-encrypt-all-lambda-envs</link>
       <description>A guide on how to encrypt all AWS Lambda environment variables using AWS CDK aspects/mixins. Also from third party libraries.</description>
-      <pubDate>Thu, 27 Nov 2025 23:00:00 GMT</pubDate>
-      <guid isPermaLink="true">https://johanneskonings.github.io/blog/2025-11-28-aws-cdk-encrypt-all-lambda-envs</guid>
+      <pubDate>Fri, 28 Nov 2025 00:00:00 GMT</pubDate>
+      <guid isPermaLink="true">https://johanneskonings.dev/blog/2025-11-28-aws-cdk-encrypt-all-lambda-envs</guid>
     </item>
     <item>
       <title>Granular statement cdk-nag AwsSolutions-IAM5 Suppressions</title>
-      <link>https://johanneskonings.github.io/blog/2025-11-27-aws-cdk-nag-iam5-granular-statement-suppresions</link>
+      <link>https://johanneskonings.dev/blog/2025-11-27-aws-cdk-nag-iam5-granular-statement-suppresions</link>
       <description>How to document and suppress only the wildcard permissions that are required by AWS services, while keeping the rest of AwsSolutions-IAM5 findings active.</description>
-      <pubDate>Wed, 26 Nov 2025 23:00:00 GMT</pubDate>
-      <guid isPermaLink="true">https://johanneskonings.github.io/blog/2025-11-27-aws-cdk-nag-iam5-granular-statement-suppresions</guid>
+      <pubDate>Thu, 27 Nov 2025 00:00:00 GMT</pubDate>
+      <guid isPermaLink="true">https://johanneskonings.dev/blog/2025-11-27-aws-cdk-nag-iam5-granular-statement-suppresions</guid>
     </item>
     <item>
       <title>Cleanup Resources from Ephemeral Stacks in AWS CDK with Aspects and Property Injectors</title>
-      <link>https://johanneskonings.github.io/blog/2025-06-14-aws-cdk-ephemeral-stacks-cleanup</link>
+      <link>https://johanneskonings.dev/blog/2025-06-14-aws-cdk-ephemeral-stacks-cleanup</link>
       <description>When developing features with ephemeral CDK stacks, the resource retention configuration needs to differ from test and production stacks. This article explains how to use CDK Aspects and Property Injectors to automatically clean up resources from ephemeral stacks.</description>
-      <pubDate>Fri, 13 Jun 2025 22:00:00 GMT</pubDate>
-      <guid isPermaLink="true">https://johanneskonings.github.io/blog/2025-06-14-aws-cdk-ephemeral-stacks-cleanup</guid>
+      <pubDate>Sat, 14 Jun 2025 00:00:00 GMT</pubDate>
+      <guid isPermaLink="true">https://johanneskonings.dev/blog/2025-06-14-aws-cdk-ephemeral-stacks-cleanup</guid>
     </item>
     <item>
       <title>Suppress cdk-nag findings for custom resource singleton lambda globally</title>
-      <link>https://johanneskonings.github.io/blog/2025-01-12-aws-cdk-nag-custom-resource-singleton-suppression</link>
+      <link>https://johanneskonings.dev/blog/2025-01-12-aws-cdk-nag-custom-resource-singleton-suppression</link>
       <description>This post describes how to suppress cdk-nag findings that are caused by the custom resource singleton Lambda function globally, so that findings which are out of your own control are not reported.</description>
-      <pubDate>Sat, 11 Jan 2025 23:00:00 GMT</pubDate>
-      <guid isPermaLink="true">https://johanneskonings.github.io/blog/2025-01-12-aws-cdk-nag-custom-resource-singleton-suppression</guid>
+      <pubDate>Sun, 12 Jan 2025 00:00:00 GMT</pubDate>
+      <guid isPermaLink="true">https://johanneskonings.dev/blog/2025-01-12-aws-cdk-nag-custom-resource-singleton-suppression</guid>
     </item>
     <item>
       <title>Configure AWS CloudWatch Application Signals Transaction Search with CDK</title>
-      <link>https://johanneskonings.github.io/blog/2025-01-02-aws-application-signals-config-transaction-search-cdk</link>
+      <link>https://johanneskonings.dev/blog/2025-01-02-aws-application-signals-config-transaction-search-cdk</link>
       <description>Learn how to enable and configure AWS CloudWatch Application Signals Transaction Search using the AWS CDK, including setting up the required IAM policies and X-Ray configurations.</description>
-      <pubDate>Mon, 06 Jan 2025 23:00:00 GMT</pubDate>
-      <guid isPermaLink="true">https://johanneskonings.github.io/blog/2025-01-02-aws-application-signals-config-transaction-search-cdk</guid>
+      <pubDate>Tue, 07 Jan 2025 00:00:00 GMT</pubDate>
+      <guid isPermaLink="true">https://johanneskonings.dev/blog/2025-01-02-aws-application-signals-config-transaction-search-cdk</guid>
     </item>
     <item>
       <title>AWS Application Signals for Node.js Lambda with CDK</title>
-      <link>https://johanneskonings.github.io/blog/2025-01-02-aws-application-signals-config-lambda-cdk</link>
+      <link>https://johanneskonings.dev/blog/2025-01-02-aws-application-signals-config-lambda-cdk</link>
       <description>How to configure AWS CloudWatch Application Signals centrally for an AWS account and for individual Node.js Lambdas using the AWS CDK.</description>
-      <pubDate>Wed, 01 Jan 2025 23:00:00 GMT</pubDate>
-      <guid isPermaLink="true">https://johanneskonings.github.io/blog/2025-01-02-aws-application-signals-config-lambda-cdk</guid>
+      <pubDate>Thu, 02 Jan 2025 00:00:00 GMT</pubDate>
+      <guid isPermaLink="true">https://johanneskonings.dev/blog/2025-01-02-aws-application-signals-config-lambda-cdk</guid>
     </item>
     <item>
       <title>Calling IAM authenticated API Gateway with different HTTP clients</title>
-      <link>https://johanneskonings.github.io/blog/2024-12-28-api-gw-sigv4-different-api-clients</link>
+      <link>https://johanneskonings.dev/blog/2024-12-28-api-gw-sigv4-different-api-clients</link>
       <description>This post describes how to call an IAM authenticated API Gateway with different HTTP clients like ky, fetch, and axios via signature v4 requests.</description>
-      <pubDate>Fri, 27 Dec 2024 23:00:00 GMT</pubDate>
-      <guid isPermaLink="true">https://johanneskonings.github.io/blog/2024-12-28-api-gw-sigv4-different-api-clients</guid>
+      <pubDate>Sat, 28 Dec 2024 00:00:00 GMT</pubDate>
+      <guid isPermaLink="true">https://johanneskonings.dev/blog/2024-12-28-api-gw-sigv4-different-api-clients</guid>
     </item>
     <item>
       <title>Run vs code on a private AWS ec2 instance without ssh (with AWS CDK examples)</title>
-      <link>https://johanneskonings.github.io/blog/2024-12-07-aws-vscode-private-ec2-instance</link>
+      <link>https://johanneskonings.dev/blog/2024-12-07-aws-vscode-private-ec2-instance</link>
       <description>Use the browser based vs code for file handling on a private ec2 instance without ssh</description>
-      <pubDate>Fri, 06 Dec 2024 23:00:00 GMT</pubDate>
-      <guid isPermaLink="true">https://johanneskonings.github.io/blog/2024-12-07-aws-vscode-private-ec2-instance</guid>
+      <pubDate>Sat, 07 Dec 2024 00:00:00 GMT</pubDate>
+      <guid isPermaLink="true">https://johanneskonings.dev/blog/2024-12-07-aws-vscode-private-ec2-instance</guid>
     </item>
     <item>
       <title>Scan all your AWS SSO accounts with Prowler</title>
-      <link>https://johanneskonings.github.io/blog/2024-11-30-aws-sso-prowler</link>
+      <link>https://johanneskonings.dev/blog/2024-11-30-aws-sso-prowler</link>
       <description>See how this setup can help to scan all AWS SSO accounts with a mix of Prowler, docker, and aws-sso-util.</description>
-      <pubDate>Fri, 29 Nov 2024 23:00:00 GMT</pubDate>
-      <guid isPermaLink="true">https://johanneskonings.github.io/blog/2024-11-30-aws-sso-prowler</guid>
+      <pubDate>Sat, 30 Nov 2024 00:00:00 GMT</pubDate>
+      <guid isPermaLink="true">https://johanneskonings.dev/blog/2024-11-30-aws-sso-prowler</guid>
     </item>
     <item>
       <title>Consideration about cdk-notifier and Tags</title>
-      <link>https://johanneskonings.github.io/blog/2024-04-20-cdk-notifier-and-tags</link>
+      <link>https://johanneskonings.dev/blog/2024-04-20-cdk-notifier-and-tags</link>
       <description>Description of the diff consequence of two ways of tagging in CDK</description>
       <pubDate>Sat, 20 Apr 2024 00:00:00 GMT</pubDate>
-      <guid isPermaLink="true">https://johanneskonings.github.io/blog/2024-04-20-cdk-notifier-and-tags</guid>
+      <guid isPermaLink="true">https://johanneskonings.dev/blog/2024-04-20-cdk-notifier-and-tags</guid>
     </item>
     <item>
       <title>Use cdk-notifier to compare changes in pull requests</title>
-      <link>https://johanneskonings.github.io/blog/2023-12-16-cdk-notifier-feature-stacks</link>
+      <link>https://johanneskonings.dev/blog/2023-12-16-cdk-notifier-feature-stacks</link>
       <description>See how cdk-notifier can help to compare which cdk changes will be applied after merging a pull request</description>
-      <pubDate>Fri, 15 Dec 2023 23:00:00 GMT</pubDate>
-      <guid isPermaLink="true">https://johanneskonings.github.io/blog/2023-12-16-cdk-notifier-feature-stacks</guid>
+      <pubDate>Sat, 16 Dec 2023 00:00:00 GMT</pubDate>
+      <guid isPermaLink="true">https://johanneskonings.dev/blog/2023-12-16-cdk-notifier-feature-stacks</guid>
     </item>
     <item>
       <title>Use Steampipe to select your AWS resources across SSO accounts with SQL</title>
-      <link>https://johanneskonings.github.io/blog/2023-09-08-aws-sso-steampipe</link>
+      <link>https://johanneskonings.dev/blog/2023-09-08-aws-sso-steampipe</link>
       <description>See how this setup can help to discover your AWS resources across all SSO accounts with a mix of Steampipe, docker, bash scripts, and AWS CLI</description>
-      <pubDate>Thu, 07 Sep 2023 22:00:00 GMT</pubDate>
-      <guid isPermaLink="true">https://johanneskonings.github.io/blog/2023-09-08-aws-sso-steampipe</guid>
+      <pubDate>Fri, 08 Sep 2023 00:00:00 GMT</pubDate>
+      <guid isPermaLink="true">https://johanneskonings.dev/blog/2023-09-08-aws-sso-steampipe</guid>
     </item>
     <item>
       <title>Example how to use zod with CDK serverless v2</title>
-      <link>https://johanneskonings.github.io/blog/2023-08-19-cdk-serverless-v2-demo-with-zod</link>
+      <link>https://johanneskonings.dev/blog/2023-08-19-cdk-serverless-v2-demo-with-zod</link>
       <description>CDK serverless v2 is for using type saftey develepmonet base on schemas like openAPI. This post is a example how to use zod with CDK serverless v2</description>
       <pubDate>Sat, 19 Aug 2023 00:00:00 GMT</pubDate>
-      <guid isPermaLink="true">https://johanneskonings.github.io/blog/2023-08-19-cdk-serverless-v2-demo-with-zod</guid>
+      <guid isPermaLink="true">https://johanneskonings.dev/blog/2023-08-19-cdk-serverless-v2-demo-with-zod</guid>
     </item>
     <item>
       <title>Example how to trigger a Dynamodb export and create an Athena saved query with CDK</title>
-      <link>https://johanneskonings.github.io/blog/2022-10-03-aws-example-ddb-export-athena-query</link>
+      <link>https://johanneskonings.dev/blog/2022-10-03-aws-example-ddb-export-athena-query</link>
       <description>This post is how to trigger a Dynamodb export and create saved query to create a Athena table from the exported data</description>
-      <pubDate>Sun, 02 Oct 2022 22:00:00 GMT</pubDate>
-      <guid isPermaLink="true">https://johanneskonings.github.io/blog/2022-10-03-aws-example-ddb-export-athena-query</guid>
+      <pubDate>Mon, 03 Oct 2022 00:00:00 GMT</pubDate>
+      <guid isPermaLink="true">https://johanneskonings.dev/blog/2022-10-03-aws-example-ddb-export-athena-query</guid>
     </item>
     <item>
       <title>GitHub actions example for automatic release drafts and changelog.md creation</title>
-      <link>https://johanneskonings.github.io/blog/2021-02-28-github-automatic-releases-and-changelog</link>
+      <link>https://johanneskonings.dev/blog/2021-02-28-github-automatic-releases-and-changelog</link>
       <description>This post is how to define your release draft via labels in pull requests and the update of the changelog.md after publishing a release</description>
-      <pubDate>Sat, 27 Feb 2021 23:00:00 GMT</pubDate>
-      <guid isPermaLink="true">https://johanneskonings.github.io/blog/2021-02-28-github-automatic-releases-and-changelog</guid>
+      <pubDate>Sun, 28 Feb 2021 00:00:00 GMT</pubDate>
+      <guid isPermaLink="true">https://johanneskonings.dev/blog/2021-02-28-github-automatic-releases-and-changelog</guid>
     </item>
     <item>
       <title>How to setup AWS Billing metrics in Grafana Cloud via Terraform</title>
-      <link>https://johanneskonings.github.io/blog/2020-12-19-aws-billing-metrics-grafana-cloud-and-terraform</link>
+      <link>https://johanneskonings.dev/blog/2020-12-19-aws-billing-metrics-grafana-cloud-and-terraform</link>
       <description>Terraform setup to display AWS billing metrics in Grafana Cloud with S3 Backend and CI/CD pipeline</description>
-      <pubDate>Fri, 18 Dec 2020 23:00:00 GMT</pubDate>
-      <guid isPermaLink="true">https://johanneskonings.github.io/blog/2020-12-19-aws-billing-metrics-grafana-cloud-and-terraform</guid>
+      <pubDate>Sat, 19 Dec 2020 00:00:00 GMT</pubDate>
+      <guid isPermaLink="true">https://johanneskonings.dev/blog/2020-12-19-aws-billing-metrics-grafana-cloud-and-terraform</guid>
     </item>
     <item>
       <title>AWS Amplify Console: How I changed master branchenv to main</title>
-      <link>https://johanneskonings.github.io/blog/2020-08-18-amplify-env-master-to-main</link>
+      <link>https://johanneskonings.dev/blog/2020-08-18-amplify-env-master-to-main</link>
       <description>Change of the master branch end amplfiy env to main and migration of the env data</description>
       <pubDate>Tue, 18 Aug 2020 00:00:00 GMT</pubDate>
-      <guid isPermaLink="true">https://johanneskonings.github.io/blog/2020-08-18-amplify-env-master-to-main</guid>
+      <guid isPermaLink="true">https://johanneskonings.dev/blog/2020-08-18-amplify-env-master-to-main</guid>
     </item>
   </channel>
 </rss>
