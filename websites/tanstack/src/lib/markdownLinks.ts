@@ -52,6 +52,10 @@ export function normalizeMarkdownHref(
     .replace(/^\/+/, "");
   const extension = relativePath.match(/\.([a-z0-9]+)$/i)?.[1]?.toLowerCase();
 
+  if (options?.assetBasePath && extension && ASSET_EXTENSIONS.has(extension)) {
+    return `${options.assetBasePath}/${relativePath}${suffix}`;
+  }
+
   if (
     !rawPath.includes("/") &&
     /^[a-z0-9.-]+\.[a-z]{2,}$/i.test(rawPath) &&
@@ -66,10 +70,6 @@ export function normalizeMarkdownHref(
   if (awsPermalinkMatch) {
     const [, year, month, day, slug] = awsPermalinkMatch;
     return `/blog/${year}-${month}-${day}-${slug}${suffix}`;
-  }
-
-  if (options?.assetBasePath && extension && ASSET_EXTENSIONS.has(extension)) {
-    return `${options.assetBasePath}/${relativePath}${suffix}`;
   }
 
   const slugCandidate = extractSlugCandidate(rawPath);

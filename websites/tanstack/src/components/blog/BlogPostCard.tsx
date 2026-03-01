@@ -189,7 +189,9 @@ export function BlogPostCard({
             className="inline-flex items-center text-cyan-700 dark:text-cyan-300 hover:text-cyan-800 dark:hover:text-cyan-200 font-medium group-hover:translate-x-1 transition-all duration-300"
             aria-label={`Read ${post.title}`}
           >
-            <span className="font-semibold">Read {post.title}</span>
+            <span className="font-semibold" aria-hidden="true">
+              Read more
+            </span>
             <svg
               className="ml-2 w-4 h-4 transition-transform duration-300 group-hover:translate-x-1"
               fill="none"

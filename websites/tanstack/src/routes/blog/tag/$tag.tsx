@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, notFound } from "@tanstack/react-router";
 import { getPostsByTag } from "../../../lib/content-utils";
 import { BlogLayout } from "../../../components/blog/BlogLayout";
 import { BlogPostList } from "../../../components/blog/BlogPostList";
@@ -15,6 +15,9 @@ export const Route = createFileRoute("/blog/tag/$tag")({
   beforeLoad: ({ params }) => {
     const { tag } = params;
     const posts = getPostsByTag(tag);
+    if (posts.length === 0) {
+      throw notFound();
+    }
     return { posts, tag };
   },
 });
