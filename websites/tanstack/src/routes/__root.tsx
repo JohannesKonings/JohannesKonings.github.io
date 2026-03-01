@@ -54,6 +54,11 @@ export const Route = createRootRoute({
     links: [
       { rel: "stylesheet", href: globalCss },
       {
+        rel: "icon",
+        href: "/favicon.ico",
+        sizes: "any",
+      },
+      {
         rel: "alternate",
         type: "application/rss+xml",
         title: SITE_NAME,
