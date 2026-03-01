@@ -12,6 +12,7 @@ import { ReadingProgressBar } from "../../components/blog/ReadingProgressBar";
 import { ShareButtons } from "../../components/blog/ShareButtons";
 import { getSeriesContext, getRelatedPosts } from "../../lib/content-utils";
 import { generatePostSEOHead, generateSEOHead } from "../../lib/seo";
+import { isExternalHref, normalizeMarkdownHref } from "../../lib/markdownLinks";
 
 const ABSOLUTE_URL_PATTERN = /^[a-z][a-z\d+\-.]*:/i;
 
@@ -270,6 +271,26 @@ function RouteComponent() {
                         loading="lazy"
                       />
                     ),
+                  },
+                  a: {
+                    component: ({ href, children, ...props }) => {
+                      const normalizedHref = normalizeMarkdownHref(
+                        href,
+                        "blog",
+                        { assetBasePath: `/content/blog/${post.slug}` },
+                      );
+                      const isExternal = isExternalHref(normalizedHref);
+                      return (
+                        <a
+                          {...props}
+                          href={normalizedHref}
+                          target={isExternal ? "_blank" : undefined}
+                          rel={isExternal ? "noopener noreferrer" : undefined}
+                        >
+                          {children}
+                        </a>
+                      );
+                    },
                   },
                 },
               }}

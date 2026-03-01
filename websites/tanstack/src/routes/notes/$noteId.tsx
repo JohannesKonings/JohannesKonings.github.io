@@ -5,6 +5,7 @@ import { format } from "date-fns";
 import { BlogLayout } from "../../components/blog/BlogLayout";
 import { CodeBlock } from "../../components/blog/CodeBlock";
 import { generateSEOHead } from "../../lib/seo";
+import { isExternalHref, normalizeMarkdownHref } from "../../lib/markdownLinks";
 
 export const Route = createFileRoute("/notes/$noteId")({
   head: ({ params }) => {
@@ -167,6 +168,24 @@ function NoteDetailPage() {
                       loading="lazy"
                     />
                   ),
+                },
+                a: {
+                  component: ({ href, children, ...props }) => {
+                    const normalizedHref = normalizeMarkdownHref(href, "notes", {
+                      assetBasePath: `/content/notes/${note.slug}`,
+                    });
+                    const isExternal = isExternalHref(normalizedHref);
+                    return (
+                      <a
+                        {...props}
+                        href={normalizedHref}
+                        target={isExternal ? "_blank" : undefined}
+                        rel={isExternal ? "noopener noreferrer" : undefined}
+                      >
+                        {children}
+                      </a>
+                    );
+                  },
                 },
               },
             }}
