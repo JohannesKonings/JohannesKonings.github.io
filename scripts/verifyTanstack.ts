@@ -10,6 +10,11 @@
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import {
+  SITE_RSS_PATH,
+  SITE_SITEMAP_PATH,
+  SITE_URL,
+} from "../websites/tanstack/lib/site";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.join(__dirname, "..");
@@ -18,8 +23,16 @@ const CONTENT_BLOG = path.join(ROOT, "websites/tanstack/src/content/blog");
 const CONTENT_NOTES = path.join(ROOT, "websites/tanstack/src/content/notes");
 const SITEMAP_FILE = path.join(
   ROOT,
-  "websites/tanstack/public/sitemap-index.xml",
+  "websites/tanstack/public",
+  SITE_SITEMAP_PATH.replace(/^\//, ""),
 );
+const RSS_FILE = path.join(
+  ROOT,
+  "websites/tanstack/public",
+  SITE_RSS_PATH.replace(/^\//, ""),
+);
+const ROBOTS_FILE = path.join(ROOT, "websites/tanstack/public/robots.txt");
+const LLMS_FILE = path.join(ROOT, "websites/tanstack/public/llms.txt");
 
 // ANSI color codes for output
 const colors = {
@@ -248,13 +261,57 @@ function verifyBuildOutput(): boolean {
     }
 
     // Check base URL in sitemap
-    if (content.includes("johanneskonings.dev")) {
-      success("Sitemap uses correct domain (johanneskonings.dev)");
-    } else if (content.includes("johanneskonings.github.io")) {
+    if (content.includes(SITE_URL)) {
+      success(`Sitemap uses canonical domain (${SITE_URL})`);
+    } else {
+      error(`Sitemap does not use canonical domain (${SITE_URL})`);
+      hasIssues = true;
+    }
+  }
+
+  if (!fs.existsSync(RSS_FILE)) {
+    error("RSS file not found at expected location");
+    console.log(`      Expected: ${RSS_FILE}`);
+    hasIssues = true;
+  } else {
+    success("RSS file exists");
+    const content = fs.readFileSync(RSS_FILE, "utf-8");
+    if (content.includes(SITE_URL)) {
+      success(`RSS uses canonical domain (${SITE_URL})`);
+    } else {
+      error(`RSS does not use canonical domain (${SITE_URL})`);
+      hasIssues = true;
+    }
+  }
+
+  if (!fs.existsSync(ROBOTS_FILE)) {
+    error("robots.txt file not found at expected location");
+    console.log(`      Expected: ${ROBOTS_FILE}`);
+    hasIssues = true;
+  } else {
+    success("robots.txt file exists");
+    const content = fs.readFileSync(ROBOTS_FILE, "utf-8");
+    if (content.includes(SITE_SITEMAP_PATH)) {
+      success("robots.txt references sitemap path");
+    } else {
+      warn("robots.txt does not reference sitemap path");
+    }
+
+    if (content.includes(SITE_URL)) {
+      success(`robots.txt uses canonical domain (${SITE_URL})`);
+    } else {
       warn(
-        "Sitemap still uses github.io domain instead of johanneskonings.dev",
+        `robots.txt does not include canonical domain (${SITE_URL}) in sitemap entries`,
       );
     }
+  }
+
+  if (!fs.existsSync(LLMS_FILE)) {
+    error("llms.txt file not found at expected location");
+    console.log(`      Expected: ${LLMS_FILE}`);
+    hasIssues = true;
+  } else {
+    success("llms.txt file exists");
   }
 
   return !hasIssues;

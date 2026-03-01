@@ -10,6 +10,13 @@ import globalCss from "@/src/styles/global.css?url";
 import { Navigation } from "../components/Navigation";
 import { BackToTop } from "../components/BackToTop";
 import { ThemeProvider } from "../contexts/ThemeContext";
+import {
+  SITE_DESCRIPTION,
+  SITE_NAME,
+  SITE_RSS_PATH,
+  toAbsoluteUrl,
+} from "../../lib/site";
+import { generateWebsiteStructuredData } from "../lib/seo";
 
 const TanStackRouterDevtools =
   process.env.NODE_ENV === "production"
@@ -31,20 +38,31 @@ export const Route = createRootRoute({
         content: "width=device-width, initial-scale=1",
       },
       {
-        title: "Johannes Konings",
+        title: SITE_NAME,
       },
       {
         name: "description",
-        content: "Notes and posts on AWS and TanStack.",
+        content: SITE_DESCRIPTION,
+      },
+    ],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify(generateWebsiteStructuredData()),
       },
     ],
     links: [
       { rel: "stylesheet", href: globalCss },
       {
+        rel: "icon",
+        href: "/favicon.ico",
+        sizes: "any",
+      },
+      {
         rel: "alternate",
         type: "application/rss+xml",
-        title: "Johannes Konings",
-        href: "https://johanneskonings.github.io/rss.xml",
+        title: SITE_NAME,
+        href: toAbsoluteUrl(SITE_RSS_PATH),
       },
       {
         rel: "preload",
@@ -82,6 +100,7 @@ function RootDocument({ children }: Readonly<{ children: ReactNode }>) {
       <head>
         <script
           async
+          defer
           src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6554177261098317"
           crossOrigin="anonymous"
         />

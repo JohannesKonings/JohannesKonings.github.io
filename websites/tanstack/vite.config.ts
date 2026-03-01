@@ -4,55 +4,6 @@ import tailwindcss from "@tailwindcss/vite";
 import { tanstackStart } from "@tanstack/react-start/plugin/vite";
 
 import contentCollections from "@content-collections/vite";
-import { copyFileSync, mkdirSync, existsSync, readdirSync, statSync } from "fs";
-import { join, dirname } from "path";
-
-// Plugin to sync src/content to public/content
-function syncContentPlugin() {
-  const copyDirectory = (src: string, dest: string) => {
-    if (!existsSync(dest)) {
-      mkdirSync(dest, { recursive: true });
-    }
-
-    const items = readdirSync(src);
-    for (const item of items) {
-      const srcPath = join(src, item);
-      const destPath = join(dest, item);
-
-      if (statSync(srcPath).isDirectory()) {
-        copyDirectory(srcPath, destPath);
-      } else {
-        // Only copy if file doesn't exist or is newer
-        if (
-          !existsSync(destPath) ||
-          statSync(srcPath).mtime > statSync(destPath).mtime
-        ) {
-          mkdirSync(dirname(destPath), { recursive: true });
-          copyFileSync(srcPath, destPath);
-        }
-      }
-    }
-  };
-
-  return {
-    name: "sync-content",
-    buildStart() {
-      // Initial sync on build start
-      copyDirectory("src/content", "public/content");
-    },
-    handleHotUpdate({ file }: { file: string }) {
-      // Sync when content files change
-      if (file.includes("src/content")) {
-        try {
-          copyDirectory("src/content", "public/content");
-          console.log("✅ Synced content to public directory");
-        } catch (error) {
-          console.error("❌ Failed to sync content:", error);
-        }
-      }
-    },
-  };
-}
 
 export default defineConfig(({ mode }) => ({
   base: "/",
@@ -112,7 +63,6 @@ export default defineConfig(({ mode }) => ({
   },
   plugins: [
     tailwindcss(),
-    syncContentPlugin(),
     contentCollections(),
     // TanStack Start includes its own React plugin — no separate @vitejs/plugin-react needed
     tanstackStart({
@@ -121,6 +71,7 @@ export default defineConfig(({ mode }) => ({
         crawlLinks: true,
         autoSubfolderIndex: true,
         failOnError: true,
+        filter: ({ path }) => path !== "/rss.xml",
       },
       pages: [
         { path: "/", prerender: { enabled: true, outputPath: "/index.html" } },

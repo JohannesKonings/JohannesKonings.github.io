@@ -68,9 +68,9 @@ export function BlogPostList({
           {/* Tags */}
           {allTags.length > 0 && (
             <div>
-              <h3 className="text-sm font-medium bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent mb-3">
+              <h2 className="text-sm font-semibold text-cyan-700 dark:text-cyan-300 mb-3">
                 Tags
-              </h3>
+              </h2>
               <div className="flex flex-wrap gap-2">
                 {visibleTags.map((tag) => (
                   <button
@@ -88,7 +88,7 @@ export function BlogPostList({
                 {allTags.length > VISIBLE_TAGS && (
                   <button
                     onClick={() => setTagsExpanded((v) => !v)}
-                    className="px-3 py-1.5 text-sm text-cyan-600 dark:text-cyan-400 hover:underline cursor-pointer"
+                    className="px-3 py-1.5 text-sm text-cyan-700 dark:text-cyan-300 hover:underline cursor-pointer"
                   >
                     {tagsExpanded
                       ? "Show less"
@@ -134,8 +134,8 @@ export function BlogPostList({
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {filteredPosts.map((post) => (
-            <BlogPostCard key={post.slug} post={post} />
+          {filteredPosts.map((post, index) => (
+            <BlogPostCard key={post.slug} post={post} priority={index < 2} />
           ))}
         </div>
       )}
