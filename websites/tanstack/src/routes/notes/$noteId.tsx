@@ -171,9 +171,13 @@ function NoteDetailPage() {
                 },
                 a: {
                   component: ({ href, children, ...props }) => {
-                    const normalizedHref = normalizeMarkdownHref(href, "notes", {
-                      assetBasePath: `/content/notes/${note.slug}`,
-                    });
+                    const normalizedHref = normalizeMarkdownHref(
+                      href,
+                      "notes",
+                      {
+                        assetBasePath: `/content/notes/${note.slug}`,
+                      },
+                    );
                     const isExternal = isExternalHref(normalizedHref);
                     return (
                       <a

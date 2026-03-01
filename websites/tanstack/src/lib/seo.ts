@@ -1,5 +1,10 @@
 import type { allPosts } from "content-collections";
-import { SITE_AUTHOR, SITE_NAME, SITE_URL, toAbsoluteUrl } from "../../lib/site";
+import {
+  SITE_AUTHOR,
+  SITE_NAME,
+  SITE_URL,
+  toAbsoluteUrl,
+} from "../../lib/site";
 
 interface SEOProps {
   title: string;
@@ -44,7 +49,10 @@ export function generateSEOHead({
     { property: "og:url", content: fullUrl },
     { property: "og:type", content: type },
     { property: "og:site_name", content: SITE_NAME },
-    { name: "twitter:card", content: fullImage ? "summary_large_image" : "summary" },
+    {
+      name: "twitter:card",
+      content: fullImage ? "summary_large_image" : "summary",
+    },
     { name: "twitter:title", content: fullTitle },
     { name: "twitter:description", content: description },
   ];

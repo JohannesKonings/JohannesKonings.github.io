@@ -67,4 +67,3 @@ export function isExternalHref(href: string | undefined): boolean {
   if (!href) return false;
   return ABSOLUTE_URL_PATTERN.test(href);
 }
-

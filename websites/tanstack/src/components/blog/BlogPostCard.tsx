@@ -112,7 +112,7 @@ export function BlogPostCard({
         /* Fallback design for posts without images or failed to load */
         <div className="aspect-video bg-gray-200 dark:bg-gradient-to-br dark:from-gray-700 dark:via-gray-600 dark:to-gray-700 relative overflow-hidden flex items-center justify-center">
           <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/5 to-blue-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
-          <div className="text-center text-gray-400 group-hover:text-gray-300 transition-colors duration-500">
+          <div className="text-center text-gray-600 dark:text-gray-300 group-hover:text-gray-700 dark:group-hover:text-gray-200 transition-colors duration-500">
             <div className="w-16 h-16 mx-auto mb-3 rounded-full bg-gradient-to-r from-cyan-500/20 to-blue-500/20 flex items-center justify-center">
               <svg
                 className="w-8 h-8"

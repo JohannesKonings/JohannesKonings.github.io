@@ -168,7 +168,7 @@ function RouteComponent() {
                     key={tag}
                     to="/blog/tag/$tag"
                     params={{ tag }}
-                    className="px-3 py-1 text-sm bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-full hover:bg-blue-200 dark:hover:bg-blue-900/50 transition-colors"
+                    className="px-3 py-1 text-sm bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300 rounded-full hover:bg-blue-200 dark:hover:bg-blue-900/50 transition-colors"
                   >
                     {tag}
                   </Link>
@@ -312,24 +312,24 @@ function RouteComponent() {
                   {seriesContext.prev ? (
                     <Link
                       to={seriesContext.prev.url}
-                      className="text-cyan-600 dark:text-cyan-400 hover:underline"
+                      className="text-cyan-700 dark:text-cyan-300 hover:underline"
                     >
                       ← Previous: {seriesContext.prev.title}
                     </Link>
                   ) : (
-                    <span className="text-gray-400 dark:text-gray-500">
+                    <span className="text-gray-500 dark:text-gray-400">
                       ← Previous
                     </span>
                   )}
                   {seriesContext.next ? (
                     <Link
                       to={seriesContext.next.url}
-                      className="text-cyan-600 dark:text-cyan-400 hover:underline"
+                      className="text-cyan-700 dark:text-cyan-300 hover:underline"
                     >
                       Next: {seriesContext.next.title} →
                     </Link>
                   ) : (
-                    <span className="text-gray-400 dark:text-gray-500">
+                    <span className="text-gray-500 dark:text-gray-400">
                       Next →
                     </span>
                   )}

@@ -6,14 +6,22 @@
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { SITE_SITEMAP_PATH, SITE_URL, toAbsoluteUrl } from "../websites/tanstack/lib/site";
+import {
+  SITE_SITEMAP_PATH,
+  SITE_URL,
+  toAbsoluteUrl,
+} from "../websites/tanstack/lib/site";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.join(__dirname, "..");
 
 const CONTENT_BLOG = path.join(ROOT, "websites/tanstack/src/content/blog");
 const CONTENT_NOTES = path.join(ROOT, "websites/tanstack/src/content/notes");
-const OUT_FILE = path.join(ROOT, "websites/tanstack/public", SITE_SITEMAP_PATH.replace(/^\//, ""));
+const OUT_FILE = path.join(
+  ROOT,
+  "websites/tanstack/public",
+  SITE_SITEMAP_PATH.replace(/^\//, ""),
+);
 
 function parseFrontmatter(content: string): {
   title?: string;
