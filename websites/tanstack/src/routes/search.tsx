@@ -50,7 +50,7 @@ function SearchPage() {
   return (
     <BlogLayout title="Search" description="Search blog posts and notes">
       <div className="max-w-3xl mx-auto px-4 py-8">
-        <SearchComponent items={items} />
+        <SearchComponent items={items} autoFocus />
       </div>
     </BlogLayout>
   );
