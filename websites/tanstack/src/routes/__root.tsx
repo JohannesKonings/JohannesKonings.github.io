@@ -81,6 +81,12 @@ function RootDocument({ children }: Readonly<{ children: ReactNode }>) {
     <html lang="en" suppressHydrationWarning>
       <head>
         <script
+          defer
+          src="https://cloud.umami.is/script.js"
+          data-website-id="ad18022d-5431-470e-909a-74a7882c97e2"
+          data-domains="johanneskonings.dev"
+        />
+        <script
           async
           src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6554177261098317"
           crossOrigin="anonymous"
