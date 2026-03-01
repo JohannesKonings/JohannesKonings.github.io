@@ -99,6 +99,47 @@ function RootDocument({ children }: Readonly<{ children: ReactNode }>) {
     <html lang="en" suppressHydrationWarning>
       <head>
         <script
+          suppressHydrationWarning
+          dangerouslySetInnerHTML={{
+            __html: `
+(() => {
+  if (window.location.protocol !== "file:") return;
+
+  const marker = "/.output/public/";
+  const pathname = window.location.pathname;
+  const markerIndex = pathname.indexOf(marker);
+  const publicRoot =
+    markerIndex >= 0
+      ? pathname.slice(0, markerIndex + marker.length)
+      : pathname.slice(0, pathname.lastIndexOf("/") + 1);
+
+  const toFilePath = (value) => {
+    if (!value || !value.startsWith("/") || value.startsWith("//")) return value;
+    return publicRoot + value.slice(1);
+  };
+
+  const rewriteAttribute = (selector, attribute) => {
+    document.querySelectorAll(selector).forEach((node) => {
+      const value = node.getAttribute(attribute);
+      const rewritten = toFilePath(value);
+      if (value && rewritten && value !== rewritten) {
+        node.setAttribute(attribute, rewritten);
+      }
+    });
+  };
+
+  rewriteAttribute("link[href]", "href");
+  rewriteAttribute("script[src]", "src");
+  rewriteAttribute("img[src]", "src");
+  rewriteAttribute("source[src]", "src");
+  rewriteAttribute("video[src]", "src");
+  rewriteAttribute("audio[src]", "src");
+  rewriteAttribute("a[href]", "href");
+})();
+`,
+          }}
+        />
+        <script
           async
           defer
           src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6554177261098317"
