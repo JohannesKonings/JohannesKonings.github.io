@@ -3,8 +3,15 @@ import { Link } from "@tanstack/react-router";
 import { getPostsBySeries, getAllSeries } from "../../../lib/content-utils";
 import { BlogLayout } from "../../../components/blog/BlogLayout";
 import { BlogPostList } from "../../../components/blog/BlogPostList";
+import { generateSEOHead } from "../../../lib/seo";
 
 export const Route = createFileRoute("/blog/series/$seriesSlug")({
+  head: ({ params }) =>
+    generateSEOHead({
+      title: `Series: ${formatSeriesTitle(params.seriesSlug)}`,
+      description: `Blog posts in the ${formatSeriesTitle(params.seriesSlug)} series.`,
+      url: `/blog/series/${params.seriesSlug}`,
+    }),
   component: SeriesPage,
   beforeLoad: ({ params }) => {
     const { seriesSlug } = params;

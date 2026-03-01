@@ -11,6 +11,7 @@ import { RelatedPosts } from "../../components/blog/RelatedPosts";
 import { ReadingProgressBar } from "../../components/blog/ReadingProgressBar";
 import { ShareButtons } from "../../components/blog/ShareButtons";
 import { getSeriesContext, getRelatedPosts } from "../../lib/content-utils";
+import { generatePostSEOHead, generateSEOHead } from "../../lib/seo";
 
 const ABSOLUTE_URL_PATTERN = /^[a-z][a-z\d+\-.]*:/i;
 
@@ -34,6 +35,19 @@ function resolveBlogImageSrc(
 }
 
 export const Route = createFileRoute("/blog/$postId")({
+  head: ({ params }) => {
+    const post = allPosts.find((p) => p.slug === params.postId && p.published);
+
+    if (!post) {
+      return generateSEOHead({
+        title: "Blog Post",
+        description: "Blog post on AWS and TanStack.",
+        url: `/blog/${params.postId}`,
+      });
+    }
+
+    return generatePostSEOHead(post);
+  },
   component: RouteComponent,
   beforeLoad: ({ params }) => {
     const { postId } = params;

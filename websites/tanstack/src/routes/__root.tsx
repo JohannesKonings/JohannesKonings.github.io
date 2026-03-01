@@ -16,6 +16,7 @@ import {
   SITE_RSS_PATH,
   toAbsoluteUrl,
 } from "../../lib/site";
+import { generateWebsiteStructuredData } from "../lib/seo";
 
 const TanStackRouterDevtools =
   process.env.NODE_ENV === "production"
@@ -42,6 +43,12 @@ export const Route = createRootRoute({
       {
         name: "description",
         content: SITE_DESCRIPTION,
+      },
+    ],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify(generateWebsiteStructuredData()),
       },
     ],
     links: [

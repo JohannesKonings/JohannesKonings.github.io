@@ -4,8 +4,30 @@ import Markdown from "markdown-to-jsx";
 import { format } from "date-fns";
 import { BlogLayout } from "../../components/blog/BlogLayout";
 import { CodeBlock } from "../../components/blog/CodeBlock";
+import { generateSEOHead } from "../../lib/seo";
 
 export const Route = createFileRoute("/notes/$noteId")({
+  head: ({ params }) => {
+    const note = allNotes.find((n) => n.slug === params.noteId && n.published);
+
+    if (!note) {
+      return generateSEOHead({
+        title: "Note",
+        description: "Technical note.",
+        url: `/notes/${params.noteId}`,
+      });
+    }
+
+    return generateSEOHead({
+      title: note.title,
+      description: note.summary || note.excerpt || "Technical note.",
+      url: note.url,
+      tags: note.tags,
+      type: "article",
+      publishedTime: note.date.toISOString(),
+      modifiedTime: note.date.toISOString(),
+    });
+  },
   component: NoteDetailPage,
   beforeLoad: ({ params }) => {
     const { noteId } = params;
