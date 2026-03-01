@@ -1,8 +1,27 @@
 import { useState, useCallback } from "react";
-import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import * as styles from "react-syntax-highlighter/dist/cjs/styles/prism";
+import { PrismLight as SyntaxHighlighter } from "react-syntax-highlighter";
+import oneDark from "react-syntax-highlighter/dist/esm/styles/prism/one-dark";
+import typescript from "react-syntax-highlighter/dist/esm/languages/prism/typescript";
+import javascript from "react-syntax-highlighter/dist/esm/languages/prism/javascript";
+import jsx from "react-syntax-highlighter/dist/esm/languages/prism/jsx";
+import tsx from "react-syntax-highlighter/dist/esm/languages/prism/tsx";
+import bash from "react-syntax-highlighter/dist/esm/languages/prism/bash";
+import json from "react-syntax-highlighter/dist/esm/languages/prism/json";
+import yaml from "react-syntax-highlighter/dist/esm/languages/prism/yaml";
+import sql from "react-syntax-highlighter/dist/esm/languages/prism/sql";
+import docker from "react-syntax-highlighter/dist/esm/languages/prism/docker";
+import markup from "react-syntax-highlighter/dist/esm/languages/prism/markup";
 
-const oneDark = styles.oneDark || {};
+SyntaxHighlighter.registerLanguage("typescript", typescript);
+SyntaxHighlighter.registerLanguage("javascript", javascript);
+SyntaxHighlighter.registerLanguage("jsx", jsx);
+SyntaxHighlighter.registerLanguage("tsx", tsx);
+SyntaxHighlighter.registerLanguage("bash", bash);
+SyntaxHighlighter.registerLanguage("json", json);
+SyntaxHighlighter.registerLanguage("yaml", yaml);
+SyntaxHighlighter.registerLanguage("sql", sql);
+SyntaxHighlighter.registerLanguage("docker", docker);
+SyntaxHighlighter.registerLanguage("markup", markup);
 
 const FEEDBACK_MS = 2500;
 
@@ -11,8 +30,36 @@ interface CodeBlockProps {
   language?: string;
 }
 
+function normalizeLanguage(language?: string): string | undefined {
+  if (!language) return "typescript";
+
+  const normalized = language.trim().toLowerCase();
+
+  if (normalized === "ts") return "typescript";
+  if (normalized === "js") return "javascript";
+  if (normalized === "shell" || normalized === "sh" || normalized === "zsh") {
+    return "bash";
+  }
+  if (normalized === "yml") return "yaml";
+  if (normalized === "dockerfile") return "docker";
+  if (normalized === "html") return "markup";
+  if (
+    normalized === "plain" ||
+    normalized === "text" ||
+    normalized === "txt" ||
+    normalized === "mermaid" ||
+    normalized === "terraform" ||
+    normalized === "hcl"
+  ) {
+    return undefined;
+  }
+
+  return normalized;
+}
+
 export function CodeBlock({ code, language = "typescript" }: CodeBlockProps) {
   const [copied, setCopied] = useState(false);
+  const normalizedLanguage = normalizeLanguage(language);
 
   const handleCopy = useCallback(async () => {
     try {
@@ -37,7 +84,7 @@ export function CodeBlock({ code, language = "typescript" }: CodeBlockProps) {
         </button>
       </div>
       <SyntaxHighlighter
-        language={language}
+        language={normalizedLanguage}
         style={oneDark}
         showLineNumbers={false}
         PreTag="div"
