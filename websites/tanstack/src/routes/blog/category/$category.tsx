@@ -1,21 +1,19 @@
-import { createFileRoute, notFound } from "@tanstack/react-router";
-import {
-  getPostsByCategory,
-  getAllCategories,
-} from "../../../lib/content-utils";
+import { createFileRoute } from "@tanstack/react-router";
+import { getPostsByCategory } from "../../../lib/content-utils";
 import { BlogLayout } from "../../../components/blog/BlogLayout";
 import { BlogPostList } from "../../../components/blog/BlogPostList";
+import { generateSEOHead } from "../../../lib/seo";
 
 export const Route = createFileRoute("/blog/category/$category")({
+  head: ({ params }) =>
+    generateSEOHead({
+      title: `Category: ${params.category}`,
+      description: `Blog posts in the ${params.category} category.`,
+      url: `/blog/category/${params.category}`,
+    }),
   component: RouteComponent,
   beforeLoad: ({ params }) => {
     const { category } = params;
-    const allCategories = getAllCategories();
-
-    if (!allCategories.includes(category)) {
-      throw notFound();
-    }
-
     const posts = getPostsByCategory(category);
     return { posts, category };
   },

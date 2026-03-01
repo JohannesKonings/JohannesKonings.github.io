@@ -2,8 +2,15 @@ import { createFileRoute } from "@tanstack/react-router";
 import { allPosts, allNotes } from "content-collections";
 import { BlogLayout } from "../components/blog/BlogLayout";
 import { Search as SearchComponent } from "../components/search/Search";
+import { generateSEOHead } from "../lib/seo";
 
 export const Route = createFileRoute("/search")({
+  head: () =>
+    generateSEOHead({
+      title: "Search",
+      description: "Search blog posts and notes.",
+      url: "/search",
+    }),
   component: SearchPage,
   loader: () => {
     // Map blog posts to search items
@@ -43,7 +50,7 @@ function SearchPage() {
   return (
     <BlogLayout title="Search" description="Search blog posts and notes">
       <div className="max-w-3xl mx-auto px-4 py-8">
-        <SearchComponent items={items} />
+        <SearchComponent items={items} autoFocus />
       </div>
     </BlogLayout>
   );

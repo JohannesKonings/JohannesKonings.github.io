@@ -6,9 +6,13 @@ import { useState, useEffect, useRef } from "react";
 
 interface BlogPostCardProps {
   post: (typeof allPosts)[0];
+  priority?: boolean;
 }
 
-export function BlogPostCard({ post }: BlogPostCardProps): JSX.Element {
+export function BlogPostCard({
+  post,
+  priority = false,
+}: BlogPostCardProps): JSX.Element {
   const resolveCoverImageUrl = (
     coverImage: string | null | undefined,
   ): string | null => {
@@ -93,7 +97,8 @@ export function BlogPostCard({ post }: BlogPostCardProps): JSX.Element {
             ref={imageRef}
             src={imageUrl}
             alt={post.title}
-            loading="lazy"
+            loading={priority ? "eager" : "lazy"}
+            fetchPriority={priority ? "high" : "auto"}
             className="block w-full h-auto object-contain object-center transition-all duration-300 group-hover:scale-105"
             style={{ imageRendering: "auto" }}
             onLoad={handleImageLoad}
@@ -107,7 +112,7 @@ export function BlogPostCard({ post }: BlogPostCardProps): JSX.Element {
         /* Fallback design for posts without images or failed to load */
         <div className="aspect-video bg-gray-200 dark:bg-gradient-to-br dark:from-gray-700 dark:via-gray-600 dark:to-gray-700 relative overflow-hidden flex items-center justify-center">
           <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/5 to-blue-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
-          <div className="text-center text-gray-400 group-hover:text-gray-300 transition-colors duration-500">
+          <div className="text-center text-gray-600 dark:text-gray-300 group-hover:text-gray-700 dark:group-hover:text-gray-200 transition-colors duration-500">
             <div className="w-16 h-16 mx-auto mb-3 rounded-full bg-gradient-to-r from-cyan-500/20 to-blue-500/20 flex items-center justify-center">
               <svg
                 className="w-8 h-8"
@@ -136,7 +141,7 @@ export function BlogPostCard({ post }: BlogPostCardProps): JSX.Element {
           <div className="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400 mb-3">
             <time
               dateTime={post.date.toISOString()}
-              className="text-cyan-600 dark:text-cyan-400"
+              className="text-cyan-700 dark:text-cyan-300"
             >
               {format(post.date, "MMM d, yyyy")}
             </time>
@@ -149,7 +154,7 @@ export function BlogPostCard({ post }: BlogPostCardProps): JSX.Element {
           <h2 className="text-xl font-bold text-gray-800 dark:text-gray-100 mb-3 line-clamp-2 group-hover:text-cyan-600 dark:group-hover:text-cyan-300 transition-colors duration-300">
             <Link
               to={post.url}
-              className="hover:text-cyan-400 transition-colors duration-300"
+              className="hover:text-cyan-700 dark:hover:text-cyan-300 transition-colors duration-300"
             >
               {post.title}
             </Link>
@@ -166,7 +171,7 @@ export function BlogPostCard({ post }: BlogPostCardProps): JSX.Element {
                   key={tag}
                   to="/blog/tag/$tag"
                   params={{ tag }}
-                  className="px-3 py-1.5 text-xs bg-cyan-50 dark:bg-cyan-500/20 text-cyan-700 dark:text-cyan-300 rounded-full border border-cyan-200 dark:border-cyan-500/30 hover:bg-cyan-100 dark:hover:bg-cyan-500/30 transition-all duration-300"
+                  className="px-3 py-1.5 text-xs bg-cyan-50 dark:bg-cyan-500/20 text-cyan-800 dark:text-cyan-200 rounded-full border border-cyan-200 dark:border-cyan-500/30 hover:bg-cyan-100 dark:hover:bg-cyan-500/30 transition-all duration-300"
                 >
                   {tag}
                 </Link>
@@ -181,15 +186,10 @@ export function BlogPostCard({ post }: BlogPostCardProps): JSX.Element {
 
           <Link
             to={post.url}
-            className="inline-flex items-center text-cyan-400 hover:text-cyan-300 font-medium group-hover:translate-x-1 transition-all duration-300"
-            aria-label={`Read more about ${post.title}`}
+            className="inline-flex items-center text-cyan-700 dark:text-cyan-300 hover:text-cyan-800 dark:hover:text-cyan-200 font-medium group-hover:translate-x-1 transition-all duration-300"
+            aria-label={`Read ${post.title}`}
           >
-            <span
-              className="bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent font-semibold"
-              aria-hidden="true"
-            >
-              Read more
-            </span>
+            <span className="font-semibold">Read {post.title}</span>
             <svg
               className="ml-2 w-4 h-4 transition-transform duration-300 group-hover:translate-x-1"
               fill="none"

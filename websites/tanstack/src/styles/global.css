@@ -103,13 +103,13 @@ h3 {
 }
 
 .markdown-content :where(a) {
-  color: rgb(8 145 178);
+  color: rgb(14 116 144);
   text-decoration: underline;
   text-underline-offset: 2px;
 }
 
 .markdown-content :where(a:hover) {
-  color: rgb(14 116 144);
+  color: rgb(15 89 112);
 }
 
 .dark .markdown-content :where(a) {

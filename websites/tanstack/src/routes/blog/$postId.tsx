@@ -11,8 +11,36 @@ import { RelatedPosts } from "../../components/blog/RelatedPosts";
 import { ReadingProgressBar } from "../../components/blog/ReadingProgressBar";
 import { ShareButtons } from "../../components/blog/ShareButtons";
 import { getSeriesContext, getRelatedPosts } from "../../lib/content-utils";
+import { generatePostSEOHead, generateSEOHead } from "../../lib/seo";
+import { isExternalHref, normalizeMarkdownHref } from "../../lib/markdownLinks";
 
 const ABSOLUTE_URL_PATTERN = /^[a-z][a-z\d+\-.]*:/i;
+
+function resolvePostById(postId: string) {
+  const normalizedPostId = postId
+    .replace(/\/+$/, "")
+    .replace(/\.(md|html?)$/i, "");
+  const datePrefixMatch = normalizedPostId.match(/^(\d{4}-\d{2}-\d{2})-(.+)$/i);
+  const slugWithoutDate = datePrefixMatch?.[2];
+
+  const exactMatch = allPosts.find(
+    (post) => post.slug === normalizedPostId && post.published,
+  );
+  if (exactMatch) {
+    return exactMatch;
+  }
+
+  return allPosts.find(
+    (post) =>
+      post.published &&
+      (post.slug.endsWith(`-${normalizedPostId}`) ||
+        post.slug.endsWith(`_${normalizedPostId}`) ||
+        (slugWithoutDate
+          ? post.slug.endsWith(`-${slugWithoutDate}`) ||
+            post.slug.endsWith(`_${slugWithoutDate}`)
+          : false)),
+  );
+}
 
 function resolveBlogImageSrc(
   src: string | undefined,
@@ -34,6 +62,19 @@ function resolveBlogImageSrc(
 }
 
 export const Route = createFileRoute("/blog/$postId")({
+  head: ({ params }) => {
+    const post = resolvePostById(params.postId);
+
+    if (!post) {
+      return generateSEOHead({
+        title: "Blog Post",
+        description: "Blog post on AWS and TanStack.",
+        url: `/blog/${params.postId}`,
+      });
+    }
+
+    return generatePostSEOHead(post);
+  },
   component: RouteComponent,
   beforeLoad: ({ params }) => {
     const { postId } = params;
@@ -47,8 +88,8 @@ export const Route = createFileRoute("/blog/$postId")({
       throw notFound();
     }
 
-    const post = allPosts.find((p) => p.slug === postId);
-    if (!post || !post.published) {
+    const post = resolvePostById(postId);
+    if (!post) {
       throw notFound();
     }
 
@@ -153,7 +194,7 @@ function RouteComponent() {
                     key={tag}
                     to="/blog/tag/$tag"
                     params={{ tag }}
-                    className="px-3 py-1 text-sm bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-full hover:bg-blue-200 dark:hover:bg-blue-900/50 transition-colors"
+                    className="px-3 py-1 text-sm bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300 rounded-full hover:bg-blue-200 dark:hover:bg-blue-900/50 transition-colors"
                   >
                     {tag}
                   </Link>
@@ -257,6 +298,26 @@ function RouteComponent() {
                       />
                     ),
                   },
+                  a: {
+                    component: ({ href, children, ...props }) => {
+                      const normalizedHref = normalizeMarkdownHref(
+                        href,
+                        "blog",
+                        { assetBasePath: `/content/blog/${post.slug}` },
+                      );
+                      const isExternal = isExternalHref(normalizedHref);
+                      return (
+                        <a
+                          {...props}
+                          href={normalizedHref}
+                          target={isExternal ? "_blank" : undefined}
+                          rel={isExternal ? "noopener noreferrer" : undefined}
+                        >
+                          {children}
+                        </a>
+                      );
+                    },
+                  },
                 },
               }}
             >
@@ -277,24 +338,24 @@ function RouteComponent() {
                   {seriesContext.prev ? (
                     <Link
                       to={seriesContext.prev.url}
-                      className="text-cyan-600 dark:text-cyan-400 hover:underline"
+                      className="text-cyan-700 dark:text-cyan-300 hover:underline"
                     >
                       ← Previous: {seriesContext.prev.title}
                     </Link>
                   ) : (
-                    <span className="text-gray-400 dark:text-gray-500">
+                    <span className="text-gray-500 dark:text-gray-400">
                       ← Previous
                     </span>
                   )}
                   {seriesContext.next ? (
                     <Link
                       to={seriesContext.next.url}
-                      className="text-cyan-600 dark:text-cyan-400 hover:underline"
+                      className="text-cyan-700 dark:text-cyan-300 hover:underline"
                     >
                       Next: {seriesContext.next.title} →
                     </Link>
                   ) : (
-                    <span className="text-gray-400 dark:text-gray-500">
+                    <span className="text-gray-500 dark:text-gray-400">
                       Next →
                     </span>
                   )}

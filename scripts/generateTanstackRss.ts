@@ -5,22 +5,18 @@
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import {
+  SITE_DESCRIPTION,
+  SITE_NAME,
+  SITE_RSS_PATH,
+  SITE_URL,
+  toAbsoluteUrl,
+} from "../websites/tanstack/lib/site";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.join(__dirname, "..");
-const BASE_URL = "https://johanneskonings.github.io";
 const CONTENT_BLOG = path.join(ROOT, "websites/tanstack/src/content/blog");
 const OUT_FILE = path.join(ROOT, "websites/tanstack/public/rss.xml");
-
-const SITE_TITLE = "Johannes Konings";
-const SITE_DESCRIPTION = "Contact, notes and some posts";
-
-function slugFromTitle(title: string): string {
-  return title
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-|-$/g, "");
-}
 
 function escapeXml(s: string): string {
   return s
@@ -93,20 +89,20 @@ function main() {
   const rss = `<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>${escapeXml(SITE_TITLE)}</title>
-    <link>${BASE_URL}/</link>
+    <title>${escapeXml(SITE_NAME)}</title>
+    <link>${SITE_URL}/</link>
     <description>${escapeXml(SITE_DESCRIPTION)}</description>
     <language>en</language>
     <lastBuildDate>${lastBuildDate}</lastBuildDate>
-    <atom:link href="${BASE_URL}/rss.xml" rel="self" type="application/rss+xml"/>
+    <atom:link href="${toAbsoluteUrl(SITE_RSS_PATH)}" rel="self" type="application/rss+xml"/>
 ${items
   .map(
     (item) => `    <item>
       <title>${escapeXml(item.title)}</title>
-      <link>${BASE_URL}/blog/${item.slug}</link>
+      <link>${toAbsoluteUrl(`/blog/${item.slug}`)}</link>
       <description>${escapeXml(item.summary)}</description>
       <pubDate>${item.date.toUTCString()}</pubDate>
-      <guid isPermaLink="true">${BASE_URL}/blog/${item.slug}</guid>
+      <guid isPermaLink="true">${toAbsoluteUrl(`/blog/${item.slug}`)}</guid>
     </item>`,
   )
   .join("\n")}

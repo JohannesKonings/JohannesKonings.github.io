@@ -5,6 +5,8 @@ import { Fa6BrandsBluesky, MdiGithub, SimpleIconsDevdotto } from "../icons";
 import { Mail, Linkedin } from "lucide-react";
 import { getRecentPosts } from "../lib/content-utils";
 import { BlogPostCard } from "../components/blog/BlogPostCard";
+import { generateSEOHead } from "../lib/seo";
+import { SITE_DESCRIPTION, SITE_NAME } from "../../lib/site";
 
 const SOCIALS = [
   { href: "mailto:mail@johanneskonings.dev", label: "Email", Icon: Mail },
@@ -31,6 +33,13 @@ const SOCIALS = [
 ] as const;
 
 export const Route = createFileRoute("/")({
+  head: () =>
+    generateSEOHead({
+      title: SITE_NAME,
+      description: SITE_DESCRIPTION,
+      url: "/",
+      type: "website",
+    }),
   component: Home,
 });
 

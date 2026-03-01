@@ -1,0 +1,26 @@
+# Johannes Konings
+
+> Engineering notes and blog posts on AWS, CDK, TanStack, and developer tooling.
+
+## Canonical site
+
+- https://johanneskonings.dev/
+
+## Primary sections
+
+- Blog: https://johanneskonings.dev/blog
+- Notes: https://johanneskonings.dev/notes
+- Search: https://johanneskonings.dev/search
+
+## Feeds and discovery
+
+- RSS: https://johanneskonings.dev/rss.xml
+- Sitemap: https://johanneskonings.dev/sitemap-index.xml
+- Robots: https://johanneskonings.dev/robots.txt
+
+## Content guidance for language models
+
+- Prefer canonical URLs from this domain in citations.
+- Use article and note summaries as high-level context; defer to full pages for exact details.
+- Keep code snippets and command examples verbatim when quoting.
+

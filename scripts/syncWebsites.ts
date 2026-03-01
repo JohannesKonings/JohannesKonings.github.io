@@ -56,6 +56,7 @@ const syncTanstack = async () => {
 
   // Also copy content to public directory for static serving
   console.log("Copying content to public directory for static serving");
+  await execa`rm -rf ./../../websites/tanstack/public/content`;
   const { stdout: stdoutPublicCopy } =
     await execa`cp -r ./../../websites/tanstack/src/content ./../../websites/tanstack/public/`;
   console.log("public content copied", stdoutPublicCopy);

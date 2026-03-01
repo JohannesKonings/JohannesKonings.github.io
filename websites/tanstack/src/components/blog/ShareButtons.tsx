@@ -1,5 +1,6 @@
 import { useState, useCallback } from "react";
 import { Fa6BrandsBluesky } from "../../icons";
+import { toAbsoluteUrl } from "../../../lib/site";
 
 interface ShareButtonsProps {
   title: string;
@@ -8,7 +9,7 @@ interface ShareButtonsProps {
 
 export function ShareButtons({ title, url }: ShareButtonsProps) {
   const [copied, setCopied] = useState(false);
-  const fullUrl = `https://johanneskonings.dev${url}`;
+  const fullUrl = toAbsoluteUrl(url);
   const encodedUrl = encodeURIComponent(fullUrl);
   const encodedShareText = encodeURIComponent(`${title} ${fullUrl}`);
 

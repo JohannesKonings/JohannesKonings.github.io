@@ -10,6 +10,13 @@ import globalCss from "@/src/styles/global.css?url";
 import { Navigation } from "../components/Navigation";
 import { BackToTop } from "../components/BackToTop";
 import { ThemeProvider } from "../contexts/ThemeContext";
+import {
+  SITE_DESCRIPTION,
+  SITE_NAME,
+  SITE_RSS_PATH,
+  toAbsoluteUrl,
+} from "../../lib/site";
+import { generateWebsiteStructuredData } from "../lib/seo";
 
 const TanStackRouterDevtools =
   process.env.NODE_ENV === "production"
@@ -31,20 +38,31 @@ export const Route = createRootRoute({
         content: "width=device-width, initial-scale=1",
       },
       {
-        title: "Johannes Konings",
+        title: SITE_NAME,
       },
       {
         name: "description",
-        content: "Notes and posts on AWS and TanStack.",
+        content: SITE_DESCRIPTION,
+      },
+    ],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify(generateWebsiteStructuredData()),
       },
     ],
     links: [
       { rel: "stylesheet", href: globalCss },
       {
+        rel: "icon",
+        href: "/favicon.ico",
+        sizes: "any",
+      },
+      {
         rel: "alternate",
         type: "application/rss+xml",
-        title: "Johannes Konings",
-        href: "https://johanneskonings.github.io/rss.xml",
+        title: SITE_NAME,
+        href: toAbsoluteUrl(SITE_RSS_PATH),
       },
       {
         rel: "preload",
@@ -81,7 +99,49 @@ function RootDocument({ children }: Readonly<{ children: ReactNode }>) {
     <html lang="en" suppressHydrationWarning>
       <head>
         <script
+          suppressHydrationWarning
+          dangerouslySetInnerHTML={{
+            __html: `
+(() => {
+  if (window.location.protocol !== "file:") return;
+
+  const marker = "/.output/public/";
+  const pathname = window.location.pathname;
+  const markerIndex = pathname.indexOf(marker);
+  const publicRoot =
+    markerIndex >= 0
+      ? pathname.slice(0, markerIndex + marker.length)
+      : pathname.slice(0, pathname.lastIndexOf("/") + 1);
+
+  const toFilePath = (value) => {
+    if (!value || !value.startsWith("/") || value.startsWith("//")) return value;
+    return publicRoot + value.slice(1);
+  };
+
+  const rewriteAttribute = (selector, attribute) => {
+    document.querySelectorAll(selector).forEach((node) => {
+      const value = node.getAttribute(attribute);
+      const rewritten = toFilePath(value);
+      if (value && rewritten && value !== rewritten) {
+        node.setAttribute(attribute, rewritten);
+      }
+    });
+  };
+
+  rewriteAttribute("link[href]", "href");
+  rewriteAttribute("script[src]", "src");
+  rewriteAttribute("img[src]", "src");
+  rewriteAttribute("source[src]", "src");
+  rewriteAttribute("video[src]", "src");
+  rewriteAttribute("audio[src]", "src");
+  rewriteAttribute("a[href]", "href");
+})();
+`,
+          }}
+        />
+        <script
           async
+          defer
           src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6554177261098317"
           crossOrigin="anonymous"
         />

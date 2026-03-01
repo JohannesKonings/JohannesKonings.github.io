@@ -1,10 +1,8 @@
-import { useMemo, useState, useEffect, useCallback } from "react";
+import { useState } from "react";
 import { Link, useRouter } from "@tanstack/react-router";
 import type { JSX } from "react";
-import { Rss, Search, X } from "lucide-react";
-import { allNotes, allPosts } from "content-collections";
+import { Rss, Search } from "lucide-react";
 import { ThemeToggle } from "./ThemeToggle";
-import { Search as SearchComponent, type SearchItem } from "./search/Search";
 
 const NAV_LINKS = [
   { to: "/", label: "Home", exact: true },
@@ -16,70 +14,6 @@ export function Navigation(): JSX.Element {
   const router = useRouter();
   const currentPath = router.state.location.pathname;
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [isSearchOpen, setIsSearchOpen] = useState(false);
-
-  const searchItems = useMemo<SearchItem[]>(() => {
-    const postItems = allPosts
-      .filter((post) => post.published)
-      .map((post) => ({
-        type: "blog" as const,
-        slug: post.slug,
-        title: post.title,
-        summary: post.summary,
-        excerpt: post.excerpt,
-        tags: post.tags.join(" "),
-        url: post.url,
-      }));
-
-    const noteItems = allNotes
-      .filter((note) => note.published)
-      .map((note) => ({
-        type: "note" as const,
-        slug: note.slug,
-        title: note.title,
-        summary: note.summary,
-        excerpt: note.excerpt,
-        tags: note.tags.join(" "),
-        url: note.url,
-      }));
-
-    return [...postItems, ...noteItems];
-  }, []);
-
-  const openSearch = useCallback(() => {
-    setIsSearchOpen(true);
-    setMobileOpen(false);
-  }, []);
-
-  const closeSearch = useCallback(() => {
-    setIsSearchOpen(false);
-  }, []);
-
-  useEffect(() => {
-    if (!isSearchOpen) return;
-
-    const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") {
-        closeSearch();
-      }
-    };
-
-    window.addEventListener("keydown", onKeyDown);
-    return () => {
-      window.removeEventListener("keydown", onKeyDown);
-    };
-  }, [isSearchOpen, closeSearch]);
-
-  useEffect(() => {
-    if (!isSearchOpen) return;
-
-    const previousOverflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-
-    return () => {
-      document.body.style.overflow = previousOverflow;
-    };
-  }, [isSearchOpen]);
 
   const isActive = (to: string, exact: boolean) =>
     exact ? currentPath === to : currentPath.startsWith(to);
@@ -152,16 +86,13 @@ export function Navigation(): JSX.Element {
             >
               <Rss className="w-5 h-5" />
             </a>
-            <button
-              type="button"
-              onClick={openSearch}
-              aria-label="Search"
-              aria-expanded={isSearchOpen}
-              aria-controls="site-search-modal"
+            <Link
+              to="/search"
+              aria-label="Search page"
               className={iconButtonClasses}
             >
               <Search className="w-5 h-5" />
-            </button>
+            </Link>
             <ThemeToggle />
           </div>
         </div>
@@ -185,17 +116,17 @@ export function Navigation(): JSX.Element {
                 {label}
               </Link>
             ))}
-            <button
-              type="button"
-              onClick={openSearch}
+            <Link
+              to="/search"
+              onClick={() => setMobileOpen(false)}
               className={`block px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
-                isSearchOpen
+                isActive("/search", true)
                   ? "bg-cyan-50 dark:bg-cyan-500/10 text-cyan-700 dark:text-cyan-400"
                   : "text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800"
               }`}
             >
               Search
-            </button>
+            </Link>
             <a
               href="/rss.xml"
               onClick={() => setMobileOpen(false)}
@@ -203,47 +134,6 @@ export function Navigation(): JSX.Element {
             >
               RSS
             </a>
-          </div>
-        </div>
-      )}
-
-      {isSearchOpen && (
-        <div
-          id="site-search-modal"
-          role="dialog"
-          aria-modal="true"
-          aria-label="Search content"
-          onMouseDown={(event) => {
-            if (event.target === event.currentTarget) {
-              closeSearch();
-            }
-          }}
-          className="fixed inset-0 z-[70] flex items-start justify-center bg-gray-900/50 p-4 backdrop-blur-sm sm:p-6 md:p-10"
-        >
-          <div
-            className="relative z-10 w-full max-w-3xl rounded-2xl border border-gray-200 bg-white shadow-2xl dark:border-gray-700 dark:bg-gray-900"
-            onMouseDown={(event) => event.stopPropagation()}
-          >
-            <div className="flex items-center justify-between border-b border-gray-200 dark:border-gray-700 px-4 py-3">
-              <h2 className="text-sm font-semibold uppercase tracking-wide text-gray-700 dark:text-gray-300">
-                Search
-              </h2>
-              <button
-                type="button"
-                onClick={closeSearch}
-                aria-label="Close search"
-                className={iconButtonClasses}
-              >
-                <X className="w-4 h-4" />
-              </button>
-            </div>
-            <div className="max-h-[70vh] overflow-y-auto px-4 py-4">
-              <SearchComponent
-                items={searchItems}
-                onResultClick={closeSearch}
-                autoFocus
-              />
-            </div>
           </div>
         </div>
       )}

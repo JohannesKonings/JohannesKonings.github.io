@@ -1,17 +1,20 @@
-import { createFileRoute, notFound } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { Link } from "@tanstack/react-router";
-import { getPostsBySeries, getAllSeries } from "../../../lib/content-utils";
+import { getPostsBySeries } from "../../../lib/content-utils";
 import { BlogLayout } from "../../../components/blog/BlogLayout";
 import { BlogPostList } from "../../../components/blog/BlogPostList";
+import { generateSEOHead } from "../../../lib/seo";
 
 export const Route = createFileRoute("/blog/series/$seriesSlug")({
+  head: ({ params }) =>
+    generateSEOHead({
+      title: `Series: ${formatSeriesTitle(params.seriesSlug)}`,
+      description: `Blog posts in the ${formatSeriesTitle(params.seriesSlug)} series.`,
+      url: `/blog/series/${params.seriesSlug}`,
+    }),
   component: SeriesPage,
   beforeLoad: ({ params }) => {
     const { seriesSlug } = params;
-    const allSeries = getAllSeries();
-    if (!allSeries.includes(seriesSlug)) {
-      throw notFound();
-    }
     const posts = getPostsBySeries(seriesSlug);
     const seriesTitle = formatSeriesTitle(seriesSlug);
     return { posts, seriesSlug, seriesTitle };
@@ -26,7 +29,7 @@ function formatSeriesTitle(slug: string): string {
 }
 
 function SeriesPage() {
-  const { posts, seriesSlug, seriesTitle } = Route.useRouteContext();
+  const { posts, seriesTitle } = Route.useRouteContext();
 
   return (
     <BlogLayout
