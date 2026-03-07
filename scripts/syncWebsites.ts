@@ -6,8 +6,7 @@ async function sync(from: string, to: string, pathPrefix: string) {
   console.log("Syncing", from, "to", to);
   console.log("Current directory", process.cwd());
 
-  const { stdout: stdoutCleanup } =
-    await execa`rm -rf ./../../${pathPrefix}/${to}`;
+  const { stdout: stdoutCleanup } = await execa`rm -rf ./../../${pathPrefix}/${to}`;
   console.log("current files removed", stdoutCleanup);
   const { stdout: stdoutCopy } =
     // await execa`cp -r ./../../${from}/ ./../../${pathPrefix}`;
@@ -30,10 +29,7 @@ async function sync(from: string, to: string, pathPrefix: string) {
     // Process each markdown file here
     const filePath = path.join(`./../../${pathPrefix}/${to}`, file.toString());
     const markdownContent = fs.readFileSync(filePath, "utf-8");
-    const markdownContentWithoutLayout = markdownContent.replace(
-      /^.*layout:.*$\n?/gm,
-      "",
-    );
+    const markdownContentWithoutLayout = markdownContent.replace(/^.*layout:.*$\n?/gm, "");
     fs.writeFileSync(filePath, markdownContentWithoutLayout);
   }
 }

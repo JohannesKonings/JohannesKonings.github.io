@@ -20,11 +20,9 @@ async function sync(from: string, to: string, pathPrefix: string) {
   // 	await execa`mv ./../../${pathPrefix}/${from} ./../../${pathPrefix}/${to}`;
   // console.log("moved", stdoutRename);
 
-  const markdownFiles = fs
-    .readdirSync(fromPath, { recursive: true })
-    .filter((file) => {
-      return path.extname(file.toString()) === ".md";
-    });
+  const markdownFiles = fs.readdirSync(fromPath, { recursive: true }).filter((file) => {
+    return path.extname(file.toString()) === ".md";
+  });
 
   console.log(`${markdownFiles.length} markdown files found`);
 

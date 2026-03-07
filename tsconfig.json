@@ -14,11 +14,7 @@
       "@tanstack/*": ["websites/tanstack/*"]
     }
   },
-  "include": [
-    "websites/*/src/**/*.ts",
-    "websites/*/src/**/*.tsx",
-    "scripts/**/*.ts"
-  ],
+  "include": ["websites/*/src/**/*.ts", "websites/*/src/**/*.tsx", "scripts/**/*.ts"],
   "exclude": ["node_modules", "**/dist", "**/build", "**/.astro"],
   "references": [{ "path": "./websites/tanstack" }]
 }

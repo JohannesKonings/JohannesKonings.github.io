@@ -8,11 +8,8 @@ export function ReadingProgressBar() {
 
     const update = () => {
       const scrollTop = window.scrollY;
-      const docHeight =
-        document.documentElement.scrollHeight - window.innerHeight;
-      setProgress(
-        docHeight > 0 ? Math.min((scrollTop / docHeight) * 100, 100) : 0,
-      );
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      setProgress(docHeight > 0 ? Math.min((scrollTop / docHeight) * 100, 100) : 0);
     };
 
     update();

@@ -15,12 +15,10 @@ const OUT_DIR = path.join(__dirname, "..", "e2e-screenshots");
 mkdirSync(OUT_DIR, { recursive: true });
 
 const BASE_URL = process.env.BASE_URL || "http://localhost:3000";
-const THEME_TOGGLE =
-  'button[aria-label*="Switch to"], button[aria-label="Toggle theme"]';
+const THEME_TOGGLE = 'button[aria-label*="Switch to"], button[aria-label="Toggle theme"]';
 
 async function main() {
-  const headless =
-    process.env.HEADLESS !== "0" && process.env.HEADLESS !== "false";
+  const headless = process.env.HEADLESS !== "0" && process.env.HEADLESS !== "false";
   const browser = await chromium.launch({
     headless,
     slowMo: headless ? 0 : 300,
@@ -38,9 +36,7 @@ async function main() {
     await page.waitForTimeout(500);
 
     // Screenshot 1: initial state (depends on OS preference / localStorage)
-    const hasDark = await page.evaluate(() =>
-      document.documentElement.classList.contains("dark"),
-    );
+    const hasDark = await page.evaluate(() => document.documentElement.classList.contains("dark"));
     const initialLabel = await page
       .locator(THEME_TOGGLE)
       .getAttribute("aria-label")
@@ -49,12 +45,7 @@ async function main() {
       path: path.join(OUT_DIR, "01-initial.png"),
       fullPage: false,
     });
-    console.log(
-      "Screenshot 1: initial state (dark:",
-      hasDark,
-      ") aria-label:",
-      initialLabel,
-    );
+    console.log("Screenshot 1: initial state (dark:", hasDark, ") aria-label:", initialLabel);
 
     // Click theme toggle
     await page.locator(THEME_TOGGLE).click();

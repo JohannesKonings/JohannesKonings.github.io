@@ -66,10 +66,8 @@ function getPostItems(): RssItem[] {
     const dirPath = path.join(CONTENT_BLOG, ent.name);
     const files = fs.readdirSync(dirPath);
     const mdFile =
-      files.find(
-        (f) =>
-          f.endsWith(".md") && (f === "index.md" || f === ent.name + ".md"),
-      ) ?? files.find((f) => f.endsWith(".md"));
+      files.find((f) => f.endsWith(".md") && (f === "index.md" || f === ent.name + ".md")) ??
+      files.find((f) => f.endsWith(".md"));
     if (!mdFile) continue;
     const content = fs.readFileSync(path.join(dirPath, mdFile), "utf-8");
     const { title, summary, date, published } = parseFrontmatter(content);

@@ -1,8 +1,5 @@
 import { createFileRoute, notFound } from "@tanstack/react-router";
-import {
-  getPostsByCategory,
-  getAllCategories,
-} from "../../../lib/content-utils";
+import { getPostsByCategory, getAllCategories } from "../../../lib/content-utils";
 import { BlogLayout } from "../../../components/blog/BlogLayout";
 import { BlogPostList } from "../../../components/blog/BlogPostList";
 

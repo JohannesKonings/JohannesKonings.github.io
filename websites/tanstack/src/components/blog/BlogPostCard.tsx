@@ -9,9 +9,7 @@ interface BlogPostCardProps {
 }
 
 export function BlogPostCard({ post }: BlogPostCardProps): JSX.Element {
-  const resolveCoverImageUrl = (
-    coverImage: string | null | undefined,
-  ): string | null => {
+  const resolveCoverImageUrl = (coverImage: string | null | undefined): string | null => {
     if (!coverImage) return null;
     if (coverImage.startsWith("http://") || coverImage.startsWith("https://")) {
       return coverImage;
@@ -19,12 +17,8 @@ export function BlogPostCard({ post }: BlogPostCardProps): JSX.Element {
     if (coverImage.startsWith("/")) return coverImage;
 
     // Support frontmatter paths like "./cover-image.png" by resolving against post URL.
-    const normalizedPath = coverImage.startsWith("./")
-      ? coverImage.slice(2)
-      : coverImage;
-    const normalizedPostUrl = post.url.endsWith("/")
-      ? post.url.slice(0, -1)
-      : post.url;
+    const normalizedPath = coverImage.startsWith("./") ? coverImage.slice(2) : coverImage;
+    const normalizedPostUrl = post.url.endsWith("/") ? post.url.slice(0, -1) : post.url;
     return `${normalizedPostUrl}/${normalizedPath}`;
   };
 
@@ -109,12 +103,7 @@ export function BlogPostCard({ post }: BlogPostCardProps): JSX.Element {
           <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/5 to-blue-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
           <div className="text-center text-gray-400 group-hover:text-gray-300 transition-colors duration-500">
             <div className="w-16 h-16 mx-auto mb-3 rounded-full bg-gradient-to-r from-cyan-500/20 to-blue-500/20 flex items-center justify-center">
-              <svg
-                className="w-8 h-8"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
+              <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"
@@ -134,23 +123,15 @@ export function BlogPostCard({ post }: BlogPostCardProps): JSX.Element {
 
         <div className="relative z-10">
           <div className="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400 mb-3">
-            <time
-              dateTime={post.date.toISOString()}
-              className="text-cyan-600 dark:text-cyan-400"
-            >
+            <time dateTime={post.date.toISOString()} className="text-cyan-600 dark:text-cyan-400">
               {format(post.date, "MMM d, yyyy")}
             </time>
             <span className="text-gray-400 dark:text-gray-500">•</span>
-            <span className="text-blue-600 dark:text-blue-400">
-              {post.readingTime.text}
-            </span>
+            <span className="text-blue-600 dark:text-blue-400">{post.readingTime.text}</span>
           </div>
 
           <h2 className="text-xl font-bold text-gray-800 dark:text-gray-100 mb-3 line-clamp-2 group-hover:text-cyan-600 dark:group-hover:text-cyan-300 transition-colors duration-300">
-            <Link
-              to={post.url}
-              className="hover:text-cyan-400 transition-colors duration-300"
-            >
+            <Link to={post.url} className="hover:text-cyan-400 transition-colors duration-300">
               {post.title}
             </Link>
           </h2>
@@ -197,12 +178,7 @@ export function BlogPostCard({ post }: BlogPostCardProps): JSX.Element {
               viewBox="0 0 24 24"
               aria-hidden="true"
             >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M9 5l7 7-7 7"
-              />
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
             </svg>
           </Link>
         </div>
