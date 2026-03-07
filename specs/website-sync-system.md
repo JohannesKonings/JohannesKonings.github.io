@@ -2,29 +2,20 @@
 
 ## Overview
 
-This document specifies the centralized content management and synchronization system used across all websites in the repository. This system ensures consistent content delivery while maintaining independent website implementations.
+This document specifies the centralized content management and synchronization system used by the TanStack website in this repository. The system keeps authored content in a single place while generating the website-specific content copy consumed during development and builds.
 
 ## Content Management & Synchronization System
 
-**CRITICAL: All blog posts and notes are centrally managed and synchronized across multiple websites using the `syncWebsites.ts` script.**
-
-### Multi-Website Architecture
-
-- **Supported Websites**: Currently supports `astro` and `tanstack` websites
-- **Shared Content Strategy**: Both websites can share the same content while maintaining independent implementations
-- **Centralized Management**: All content is maintained in root directories and synchronized to each website
-- **Technology Agnostic**: Supports different frameworks (Astro, TanStack Start) with the same content source
+**CRITICAL: All blog posts and notes are centrally managed and synchronized into the TanStack website using the `syncWebsites.ts` script.**
 
 ### Content Architecture
 
 - **Primary Sources**:
   - All blog posts are maintained in the root `_posts/` directory
   - All notes are maintained in the root `_notes/` directory
-- **Synchronization**: The `scripts/syncWebsites.ts` script copies content from root directories to individual website content folders
-- **Website Content**: Each website's content folder contains only synchronized copies of the original content:
-  - `websites/astro/src/content/blog/` - Astro website blog content
+- **Synchronization**: The `scripts/syncWebsites.ts` script copies content from the root directories into the TanStack website content folders
+- **Website Content**: The website content folder contains only synchronized copies of the original content:
   - `websites/tanstack/src/content/blog/` - TanStack website blog content
-  - `websites/astro/src/content/notes/` - Astro website notes content
   - `websites/tanstack/src/content/notes/` - TanStack website notes content
 - **Single Source of Truth**: The root `_posts/` and `_notes/` directories are the authoritative sources for all content
 
@@ -38,10 +29,9 @@ This document specifies the centralized content management and synchronization s
 
 #### Development Workflow Requirements
 
-- **The sync script runs automatically during development workflow for each website**
-- **Each website's Content Collections (or equivalent) processes the synchronized content, not the original source files**
-- **Both astro and tanstack websites must consider this sync process in their implementation**
-- **Any new website implementations must integrate with this sync system**
+- **The sync script runs automatically during the TanStack development and build workflow**
+- **TanStack Content Collections process the synchronized content, not the original source files**
+- **All content and asset updates must continue to flow through this sync process**
 
 #### Root Package.json Command Structure
 
@@ -49,17 +39,13 @@ This document specifies the centralized content management and synchronization s
 
 ```bash
 # Development Commands
-pnpm dev:astro      # Start Astro website development server
 pnpm dev:tanstack   # Start TanStack website development server
 
 # Build Commands
-pnpm build:astro    # Build Astro website for production
 pnpm build:tanstack # Build TanStack website for production
 
 # Other Commands (future)
-pnpm test:astro     # Run Astro website tests
 pnpm test:tanstack  # Run TanStack website tests
-pnpm lint:astro     # Lint Astro website code
 pnpm lint:tanstack  # Lint TanStack website code
 ```
 
@@ -74,37 +60,36 @@ pnpm lint:tanstack  # Lint TanStack website code
 
 #### Sync Script Operation
 
-1. **Source Content**: Original posts in `_posts/` directory and notes in `_notes/` directory contain the master content
-2. **Synchronization**: `syncWebsites.ts` script copies content to:
-   - `websites/[site]/src/content/blog/` (for blog posts)
-   - `websites/[site]/src/content/notes/` (for notes)
-3. **Processing**: Each website's content processing system (Content Collections, Astro Collections, etc.) processes the synchronized copies
-4. **Build**: Each website's build process generates the final pages independently
+1. **Source Content**: Original posts in `_posts/` and notes in `_notes/` contain the master content
+2. **Synchronization**: `syncWebsites.ts` copies content to:
+   - `websites/tanstack/src/content/blog/` (for blog posts)
+   - `websites/tanstack/src/content/notes/` (for notes)
+3. **Processing**: TanStack Content Collections process the synchronized copies
+4. **Build**: The TanStack build process generates the final pages
 
 #### Asset Management
 
 - **Images**: Cover images and other assets are synchronized alongside content
-- **Relative Paths**: Content uses relative paths (e.g., `./cover-image.png`) that are processed by each website's build system
+- **Relative Paths**: Content uses relative paths (e.g. `./cover-image.png`) that are processed by the build system
 - **Format Support**: Supports multiple image formats (PNG, AVIF, JPG, etc.)
 
 ### Website-Specific Considerations
 
 #### Content Processing
 
-- **Astro Website**: Uses Astro Content Collections to process synchronized content
-- **TanStack Website**: Uses Content Collections library to process synchronized content
-- **Schema Validation**: Each website can define its own content validation schema
-- **Transformations**: Each website can apply its own content transformations
+- **TanStack Website**: Uses the Content Collections library to process synchronized content
+- **Schema Validation**: The website defines its own content validation schema
+- **Transformations**: The website can apply its own content transformations
 
 #### Asset Handling
 
-- **Public Directory**: Each website manages its own public directory structure
-- **Image Paths**: Each website handles image path resolution according to its framework conventions
-- **Optimization**: Each website can implement its own image optimization strategies
+- **Public Directory**: The website manages its own public directory structure
+- **Image Paths**: The website handles image path resolution according to its framework conventions
+- **Optimization**: The website can implement its own image optimization strategies
 
 ### File Structure
 
-```
+```text
 repository-root/
 ├── _posts/                          # 📁 Master blog posts (EDIT HERE)
 │   └── [post-directories]/
@@ -115,17 +100,12 @@ repository-root/
 ├── scripts/
 │   └── syncWebsites.ts              # 🔄 Sync script
 ├── websites/
-│   ├── astro/
-│   │   └── src/content/
-│   │       ├── blog/                # 📋 Synced copies (DO NOT EDIT)
-│   │       └── notes/               # 📋 Synced copies (DO NOT EDIT)
 │   └── tanstack/
 │       └── src/content/
 │           ├── blog/                # 📋 Synced copies (DO NOT EDIT)
 │           └── notes/               # 📋 Synced copies (DO NOT EDIT)
 └── specs/
     ├── website-sync-system.md       # 📄 This document
-    ├── website-astro.md             # 📄 Astro-specific implementation
     └── website-tanstack.md          # 📄 TanStack-specific implementation
 ```
 
@@ -133,40 +113,27 @@ repository-root/
 
 #### Functionality
 
-- **Selective Sync**: Should support syncing specific content types or websites
-- **Incremental Updates**: Should detect and sync only changed content when possible
+- **Selective Sync**: Supports syncing the TanStack website content folders from the root content sources
 - **Asset Copying**: Must copy all associated assets (images, etc.) alongside content
 - **Path Normalization**: Should handle different path conventions across operating systems
 
 #### Error Handling
 
 - **Validation**: Should validate content before syncing
-- **Rollback**: Should provide mechanisms to rollback failed syncs
 - **Logging**: Should provide detailed logging of sync operations
 - **Conflict Resolution**: Should handle conflicts when content structure changes
-
-### Integration Requirements for New Websites
-
-When adding a new website to the repository:
-
-1. **Content Structure**: Must use the standardized content folder structure
-2. **Sync Integration**: Must integrate with the `syncWebsites.ts` script
-3. **Asset Handling**: Must handle synchronized assets appropriately
-4. **Build Integration**: Must run sync process during development and build workflows
-5. **Documentation**: Must document website-specific content processing in individual specs
 
 ### Performance Considerations
 
 #### Sync Performance
 
 - **File Watching**: Sync should integrate with file watching for development
-- **Incremental Sync**: Should avoid unnecessary file operations
-- **Parallel Processing**: Should support parallel syncing to multiple websites
+- **Incremental Sync**: Should avoid unnecessary file operations where possible
 
 #### Build Performance
 
-- **Content Caching**: Each website should implement appropriate content caching
-- **Asset Optimization**: Each website handles its own asset optimization
+- **Content Caching**: The website should implement appropriate content caching
+- **Asset Optimization**: The website handles its own asset optimization
 - **Hot Reloading**: Sync should integrate with hot module reloading systems
 
 ### Maintenance and Monitoring
@@ -187,9 +154,9 @@ When adding a new website to the repository:
 
 This centralized content management system enables:
 
-- **Consistency**: Same content across multiple website implementations
-- **Flexibility**: Each website can use its preferred technology stack
-- **Maintainability**: Single source of truth for all content
-- **Scalability**: Easy addition of new website implementations
+- **Consistency**: A single source of truth for all posts and notes
+- **Flexibility**: The website can evolve without changing the editing workflow
+- **Maintainability**: Content editing and website rendering remain cleanly separated
+- **Scalability**: A predictable sync boundary between authored content and generated website content
 
-All website implementations must adhere to this sync system to ensure content consistency and prevent conflicts.
+The TanStack website implementation must adhere to this sync system to ensure content consistency and prevent conflicts.

@@ -1,0 +1,1142 @@
+<!DOCTYPE html><html lang="en"> <head><script defer src="https://cloud.umami.is/script.js" data-website-id="ad18022d-5431-470e-909a-74a7882c97e2" data-domains="johanneskonings.dev"></script><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6554177261098317" crossorigin="anonymous"></script><!-- Global Metadata --><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" type="image/x-icon" href="/favicon.ico"><meta name="generator" content="Astro v5.16.5"><link rel="preload" href="/fonts/CascadiaMonoNF.woff2" as="font" type="font/woff2" crossorigin><link rel="preload" href="/fonts/CascadiaMonoNF-SemiBold.woff2" as="font" type="font/woff2" crossorigin><!-- Canonical URL --><link rel="canonical" href="https://johanneskonings.dev/blog/2025-12-20-tanstack-start-aws-db-simple/"><!-- Primary Meta Tags --><title>Simple example of TanStack DB with DynamoDB on AWS | Johannes Konings</title><meta name="title" content="Simple example of TanStack DB with DynamoDB on AWS | Johannes Konings"><meta name="description" content="Deploy a simple TanStack DB + DynamoDB setup on AWS using CDK, with a TanStack Start API route and a query collection powering a small todo UI."><!-- Open Graph / Facebook --><meta property="og:type" content="website"><meta property="og:url" content="https://johanneskonings.dev/blog/2025-12-20-tanstack-start-aws-db-simple/"><meta property="og:title" content="Simple example of TanStack DB with DynamoDB on AWS | Johannes Konings"><meta property="og:description" content="Deploy a simple TanStack DB + DynamoDB setup on AWS using CDK, with a TanStack Start API route and a query collection powering a small todo UI."><!-- Twitter --><meta property="twitter:card" content="summary_large_image"><meta property="twitter:url" content="https://johanneskonings.dev/blog/2025-12-20-tanstack-start-aws-db-simple/"><meta property="twitter:title" content="Simple example of TanStack DB with DynamoDB on AWS | Johannes Konings"><meta property="twitter:description" content="Deploy a simple TanStack DB + DynamoDB setup on AWS using CDK, with a TanStack Start API route and a query collection powering a small todo UI."><meta property="og:image" content="https://johanneskonings.dev/_astro/cover-image.BGWYLdUA.png">
+  <meta property="twitter:image" content="https://johanneskonings.dev/open-graph.jpg"><!-- Sitemap --><link rel="sitemap" href="/sitemap-index.xml"><!-- RSS Feed --><link rel="alternate" type="application/rss+xml" title="Simple example of TanStack DB with DynamoDB on AWS | Johannes Konings" href="https://johanneskonings.dev/rss.xml"><!-- Global Scripts --><script src="/js/theme.js"></script><script src="/js/scroll.js"></script><script src="/js/animate.js"></script><!-- <ViewTransitions  /> --><script type="module">document.addEventListener("astro:before-swap",e=>[...e.newDocument.head.querySelectorAll('link[as="font"]')].forEach(o=>o.remove()));</script><link rel="stylesheet" href="/_astro/_slug_.BRrEunO4.css"></head> <body> <header id="header" class="fixed top-0 w-full h-16 z-50" data-astro-cid-3ef6ksr2> <div class="w-full h-full mx-auto px-5 max-w-(--breakpoint-md)">  <div class="relative h-full w-full" data-astro-cid-3ef6ksr2> <div class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2" data-astro-cid-3ef6ksr2> <nav class="hidden md:flex items-center justify-center text-sm gap-1" data-astro-cid-3ef6ksr2> <a href="/" class="h-8 rounded-full px-3 text-current flex items-center justify-center transition-colors duration-300 ease-in-out hover:bg-black/5 dark:hover:bg-white/20 hover:text-black dark:hover:text-white" data-astro-cid-3ef6ksr2> Home </a><a href="/blog" class="h-8 rounded-full px-3 flex items-center justify-center transition-colors duration-300 ease-in-out bg-black dark:bg-white text-white dark:text-black" data-astro-cid-3ef6ksr2> Blog </a><a href="/notes" class="h-8 rounded-full px-3 text-current flex items-center justify-center transition-colors duration-300 ease-in-out hover:bg-black/5 dark:hover:bg-white/20 hover:text-black dark:hover:text-white" data-astro-cid-3ef6ksr2> Notes </a> </nav> </div> <div class="buttons absolute right-0 top-1/2 -translate-y-1/2 flex gap-1" data-astro-cid-3ef6ksr2> <a href="/search" aria-label="Search blog posts and projects on Johannes Konings" class="hidden md:flex size-9 rounded-full p-2 items-center justify-center bg-transparent hover:bg-black/5 dark:hover:bg-white/20 stroke-current hover:stroke-black hover:dark:stroke-white border border-black/10 dark:border-white/25 transition-colors duration-300 ease-in-out" data-astro-cid-3ef6ksr2> <svg class="size-full" data-astro-cid-3ef6ksr2> <use href="/ui.svg#search" data-astro-cid-3ef6ksr2></use> </svg> </a> <a href="/rss.xml" target="_blank" aria-label="Rss feed for Johannes Konings" class="hidden md:flex size-9 rounded-full p-2 items-center justify-center bg-transparent hover:bg-black/5 dark:hover:bg-white/20 stroke-current hover:stroke-black hover:dark:stroke-white border border-black/10 dark:border-white/25 transition-colors duration-300 ease-in-out" data-astro-cid-3ef6ksr2> <svg class="size-full" data-astro-cid-3ef6ksr2> <use href="/ui.svg#rss" data-astro-cid-3ef6ksr2></use> </svg> </a> <button id="header-theme-button" aria-label="Toggle light and dark theme" class="hidden md:flex size-9 rounded-full p-2 items-center justify-center bg-transparent hover:bg-black/5 dark:hover:bg-white/20 stroke-current hover:stroke-black hover:dark:stroke-white border border-black/10 dark:border-white/25 transition-colors duration-300 ease-in-out" data-astro-cid-3ef6ksr2> <svg class="size-full block dark:hidden" data-astro-cid-3ef6ksr2> <use href="/ui.svg#sun" data-astro-cid-3ef6ksr2></use> </svg> <svg class="size-full hidden dark:block" data-astro-cid-3ef6ksr2> <use href="/ui.svg#moon" data-astro-cid-3ef6ksr2></use> </svg> </button> <button id="header-drawer-button" aria-label="Toggle drawer open and closed" class="flex md:hidden size-9 rounded-full p-2 items-center justify-center bg-transparent hover:bg-black/5 dark:hover:bg-white/20 stroke-current hover:stroke-black hover:dark:stroke-white border border-black/10 dark:border-white/25 transition-colors duration-300 ease-in-out" data-astro-cid-3ef6ksr2> <svg id="drawer-open" class="size-full" data-astro-cid-3ef6ksr2> <use href="/ui.svg#menu" data-astro-cid-3ef6ksr2></use> </svg> <svg id="drawer-close" class="size-full" data-astro-cid-3ef6ksr2> <use href="/ui.svg#x" data-astro-cid-3ef6ksr2></use> </svg> </button> </div> </div>  </div> </header>  <script>
+  function toggleDrawer() {
+    const drawer = document.getElementById("drawer");
+    const drawerButton = document.getElementById("header-drawer-button");
+    drawer?.classList.toggle("open");
+    drawerButton?.classList.toggle("open");
+  }
+
+  function initializeDrawerButton() {
+    const drawerButton = document.getElementById("header-drawer-button");
+    drawerButton?.addEventListener("click", toggleDrawer);
+  }
+
+  document.addEventListener("astro:after-swap", initializeDrawerButton);
+  initializeDrawerButton();
+</script> <div id="drawer" class="fixed inset-0 h-0 max-h-[50vh] z-40 overflow-hidden flex flex-col items-center justify-center md:hidden bg-neutral-100 dark:bg-neutral-900 transition-[height] duration-300 ease-in-out" data-astro-cid-hxtyo74s> <nav class="flex flex-col items-center space-y-2" data-astro-cid-hxtyo74s> <a href="/" class="flex items-center justify-center px-3 py-1 rounded-full text-current hover:text-black dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/20 transition-colors duration-300 ease-in-out" data-astro-cid-hxtyo74s> Home </a><a href="/blog" class="flex items-center justify-center px-3 py-1 rounded-full hover:text-black dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/20 transition-colors duration-300 ease-in-out pointer-events-none bg-black dark:bg-white text-white dark:text-black" data-astro-cid-hxtyo74s> Blog </a><a href="/notes" class="flex items-center justify-center px-3 py-1 rounded-full text-current hover:text-black dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/20 transition-colors duration-300 ease-in-out" data-astro-cid-hxtyo74s> Notes </a> </nav> <div class="flex gap-1 mt-5" data-astro-cid-hxtyo74s> <a href="/search" aria-label="Search blog posts and projects on Johannes Konings" class="size-9 rounded-full p-2 items-center justify-center bg-transparent hover:bg-black/5 dark:hover:bg-white/20 stroke-current hover:stroke-black hover:dark:stroke-white border border-black/10 dark:border-white/25 transition-colors duration-300 ease-in-out" data-astro-cid-hxtyo74s> <svg class="size-full" data-astro-cid-hxtyo74s> <use href="/ui.svg#search" data-astro-cid-hxtyo74s></use> </svg> </a> <a href="/rss.xml" target="_blank" aria-label="Rss feed for Johannes Konings" class="size-9 rounded-full p-2 items-center justify-center bg-transparent hover:bg-black/5 dark:hover:bg-white/20 stroke-current hover:stroke-black hover:dark:stroke-white border border-black/10 dark:border-white/25 transition-colors duration-300 ease-in-out" data-astro-cid-hxtyo74s> <svg class="size-full" data-astro-cid-hxtyo74s> <use href="/ui.svg#rss" data-astro-cid-hxtyo74s></use> </svg> </a> <button id="drawer-theme-button" aria-label="Toggle light and dark theme" class="size-9 rounded-full p-2 items-center justify-center bg-transparent hover:bg-black/5 dark:hover:bg-white/20 stroke-current hover:stroke-black hover:dark:stroke-white border border-black/10 dark:border-white/25 transition-colors duration-300 ease-in-out" data-astro-cid-hxtyo74s> <svg class="block dark:hidden size-full" data-astro-cid-hxtyo74s> <use href="/ui.svg#sun" data-astro-cid-hxtyo74s></use> </svg> <svg class="hidden dark:block size-full" data-astro-cid-hxtyo74s> <use href="/ui.svg#moon" data-astro-cid-hxtyo74s></use> </svg> </button> </div> </div>  <main>  <div class="pt-36 pb-5"> <div class="w-full h-full mx-auto px-5 max-w-(--breakpoint-md)">   <div class="animate"> <div> <a href="/blog" class="group w-fit p-1.5 gap-1.5 text-sm flex items-center border rounded hover:bg-black/5 hover:dark:bg-white/10 border-black/15 dark:border-white/20 transition-colors duration-300 ease-in-out"> <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="stroke-current group-hover:stroke-black group-hover:dark:stroke-white"> <line x1="19" y1="12" x2="5" y2="12" class="scale-x-0 group-hover:scale-x-100 translate-x-3 group-hover:translate-x-0 transition-all duration-300 ease-in-out"></line> <polyline points="12 19 5 12 12 5" class="translate-x-1 group-hover:translate-x-0 transition-all duration-300 ease-in-out"></polyline> </svg> <div class="w-full group-hover:text-black group-hover:dark:text-white transition-colors duration-300 ease-in-out">
+Back to blog </div> </a> <div class="flex flex-wrap text-sm uppercase mt-12 gap-3 opacity-75"> <div class="flex items-center gap-2"> <svg class="size-5 stroke-current"> <use href="/ui.svg#calendar"></use> </svg> Dec 20, 2025 </div> <div class="flex items-center gap-2"> <svg class="size-5 stroke-current"> <use href="/ui.svg#book-open"></use> </svg> 11 min read </div> </div> <div class="w-full h-auto mt-8 mb-8 rounded-lg shadow-lg overflow-hidden"> <img src="/_astro/cover-image.BGWYLdUA.png" alt="Cover Image" class="w-full h-auto"> </div> <h1 class="text-3xl font-semibold text-black dark:text-white mt-2"> Simple example of TanStack DB with DynamoDB on AWS </h1> <div class="mt-1 mb-8"> Deploy a simple TanStack DB + DynamoDB setup on AWS using CDK, with a TanStack Start API route and a query collection powering a small todo UI. </div> <nav class="not-prose mb-2 p-4 bg-black/5 dark:bg-white/5 rounded-lg border border-black/10 dark:border-white/10"><div class="text-sm font-semibold mb-3 text-black dark:text-white">Table of Contents</div><ul class="space-y-2 text-sm"><li class=" transition-colors duration-200"><a href="#introduction" class="text-black/70 dark:text-white/70 hover:text-black dark:hover:text-white transition-colors duration-200">Introduction</a></li><li class=" transition-colors duration-200"><a href="#disclaimer" class="text-black/70 dark:text-white/70 hover:text-black dark:hover:text-white transition-colors duration-200">Disclaimer</a></li><li class=" transition-colors duration-200"><a href="#tanstack-db" class="text-black/70 dark:text-white/70 hover:text-black dark:hover:text-white transition-colors duration-200">TanStack DB</a></li><li class=" transition-colors duration-200"><a href="#dynamodb-in-cdk" class="text-black/70 dark:text-white/70 hover:text-black dark:hover:text-white transition-colors duration-200">DynamoDB in CDK</a></li><li class=" transition-colors duration-200"><a href="#a-dynamodb-client" class="text-black/70 dark:text-white/70 hover:text-black dark:hover:text-white transition-colors duration-200">A DynamoDB Client</a></li><li class=" transition-colors duration-200"><a href="#the-api-connection-to-dynamodb" class="text-black/70 dark:text-white/70 hover:text-black dark:hover:text-white transition-colors duration-200">The API connection to DynamoDB</a></li><li class=" transition-colors duration-200"><a href="#the-tanstack-db-collection" class="text-black/70 dark:text-white/70 hover:text-black dark:hover:text-white transition-colors duration-200">The TanStack DB collection</a></li><li class=" transition-colors duration-200"><a href="#the-hook" class="text-black/70 dark:text-white/70 hover:text-black dark:hover:text-white transition-colors duration-200">The hook</a></li><li class=" transition-colors duration-200"><a href="#the-component" class="text-black/70 dark:text-white/70 hover:text-black dark:hover:text-white transition-colors duration-200">The component</a></li><li class=" transition-colors duration-200"><a href="#result" class="text-black/70 dark:text-white/70 hover:text-black dark:hover:text-white transition-colors duration-200">Result</a></li><li class=" transition-colors duration-200"><a href="#conclusion" class="text-black/70 dark:text-white/70 hover:text-black dark:hover:text-white transition-colors duration-200">Conclusion</a></li><li class=" transition-colors duration-200"><a href="#sources-and-references" class="text-black/70 dark:text-white/70 hover:text-black dark:hover:text-white transition-colors duration-200">Sources and References</a></li></ul></nav> </div> </div>   </div> </div> <div class="flex-1 py-5"> <div class="w-full h-full mx-auto px-5 max-w-(--breakpoint-lg)">   <div class="animate"> <div> <article> <h2 id="introduction">Introduction</h2>
+<p>In <a href="/blog/2025-11-30-tanstack-start-aws-serverless/">Deploying TanStack Start on AWS with Lambda Function URLs</a>, I describe how to deploy TanStack Start serverless on AWS.
+This post contains a simple example of using TanStack DB (<a href="https://tanstack.com/db/latest">https://tanstack.com/db/latest</a>) with DynamoDB on AWS.</p>
+<p>At a high level, we’ll go from infrastructure (a DynamoDB table), to a small DynamoDB client, to a TanStack Start server route, and finally to a TanStack DB collection that powers a simple UI.</p>
+<p>The complete implementation is available in the <a href="https://github.com/JohannesKonings/tanstack-aws">tanstack-aws repository</a>, which serves as a working example and template for this deployment pattern.</p>
+<h2 id="disclaimer">Disclaimer</h2>
+<p>This is a very simple example to get you started with TanStack DB and DynamoDB on AWS. It is not production-ready and lacks features like error handling, security, and optimizations.</p>
+<h2 id="tanstack-db">TanStack DB</h2>
+<p>This (<a href="https://frontendatscale.com/blog/tanstack-db/">https://frontendatscale.com/blog/tanstack-db/</a>) blog post explains the concepts of TanStack DB very well.
+In short, TanStack DB is a client-first database that runs in the browser or in a server environment. It provides a simple API to store, query, and sync data.
+TanStack DB is based on collections, with existing sync engines like ElectricSQL (<a href="https://tanstack.com/db/latest/docs/collections/electric-collection">https://tanstack.com/db/latest/docs/collections/electric-collection</a>).</p>
+<p>This post uses the Query Collection to wire it via an API to DynamoDB (<a href="https://tanstack.com/db/latest/docs/collections/query-collection">https://tanstack.com/db/latest/docs/collections/query-collection</a>).</p>
+<p>The idea is straightforward: TanStack DB remains the place where your app reads and writes “records” (in this case, todos), while the collection’s fetch and mutation hooks delegate persistence to your own backend API.</p>
+<h2 id="dynamodb-in-cdk">DynamoDB in CDK</h2>
+<p>This is a very simple configuration, just to store the todos.</p>
+<p>To keep the example focused, the table uses a generic partition key and sort key (<code>pk</code>/<code>sk</code>). That makes it easy to evolve into a single-table design later, while keeping the code here minimal.</p>
+<figure data-rehype-pretty-code-figure=""><pre style="background-color:#22272e;color:#adbac7" tabindex="0" data-language="typescript" data-theme="github-dark-dimmed"><code data-language="typescript" data-theme="github-dark-dimmed" style="display: grid;"><span data-line=""><span style="color:#F47067">import</span><span style="color:#ADBAC7"> { AttributeType, BillingMode, Table } </span><span style="color:#F47067">from</span><span style="color:#96D0FF"> "aws-cdk-lib/aws-dynamodb"</span><span style="color:#ADBAC7">;</span></span>
+<span data-line=""><span style="color:#F47067">import</span><span style="color:#ADBAC7"> { Construct } </span><span style="color:#F47067">from</span><span style="color:#96D0FF"> "constructs"</span><span style="color:#ADBAC7">;</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#F47067">export</span><span style="color:#F47067"> class</span><span style="color:#F69D50"> DatabaseTodos</span><span style="color:#F47067"> extends</span><span style="color:#6CB6FF"> Construct</span><span style="color:#ADBAC7"> {</span></span>
+<span data-line=""><span style="color:#F47067">  public</span><span style="color:#F47067"> readonly</span><span style="color:#F69D50"> dbTodos</span><span style="color:#F47067">:</span><span style="color:#F69D50"> Table</span><span style="color:#ADBAC7">;</span></span>
+<span data-line=""><span style="color:#F47067">  constructor</span><span style="color:#ADBAC7">(</span><span style="color:#F69D50">scope</span><span style="color:#F47067">:</span><span style="color:#F69D50"> Construct</span><span style="color:#ADBAC7">, </span><span style="color:#F69D50">id</span><span style="color:#F47067">:</span><span style="color:#6CB6FF"> string</span><span style="color:#ADBAC7">) {</span></span>
+<span data-line=""><span style="color:#6CB6FF">    super</span><span style="color:#ADBAC7">(scope, id);</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#6CB6FF">    this</span><span style="color:#ADBAC7">.dbTodos </span><span style="color:#F47067">=</span><span style="color:#F47067"> new</span><span style="color:#DCBDFB"> Table</span><span style="color:#ADBAC7">(</span><span style="color:#6CB6FF">this</span><span style="color:#ADBAC7">, </span><span style="color:#96D0FF">"Todos"</span><span style="color:#ADBAC7">, {</span></span>
+<span data-line=""><span style="color:#ADBAC7">      partitionKey: { name: </span><span style="color:#96D0FF">"pk"</span><span style="color:#ADBAC7">, type: AttributeType.</span><span style="color:#6CB6FF">STRING</span><span style="color:#ADBAC7"> },</span></span>
+<span data-line=""><span style="color:#ADBAC7">      sortKey: { name: </span><span style="color:#96D0FF">"sk"</span><span style="color:#ADBAC7">, type: AttributeType.</span><span style="color:#6CB6FF">STRING</span><span style="color:#ADBAC7"> },</span></span>
+<span data-line=""><span style="color:#ADBAC7">      billingMode: BillingMode.</span><span style="color:#6CB6FF">PAY_PER_REQUEST</span><span style="color:#ADBAC7">,</span></span>
+<span data-line=""><span style="color:#ADBAC7">    });</span></span>
+<span data-line=""><span style="color:#ADBAC7">  }</span></span>
+<span data-line=""><span style="color:#ADBAC7">}</span></span><button type="button" title="Copy code" aria-label="Copy code" data="import { AttributeType, BillingMode, Table } from &#x22;aws-cdk-lib/aws-dynamodb&#x22;;
+import { Construct } from &#x22;constructs&#x22;;
+
+export class DatabaseTodos extends Construct {
+  public readonly dbTodos: Table;
+  constructor(scope: Construct, id: string) {
+    super(scope, id);
+
+    this.dbTodos = new Table(this, &#x22;Todos&#x22;, {
+      partitionKey: { name: &#x22;pk&#x22;, type: AttributeType.STRING },
+      sortKey: { name: &#x22;sk&#x22;, type: AttributeType.STRING },
+      billingMode: BillingMode.PAY_PER_REQUEST,
+    });
+  }
+}" class="rehype-pretty-copy" onclick="navigator.clipboard.writeText(this.attributes.data.value);this.classList.add(&#x27;rehype-pretty-copied&#x27;);window.setTimeout(() => this.classList.remove(&#x27;rehype-pretty-copied&#x27;), 2500);"><span class="ready"></span><span class="success"></span></button><style>:root {--copy-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Cpath fill='%23adadad' d='M16.187 9.5H12.25a1.75 1.75 0 0 0-1.75 1.75v28.5c0 .967.784 1.75 1.75 1.75h23.5a1.75 1.75 0 0 0 1.75-1.75v-28.5a1.75 1.75 0 0 0-1.75-1.75h-3.937a4.25 4.25 0 0 1-4.063 3h-7.5a4.25 4.25 0 0 1-4.063-3M31.813 7h3.937A4.25 4.25 0 0 1 40 11.25v28.5A4.25 4.25 0 0 1 35.75 44h-23.5A4.25 4.25 0 0 1 8 39.75v-28.5A4.25 4.25 0 0 1 12.25 7h3.937a4.25 4.25 0 0 1 4.063-3h7.5a4.25 4.25 0 0 1 4.063 3M18.5 8.25c0 .966.784 1.75 1.75 1.75h7.5a1.75 1.75 0 1 0 0-3.5h-7.5a1.75 1.75 0 0 0-1.75 1.75'/%3E%3C/svg%3E");--success-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%2366ff85' d='M9 16.17L5.53 12.7a.996.996 0 1 0-1.41 1.41l4.18 4.18c.39.39 1.02.39 1.41 0L20.29 7.71a.996.996 0 1 0-1.41-1.41z'/%3E%3C/svg%3E");}pre:has(code) {position: relative;}pre button.rehype-pretty-copy {right: 1px;padding: 0;width: 24px;height: 24px;display: flex;margin-top: 2px;margin-right: 8px;position: absolute;border-radius: 25%;backdrop-filter: blur(3px);& span {width: 100%;aspect-ratio: 1 / 1;}& .ready {background-image: var(--copy-icon);}& .success {display: none; background-image: var(--success-icon);}}&.rehype-pretty-copied {& .success {display: block;} & .ready {display: none;}}pre button.rehype-pretty-copy.rehype-pretty-copied {opacity: 1;& .ready { display: none; }& .success { display: block; }}</style></code></pre></figure>
+<p><a href="https://github.com/JohannesKonings/tanstack-aws/blob/main/lib/constructs/DatabaseTodos.ts">https://github.com/JohannesKonings/tanstack-aws/blob/main/lib/constructs/DatabaseTodos.ts</a></p>
+<p>This table needs to be wired to the web app server Lambda.</p>
+<p>In the web app construct, the table construct is added.
+The Lambda is allowed to read and write data to the table.</p>
+<p>Concretely, that means (1) creating the table, (2) passing the table name into the server function, and (3) granting the function read/write permissions.</p>
+<figure data-rehype-pretty-code-figure=""><pre style="background-color:#22272e;color:#adbac7" tabindex="0" data-language="typescript" data-theme="github-dark-dimmed"><code data-language="typescript" data-theme="github-dark-dimmed" style="display: grid;"><span data-line=""><span style="color:#F47067">const</span><span style="color:#6CB6FF"> databaseTodos</span><span style="color:#F47067"> =</span><span style="color:#F47067"> new</span><span style="color:#DCBDFB"> DatabaseTodos</span><span style="color:#ADBAC7">(</span><span style="color:#6CB6FF">this</span><span style="color:#ADBAC7">, </span><span style="color:#96D0FF">"DatabaseTodos"</span><span style="color:#ADBAC7">);</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#F47067">const</span><span style="color:#6CB6FF"> webappServer</span><span style="color:#F47067"> =</span><span style="color:#F47067"> new</span><span style="color:#DCBDFB"> WebappServer</span><span style="color:#ADBAC7">(</span><span style="color:#6CB6FF">this</span><span style="color:#ADBAC7">, </span><span style="color:#96D0FF">"WebappServer"</span><span style="color:#ADBAC7">, {</span></span>
+<span data-line=""><span style="color:#ADBAC7">  tableName: databaseTodos.dbTodos.tableName,</span></span>
+<span data-line=""><span style="color:#ADBAC7">});</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#ADBAC7">databaseTodos.dbTodos.</span><span style="color:#DCBDFB">grantReadWriteData</span><span style="color:#ADBAC7">(webappServer.webappServer);</span></span><button type="button" title="Copy code" aria-label="Copy code" data="const databaseTodos = new DatabaseTodos(this, &#x22;DatabaseTodos&#x22;);
+
+const webappServer = new WebappServer(this, &#x22;WebappServer&#x22;, {
+  tableName: databaseTodos.dbTodos.tableName,
+});
+
+databaseTodos.dbTodos.grantReadWriteData(webappServer.webappServer);" class="rehype-pretty-copy" onclick="navigator.clipboard.writeText(this.attributes.data.value);this.classList.add(&#x27;rehype-pretty-copied&#x27;);window.setTimeout(() => this.classList.remove(&#x27;rehype-pretty-copied&#x27;), 2500);"><span class="ready"></span><span class="success"></span></button><style>:root {--copy-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Cpath fill='%23adadad' d='M16.187 9.5H12.25a1.75 1.75 0 0 0-1.75 1.75v28.5c0 .967.784 1.75 1.75 1.75h23.5a1.75 1.75 0 0 0 1.75-1.75v-28.5a1.75 1.75 0 0 0-1.75-1.75h-3.937a4.25 4.25 0 0 1-4.063 3h-7.5a4.25 4.25 0 0 1-4.063-3M31.813 7h3.937A4.25 4.25 0 0 1 40 11.25v28.5A4.25 4.25 0 0 1 35.75 44h-23.5A4.25 4.25 0 0 1 8 39.75v-28.5A4.25 4.25 0 0 1 12.25 7h3.937a4.25 4.25 0 0 1 4.063-3h7.5a4.25 4.25 0 0 1 4.063 3M18.5 8.25c0 .966.784 1.75 1.75 1.75h7.5a1.75 1.75 0 1 0 0-3.5h-7.5a1.75 1.75 0 0 0-1.75 1.75'/%3E%3C/svg%3E");--success-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%2366ff85' d='M9 16.17L5.53 12.7a.996.996 0 1 0-1.41 1.41l4.18 4.18c.39.39 1.02.39 1.41 0L20.29 7.71a.996.996 0 1 0-1.41-1.41z'/%3E%3C/svg%3E");}pre:has(code) {position: relative;}pre button.rehype-pretty-copy {right: 1px;padding: 0;width: 24px;height: 24px;display: flex;margin-top: 2px;margin-right: 8px;position: absolute;border-radius: 25%;backdrop-filter: blur(3px);& span {width: 100%;aspect-ratio: 1 / 1;}& .ready {background-image: var(--copy-icon);}& .success {display: none; background-image: var(--success-icon);}}&.rehype-pretty-copied {& .success {display: block;} & .ready {display: none;}}pre button.rehype-pretty-copy.rehype-pretty-copied {opacity: 1;& .ready { display: none; }& .success { display: block; }}</style></code></pre></figure>
+<p><a href="https://github.com/JohannesKonings/tanstack-aws/blob/main/lib/constructs/Webapp.ts">https://github.com/JohannesKonings/tanstack-aws/blob/main/lib/constructs/Webapp.ts</a></p>
+<p>The passed table name is exposed as an environment variable in the Lambda function.</p>
+<p>This keeps the application code decoupled from CDK: the Lambda only needs to know an env var, and CDK is responsible for wiring that value at deploy time.</p>
+<figure data-rehype-pretty-code-figure=""><pre style="background-color:#22272e;color:#adbac7" tabindex="0" data-language="typescript" data-theme="github-dark-dimmed"><code data-language="typescript" data-theme="github-dark-dimmed" style="display: grid;"><span data-line=""><span style="color:#6CB6FF">this</span><span style="color:#ADBAC7">.webappServer </span><span style="color:#F47067">=</span><span style="color:#F47067"> new</span><span style="color:#DCBDFB"> Function</span><span style="color:#ADBAC7">(</span><span style="color:#6CB6FF">this</span><span style="color:#ADBAC7">, </span><span style="color:#96D0FF">"WebappServer"</span><span style="color:#ADBAC7">, {</span></span>
+<span data-line=""><span style="color:#ADBAC7">  code: Code.</span><span style="color:#DCBDFB">fromAsset</span><span style="color:#ADBAC7">(</span></span>
+<span data-line=""><span style="color:#ADBAC7">    path.</span><span style="color:#DCBDFB">join</span><span style="color:#ADBAC7">(</span></span>
+<span data-line=""><span style="color:#ADBAC7">      path.</span><span style="color:#DCBDFB">dirname</span><span style="color:#ADBAC7">(</span><span style="color:#F47067">new</span><span style="color:#DCBDFB"> URL</span><span style="color:#ADBAC7">(</span><span style="color:#F47067">import</span><span style="color:#ADBAC7">.</span><span style="color:#6CB6FF">meta</span><span style="color:#ADBAC7">.url).pathname),</span></span>
+<span data-line=""><span style="color:#96D0FF">      "../../.output/server"</span><span style="color:#ADBAC7">,</span></span>
+<span data-line=""><span style="color:#ADBAC7">    ),</span></span>
+<span data-line=""><span style="color:#ADBAC7">  ),</span></span>
+<span data-line=""><span style="color:#768390">  // functionName: PhysicalName.GENERATE_IF_NEEDED,</span></span>
+<span data-line=""><span style="color:#ADBAC7">  handler: </span><span style="color:#96D0FF">"index.handler"</span><span style="color:#ADBAC7">,</span></span>
+<span data-line=""><span style="color:#ADBAC7">  memorySize: </span><span style="color:#6CB6FF">2048</span><span style="color:#ADBAC7">,</span></span>
+<span data-line=""><span style="color:#ADBAC7">  runtime: Runtime.</span><span style="color:#6CB6FF">NODEJS_24_X</span><span style="color:#ADBAC7">,</span></span>
+<span data-line=""><span style="color:#768390">  // oxlint-disable-next-line no-magic-numbers</span></span>
+<span data-line=""><span style="color:#ADBAC7">  timeout: Duration.</span><span style="color:#DCBDFB">seconds</span><span style="color:#ADBAC7">(</span><span style="color:#6CB6FF">60</span><span style="color:#ADBAC7">),</span></span>
+<span data-line=""><span style="color:#ADBAC7">  environment: {</span></span>
+<span data-line=""><span style="color:#ADBAC7">    DDB_TODOS_TABLE_NAME: tableName,</span></span>
+<span data-line=""><span style="color:#ADBAC7">  },</span></span>
+<span data-line=""><span style="color:#ADBAC7">});</span></span><button type="button" title="Copy code" aria-label="Copy code" data="this.webappServer = new Function(this, &#x22;WebappServer&#x22;, {
+  code: Code.fromAsset(
+    path.join(
+      path.dirname(new URL(import.meta.url).pathname),
+      &#x22;../../.output/server&#x22;,
+    ),
+  ),
+  // functionName: PhysicalName.GENERATE_IF_NEEDED,
+  handler: &#x22;index.handler&#x22;,
+  memorySize: 2048,
+  runtime: Runtime.NODEJS_24_X,
+  // oxlint-disable-next-line no-magic-numbers
+  timeout: Duration.seconds(60),
+  environment: {
+    DDB_TODOS_TABLE_NAME: tableName,
+  },
+});" class="rehype-pretty-copy" onclick="navigator.clipboard.writeText(this.attributes.data.value);this.classList.add(&#x27;rehype-pretty-copied&#x27;);window.setTimeout(() => this.classList.remove(&#x27;rehype-pretty-copied&#x27;), 2500);"><span class="ready"></span><span class="success"></span></button><style>:root {--copy-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Cpath fill='%23adadad' d='M16.187 9.5H12.25a1.75 1.75 0 0 0-1.75 1.75v28.5c0 .967.784 1.75 1.75 1.75h23.5a1.75 1.75 0 0 0 1.75-1.75v-28.5a1.75 1.75 0 0 0-1.75-1.75h-3.937a4.25 4.25 0 0 1-4.063 3h-7.5a4.25 4.25 0 0 1-4.063-3M31.813 7h3.937A4.25 4.25 0 0 1 40 11.25v28.5A4.25 4.25 0 0 1 35.75 44h-23.5A4.25 4.25 0 0 1 8 39.75v-28.5A4.25 4.25 0 0 1 12.25 7h3.937a4.25 4.25 0 0 1 4.063-3h7.5a4.25 4.25 0 0 1 4.063 3M18.5 8.25c0 .966.784 1.75 1.75 1.75h7.5a1.75 1.75 0 1 0 0-3.5h-7.5a1.75 1.75 0 0 0-1.75 1.75'/%3E%3C/svg%3E");--success-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%2366ff85' d='M9 16.17L5.53 12.7a.996.996 0 1 0-1.41 1.41l4.18 4.18c.39.39 1.02.39 1.41 0L20.29 7.71a.996.996 0 1 0-1.41-1.41z'/%3E%3C/svg%3E");}pre:has(code) {position: relative;}pre button.rehype-pretty-copy {right: 1px;padding: 0;width: 24px;height: 24px;display: flex;margin-top: 2px;margin-right: 8px;position: absolute;border-radius: 25%;backdrop-filter: blur(3px);& span {width: 100%;aspect-ratio: 1 / 1;}& .ready {background-image: var(--copy-icon);}& .success {display: none; background-image: var(--success-icon);}}&.rehype-pretty-copied {& .success {display: block;} & .ready {display: none;}}pre button.rehype-pretty-copy.rehype-pretty-copied {opacity: 1;& .ready { display: none; }& .success { display: block; }}</style></code></pre></figure>
+<p><a href="https://github.com/JohannesKonings/tanstack-aws/blob/main/lib/constructs/WebappServer.ts">https://github.com/JohannesKonings/tanstack-aws/blob/main/lib/constructs/WebappServer.ts</a></p>
+<h2 id="a-dynamodb-client">A DynamoDB Client</h2>
+<p>In this example, a simple wrapper around the DynamoDB client is used. In larger projects, something like <a href="https://electrodb.dev/">https://electrodb.dev/</a> can help.
+This is the bridge from the API behind TanStack DB to DynamoDB.</p>
+<p>The client below implements the four operations the demo needs: list todos, create a todo, update one or more todos, and delete todos in batches.</p>
+<p>Here is the environment variable used for the table name.</p>
+<figure data-rehype-pretty-code-figure=""><pre style="background-color:#22272e;color:#adbac7" tabindex="0" data-language="typescript" data-theme="github-dark-dimmed"><code data-language="typescript" data-theme="github-dark-dimmed" style="display: grid;"><span data-line=""><span style="color:#F47067">import</span><span style="color:#ADBAC7"> { DynamoDBClient } </span><span style="color:#F47067">from</span><span style="color:#96D0FF"> "@aws-sdk/client-dynamodb"</span><span style="color:#ADBAC7">;</span></span>
+<span data-line=""><span style="color:#F47067">import</span><span style="color:#ADBAC7"> {</span></span>
+<span data-line=""><span style="color:#ADBAC7">  BatchWriteCommand,</span></span>
+<span data-line=""><span style="color:#ADBAC7">  DynamoDBDocumentClient,</span></span>
+<span data-line=""><span style="color:#ADBAC7">  PutCommand,</span></span>
+<span data-line=""><span style="color:#ADBAC7">  QueryCommand,</span></span>
+<span data-line=""><span style="color:#ADBAC7">  UpdateCommand,</span></span>
+<span data-line=""><span style="color:#ADBAC7">} </span><span style="color:#F47067">from</span><span style="color:#96D0FF"> "@aws-sdk/lib-dynamodb"</span><span style="color:#ADBAC7">;</span></span>
+<span data-line=""><span style="color:#F47067">import</span><span style="color:#ADBAC7"> { </span><span style="color:#F47067">type</span><span style="color:#ADBAC7"> Todo, todoSchema, </span><span style="color:#F47067">type</span><span style="color:#ADBAC7"> TodoUpdate } </span><span style="color:#F47067">from</span><span style="color:#96D0FF"> "@/webapp/types/todo"</span><span style="color:#ADBAC7">;</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#F47067">const</span><span style="color:#6CB6FF"> TODOS_PK</span><span style="color:#F47067"> =</span><span style="color:#96D0FF"> "TODO"</span><span style="color:#ADBAC7">;</span></span>
+<span data-line=""><span style="color:#F47067">const</span><span style="color:#6CB6FF"> TODOS_TABLE_ENV</span><span style="color:#F47067"> =</span><span style="color:#96D0FF"> "DDB_TODOS_TABLE_NAME"</span><span style="color:#ADBAC7">;</span></span>
+<span data-line=""><span style="color:#F47067">const</span><span style="color:#6CB6FF"> EMPTY_LENGTH</span><span style="color:#F47067"> =</span><span style="color:#6CB6FF"> 0</span><span style="color:#ADBAC7">;</span></span>
+<span data-line=""><span style="color:#F47067">const</span><span style="color:#6CB6FF"> INITIAL_ATTEMPT</span><span style="color:#F47067"> =</span><span style="color:#6CB6FF"> 0</span><span style="color:#ADBAC7">;</span></span>
+<span data-line=""><span style="color:#F47067">const</span><span style="color:#6CB6FF"> NEXT_ATTEMPT_INCREMENT</span><span style="color:#F47067"> =</span><span style="color:#6CB6FF"> 1</span><span style="color:#ADBAC7">;</span></span>
+<span data-line=""><span style="color:#F47067">const</span><span style="color:#6CB6FF"> MAX_RETRY_ATTEMPTS</span><span style="color:#F47067"> =</span><span style="color:#6CB6FF"> 3</span><span style="color:#ADBAC7">;</span></span>
+<span data-line=""><span style="color:#F47067">const</span><span style="color:#6CB6FF"> MAX_BATCH_WRITE_ITEMS</span><span style="color:#F47067"> =</span><span style="color:#6CB6FF"> 25</span><span style="color:#ADBAC7">;</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#F47067">let</span><span style="color:#ADBAC7"> ddbDocSingleton</span><span style="color:#F47067">:</span><span style="color:#F69D50"> DynamoDBDocumentClient</span><span style="color:#F47067"> |</span><span style="color:#6CB6FF"> null</span><span style="color:#F47067"> =</span><span style="color:#6CB6FF"> null</span><span style="color:#ADBAC7">;</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#F47067">export</span><span style="color:#F47067"> const</span><span style="color:#DCBDFB"> getDdbDocClient</span><span style="color:#F47067"> =</span><span style="color:#ADBAC7"> ()</span><span style="color:#F47067">:</span><span style="color:#F69D50"> DynamoDBDocumentClient</span><span style="color:#F47067"> =></span><span style="color:#ADBAC7"> {</span></span>
+<span data-line=""><span style="color:#F47067">  if</span><span style="color:#ADBAC7"> (</span><span style="color:#F47067">!</span><span style="color:#ADBAC7">ddbDocSingleton) {</span></span>
+<span data-line=""><span style="color:#ADBAC7">    ddbDocSingleton </span><span style="color:#F47067">=</span><span style="color:#ADBAC7"> DynamoDBDocumentClient.</span><span style="color:#DCBDFB">from</span><span style="color:#ADBAC7">(</span><span style="color:#F47067">new</span><span style="color:#DCBDFB"> DynamoDBClient</span><span style="color:#ADBAC7">({}), {</span></span>
+<span data-line=""><span style="color:#ADBAC7">      marshallOptions: {</span></span>
+<span data-line=""><span style="color:#ADBAC7">        removeUndefinedValues: </span><span style="color:#6CB6FF">true</span><span style="color:#ADBAC7">,</span></span>
+<span data-line=""><span style="color:#ADBAC7">      },</span></span>
+<span data-line=""><span style="color:#ADBAC7">    });</span></span>
+<span data-line=""><span style="color:#ADBAC7">  }</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#F47067">  return</span><span style="color:#ADBAC7"> ddbDocSingleton;</span></span>
+<span data-line=""><span style="color:#ADBAC7">};</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#F47067">export</span><span style="color:#F47067"> const</span><span style="color:#DCBDFB"> requireEnvVar</span><span style="color:#F47067"> =</span><span style="color:#ADBAC7"> (</span><span style="color:#F69D50">name</span><span style="color:#F47067">:</span><span style="color:#6CB6FF"> string</span><span style="color:#ADBAC7">)</span><span style="color:#F47067">:</span><span style="color:#6CB6FF"> string</span><span style="color:#F47067"> =></span><span style="color:#ADBAC7"> {</span></span>
+<span data-line=""><span style="color:#F47067">  const</span><span style="color:#6CB6FF"> value</span><span style="color:#F47067"> =</span><span style="color:#ADBAC7"> process.env[name];</span></span>
+<span data-line=""><span style="color:#F47067">  if</span><span style="color:#ADBAC7"> (</span><span style="color:#F47067">!</span><span style="color:#ADBAC7">value) {</span></span>
+<span data-line=""><span style="color:#F47067">    throw</span><span style="color:#F47067"> new</span><span style="color:#DCBDFB"> Error</span><span style="color:#ADBAC7">(</span><span style="color:#96D0FF">`Missing env var: ${</span><span style="color:#ADBAC7">name</span><span style="color:#96D0FF">}`</span><span style="color:#ADBAC7">);</span></span>
+<span data-line=""><span style="color:#ADBAC7">  }</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#F47067">  return</span><span style="color:#ADBAC7"> value;</span></span>
+<span data-line=""><span style="color:#ADBAC7">};</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#F47067">export</span><span style="color:#F47067"> const</span><span style="color:#DCBDFB"> getTodosTableName</span><span style="color:#F47067"> =</span><span style="color:#ADBAC7"> ()</span><span style="color:#F47067">:</span><span style="color:#6CB6FF"> string</span><span style="color:#F47067"> =></span><span style="color:#DCBDFB"> requireEnvVar</span><span style="color:#ADBAC7">(</span><span style="color:#6CB6FF">TODOS_TABLE_ENV</span><span style="color:#ADBAC7">);</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#F47067">const</span><span style="color:#DCBDFB"> todoSortKey</span><span style="color:#F47067"> =</span><span style="color:#ADBAC7"> (</span><span style="color:#F69D50">id</span><span style="color:#F47067">:</span><span style="color:#6CB6FF"> number</span><span style="color:#ADBAC7">)</span><span style="color:#F47067">:</span><span style="color:#6CB6FF"> string</span><span style="color:#F47067"> =></span><span style="color:#96D0FF"> `TODO#${</span><span style="color:#ADBAC7">id</span><span style="color:#96D0FF">}`</span><span style="color:#ADBAC7">;</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#F47067">const</span><span style="color:#DCBDFB"> parseTodoItem</span><span style="color:#F47067"> =</span><span style="color:#ADBAC7"> (</span><span style="color:#F69D50">item</span><span style="color:#F47067">:</span><span style="color:#F69D50"> Record</span><span style="color:#ADBAC7">&#x3C;</span><span style="color:#6CB6FF">string</span><span style="color:#ADBAC7">, </span><span style="color:#6CB6FF">unknown</span><span style="color:#ADBAC7">>)</span><span style="color:#F47067">:</span><span style="color:#F69D50"> Todo</span><span style="color:#F47067"> |</span><span style="color:#6CB6FF"> null</span><span style="color:#F47067"> =></span><span style="color:#ADBAC7"> {</span></span>
+<span data-line=""><span style="color:#F47067">  const</span><span style="color:#6CB6FF"> parsed</span><span style="color:#F47067"> =</span><span style="color:#ADBAC7"> todoSchema.</span><span style="color:#DCBDFB">safeParse</span><span style="color:#ADBAC7">({</span></span>
+<span data-line=""><span style="color:#ADBAC7">    id: item.id,</span></span>
+<span data-line=""><span style="color:#ADBAC7">    name: item.name,</span></span>
+<span data-line=""><span style="color:#ADBAC7">    status: item.status,</span></span>
+<span data-line=""><span style="color:#ADBAC7">  });</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#F47067">  if</span><span style="color:#ADBAC7"> (</span><span style="color:#F47067">!</span><span style="color:#ADBAC7">parsed.success) {</span></span>
+<span data-line=""><span style="color:#F47067">    return</span><span style="color:#6CB6FF"> null</span><span style="color:#ADBAC7">;</span></span>
+<span data-line=""><span style="color:#ADBAC7">  }</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#F47067">  return</span><span style="color:#ADBAC7"> parsed.data;</span></span>
+<span data-line=""><span style="color:#ADBAC7">};</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#F47067">const</span><span style="color:#DCBDFB"> chunkItems</span><span style="color:#F47067"> =</span><span style="color:#ADBAC7"> &#x3C;</span><span style="color:#F69D50">Item</span><span style="color:#ADBAC7">>(</span><span style="color:#F69D50">items</span><span style="color:#F47067">:</span><span style="color:#F69D50"> Item</span><span style="color:#ADBAC7">[], </span><span style="color:#F69D50">chunkSize</span><span style="color:#F47067">:</span><span style="color:#6CB6FF"> number</span><span style="color:#ADBAC7">)</span><span style="color:#F47067">:</span><span style="color:#F69D50"> Item</span><span style="color:#ADBAC7">[][] </span><span style="color:#F47067">=></span><span style="color:#ADBAC7"> {</span></span>
+<span data-line=""><span style="color:#F47067">  const</span><span style="color:#6CB6FF"> out</span><span style="color:#F47067">:</span><span style="color:#F69D50"> Item</span><span style="color:#ADBAC7">[][] </span><span style="color:#F47067">=</span><span style="color:#ADBAC7"> [];</span></span>
+<span data-line=""><span style="color:#F47067">  for</span><span style="color:#ADBAC7"> (</span><span style="color:#F47067">let</span><span style="color:#ADBAC7"> index </span><span style="color:#F47067">=</span><span style="color:#6CB6FF"> EMPTY_LENGTH</span><span style="color:#ADBAC7">; index </span><span style="color:#F47067">&#x3C;</span><span style="color:#ADBAC7"> items.</span><span style="color:#6CB6FF">length</span><span style="color:#ADBAC7">; index </span><span style="color:#F47067">+=</span><span style="color:#ADBAC7"> chunkSize) {</span></span>
+<span data-line=""><span style="color:#ADBAC7">    out.</span><span style="color:#DCBDFB">push</span><span style="color:#ADBAC7">(items.</span><span style="color:#DCBDFB">slice</span><span style="color:#ADBAC7">(index, index </span><span style="color:#F47067">+</span><span style="color:#ADBAC7"> chunkSize));</span></span>
+<span data-line=""><span style="color:#ADBAC7">  }</span></span>
+<span data-line=""><span style="color:#F47067">  return</span><span style="color:#ADBAC7"> out;</span></span>
+<span data-line=""><span style="color:#ADBAC7">};</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#F47067">export</span><span style="color:#F47067"> type</span><span style="color:#F69D50"> TodosDdbClient</span><span style="color:#F47067"> =</span><span style="color:#ADBAC7"> {</span></span>
+<span data-line=""><span style="color:#DCBDFB">  getTodos</span><span style="color:#F47067">:</span><span style="color:#ADBAC7"> () </span><span style="color:#F47067">=></span><span style="color:#F69D50"> Promise</span><span style="color:#ADBAC7">&#x3C;</span><span style="color:#F69D50">Todo</span><span style="color:#ADBAC7">[]>;</span></span>
+<span data-line=""><span style="color:#DCBDFB">  putTodo</span><span style="color:#F47067">:</span><span style="color:#ADBAC7"> (</span><span style="color:#F69D50">todo</span><span style="color:#F47067">:</span><span style="color:#F69D50"> Todo</span><span style="color:#ADBAC7">) </span><span style="color:#F47067">=></span><span style="color:#F69D50"> Promise</span><span style="color:#ADBAC7">&#x3C;</span><span style="color:#F69D50">Todo</span><span style="color:#ADBAC7">>;</span></span>
+<span data-line=""><span style="color:#DCBDFB">  updateTodos</span><span style="color:#F47067">:</span><span style="color:#ADBAC7"> (</span><span style="color:#F69D50">updates</span><span style="color:#F47067">:</span><span style="color:#F69D50"> TodoUpdate</span><span style="color:#ADBAC7">[]) </span><span style="color:#F47067">=></span><span style="color:#F69D50"> Promise</span><span style="color:#ADBAC7">&#x3C;</span><span style="color:#6CB6FF">void</span><span style="color:#ADBAC7">>;</span></span>
+<span data-line=""><span style="color:#DCBDFB">  deleteTodos</span><span style="color:#F47067">:</span><span style="color:#ADBAC7"> (</span><span style="color:#F69D50">ids</span><span style="color:#F47067">:</span><span style="color:#6CB6FF"> number</span><span style="color:#ADBAC7">[]) </span><span style="color:#F47067">=></span><span style="color:#F69D50"> Promise</span><span style="color:#ADBAC7">&#x3C;</span><span style="color:#6CB6FF">void</span><span style="color:#ADBAC7">>;</span></span>
+<span data-line=""><span style="color:#ADBAC7">};</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#F47067">const</span><span style="color:#DCBDFB"> retryBatchWrite</span><span style="color:#F47067"> =</span><span style="color:#F47067"> async</span><span style="color:#ADBAC7"> (</span><span style="color:#F69D50">args</span><span style="color:#F47067">:</span><span style="color:#ADBAC7"> {</span></span>
+<span data-line=""><span style="color:#F69D50">  ddbDoc</span><span style="color:#F47067">:</span><span style="color:#F69D50"> DynamoDBDocumentClient</span><span style="color:#ADBAC7">;</span></span>
+<span data-line=""><span style="color:#F69D50">  requestItems</span><span style="color:#F47067">:</span><span style="color:#6CB6FF"> unknown</span><span style="color:#ADBAC7">;</span></span>
+<span data-line=""><span style="color:#F69D50">  attempt</span><span style="color:#F47067">:</span><span style="color:#6CB6FF"> number</span><span style="color:#ADBAC7">;</span></span>
+<span data-line=""><span style="color:#ADBAC7">})</span><span style="color:#F47067">:</span><span style="color:#F69D50"> Promise</span><span style="color:#ADBAC7">&#x3C;</span><span style="color:#6CB6FF">void</span><span style="color:#ADBAC7">> </span><span style="color:#F47067">=></span><span style="color:#ADBAC7"> {</span></span>
+<span data-line=""><span style="color:#F47067">  const</span><span style="color:#6CB6FF"> response</span><span style="color:#F47067"> =</span><span style="color:#F47067"> await</span><span style="color:#ADBAC7"> args.ddbDoc.</span><span style="color:#DCBDFB">send</span><span style="color:#ADBAC7">(</span></span>
+<span data-line=""><span style="color:#F47067">    new</span><span style="color:#DCBDFB"> BatchWriteCommand</span><span style="color:#ADBAC7">({</span></span>
+<span data-line=""><span style="color:#ADBAC7">      RequestItems: args.requestItems </span><span style="color:#F47067">as</span><span style="color:#6CB6FF"> never</span><span style="color:#ADBAC7">,</span></span>
+<span data-line=""><span style="color:#ADBAC7">    }),</span></span>
+<span data-line=""><span style="color:#ADBAC7">  );</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#F47067">  const</span><span style="color:#6CB6FF"> unprocessedItems</span><span style="color:#F47067"> =</span><span style="color:#ADBAC7"> response.UnprocessedItems;</span></span>
+<span data-line=""><span style="color:#F47067">  if</span><span style="color:#ADBAC7"> (</span></span>
+<span data-line=""><span style="color:#F47067">    !</span><span style="color:#ADBAC7">unprocessedItems </span><span style="color:#F47067">||</span></span>
+<span data-line=""><span style="color:#ADBAC7">    Object.</span><span style="color:#DCBDFB">keys</span><span style="color:#ADBAC7">(unprocessedItems).</span><span style="color:#6CB6FF">length</span><span style="color:#F47067"> ===</span><span style="color:#6CB6FF"> EMPTY_LENGTH</span></span>
+<span data-line=""><span style="color:#ADBAC7">  ) {</span></span>
+<span data-line=""><span style="color:#F47067">    return</span><span style="color:#ADBAC7">;</span></span>
+<span data-line=""><span style="color:#ADBAC7">  }</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#F47067">  if</span><span style="color:#ADBAC7"> (args.attempt </span><span style="color:#F47067">+</span><span style="color:#6CB6FF"> NEXT_ATTEMPT_INCREMENT</span><span style="color:#F47067"> >=</span><span style="color:#6CB6FF"> MAX_RETRY_ATTEMPTS</span><span style="color:#ADBAC7">) {</span></span>
+<span data-line=""><span style="color:#F47067">    return</span><span style="color:#ADBAC7">;</span></span>
+<span data-line=""><span style="color:#ADBAC7">  }</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#F47067">  await</span><span style="color:#DCBDFB"> retryBatchWrite</span><span style="color:#ADBAC7">({</span></span>
+<span data-line=""><span style="color:#ADBAC7">    ddbDoc: args.ddbDoc,</span></span>
+<span data-line=""><span style="color:#ADBAC7">    requestItems: unprocessedItems,</span></span>
+<span data-line=""><span style="color:#ADBAC7">    attempt: args.attempt </span><span style="color:#F47067">+</span><span style="color:#6CB6FF"> NEXT_ATTEMPT_INCREMENT</span><span style="color:#ADBAC7">,</span></span>
+<span data-line=""><span style="color:#ADBAC7">  });</span></span>
+<span data-line=""><span style="color:#ADBAC7">};</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#F47067">export</span><span style="color:#F47067"> const</span><span style="color:#DCBDFB"> createTodosDdbClient</span><span style="color:#F47067"> =</span><span style="color:#ADBAC7"> ()</span><span style="color:#F47067">:</span><span style="color:#F69D50"> TodosDdbClient</span><span style="color:#F47067"> =></span><span style="color:#ADBAC7"> {</span></span>
+<span data-line=""><span style="color:#F47067">  const</span><span style="color:#6CB6FF"> ddbDoc</span><span style="color:#F47067"> =</span><span style="color:#DCBDFB"> getDdbDocClient</span><span style="color:#ADBAC7">();</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#F47067">  return</span><span style="color:#ADBAC7"> {</span></span>
+<span data-line=""><span style="color:#DCBDFB">    getTodos</span><span style="color:#ADBAC7">: </span><span style="color:#F47067">async</span><span style="color:#ADBAC7"> () </span><span style="color:#F47067">=></span><span style="color:#ADBAC7"> {</span></span>
+<span data-line=""><span style="color:#F47067">      const</span><span style="color:#6CB6FF"> tableName</span><span style="color:#F47067"> =</span><span style="color:#DCBDFB"> getTodosTableName</span><span style="color:#ADBAC7">();</span></span>
+<span data-line=""><span style="color:#F47067">      const</span><span style="color:#6CB6FF"> result</span><span style="color:#F47067"> =</span><span style="color:#F47067"> await</span><span style="color:#ADBAC7"> ddbDoc.</span><span style="color:#DCBDFB">send</span><span style="color:#ADBAC7">(</span></span>
+<span data-line=""><span style="color:#F47067">        new</span><span style="color:#DCBDFB"> QueryCommand</span><span style="color:#ADBAC7">({</span></span>
+<span data-line=""><span style="color:#ADBAC7">          TableName: tableName,</span></span>
+<span data-line=""><span style="color:#ADBAC7">          KeyConditionExpression: </span><span style="color:#96D0FF">"#pk = :pk"</span><span style="color:#ADBAC7">,</span></span>
+<span data-line=""><span style="color:#ADBAC7">          ExpressionAttributeNames: {</span></span>
+<span data-line=""><span style="color:#96D0FF">            "#pk"</span><span style="color:#ADBAC7">: </span><span style="color:#96D0FF">"pk"</span><span style="color:#ADBAC7">,</span></span>
+<span data-line=""><span style="color:#ADBAC7">          },</span></span>
+<span data-line=""><span style="color:#ADBAC7">          ExpressionAttributeValues: {</span></span>
+<span data-line=""><span style="color:#96D0FF">            ":pk"</span><span style="color:#ADBAC7">: </span><span style="color:#6CB6FF">TODOS_PK</span><span style="color:#ADBAC7">,</span></span>
+<span data-line=""><span style="color:#ADBAC7">          },</span></span>
+<span data-line=""><span style="color:#ADBAC7">        }),</span></span>
+<span data-line=""><span style="color:#ADBAC7">      );</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#F47067">      const</span><span style="color:#6CB6FF"> items</span><span style="color:#F47067"> =</span><span style="color:#ADBAC7"> (result.Items </span><span style="color:#F47067">??</span><span style="color:#ADBAC7"> [])</span></span>
+<span data-line=""><span style="color:#ADBAC7">        .</span><span style="color:#DCBDFB">map</span><span style="color:#ADBAC7">((</span><span style="color:#F69D50">item</span><span style="color:#ADBAC7">) </span><span style="color:#F47067">=></span><span style="color:#DCBDFB"> parseTodoItem</span><span style="color:#ADBAC7">(item))</span></span>
+<span data-line=""><span style="color:#ADBAC7">        .</span><span style="color:#DCBDFB">filter</span><span style="color:#ADBAC7">((</span><span style="color:#F69D50">todo</span><span style="color:#ADBAC7">)</span><span style="color:#F47067">:</span><span style="color:#F69D50"> todo</span><span style="color:#F47067"> is</span><span style="color:#F69D50"> Todo</span><span style="color:#F47067"> =></span><span style="color:#ADBAC7"> todo </span><span style="color:#F47067">!==</span><span style="color:#6CB6FF"> null</span><span style="color:#ADBAC7">);</span></span>
+<span data-line=""><span style="color:#F47067">      return</span><span style="color:#ADBAC7"> items;</span></span>
+<span data-line=""><span style="color:#ADBAC7">    },</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#DCBDFB">    putTodo</span><span style="color:#ADBAC7">: </span><span style="color:#F47067">async</span><span style="color:#ADBAC7"> (</span><span style="color:#F69D50">todo</span><span style="color:#F47067">:</span><span style="color:#F69D50"> Todo</span><span style="color:#ADBAC7">) </span><span style="color:#F47067">=></span><span style="color:#ADBAC7"> {</span></span>
+<span data-line=""><span style="color:#F47067">      const</span><span style="color:#6CB6FF"> tableName</span><span style="color:#F47067"> =</span><span style="color:#DCBDFB"> getTodosTableName</span><span style="color:#ADBAC7">();</span></span>
+<span data-line=""><span style="color:#F47067">      await</span><span style="color:#ADBAC7"> ddbDoc.</span><span style="color:#DCBDFB">send</span><span style="color:#ADBAC7">(</span></span>
+<span data-line=""><span style="color:#F47067">        new</span><span style="color:#DCBDFB"> PutCommand</span><span style="color:#ADBAC7">({</span></span>
+<span data-line=""><span style="color:#ADBAC7">          TableName: tableName,</span></span>
+<span data-line=""><span style="color:#ADBAC7">          Item: {</span></span>
+<span data-line=""><span style="color:#ADBAC7">            pk: </span><span style="color:#6CB6FF">TODOS_PK</span><span style="color:#ADBAC7">,</span></span>
+<span data-line=""><span style="color:#ADBAC7">            sk: </span><span style="color:#DCBDFB">todoSortKey</span><span style="color:#ADBAC7">(todo.id),</span></span>
+<span data-line=""><span style="color:#ADBAC7">            id: todo.id,</span></span>
+<span data-line=""><span style="color:#ADBAC7">            name: todo.name,</span></span>
+<span data-line=""><span style="color:#ADBAC7">            status: todo.status,</span></span>
+<span data-line=""><span style="color:#ADBAC7">          },</span></span>
+<span data-line=""><span style="color:#ADBAC7">        }),</span></span>
+<span data-line=""><span style="color:#ADBAC7">      );</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#F47067">      return</span><span style="color:#ADBAC7"> todo;</span></span>
+<span data-line=""><span style="color:#ADBAC7">    },</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#DCBDFB">    updateTodos</span><span style="color:#ADBAC7">: </span><span style="color:#F47067">async</span><span style="color:#ADBAC7"> (</span><span style="color:#F69D50">updates</span><span style="color:#F47067">:</span><span style="color:#F69D50"> TodoUpdate</span><span style="color:#ADBAC7">[]) </span><span style="color:#F47067">=></span><span style="color:#ADBAC7"> {</span></span>
+<span data-line=""><span style="color:#F47067">      const</span><span style="color:#6CB6FF"> tableName</span><span style="color:#F47067"> =</span><span style="color:#DCBDFB"> getTodosTableName</span><span style="color:#ADBAC7">();</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#F47067">      await</span><span style="color:#6CB6FF"> Promise</span><span style="color:#ADBAC7">.</span><span style="color:#DCBDFB">all</span><span style="color:#ADBAC7">(</span></span>
+<span data-line=""><span style="color:#ADBAC7">        updates.</span><span style="color:#DCBDFB">map</span><span style="color:#ADBAC7">(</span><span style="color:#F47067">async</span><span style="color:#ADBAC7"> (</span><span style="color:#F69D50">update</span><span style="color:#ADBAC7">) </span><span style="color:#F47067">=></span><span style="color:#ADBAC7"> {</span></span>
+<span data-line=""><span style="color:#F47067">          const</span><span style="color:#6CB6FF"> sets</span><span style="color:#F47067">:</span><span style="color:#6CB6FF"> string</span><span style="color:#ADBAC7">[] </span><span style="color:#F47067">=</span><span style="color:#ADBAC7"> [];</span></span>
+<span data-line=""><span style="color:#F47067">          const</span><span style="color:#6CB6FF"> names</span><span style="color:#F47067">:</span><span style="color:#F69D50"> Record</span><span style="color:#ADBAC7">&#x3C;</span><span style="color:#6CB6FF">string</span><span style="color:#ADBAC7">, </span><span style="color:#6CB6FF">string</span><span style="color:#ADBAC7">> </span><span style="color:#F47067">=</span><span style="color:#ADBAC7"> {</span></span>
+<span data-line=""><span style="color:#96D0FF">            "#pk"</span><span style="color:#ADBAC7">: </span><span style="color:#96D0FF">"pk"</span><span style="color:#ADBAC7">,</span></span>
+<span data-line=""><span style="color:#96D0FF">            "#sk"</span><span style="color:#ADBAC7">: </span><span style="color:#96D0FF">"sk"</span><span style="color:#ADBAC7">,</span></span>
+<span data-line=""><span style="color:#ADBAC7">          };</span></span>
+<span data-line=""><span style="color:#F47067">          const</span><span style="color:#6CB6FF"> values</span><span style="color:#F47067">:</span><span style="color:#F69D50"> Record</span><span style="color:#ADBAC7">&#x3C;</span><span style="color:#6CB6FF">string</span><span style="color:#ADBAC7">, </span><span style="color:#6CB6FF">unknown</span><span style="color:#ADBAC7">> </span><span style="color:#F47067">=</span><span style="color:#ADBAC7"> {};</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#F47067">          if</span><span style="color:#ADBAC7"> (update.changes.name </span><span style="color:#F47067">!==</span><span style="color:#6CB6FF"> undefined</span><span style="color:#ADBAC7">) {</span></span>
+<span data-line=""><span style="color:#ADBAC7">            names[</span><span style="color:#96D0FF">"#name"</span><span style="color:#ADBAC7">] </span><span style="color:#F47067">=</span><span style="color:#96D0FF"> "name"</span><span style="color:#ADBAC7">;</span></span>
+<span data-line=""><span style="color:#ADBAC7">            values[</span><span style="color:#96D0FF">":name"</span><span style="color:#ADBAC7">] </span><span style="color:#F47067">=</span><span style="color:#ADBAC7"> update.changes.name;</span></span>
+<span data-line=""><span style="color:#ADBAC7">            sets.</span><span style="color:#DCBDFB">push</span><span style="color:#ADBAC7">(</span><span style="color:#96D0FF">"#name = :name"</span><span style="color:#ADBAC7">);</span></span>
+<span data-line=""><span style="color:#ADBAC7">          }</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#F47067">          if</span><span style="color:#ADBAC7"> (update.changes.status </span><span style="color:#F47067">!==</span><span style="color:#6CB6FF"> undefined</span><span style="color:#ADBAC7">) {</span></span>
+<span data-line=""><span style="color:#ADBAC7">            names[</span><span style="color:#96D0FF">"#status"</span><span style="color:#ADBAC7">] </span><span style="color:#F47067">=</span><span style="color:#96D0FF"> "status"</span><span style="color:#ADBAC7">;</span></span>
+<span data-line=""><span style="color:#ADBAC7">            values[</span><span style="color:#96D0FF">":status"</span><span style="color:#ADBAC7">] </span><span style="color:#F47067">=</span><span style="color:#ADBAC7"> update.changes.status;</span></span>
+<span data-line=""><span style="color:#ADBAC7">            sets.</span><span style="color:#DCBDFB">push</span><span style="color:#ADBAC7">(</span><span style="color:#96D0FF">"#status = :status"</span><span style="color:#ADBAC7">);</span></span>
+<span data-line=""><span style="color:#ADBAC7">          }</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#F47067">          if</span><span style="color:#ADBAC7"> (sets.</span><span style="color:#6CB6FF">length</span><span style="color:#F47067"> ===</span><span style="color:#6CB6FF"> EMPTY_LENGTH</span><span style="color:#ADBAC7">) {</span></span>
+<span data-line=""><span style="color:#F47067">            return</span><span style="color:#ADBAC7">;</span></span>
+<span data-line=""><span style="color:#ADBAC7">          }</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#F47067">          try</span><span style="color:#ADBAC7"> {</span></span>
+<span data-line=""><span style="color:#F47067">            await</span><span style="color:#ADBAC7"> ddbDoc.</span><span style="color:#DCBDFB">send</span><span style="color:#ADBAC7">(</span></span>
+<span data-line=""><span style="color:#F47067">              new</span><span style="color:#DCBDFB"> UpdateCommand</span><span style="color:#ADBAC7">({</span></span>
+<span data-line=""><span style="color:#ADBAC7">                TableName: tableName,</span></span>
+<span data-line=""><span style="color:#ADBAC7">                Key: {</span></span>
+<span data-line=""><span style="color:#ADBAC7">                  pk: </span><span style="color:#6CB6FF">TODOS_PK</span><span style="color:#ADBAC7">,</span></span>
+<span data-line=""><span style="color:#ADBAC7">                  sk: </span><span style="color:#DCBDFB">todoSortKey</span><span style="color:#ADBAC7">(update.id),</span></span>
+<span data-line=""><span style="color:#ADBAC7">                },</span></span>
+<span data-line=""><span style="color:#ADBAC7">                UpdateExpression: </span><span style="color:#96D0FF">`SET ${</span><span style="color:#ADBAC7">sets</span><span style="color:#96D0FF">.</span><span style="color:#DCBDFB">join</span><span style="color:#96D0FF">(</span><span style="color:#96D0FF">", "</span><span style="color:#96D0FF">)</span><span style="color:#96D0FF">}`</span><span style="color:#ADBAC7">,</span></span>
+<span data-line=""><span style="color:#ADBAC7">                ConditionExpression:</span></span>
+<span data-line=""><span style="color:#96D0FF">                  "attribute_exists(#pk) AND attribute_exists(#sk)"</span><span style="color:#ADBAC7">,</span></span>
+<span data-line=""><span style="color:#ADBAC7">                ExpressionAttributeNames: names,</span></span>
+<span data-line=""><span style="color:#ADBAC7">                ExpressionAttributeValues: values,</span></span>
+<span data-line=""><span style="color:#ADBAC7">              }),</span></span>
+<span data-line=""><span style="color:#ADBAC7">            );</span></span>
+<span data-line=""><span style="color:#ADBAC7">          } </span><span style="color:#F47067">catch</span><span style="color:#ADBAC7"> (error) {</span></span>
+<span data-line=""><span style="color:#F47067">            const</span><span style="color:#6CB6FF"> errorName</span><span style="color:#F47067"> =</span><span style="color:#ADBAC7"> (error </span><span style="color:#F47067">as</span><span style="color:#ADBAC7"> { </span><span style="color:#F69D50">name</span><span style="color:#F47067">?:</span><span style="color:#6CB6FF"> string</span><span style="color:#ADBAC7"> } </span><span style="color:#F47067">|</span><span style="color:#6CB6FF"> undefined</span><span style="color:#ADBAC7">)?.name;</span></span>
+<span data-line=""><span style="color:#F47067">            if</span><span style="color:#ADBAC7"> (errorName </span><span style="color:#F47067">!==</span><span style="color:#96D0FF"> "ConditionalCheckFailedException"</span><span style="color:#ADBAC7">) {</span></span>
+<span data-line=""><span style="color:#F47067">              throw</span><span style="color:#ADBAC7"> error;</span></span>
+<span data-line=""><span style="color:#ADBAC7">            }</span></span>
+<span data-line=""><span style="color:#ADBAC7">          }</span></span>
+<span data-line=""><span style="color:#ADBAC7">        }),</span></span>
+<span data-line=""><span style="color:#ADBAC7">      );</span></span>
+<span data-line=""><span style="color:#ADBAC7">    },</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#DCBDFB">    deleteTodos</span><span style="color:#ADBAC7">: </span><span style="color:#F47067">async</span><span style="color:#ADBAC7"> (</span><span style="color:#F69D50">ids</span><span style="color:#F47067">:</span><span style="color:#6CB6FF"> number</span><span style="color:#ADBAC7">[]) </span><span style="color:#F47067">=></span><span style="color:#ADBAC7"> {</span></span>
+<span data-line=""><span style="color:#F47067">      const</span><span style="color:#6CB6FF"> tableName</span><span style="color:#F47067"> =</span><span style="color:#DCBDFB"> getTodosTableName</span><span style="color:#ADBAC7">();</span></span>
+<span data-line=""><span style="color:#F47067">      const</span><span style="color:#6CB6FF"> groups</span><span style="color:#F47067"> =</span><span style="color:#DCBDFB"> chunkItems</span><span style="color:#ADBAC7">(ids, </span><span style="color:#6CB6FF">MAX_BATCH_WRITE_ITEMS</span><span style="color:#ADBAC7">);</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#F47067">      await</span><span style="color:#6CB6FF"> Promise</span><span style="color:#ADBAC7">.</span><span style="color:#DCBDFB">all</span><span style="color:#ADBAC7">(</span></span>
+<span data-line=""><span style="color:#ADBAC7">        groups.</span><span style="color:#DCBDFB">map</span><span style="color:#ADBAC7">(</span><span style="color:#F47067">async</span><span style="color:#ADBAC7"> (</span><span style="color:#F69D50">group</span><span style="color:#ADBAC7">) </span><span style="color:#F47067">=></span><span style="color:#ADBAC7"> {</span></span>
+<span data-line=""><span style="color:#F47067">          const</span><span style="color:#6CB6FF"> requestItems</span><span style="color:#F47067"> =</span><span style="color:#ADBAC7"> {</span></span>
+<span data-line=""><span style="color:#ADBAC7">            [tableName]: group.</span><span style="color:#DCBDFB">map</span><span style="color:#ADBAC7">((</span><span style="color:#F69D50">id</span><span style="color:#ADBAC7">) </span><span style="color:#F47067">=></span><span style="color:#ADBAC7"> ({</span></span>
+<span data-line=""><span style="color:#ADBAC7">              DeleteRequest: {</span></span>
+<span data-line=""><span style="color:#ADBAC7">                Key: {</span></span>
+<span data-line=""><span style="color:#ADBAC7">                  pk: </span><span style="color:#6CB6FF">TODOS_PK</span><span style="color:#ADBAC7">,</span></span>
+<span data-line=""><span style="color:#ADBAC7">                  sk: </span><span style="color:#DCBDFB">todoSortKey</span><span style="color:#ADBAC7">(id),</span></span>
+<span data-line=""><span style="color:#ADBAC7">                },</span></span>
+<span data-line=""><span style="color:#ADBAC7">              },</span></span>
+<span data-line=""><span style="color:#ADBAC7">            })),</span></span>
+<span data-line=""><span style="color:#ADBAC7">          };</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#F47067">          await</span><span style="color:#DCBDFB"> retryBatchWrite</span><span style="color:#ADBAC7">({</span></span>
+<span data-line=""><span style="color:#ADBAC7">            ddbDoc,</span></span>
+<span data-line=""><span style="color:#ADBAC7">            requestItems,</span></span>
+<span data-line=""><span style="color:#ADBAC7">            attempt: </span><span style="color:#6CB6FF">INITIAL_ATTEMPT</span><span style="color:#ADBAC7">,</span></span>
+<span data-line=""><span style="color:#ADBAC7">          });</span></span>
+<span data-line=""><span style="color:#ADBAC7">        }),</span></span>
+<span data-line=""><span style="color:#ADBAC7">      );</span></span>
+<span data-line=""><span style="color:#ADBAC7">    },</span></span>
+<span data-line=""><span style="color:#ADBAC7">  };</span></span>
+<span data-line=""><span style="color:#ADBAC7">};</span></span><button type="button" title="Copy code" aria-label="Copy code" data="import { DynamoDBClient } from &#x22;@aws-sdk/client-dynamodb&#x22;;
+import {
+  BatchWriteCommand,
+  DynamoDBDocumentClient,
+  PutCommand,
+  QueryCommand,
+  UpdateCommand,
+} from &#x22;@aws-sdk/lib-dynamodb&#x22;;
+import { type Todo, todoSchema, type TodoUpdate } from &#x22;@/webapp/types/todo&#x22;;
+
+const TODOS_PK = &#x22;TODO&#x22;;
+const TODOS_TABLE_ENV = &#x22;DDB_TODOS_TABLE_NAME&#x22;;
+const EMPTY_LENGTH = 0;
+const INITIAL_ATTEMPT = 0;
+const NEXT_ATTEMPT_INCREMENT = 1;
+const MAX_RETRY_ATTEMPTS = 3;
+const MAX_BATCH_WRITE_ITEMS = 25;
+
+let ddbDocSingleton: DynamoDBDocumentClient | null = null;
+
+export const getDdbDocClient = (): DynamoDBDocumentClient => {
+  if (!ddbDocSingleton) {
+    ddbDocSingleton = DynamoDBDocumentClient.from(new DynamoDBClient({}), {
+      marshallOptions: {
+        removeUndefinedValues: true,
+      },
+    });
+  }
+
+  return ddbDocSingleton;
+};
+
+export const requireEnvVar = (name: string): string => {
+  const value = process.env[name];
+  if (!value) {
+    throw new Error(&#x60;Missing env var: ${name}&#x60;);
+  }
+
+  return value;
+};
+
+export const getTodosTableName = (): string => requireEnvVar(TODOS_TABLE_ENV);
+
+const todoSortKey = (id: number): string => &#x60;TODO#${id}&#x60;;
+
+const parseTodoItem = (item: Record<string, unknown>): Todo | null => {
+  const parsed = todoSchema.safeParse({
+    id: item.id,
+    name: item.name,
+    status: item.status,
+  });
+
+  if (!parsed.success) {
+    return null;
+  }
+
+  return parsed.data;
+};
+
+const chunkItems = <Item>(items: Item[], chunkSize: number): Item[][] => {
+  const out: Item[][] = [];
+  for (let index = EMPTY_LENGTH; index < items.length; index += chunkSize) {
+    out.push(items.slice(index, index + chunkSize));
+  }
+  return out;
+};
+
+export type TodosDdbClient = {
+  getTodos: () => Promise<Todo[]>;
+  putTodo: (todo: Todo) => Promise<Todo>;
+  updateTodos: (updates: TodoUpdate[]) => Promise<void>;
+  deleteTodos: (ids: number[]) => Promise<void>;
+};
+
+const retryBatchWrite = async (args: {
+  ddbDoc: DynamoDBDocumentClient;
+  requestItems: unknown;
+  attempt: number;
+}): Promise<void> => {
+  const response = await args.ddbDoc.send(
+    new BatchWriteCommand({
+      RequestItems: args.requestItems as never,
+    }),
+  );
+
+  const unprocessedItems = response.UnprocessedItems;
+  if (
+    !unprocessedItems ||
+    Object.keys(unprocessedItems).length === EMPTY_LENGTH
+  ) {
+    return;
+  }
+
+  if (args.attempt + NEXT_ATTEMPT_INCREMENT >= MAX_RETRY_ATTEMPTS) {
+    return;
+  }
+
+  await retryBatchWrite({
+    ddbDoc: args.ddbDoc,
+    requestItems: unprocessedItems,
+    attempt: args.attempt + NEXT_ATTEMPT_INCREMENT,
+  });
+};
+
+export const createTodosDdbClient = (): TodosDdbClient => {
+  const ddbDoc = getDdbDocClient();
+
+  return {
+    getTodos: async () => {
+      const tableName = getTodosTableName();
+      const result = await ddbDoc.send(
+        new QueryCommand({
+          TableName: tableName,
+          KeyConditionExpression: &#x22;#pk = :pk&#x22;,
+          ExpressionAttributeNames: {
+            &#x22;#pk&#x22;: &#x22;pk&#x22;,
+          },
+          ExpressionAttributeValues: {
+            &#x22;:pk&#x22;: TODOS_PK,
+          },
+        }),
+      );
+
+      const items = (result.Items ?? [])
+        .map((item) => parseTodoItem(item))
+        .filter((todo): todo is Todo => todo !== null);
+      return items;
+    },
+
+    putTodo: async (todo: Todo) => {
+      const tableName = getTodosTableName();
+      await ddbDoc.send(
+        new PutCommand({
+          TableName: tableName,
+          Item: {
+            pk: TODOS_PK,
+            sk: todoSortKey(todo.id),
+            id: todo.id,
+            name: todo.name,
+            status: todo.status,
+          },
+        }),
+      );
+
+      return todo;
+    },
+
+    updateTodos: async (updates: TodoUpdate[]) => {
+      const tableName = getTodosTableName();
+
+      await Promise.all(
+        updates.map(async (update) => {
+          const sets: string[] = [];
+          const names: Record<string, string> = {
+            &#x22;#pk&#x22;: &#x22;pk&#x22;,
+            &#x22;#sk&#x22;: &#x22;sk&#x22;,
+          };
+          const values: Record<string, unknown> = {};
+
+          if (update.changes.name !== undefined) {
+            names[&#x22;#name&#x22;] = &#x22;name&#x22;;
+            values[&#x22;:name&#x22;] = update.changes.name;
+            sets.push(&#x22;#name = :name&#x22;);
+          }
+
+          if (update.changes.status !== undefined) {
+            names[&#x22;#status&#x22;] = &#x22;status&#x22;;
+            values[&#x22;:status&#x22;] = update.changes.status;
+            sets.push(&#x22;#status = :status&#x22;);
+          }
+
+          if (sets.length === EMPTY_LENGTH) {
+            return;
+          }
+
+          try {
+            await ddbDoc.send(
+              new UpdateCommand({
+                TableName: tableName,
+                Key: {
+                  pk: TODOS_PK,
+                  sk: todoSortKey(update.id),
+                },
+                UpdateExpression: &#x60;SET ${sets.join(&#x22;, &#x22;)}&#x60;,
+                ConditionExpression:
+                  &#x22;attribute_exists(#pk) AND attribute_exists(#sk)&#x22;,
+                ExpressionAttributeNames: names,
+                ExpressionAttributeValues: values,
+              }),
+            );
+          } catch (error) {
+            const errorName = (error as { name?: string } | undefined)?.name;
+            if (errorName !== &#x22;ConditionalCheckFailedException&#x22;) {
+              throw error;
+            }
+          }
+        }),
+      );
+    },
+
+    deleteTodos: async (ids: number[]) => {
+      const tableName = getTodosTableName();
+      const groups = chunkItems(ids, MAX_BATCH_WRITE_ITEMS);
+
+      await Promise.all(
+        groups.map(async (group) => {
+          const requestItems = {
+            [tableName]: group.map((id) => ({
+              DeleteRequest: {
+                Key: {
+                  pk: TODOS_PK,
+                  sk: todoSortKey(id),
+                },
+              },
+            })),
+          };
+
+          await retryBatchWrite({
+            ddbDoc,
+            requestItems,
+            attempt: INITIAL_ATTEMPT,
+          });
+        }),
+      );
+    },
+  };
+};" class="rehype-pretty-copy" onclick="navigator.clipboard.writeText(this.attributes.data.value);this.classList.add(&#x27;rehype-pretty-copied&#x27;);window.setTimeout(() => this.classList.remove(&#x27;rehype-pretty-copied&#x27;), 2500);"><span class="ready"></span><span class="success"></span></button><style>:root {--copy-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Cpath fill='%23adadad' d='M16.187 9.5H12.25a1.75 1.75 0 0 0-1.75 1.75v28.5c0 .967.784 1.75 1.75 1.75h23.5a1.75 1.75 0 0 0 1.75-1.75v-28.5a1.75 1.75 0 0 0-1.75-1.75h-3.937a4.25 4.25 0 0 1-4.063 3h-7.5a4.25 4.25 0 0 1-4.063-3M31.813 7h3.937A4.25 4.25 0 0 1 40 11.25v28.5A4.25 4.25 0 0 1 35.75 44h-23.5A4.25 4.25 0 0 1 8 39.75v-28.5A4.25 4.25 0 0 1 12.25 7h3.937a4.25 4.25 0 0 1 4.063-3h7.5a4.25 4.25 0 0 1 4.063 3M18.5 8.25c0 .966.784 1.75 1.75 1.75h7.5a1.75 1.75 0 1 0 0-3.5h-7.5a1.75 1.75 0 0 0-1.75 1.75'/%3E%3C/svg%3E");--success-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%2366ff85' d='M9 16.17L5.53 12.7a.996.996 0 1 0-1.41 1.41l4.18 4.18c.39.39 1.02.39 1.41 0L20.29 7.71a.996.996 0 1 0-1.41-1.41z'/%3E%3C/svg%3E");}pre:has(code) {position: relative;}pre button.rehype-pretty-copy {right: 1px;padding: 0;width: 24px;height: 24px;display: flex;margin-top: 2px;margin-right: 8px;position: absolute;border-radius: 25%;backdrop-filter: blur(3px);& span {width: 100%;aspect-ratio: 1 / 1;}& .ready {background-image: var(--copy-icon);}& .success {display: none; background-image: var(--success-icon);}}&.rehype-pretty-copied {& .success {display: block;} & .ready {display: none;}}pre button.rehype-pretty-copy.rehype-pretty-copied {opacity: 1;& .ready { display: none; }& .success { display: block; }}</style></code></pre></figure>
+<p><a href="https://github.com/JohannesKonings/tanstack-aws/blob/main/src/webapp/integrations/ddb-client/ddbClient.ts">https://github.com/JohannesKonings/tanstack-aws/blob/main/src/webapp/integrations/ddb-client/ddbClient.ts</a></p>
+<h2 id="the-api-connection-to-dynamodb">The API connection to DynamoDB</h2>
+<p>With the DynamoDB client created above, you can create an API that connects TanStack DB to DynamoDB.</p>
+<p>In TanStack Start, this is a server route with standard HTTP verbs. The route validates input, calls the DynamoDB client, and returns JSON responses.</p>
+<figure data-rehype-pretty-code-figure=""><pre style="background-color:#22272e;color:#adbac7" tabindex="0" data-language="typescript" data-theme="github-dark-dimmed"><code data-language="typescript" data-theme="github-dark-dimmed" style="display: grid;"><span data-line=""><span style="color:#768390">// oxlint-disable func-style</span></span>
+<span data-line=""><span style="color:#F47067">import</span><span style="color:#ADBAC7"> { createFileRoute } </span><span style="color:#F47067">from</span><span style="color:#96D0FF"> "@tanstack/react-router"</span><span style="color:#ADBAC7">;</span></span>
+<span data-line=""><span style="color:#F47067">import</span><span style="color:#ADBAC7"> { createTodosDdbClient } </span><span style="color:#F47067">from</span><span style="color:#96D0FF"> "@/webapp/integrations/ddb-client/ddbClient"</span><span style="color:#ADBAC7">;</span></span>
+<span data-line=""><span style="color:#F47067">import</span><span style="color:#ADBAC7"> {</span></span>
+<span data-line=""><span style="color:#ADBAC7">  createTodoRequestSchema,</span></span>
+<span data-line=""><span style="color:#ADBAC7">  deleteTodosRequestSchema,</span></span>
+<span data-line=""><span style="color:#ADBAC7">  updateTodosRequestSchema,</span></span>
+<span data-line=""><span style="color:#ADBAC7">} </span><span style="color:#F47067">from</span><span style="color:#96D0FF"> "@/webapp/types/todo"</span><span style="color:#ADBAC7">;</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#F47067">const</span><span style="color:#6CB6FF"> todosClient</span><span style="color:#F47067"> =</span><span style="color:#DCBDFB"> createTodosDdbClient</span><span style="color:#ADBAC7">();</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#F47067">export</span><span style="color:#F47067"> const</span><span style="color:#6CB6FF"> Route</span><span style="color:#F47067"> =</span><span style="color:#DCBDFB"> createFileRoute</span><span style="color:#ADBAC7">(</span><span style="color:#96D0FF">"/demo/api/ddb-todos"</span><span style="color:#ADBAC7">)({</span></span>
+<span data-line=""><span style="color:#ADBAC7">  server: {</span></span>
+<span data-line=""><span style="color:#ADBAC7">    handlers: {</span></span>
+<span data-line=""><span style="color:#768390">      // oxlint-disable-next-line arrow-body-style</span></span>
+<span data-line=""><span style="color:#DCBDFB">      GET</span><span style="color:#ADBAC7">: </span><span style="color:#F47067">async</span><span style="color:#ADBAC7"> () </span><span style="color:#F47067">=></span><span style="color:#ADBAC7"> {</span></span>
+<span data-line=""><span style="color:#F47067">        const</span><span style="color:#6CB6FF"> items</span><span style="color:#F47067"> =</span><span style="color:#F47067"> await</span><span style="color:#ADBAC7"> todosClient.</span><span style="color:#DCBDFB">getTodos</span><span style="color:#ADBAC7">();</span></span>
+<span data-line=""><span style="color:#F47067">        return</span><span style="color:#ADBAC7"> Response.</span><span style="color:#DCBDFB">json</span><span style="color:#ADBAC7">(items);</span></span>
+<span data-line=""><span style="color:#ADBAC7">      },</span></span>
+<span data-line=""><span style="color:#DCBDFB">      POST</span><span style="color:#ADBAC7">: </span><span style="color:#F47067">async</span><span style="color:#ADBAC7"> ({ </span><span style="color:#F69D50">request</span><span style="color:#ADBAC7"> }) </span><span style="color:#F47067">=></span><span style="color:#ADBAC7"> {</span></span>
+<span data-line=""><span style="color:#F47067">        const</span><span style="color:#6CB6FF"> requestJson</span><span style="color:#F47067"> =</span><span style="color:#F47067"> await</span><span style="color:#ADBAC7"> request.</span><span style="color:#DCBDFB">json</span><span style="color:#ADBAC7">();</span></span>
+<span data-line=""><span style="color:#F47067">        const</span><span style="color:#6CB6FF"> todoParsed</span><span style="color:#F47067"> =</span><span style="color:#ADBAC7"> createTodoRequestSchema.</span><span style="color:#DCBDFB">parse</span><span style="color:#ADBAC7">(requestJson);</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#F47067">        const</span><span style="color:#6CB6FF"> saved</span><span style="color:#F47067"> =</span><span style="color:#F47067"> await</span><span style="color:#ADBAC7"> todosClient.</span><span style="color:#DCBDFB">putTodo</span><span style="color:#ADBAC7">(todoParsed);</span></span>
+<span data-line=""><span style="color:#F47067">        return</span><span style="color:#ADBAC7"> Response.</span><span style="color:#DCBDFB">json</span><span style="color:#ADBAC7">(saved);</span></span>
+<span data-line=""><span style="color:#ADBAC7">      },</span></span>
+<span data-line=""><span style="color:#DCBDFB">      PUT</span><span style="color:#ADBAC7">: </span><span style="color:#F47067">async</span><span style="color:#ADBAC7"> ({ </span><span style="color:#F69D50">request</span><span style="color:#ADBAC7"> }) </span><span style="color:#F47067">=></span><span style="color:#ADBAC7"> {</span></span>
+<span data-line=""><span style="color:#F47067">        const</span><span style="color:#6CB6FF"> requestJson</span><span style="color:#F47067"> =</span><span style="color:#F47067"> await</span><span style="color:#ADBAC7"> request.</span><span style="color:#DCBDFB">json</span><span style="color:#ADBAC7">();</span></span>
+<span data-line=""><span style="color:#F47067">        const</span><span style="color:#6CB6FF"> updates</span><span style="color:#F47067"> =</span><span style="color:#ADBAC7"> updateTodosRequestSchema.</span><span style="color:#DCBDFB">parse</span><span style="color:#ADBAC7">(requestJson);</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#F47067">        await</span><span style="color:#ADBAC7"> todosClient.</span><span style="color:#DCBDFB">updateTodos</span><span style="color:#ADBAC7">(updates);</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#F47067">        return</span><span style="color:#ADBAC7"> Response.</span><span style="color:#DCBDFB">json</span><span style="color:#ADBAC7">({ ok: </span><span style="color:#6CB6FF">true</span><span style="color:#ADBAC7"> });</span></span>
+<span data-line=""><span style="color:#ADBAC7">      },</span></span>
+<span data-line=""><span style="color:#DCBDFB">      DELETE</span><span style="color:#ADBAC7">: </span><span style="color:#F47067">async</span><span style="color:#ADBAC7"> ({ </span><span style="color:#F69D50">request</span><span style="color:#ADBAC7"> }) </span><span style="color:#F47067">=></span><span style="color:#ADBAC7"> {</span></span>
+<span data-line=""><span style="color:#F47067">        const</span><span style="color:#6CB6FF"> requestJson</span><span style="color:#F47067"> =</span><span style="color:#F47067"> await</span><span style="color:#ADBAC7"> request.</span><span style="color:#DCBDFB">json</span><span style="color:#ADBAC7">();</span></span>
+<span data-line=""><span style="color:#F47067">        const</span><span style="color:#6CB6FF"> ids</span><span style="color:#F47067"> =</span><span style="color:#ADBAC7"> deleteTodosRequestSchema.</span><span style="color:#DCBDFB">parse</span><span style="color:#ADBAC7">(requestJson);</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#F47067">        await</span><span style="color:#ADBAC7"> todosClient.</span><span style="color:#DCBDFB">deleteTodos</span><span style="color:#ADBAC7">(ids);</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#F47067">        return</span><span style="color:#ADBAC7"> Response.</span><span style="color:#DCBDFB">json</span><span style="color:#ADBAC7">({ ok: </span><span style="color:#6CB6FF">true</span><span style="color:#ADBAC7"> });</span></span>
+<span data-line=""><span style="color:#ADBAC7">      },</span></span>
+<span data-line=""><span style="color:#ADBAC7">    },</span></span>
+<span data-line=""><span style="color:#ADBAC7">  },</span></span>
+<span data-line=""><span style="color:#ADBAC7">});</span></span><button type="button" title="Copy code" aria-label="Copy code" data="// oxlint-disable func-style
+import { createFileRoute } from &#x22;@tanstack/react-router&#x22;;
+import { createTodosDdbClient } from &#x22;@/webapp/integrations/ddb-client/ddbClient&#x22;;
+import {
+  createTodoRequestSchema,
+  deleteTodosRequestSchema,
+  updateTodosRequestSchema,
+} from &#x22;@/webapp/types/todo&#x22;;
+
+const todosClient = createTodosDdbClient();
+
+export const Route = createFileRoute(&#x22;/demo/api/ddb-todos&#x22;)({
+  server: {
+    handlers: {
+      // oxlint-disable-next-line arrow-body-style
+      GET: async () => {
+        const items = await todosClient.getTodos();
+        return Response.json(items);
+      },
+      POST: async ({ request }) => {
+        const requestJson = await request.json();
+        const todoParsed = createTodoRequestSchema.parse(requestJson);
+
+        const saved = await todosClient.putTodo(todoParsed);
+        return Response.json(saved);
+      },
+      PUT: async ({ request }) => {
+        const requestJson = await request.json();
+        const updates = updateTodosRequestSchema.parse(requestJson);
+
+        await todosClient.updateTodos(updates);
+
+        return Response.json({ ok: true });
+      },
+      DELETE: async ({ request }) => {
+        const requestJson = await request.json();
+        const ids = deleteTodosRequestSchema.parse(requestJson);
+
+        await todosClient.deleteTodos(ids);
+
+        return Response.json({ ok: true });
+      },
+    },
+  },
+});" class="rehype-pretty-copy" onclick="navigator.clipboard.writeText(this.attributes.data.value);this.classList.add(&#x27;rehype-pretty-copied&#x27;);window.setTimeout(() => this.classList.remove(&#x27;rehype-pretty-copied&#x27;), 2500);"><span class="ready"></span><span class="success"></span></button><style>:root {--copy-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Cpath fill='%23adadad' d='M16.187 9.5H12.25a1.75 1.75 0 0 0-1.75 1.75v28.5c0 .967.784 1.75 1.75 1.75h23.5a1.75 1.75 0 0 0 1.75-1.75v-28.5a1.75 1.75 0 0 0-1.75-1.75h-3.937a4.25 4.25 0 0 1-4.063 3h-7.5a4.25 4.25 0 0 1-4.063-3M31.813 7h3.937A4.25 4.25 0 0 1 40 11.25v28.5A4.25 4.25 0 0 1 35.75 44h-23.5A4.25 4.25 0 0 1 8 39.75v-28.5A4.25 4.25 0 0 1 12.25 7h3.937a4.25 4.25 0 0 1 4.063-3h7.5a4.25 4.25 0 0 1 4.063 3M18.5 8.25c0 .966.784 1.75 1.75 1.75h7.5a1.75 1.75 0 1 0 0-3.5h-7.5a1.75 1.75 0 0 0-1.75 1.75'/%3E%3C/svg%3E");--success-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%2366ff85' d='M9 16.17L5.53 12.7a.996.996 0 1 0-1.41 1.41l4.18 4.18c.39.39 1.02.39 1.41 0L20.29 7.71a.996.996 0 1 0-1.41-1.41z'/%3E%3C/svg%3E");}pre:has(code) {position: relative;}pre button.rehype-pretty-copy {right: 1px;padding: 0;width: 24px;height: 24px;display: flex;margin-top: 2px;margin-right: 8px;position: absolute;border-radius: 25%;backdrop-filter: blur(3px);& span {width: 100%;aspect-ratio: 1 / 1;}& .ready {background-image: var(--copy-icon);}& .success {display: none; background-image: var(--success-icon);}}&.rehype-pretty-copied {& .success {display: block;} & .ready {display: none;}}pre button.rehype-pretty-copy.rehype-pretty-copied {opacity: 1;& .ready { display: none; }& .success { display: block; }}</style></code></pre></figure>
+<p><a href="https://github.com/JohannesKonings/tanstack-aws/blob/main/src/webapp/routes/demo/api.ddb-todos.ts">https://github.com/JohannesKonings/tanstack-aws/blob/main/src/webapp/routes/demo/api.ddb-todos.ts</a></p>
+<h2 id="the-tanstack-db-collection">The TanStack DB collection</h2>
+<p>The collection uses the API to fetch and mutate data in DynamoDB.</p>
+<p>This is the key integration point: the collection fetches via the <code>queryFn</code>, and the transaction callbacks (<code>onInsert</code>, <code>onUpdate</code>, <code>onDelete</code>) translate local writes into API calls.</p>
+<figure data-rehype-pretty-code-figure=""><pre style="background-color:#22272e;color:#adbac7" tabindex="0" data-language="typescript" data-theme="github-dark-dimmed"><code data-language="typescript" data-theme="github-dark-dimmed" style="display: grid;"><span data-line=""><span style="color:#F47067">import</span><span style="color:#ADBAC7"> { queryCollectionOptions } </span><span style="color:#F47067">from</span><span style="color:#96D0FF"> "@tanstack/query-db-collection"</span><span style="color:#ADBAC7">;</span></span>
+<span data-line=""><span style="color:#F47067">import</span><span style="color:#ADBAC7"> { createCollection } </span><span style="color:#F47067">from</span><span style="color:#96D0FF"> "@tanstack/react-db"</span><span style="color:#ADBAC7">;</span></span>
+<span data-line=""><span style="color:#F47067">import</span><span style="color:#ADBAC7"> { getContext } </span><span style="color:#F47067">from</span><span style="color:#96D0FF"> "@/webapp/integrations/tanstack-query/root-provider"</span><span style="color:#ADBAC7">;</span></span>
+<span data-line=""><span style="color:#F47067">import</span><span style="color:#ADBAC7"> { </span><span style="color:#F47067">type</span><span style="color:#ADBAC7"> Todo, todoSchema } </span><span style="color:#F47067">from</span><span style="color:#96D0FF"> "../types/todo"</span><span style="color:#ADBAC7">;</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#768390">// const todoApiPath = '/demo/api/tq-todos';</span></span>
+<span data-line=""><span style="color:#F47067">const</span><span style="color:#6CB6FF"> todoApiPath</span><span style="color:#F47067"> =</span><span style="color:#96D0FF"> "/demo/api/ddb-todos"</span><span style="color:#ADBAC7">;</span></span>
+<span data-line=""><span style="color:#F47067">const</span><span style="color:#6CB6FF"> api</span><span style="color:#F47067"> =</span><span style="color:#ADBAC7"> {</span></span>
+<span data-line=""><span style="color:#F47067">  async</span><span style="color:#DCBDFB"> fetchTodos</span><span style="color:#ADBAC7">()</span><span style="color:#F47067">:</span><span style="color:#F69D50"> Promise</span><span style="color:#ADBAC7">&#x3C;</span><span style="color:#F69D50">Todo</span><span style="color:#ADBAC7">[]> {</span></span>
+<span data-line=""><span style="color:#F47067">    const</span><span style="color:#6CB6FF"> response</span><span style="color:#F47067"> =</span><span style="color:#F47067"> await</span><span style="color:#DCBDFB"> fetch</span><span style="color:#ADBAC7">(todoApiPath);</span></span>
+<span data-line=""><span style="color:#F47067">    if</span><span style="color:#ADBAC7"> (</span><span style="color:#F47067">!</span><span style="color:#ADBAC7">response.ok) {</span></span>
+<span data-line=""><span style="color:#F47067">      throw</span><span style="color:#F47067"> new</span><span style="color:#DCBDFB"> Error</span><span style="color:#ADBAC7">(</span><span style="color:#96D0FF">"Failed to fetch todos"</span><span style="color:#ADBAC7">);</span></span>
+<span data-line=""><span style="color:#ADBAC7">    }</span></span>
+<span data-line=""><span style="color:#F47067">    const</span><span style="color:#6CB6FF"> data</span><span style="color:#F47067"> =</span><span style="color:#F47067"> await</span><span style="color:#ADBAC7"> response.</span><span style="color:#DCBDFB">json</span><span style="color:#ADBAC7">();</span></span>
+<span data-line=""><span style="color:#F47067">    return</span><span style="color:#ADBAC7"> todoSchema.</span><span style="color:#DCBDFB">array</span><span style="color:#ADBAC7">().</span><span style="color:#DCBDFB">parse</span><span style="color:#ADBAC7">(data);</span></span>
+<span data-line=""><span style="color:#ADBAC7">  },</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#F47067">  async</span><span style="color:#DCBDFB"> createTodos</span><span style="color:#ADBAC7">(</span><span style="color:#F69D50">todo</span><span style="color:#F47067">:</span><span style="color:#F69D50"> Omit</span><span style="color:#ADBAC7">&#x3C;</span><span style="color:#F69D50">Todo</span><span style="color:#ADBAC7">, </span><span style="color:#96D0FF">"id"</span><span style="color:#ADBAC7">>) {</span></span>
+<span data-line=""><span style="color:#F47067">    await</span><span style="color:#DCBDFB"> fetch</span><span style="color:#ADBAC7">(todoApiPath, {</span></span>
+<span data-line=""><span style="color:#ADBAC7">      method: </span><span style="color:#96D0FF">"POST"</span><span style="color:#ADBAC7">,</span></span>
+<span data-line=""><span style="color:#ADBAC7">      headers: {</span></span>
+<span data-line=""><span style="color:#96D0FF">        "Content-Type"</span><span style="color:#ADBAC7">: </span><span style="color:#96D0FF">"application/json"</span><span style="color:#ADBAC7">,</span></span>
+<span data-line=""><span style="color:#ADBAC7">      },</span></span>
+<span data-line=""><span style="color:#ADBAC7">      body: </span><span style="color:#6CB6FF">JSON</span><span style="color:#ADBAC7">.</span><span style="color:#DCBDFB">stringify</span><span style="color:#ADBAC7">(todo),</span></span>
+<span data-line=""><span style="color:#ADBAC7">    });</span></span>
+<span data-line=""><span style="color:#ADBAC7">  },</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#F47067">  async</span><span style="color:#DCBDFB"> updateTodos</span><span style="color:#ADBAC7">(</span></span>
+<span data-line=""><span style="color:#F69D50">    updates</span><span style="color:#F47067">:</span><span style="color:#ADBAC7"> { </span><span style="color:#F69D50">id</span><span style="color:#F47067">:</span><span style="color:#6CB6FF"> number</span><span style="color:#ADBAC7">; </span><span style="color:#F69D50">changes</span><span style="color:#F47067">:</span><span style="color:#F69D50"> Partial</span><span style="color:#ADBAC7">&#x3C;</span><span style="color:#F69D50">Omit</span><span style="color:#ADBAC7">&#x3C;</span><span style="color:#F69D50">Todo</span><span style="color:#ADBAC7">, </span><span style="color:#96D0FF">"id"</span><span style="color:#ADBAC7">>> }[],</span></span>
+<span data-line=""><span style="color:#ADBAC7">  ) {</span></span>
+<span data-line=""><span style="color:#F47067">    await</span><span style="color:#DCBDFB"> fetch</span><span style="color:#ADBAC7">(todoApiPath, {</span></span>
+<span data-line=""><span style="color:#ADBAC7">      method: </span><span style="color:#96D0FF">"PUT"</span><span style="color:#ADBAC7">,</span></span>
+<span data-line=""><span style="color:#ADBAC7">      headers: {</span></span>
+<span data-line=""><span style="color:#96D0FF">        "Content-Type"</span><span style="color:#ADBAC7">: </span><span style="color:#96D0FF">"application/json"</span><span style="color:#ADBAC7">,</span></span>
+<span data-line=""><span style="color:#ADBAC7">      },</span></span>
+<span data-line=""><span style="color:#ADBAC7">      body: </span><span style="color:#6CB6FF">JSON</span><span style="color:#ADBAC7">.</span><span style="color:#DCBDFB">stringify</span><span style="color:#ADBAC7">(updates),</span></span>
+<span data-line=""><span style="color:#ADBAC7">    });</span></span>
+<span data-line=""><span style="color:#ADBAC7">  },</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#F47067">  async</span><span style="color:#DCBDFB"> deleteTodos</span><span style="color:#ADBAC7">(</span><span style="color:#F69D50">ids</span><span style="color:#F47067">:</span><span style="color:#6CB6FF"> number</span><span style="color:#ADBAC7">[]) {</span></span>
+<span data-line=""><span style="color:#F47067">    await</span><span style="color:#DCBDFB"> fetch</span><span style="color:#ADBAC7">(todoApiPath, {</span></span>
+<span data-line=""><span style="color:#ADBAC7">      method: </span><span style="color:#96D0FF">"DELETE"</span><span style="color:#ADBAC7">,</span></span>
+<span data-line=""><span style="color:#ADBAC7">      headers: {</span></span>
+<span data-line=""><span style="color:#96D0FF">        "Content-Type"</span><span style="color:#ADBAC7">: </span><span style="color:#96D0FF">"application/json"</span><span style="color:#ADBAC7">,</span></span>
+<span data-line=""><span style="color:#ADBAC7">      },</span></span>
+<span data-line=""><span style="color:#ADBAC7">      body: </span><span style="color:#6CB6FF">JSON</span><span style="color:#ADBAC7">.</span><span style="color:#DCBDFB">stringify</span><span style="color:#ADBAC7">(ids),</span></span>
+<span data-line=""><span style="color:#ADBAC7">    });</span></span>
+<span data-line=""><span style="color:#ADBAC7">  },</span></span>
+<span data-line=""><span style="color:#ADBAC7">};</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#F47067">export</span><span style="color:#F47067"> const</span><span style="color:#6CB6FF"> todosCollection</span><span style="color:#F47067"> =</span><span style="color:#DCBDFB"> createCollection</span><span style="color:#ADBAC7">(</span></span>
+<span data-line=""><span style="color:#DCBDFB">  queryCollectionOptions</span><span style="color:#ADBAC7">&#x3C;</span><span style="color:#F69D50">Todo</span><span style="color:#ADBAC7">>({</span></span>
+<span data-line=""><span style="color:#ADBAC7">    queryKey: [</span><span style="color:#96D0FF">"todos"</span><span style="color:#ADBAC7">],</span></span>
+<span data-line=""><span style="color:#DCBDFB">    queryFn</span><span style="color:#ADBAC7">: () </span><span style="color:#F47067">=></span><span style="color:#ADBAC7"> api.</span><span style="color:#DCBDFB">fetchTodos</span><span style="color:#ADBAC7">(),</span></span>
+<span data-line=""><span style="color:#ADBAC7">    queryClient: </span><span style="color:#DCBDFB">getContext</span><span style="color:#ADBAC7">().queryClient,</span></span>
+<span data-line=""><span style="color:#DCBDFB">    getKey</span><span style="color:#ADBAC7">: (</span><span style="color:#F69D50">item</span><span style="color:#ADBAC7">) </span><span style="color:#F47067">=></span><span style="color:#ADBAC7"> item.id,</span></span>
+<span data-line=""><span style="color:#DCBDFB">    onInsert</span><span style="color:#ADBAC7">: </span><span style="color:#F47067">async</span><span style="color:#ADBAC7"> ({ </span><span style="color:#F69D50">transaction</span><span style="color:#ADBAC7"> }) </span><span style="color:#F47067">=></span><span style="color:#ADBAC7"> {</span></span>
+<span data-line=""><span style="color:#F47067">      const</span><span style="color:#6CB6FF"> newItems</span><span style="color:#F47067"> =</span><span style="color:#ADBAC7"> transaction.mutations.</span><span style="color:#DCBDFB">map</span><span style="color:#ADBAC7">((</span><span style="color:#F69D50">mutation</span><span style="color:#ADBAC7">) </span><span style="color:#F47067">=></span><span style="color:#ADBAC7"> ({</span></span>
+<span data-line=""><span style="color:#ADBAC7">        id: Math.</span><span style="color:#DCBDFB">random</span><span style="color:#ADBAC7">(), </span><span style="color:#768390">// Temporary ID; real ID should be assigned by the server</span></span>
+<span data-line=""><span style="color:#ADBAC7">        name: mutation.modified.name,</span></span>
+<span data-line=""><span style="color:#ADBAC7">        status: mutation.modified.status,</span></span>
+<span data-line=""><span style="color:#ADBAC7">      }));</span></span>
+<span data-line=""><span style="color:#F47067">      for</span><span style="color:#ADBAC7"> (</span><span style="color:#F47067">const</span><span style="color:#6CB6FF"> item</span><span style="color:#F47067"> of</span><span style="color:#ADBAC7"> newItems) {</span></span>
+<span data-line=""><span style="color:#ADBAC7">        api.</span><span style="color:#DCBDFB">createTodos</span><span style="color:#ADBAC7">(item);</span></span>
+<span data-line=""><span style="color:#ADBAC7">      }</span></span>
+<span data-line=""><span style="color:#ADBAC7">    },</span></span>
+<span data-line=""><span style="color:#DCBDFB">    onUpdate</span><span style="color:#ADBAC7">: </span><span style="color:#F47067">async</span><span style="color:#ADBAC7"> ({ </span><span style="color:#F69D50">transaction</span><span style="color:#ADBAC7"> }) </span><span style="color:#F47067">=></span><span style="color:#ADBAC7"> {</span></span>
+<span data-line=""><span style="color:#F47067">      const</span><span style="color:#6CB6FF"> updates</span><span style="color:#F47067"> =</span><span style="color:#ADBAC7"> transaction.mutations.</span><span style="color:#DCBDFB">map</span><span style="color:#ADBAC7">((</span><span style="color:#F69D50">mutation</span><span style="color:#ADBAC7">) </span><span style="color:#F47067">=></span><span style="color:#ADBAC7"> ({</span></span>
+<span data-line=""><span style="color:#ADBAC7">        id: mutation.key,</span></span>
+<span data-line=""><span style="color:#ADBAC7">        changes: mutation.changes,</span></span>
+<span data-line=""><span style="color:#ADBAC7">      }));</span></span>
+<span data-line=""><span style="color:#F47067">      await</span><span style="color:#ADBAC7"> api.</span><span style="color:#DCBDFB">updateTodos</span><span style="color:#ADBAC7">(updates);</span></span>
+<span data-line=""><span style="color:#ADBAC7">    },</span></span>
+<span data-line=""><span style="color:#DCBDFB">    onDelete</span><span style="color:#ADBAC7">: </span><span style="color:#F47067">async</span><span style="color:#ADBAC7"> ({ </span><span style="color:#F69D50">transaction</span><span style="color:#ADBAC7"> }) </span><span style="color:#F47067">=></span><span style="color:#ADBAC7"> {</span></span>
+<span data-line=""><span style="color:#F47067">      const</span><span style="color:#6CB6FF"> ids</span><span style="color:#F47067"> =</span><span style="color:#ADBAC7"> transaction.mutations.</span><span style="color:#DCBDFB">map</span><span style="color:#ADBAC7">((</span><span style="color:#F69D50">mutation</span><span style="color:#ADBAC7">) </span><span style="color:#F47067">=></span><span style="color:#ADBAC7"> mutation.key);</span></span>
+<span data-line=""><span style="color:#F47067">      await</span><span style="color:#ADBAC7"> api.</span><span style="color:#DCBDFB">deleteTodos</span><span style="color:#ADBAC7">(ids);</span></span>
+<span data-line=""><span style="color:#ADBAC7">    },</span></span>
+<span data-line=""><span style="color:#ADBAC7">  }),</span></span>
+<span data-line=""><span style="color:#ADBAC7">);</span></span><button type="button" title="Copy code" aria-label="Copy code" data="import { queryCollectionOptions } from &#x22;@tanstack/query-db-collection&#x22;;
+import { createCollection } from &#x22;@tanstack/react-db&#x22;;
+import { getContext } from &#x22;@/webapp/integrations/tanstack-query/root-provider&#x22;;
+import { type Todo, todoSchema } from &#x22;../types/todo&#x22;;
+
+// const todoApiPath = &#x27;/demo/api/tq-todos&#x27;;
+const todoApiPath = &#x22;/demo/api/ddb-todos&#x22;;
+const api = {
+  async fetchTodos(): Promise<Todo[]> {
+    const response = await fetch(todoApiPath);
+    if (!response.ok) {
+      throw new Error(&#x22;Failed to fetch todos&#x22;);
+    }
+    const data = await response.json();
+    return todoSchema.array().parse(data);
+  },
+
+  async createTodos(todo: Omit<Todo, &#x22;id&#x22;>) {
+    await fetch(todoApiPath, {
+      method: &#x22;POST&#x22;,
+      headers: {
+        &#x22;Content-Type&#x22;: &#x22;application/json&#x22;,
+      },
+      body: JSON.stringify(todo),
+    });
+  },
+
+  async updateTodos(
+    updates: { id: number; changes: Partial<Omit<Todo, &#x22;id&#x22;>> }[],
+  ) {
+    await fetch(todoApiPath, {
+      method: &#x22;PUT&#x22;,
+      headers: {
+        &#x22;Content-Type&#x22;: &#x22;application/json&#x22;,
+      },
+      body: JSON.stringify(updates),
+    });
+  },
+
+  async deleteTodos(ids: number[]) {
+    await fetch(todoApiPath, {
+      method: &#x22;DELETE&#x22;,
+      headers: {
+        &#x22;Content-Type&#x22;: &#x22;application/json&#x22;,
+      },
+      body: JSON.stringify(ids),
+    });
+  },
+};
+
+export const todosCollection = createCollection(
+  queryCollectionOptions<Todo>({
+    queryKey: [&#x22;todos&#x22;],
+    queryFn: () => api.fetchTodos(),
+    queryClient: getContext().queryClient,
+    getKey: (item) => item.id,
+    onInsert: async ({ transaction }) => {
+      const newItems = transaction.mutations.map((mutation) => ({
+        id: Math.random(), // Temporary ID; real ID should be assigned by the server
+        name: mutation.modified.name,
+        status: mutation.modified.status,
+      }));
+      for (const item of newItems) {
+        api.createTodos(item);
+      }
+    },
+    onUpdate: async ({ transaction }) => {
+      const updates = transaction.mutations.map((mutation) => ({
+        id: mutation.key,
+        changes: mutation.changes,
+      }));
+      await api.updateTodos(updates);
+    },
+    onDelete: async ({ transaction }) => {
+      const ids = transaction.mutations.map((mutation) => mutation.key);
+      await api.deleteTodos(ids);
+    },
+  }),
+);" class="rehype-pretty-copy" onclick="navigator.clipboard.writeText(this.attributes.data.value);this.classList.add(&#x27;rehype-pretty-copied&#x27;);window.setTimeout(() => this.classList.remove(&#x27;rehype-pretty-copied&#x27;), 2500);"><span class="ready"></span><span class="success"></span></button><style>:root {--copy-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Cpath fill='%23adadad' d='M16.187 9.5H12.25a1.75 1.75 0 0 0-1.75 1.75v28.5c0 .967.784 1.75 1.75 1.75h23.5a1.75 1.75 0 0 0 1.75-1.75v-28.5a1.75 1.75 0 0 0-1.75-1.75h-3.937a4.25 4.25 0 0 1-4.063 3h-7.5a4.25 4.25 0 0 1-4.063-3M31.813 7h3.937A4.25 4.25 0 0 1 40 11.25v28.5A4.25 4.25 0 0 1 35.75 44h-23.5A4.25 4.25 0 0 1 8 39.75v-28.5A4.25 4.25 0 0 1 12.25 7h3.937a4.25 4.25 0 0 1 4.063-3h7.5a4.25 4.25 0 0 1 4.063 3M18.5 8.25c0 .966.784 1.75 1.75 1.75h7.5a1.75 1.75 0 1 0 0-3.5h-7.5a1.75 1.75 0 0 0-1.75 1.75'/%3E%3C/svg%3E");--success-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%2366ff85' d='M9 16.17L5.53 12.7a.996.996 0 1 0-1.41 1.41l4.18 4.18c.39.39 1.02.39 1.41 0L20.29 7.71a.996.996 0 1 0-1.41-1.41z'/%3E%3C/svg%3E");}pre:has(code) {position: relative;}pre button.rehype-pretty-copy {right: 1px;padding: 0;width: 24px;height: 24px;display: flex;margin-top: 2px;margin-right: 8px;position: absolute;border-radius: 25%;backdrop-filter: blur(3px);& span {width: 100%;aspect-ratio: 1 / 1;}& .ready {background-image: var(--copy-icon);}& .success {display: none; background-image: var(--success-icon);}}&.rehype-pretty-copied {& .success {display: block;} & .ready {display: none;}}pre button.rehype-pretty-copy.rehype-pretty-copied {opacity: 1;& .ready { display: none; }& .success { display: block; }}</style></code></pre></figure>
+<p><a href="https://github.com/JohannesKonings/tanstack-aws/blob/main/src/webapp/db-collections/todos.ts">https://github.com/JohannesKonings/tanstack-aws/blob/main/src/webapp/db-collections/todos.ts</a></p>
+<h2 id="the-hook">The hook</h2>
+<p>These hooks provide a small, UI-friendly API on top of the collection. Components can call <code>addTodo</code>/<code>toggleTodoStatus</code>/<code>deleteTodo</code>, and <code>useTodos</code> subscribes to the live query for rendering.</p>
+<figure data-rehype-pretty-code-figure=""><pre style="background-color:#22272e;color:#adbac7" tabindex="0" data-language="typescript" data-theme="github-dark-dimmed"><code data-language="typescript" data-theme="github-dark-dimmed" style="display: grid;"><span data-line=""><span style="color:#F47067">import</span><span style="color:#ADBAC7"> { useLiveQuery } </span><span style="color:#F47067">from</span><span style="color:#96D0FF"> "@tanstack/react-db"</span><span style="color:#ADBAC7">;</span></span>
+<span data-line=""><span style="color:#768390">// oxlint-disable func-style</span></span>
+<span data-line=""><span style="color:#F47067">import</span><span style="color:#ADBAC7"> { todosCollection } </span><span style="color:#F47067">from</span><span style="color:#96D0FF"> "@/webapp/db-collections/todos"</span><span style="color:#ADBAC7">;</span></span>
+<span data-line=""><span style="color:#F47067">import</span><span style="color:#F47067"> type</span><span style="color:#ADBAC7"> { Todo } </span><span style="color:#F47067">from</span><span style="color:#96D0FF"> "../types/todo"</span><span style="color:#ADBAC7">;</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#F47067">export</span><span style="color:#F47067"> function</span><span style="color:#DCBDFB"> useTodo</span><span style="color:#ADBAC7">() {</span></span>
+<span data-line=""><span style="color:#F47067">  const</span><span style="color:#DCBDFB"> addTodo</span><span style="color:#F47067"> =</span><span style="color:#F47067"> async</span><span style="color:#ADBAC7"> ({ </span><span style="color:#F69D50">name</span><span style="color:#ADBAC7">, </span><span style="color:#F69D50">status</span><span style="color:#ADBAC7"> }</span><span style="color:#F47067">:</span><span style="color:#F69D50"> Omit</span><span style="color:#ADBAC7">&#x3C;</span><span style="color:#F69D50">Todo</span><span style="color:#ADBAC7">, </span><span style="color:#96D0FF">"id"</span><span style="color:#ADBAC7">>) </span><span style="color:#F47067">=></span><span style="color:#ADBAC7"> {</span></span>
+<span data-line=""><span style="color:#768390">    // oxlint-disable-next-line no-magic-numbers</span></span>
+<span data-line=""><span style="color:#F47067">    const</span><span style="color:#6CB6FF"> randomId</span><span style="color:#F47067"> =</span><span style="color:#ADBAC7"> Math.</span><span style="color:#DCBDFB">floor</span><span style="color:#ADBAC7">(Math.</span><span style="color:#DCBDFB">random</span><span style="color:#ADBAC7">() </span><span style="color:#F47067">*</span><span style="color:#6CB6FF"> 1000000</span><span style="color:#ADBAC7">);</span></span>
+<span data-line=""><span style="color:#ADBAC7">    todosCollection.</span><span style="color:#DCBDFB">insert</span><span style="color:#ADBAC7">({ id: randomId, name, status });</span></span>
+<span data-line=""><span style="color:#ADBAC7">  };</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#F47067">  const</span><span style="color:#DCBDFB"> toggleTodoStatus</span><span style="color:#F47067"> =</span><span style="color:#ADBAC7"> (</span><span style="color:#F69D50">id</span><span style="color:#F47067">:</span><span style="color:#6CB6FF"> number</span><span style="color:#ADBAC7">, </span><span style="color:#F69D50">status</span><span style="color:#F47067">:</span><span style="color:#96D0FF"> "pending"</span><span style="color:#F47067"> |</span><span style="color:#96D0FF"> "completed"</span><span style="color:#ADBAC7">) </span><span style="color:#F47067">=></span><span style="color:#ADBAC7"> {</span></span>
+<span data-line=""><span style="color:#ADBAC7">    todosCollection.</span><span style="color:#DCBDFB">update</span><span style="color:#ADBAC7">(id, (</span><span style="color:#F69D50">draft</span><span style="color:#ADBAC7">) </span><span style="color:#F47067">=></span><span style="color:#ADBAC7"> {</span></span>
+<span data-line=""><span style="color:#F47067">      if</span><span style="color:#ADBAC7"> (draft) {</span></span>
+<span data-line=""><span style="color:#ADBAC7">        draft.status </span><span style="color:#F47067">=</span><span style="color:#ADBAC7"> status;</span></span>
+<span data-line=""><span style="color:#ADBAC7">      }</span></span>
+<span data-line=""><span style="color:#ADBAC7">    });</span></span>
+<span data-line=""><span style="color:#ADBAC7">  };</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#F47067">  const</span><span style="color:#DCBDFB"> deleteTodo</span><span style="color:#F47067"> =</span><span style="color:#ADBAC7"> (</span><span style="color:#F69D50">id</span><span style="color:#F47067">:</span><span style="color:#6CB6FF"> number</span><span style="color:#ADBAC7">) </span><span style="color:#F47067">=></span><span style="color:#ADBAC7"> {</span></span>
+<span data-line=""><span style="color:#ADBAC7">    todosCollection.</span><span style="color:#DCBDFB">delete</span><span style="color:#ADBAC7">(id);</span></span>
+<span data-line=""><span style="color:#ADBAC7">  };</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#F47067">  return</span><span style="color:#ADBAC7"> { addTodo, toggleTodoStatus, deleteTodo };</span></span>
+<span data-line=""><span style="color:#ADBAC7">}</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#F47067">export</span><span style="color:#F47067"> function</span><span style="color:#DCBDFB"> useTodos</span><span style="color:#ADBAC7">() {</span></span>
+<span data-line=""><span style="color:#F47067">  const</span><span style="color:#ADBAC7"> { </span><span style="color:#F69D50">data</span><span style="color:#ADBAC7">: </span><span style="color:#6CB6FF">todos</span><span style="color:#ADBAC7"> } </span><span style="color:#F47067">=</span><span style="color:#DCBDFB"> useLiveQuery</span><span style="color:#ADBAC7">((</span><span style="color:#F69D50">todoQuery</span><span style="color:#ADBAC7">) </span><span style="color:#F47067">=></span></span>
+<span data-line=""><span style="color:#ADBAC7">    todoQuery.</span><span style="color:#DCBDFB">from</span><span style="color:#ADBAC7">({ todo: todosCollection }).</span><span style="color:#DCBDFB">select</span><span style="color:#ADBAC7">(({ </span><span style="color:#F69D50">todo</span><span style="color:#ADBAC7"> }) </span><span style="color:#F47067">=></span><span style="color:#ADBAC7"> ({</span></span>
+<span data-line=""><span style="color:#F47067">      ...</span><span style="color:#ADBAC7">todo,</span></span>
+<span data-line=""><span style="color:#ADBAC7">    })),</span></span>
+<span data-line=""><span style="color:#ADBAC7">  );</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#F47067">  return</span><span style="color:#ADBAC7"> todos </span><span style="color:#F47067">as</span><span style="color:#F69D50"> Todo</span><span style="color:#ADBAC7">[];</span></span>
+<span data-line=""><span style="color:#ADBAC7">}</span></span><button type="button" title="Copy code" aria-label="Copy code" data="import { useLiveQuery } from &#x22;@tanstack/react-db&#x22;;
+// oxlint-disable func-style
+import { todosCollection } from &#x22;@/webapp/db-collections/todos&#x22;;
+import type { Todo } from &#x22;../types/todo&#x22;;
+
+export function useTodo() {
+  const addTodo = async ({ name, status }: Omit<Todo, &#x22;id&#x22;>) => {
+    // oxlint-disable-next-line no-magic-numbers
+    const randomId = Math.floor(Math.random() * 1000000);
+    todosCollection.insert({ id: randomId, name, status });
+  };
+
+  const toggleTodoStatus = (id: number, status: &#x22;pending&#x22; | &#x22;completed&#x22;) => {
+    todosCollection.update(id, (draft) => {
+      if (draft) {
+        draft.status = status;
+      }
+    });
+  };
+
+  const deleteTodo = (id: number) => {
+    todosCollection.delete(id);
+  };
+
+  return { addTodo, toggleTodoStatus, deleteTodo };
+}
+
+export function useTodos() {
+  const { data: todos } = useLiveQuery((todoQuery) =>
+    todoQuery.from({ todo: todosCollection }).select(({ todo }) => ({
+      ...todo,
+    })),
+  );
+
+  return todos as Todo[];
+}" class="rehype-pretty-copy" onclick="navigator.clipboard.writeText(this.attributes.data.value);this.classList.add(&#x27;rehype-pretty-copied&#x27;);window.setTimeout(() => this.classList.remove(&#x27;rehype-pretty-copied&#x27;), 2500);"><span class="ready"></span><span class="success"></span></button><style>:root {--copy-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Cpath fill='%23adadad' d='M16.187 9.5H12.25a1.75 1.75 0 0 0-1.75 1.75v28.5c0 .967.784 1.75 1.75 1.75h23.5a1.75 1.75 0 0 0 1.75-1.75v-28.5a1.75 1.75 0 0 0-1.75-1.75h-3.937a4.25 4.25 0 0 1-4.063 3h-7.5a4.25 4.25 0 0 1-4.063-3M31.813 7h3.937A4.25 4.25 0 0 1 40 11.25v28.5A4.25 4.25 0 0 1 35.75 44h-23.5A4.25 4.25 0 0 1 8 39.75v-28.5A4.25 4.25 0 0 1 12.25 7h3.937a4.25 4.25 0 0 1 4.063-3h7.5a4.25 4.25 0 0 1 4.063 3M18.5 8.25c0 .966.784 1.75 1.75 1.75h7.5a1.75 1.75 0 1 0 0-3.5h-7.5a1.75 1.75 0 0 0-1.75 1.75'/%3E%3C/svg%3E");--success-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%2366ff85' d='M9 16.17L5.53 12.7a.996.996 0 1 0-1.41 1.41l4.18 4.18c.39.39 1.02.39 1.41 0L20.29 7.71a.996.996 0 1 0-1.41-1.41z'/%3E%3C/svg%3E");}pre:has(code) {position: relative;}pre button.rehype-pretty-copy {right: 1px;padding: 0;width: 24px;height: 24px;display: flex;margin-top: 2px;margin-right: 8px;position: absolute;border-radius: 25%;backdrop-filter: blur(3px);& span {width: 100%;aspect-ratio: 1 / 1;}& .ready {background-image: var(--copy-icon);}& .success {display: none; background-image: var(--success-icon);}}&.rehype-pretty-copied {& .success {display: block;} & .ready {display: none;}}pre button.rehype-pretty-copy.rehype-pretty-copied {opacity: 1;& .ready { display: none; }& .success { display: block; }}</style></code></pre></figure>
+<p><a href="https://github.com/JohannesKonings/tanstack-aws/blob/main/src/webapp/hooks/useDbTodos.ts">https://github.com/JohannesKonings/tanstack-aws/blob/main/src/webapp/hooks/useDbTodos.ts</a></p>
+<h2 id="the-component">The component</h2>
+<p>Finally, the UI component is just a thin layer over the hooks: render the list, submit a new todo, toggle completion, and delete items.</p>
+<figure data-rehype-pretty-code-figure=""><pre style="background-color:#22272e;color:#adbac7" tabindex="0" data-language="typescript" data-theme="github-dark-dimmed"><code data-language="typescript" data-theme="github-dark-dimmed" style="display: grid;"><span data-line=""><span style="color:#768390">// oxlint-disable func-style</span></span>
+<span data-line=""><span style="color:#F47067">import</span><span style="color:#ADBAC7"> { createFileRoute } </span><span style="color:#F47067">from</span><span style="color:#96D0FF"> "@tanstack/react-router"</span><span style="color:#ADBAC7">;</span></span>
+<span data-line=""><span style="color:#F47067">import</span><span style="color:#ADBAC7"> { Trash2 } </span><span style="color:#F47067">from</span><span style="color:#96D0FF"> "lucide-react"</span><span style="color:#ADBAC7">;</span></span>
+<span data-line=""><span style="color:#F47067">import</span><span style="color:#ADBAC7"> { useState } </span><span style="color:#F47067">from</span><span style="color:#96D0FF"> "react"</span><span style="color:#ADBAC7">;</span></span>
+<span data-line=""><span style="color:#F47067">import</span><span style="color:#ADBAC7"> { useTodo, useTodos } </span><span style="color:#F47067">from</span><span style="color:#96D0FF"> "@/webapp/hooks/useDbTodos"</span><span style="color:#ADBAC7">;</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#F47067">export</span><span style="color:#F47067"> const</span><span style="color:#6CB6FF"> Route</span><span style="color:#F47067"> =</span><span style="color:#DCBDFB"> createFileRoute</span><span style="color:#ADBAC7">(</span><span style="color:#96D0FF">"/demo/db-todo"</span><span style="color:#ADBAC7">)({</span></span>
+<span data-line=""><span style="color:#ADBAC7">  ssr: </span><span style="color:#6CB6FF">false</span><span style="color:#ADBAC7">,</span></span>
+<span data-line=""><span style="color:#ADBAC7">  component: DbTodos,</span></span>
+<span data-line=""><span style="color:#ADBAC7">});</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#F47067">function</span><span style="color:#DCBDFB"> DbTodos</span><span style="color:#ADBAC7">() {</span></span>
+<span data-line=""><span style="color:#F47067">  const</span><span style="color:#6CB6FF"> todos</span><span style="color:#F47067"> =</span><span style="color:#DCBDFB"> useTodos</span><span style="color:#ADBAC7">();</span></span>
+<span data-line=""><span style="color:#F47067">  const</span><span style="color:#ADBAC7"> { </span><span style="color:#6CB6FF">addTodo</span><span style="color:#ADBAC7">, </span><span style="color:#6CB6FF">toggleTodoStatus</span><span style="color:#ADBAC7">, </span><span style="color:#6CB6FF">deleteTodo</span><span style="color:#ADBAC7"> } </span><span style="color:#F47067">=</span><span style="color:#DCBDFB"> useTodo</span><span style="color:#ADBAC7">();</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#F47067">  const</span><span style="color:#ADBAC7"> [</span><span style="color:#6CB6FF">todo</span><span style="color:#ADBAC7">, </span><span style="color:#6CB6FF">setTodo</span><span style="color:#ADBAC7">] </span><span style="color:#F47067">=</span><span style="color:#DCBDFB"> useState</span><span style="color:#ADBAC7">&#x3C;</span><span style="color:#6CB6FF">string</span><span style="color:#ADBAC7">>(</span><span style="color:#96D0FF">""</span><span style="color:#ADBAC7">);</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#F47067">  const</span><span style="color:#DCBDFB"> submitTodo</span><span style="color:#F47067"> =</span><span style="color:#ADBAC7"> () </span><span style="color:#F47067">=></span><span style="color:#ADBAC7"> {</span></span>
+<span data-line=""><span style="color:#F47067">    if</span><span style="color:#ADBAC7"> (todo.</span><span style="color:#DCBDFB">trim</span><span style="color:#ADBAC7">() </span><span style="color:#F47067">!==</span><span style="color:#96D0FF"> ""</span><span style="color:#ADBAC7">) {</span></span>
+<span data-line=""><span style="color:#DCBDFB">      addTodo</span><span style="color:#ADBAC7">({ name: todo, status: </span><span style="color:#96D0FF">"pending"</span><span style="color:#ADBAC7"> });</span></span>
+<span data-line=""><span style="color:#DCBDFB">      setTodo</span><span style="color:#ADBAC7">(</span><span style="color:#96D0FF">""</span><span style="color:#ADBAC7">);</span></span>
+<span data-line=""><span style="color:#ADBAC7">    }</span></span>
+<span data-line=""><span style="color:#ADBAC7">  };</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#F47067">  const</span><span style="color:#DCBDFB"> handleTodoStatusToggle</span><span style="color:#F47067"> =</span><span style="color:#ADBAC7"> (</span><span style="color:#F69D50">todoItem</span><span style="color:#F47067">:</span><span style="color:#ADBAC7"> (</span><span style="color:#F47067">typeof</span><span style="color:#ADBAC7"> todos)[</span><span style="color:#6CB6FF">number</span><span style="color:#ADBAC7">]) </span><span style="color:#F47067">=></span><span style="color:#ADBAC7"> {</span></span>
+<span data-line=""><span style="color:#F47067">    if</span><span style="color:#ADBAC7"> (todoItem.status </span><span style="color:#F47067">===</span><span style="color:#96D0FF"> "completed"</span><span style="color:#ADBAC7">) {</span></span>
+<span data-line=""><span style="color:#DCBDFB">      toggleTodoStatus</span><span style="color:#ADBAC7">(todoItem.id, </span><span style="color:#96D0FF">"pending"</span><span style="color:#ADBAC7">);</span></span>
+<span data-line=""><span style="color:#ADBAC7">    } </span><span style="color:#F47067">else</span><span style="color:#ADBAC7"> {</span></span>
+<span data-line=""><span style="color:#DCBDFB">      toggleTodoStatus</span><span style="color:#ADBAC7">(todoItem.id, </span><span style="color:#96D0FF">"completed"</span><span style="color:#ADBAC7">);</span></span>
+<span data-line=""><span style="color:#ADBAC7">    }</span></span>
+<span data-line=""><span style="color:#ADBAC7">  };</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#F47067">  return</span><span style="color:#ADBAC7"> (</span></span>
+<span data-line=""><span style="color:#F47067">    &#x3C;</span><span style="color:#F69D50">div</span></span>
+<span data-line=""><span style="color:#ADBAC7">      className</span><span style="color:#F47067">=</span><span style="color:#96D0FF">"flex items-center justify-center min-h-screen bg-linear-to-br from-purple-100 to-blue-100 p-4 text-white"</span></span>
+<span data-line=""><span style="color:#ADBAC7">      style</span><span style="color:#F47067">=</span><span style="color:#ADBAC7">{{</span></span>
+<span data-line=""><span style="color:#F69D50">        backgroundImage</span><span style="color:#ADBAC7">:</span></span>
+<span data-line=""><span style="color:#96D0FF">          "radial-gradient(50% 50% at 95% 5%, #4a90c2 0%, #317eb9 50%, #1e4d72 100%)"</span><span style="color:#ADBAC7">,</span></span>
+<span data-line=""><span style="color:#ADBAC7">      }}</span></span>
+<span data-line=""><span style="color:#F47067">    ></span></span>
+<span data-line=""><span style="color:#F47067">      &#x3C;</span><span style="color:#ADBAC7">div className</span><span style="color:#F47067">=</span><span style="color:#96D0FF">"w-full max-w-2xl p-8 rounded-xl backdrop-blur-md bg-black/50 shadow-xl border-8 border-black/10"</span><span style="color:#F47067">></span></span>
+<span data-line=""><span style="color:#F47067">        &#x3C;</span><span style="color:#ADBAC7">h1 className</span><span style="color:#F47067">=</span><span style="color:#96D0FF">"text-2xl mb-4"</span><span style="color:#F47067">></span><span style="color:#6CB6FF">DB</span><span style="color:#ADBAC7"> Todo list</span><span style="color:#F47067">&#x3C;/</span><span style="color:#ADBAC7">h1</span><span style="color:#F47067">></span></span>
+<span data-line=""><span style="color:#F47067">        &#x3C;</span><span style="color:#ADBAC7">ul className</span><span style="color:#F47067">=</span><span style="color:#96D0FF">"mb-4 space-y-2"</span><span style="color:#F47067">></span></span>
+<span data-line=""><span style="color:#ADBAC7">          {</span><span style="color:#F69D50">todos</span><span style="color:#ADBAC7">?.</span><span style="color:#F69D50">map</span><span style="color:#ADBAC7">((</span><span style="color:#F69D50">todoItem</span><span style="color:#ADBAC7">) </span><span style="color:#F47067">=></span><span style="color:#ADBAC7"> {</span></span>
+<span data-line=""><span style="color:#ADBAC7">            const isCompleted </span><span style="color:#F47067">=</span><span style="color:#ADBAC7"> todoItem.status </span><span style="color:#F47067">===</span><span style="color:#96D0FF"> "completed"</span><span style="color:#ADBAC7">;</span></span>
+<span data-line=""><span style="color:#ADBAC7">            let textClasses </span><span style="color:#F47067">=</span><span style="color:#96D0FF"> ""</span><span style="color:#ADBAC7">;</span></span>
+<span data-line=""><span style="color:#DCBDFB">            if</span><span style="color:#ADBAC7"> (</span><span style="color:#F69D50">isCompleted</span><span style="color:#ADBAC7">) {</span></span>
+<span data-line=""><span style="color:#ADBAC7">              textClasses </span><span style="color:#F47067">=</span><span style="color:#96D0FF"> "line-through opacity-60"</span><span style="color:#ADBAC7">;</span></span>
+<span data-line=""><span style="color:#ADBAC7">            }</span></span>
+<span data-line=""><span style="color:#DCBDFB">            return</span><span style="color:#ADBAC7"> (</span></span>
+<span data-line=""><span style="color:#ADBAC7">              &#x3C;</span><span style="color:#F69D50">li</span></span>
+<span data-line=""><span style="color:#F69D50">                key</span><span style="color:#F47067">=</span><span style="color:#ADBAC7">{todoItem.id}</span></span>
+<span data-line=""><span style="color:#F69D50">                className</span><span style="color:#F47067">=</span><span style="color:#96D0FF">"bg-white/10 border border-white/20 rounded-lg p-3 backdrop-blur-sm shadow-md flex items-center gap-3"</span></span>
+<span data-line=""><span style="color:#ADBAC7">              ></span></span>
+<span data-line=""><span style="color:#ADBAC7">                &#x3C;</span><span style="color:#F69D50">input</span></span>
+<span data-line=""><span style="color:#F69D50">                  type</span><span style="color:#F47067">=</span><span style="color:#96D0FF">"checkbox"</span></span>
+<span data-line=""><span style="color:#F69D50">                  checked</span><span style="color:#F47067">=</span><span style="color:#ADBAC7">{isCompleted}</span></span>
+<span data-line=""><span style="color:#F69D50">                  onChange</span><span style="color:#F47067">=</span><span style="color:#ADBAC7">{() => </span><span style="color:#DCBDFB">handleTodoStatusToggle</span><span style="color:#ADBAC7">(</span><span style="color:#F69D50">todoItem</span><span style="color:#ADBAC7">)}</span></span>
+<span data-line=""><span style="color:#F69D50">                  className</span><span style="color:#F47067">=</span><span style="color:#96D0FF">"w-5 h-5 cursor-pointer accent-blue-400"</span></span>
+<span data-line=""><span style="color:#ADBAC7">                /></span></span>
+<span data-line=""><span style="color:#ADBAC7">                &#x3C;</span><span style="color:#F69D50">span</span><span style="color:#F69D50"> className</span><span style="color:#F47067">=</span><span style="color:#ADBAC7">{</span><span style="color:#96D0FF">`text-lg text-white flex-1 ${</span><span style="color:#ADBAC7">textClasses</span><span style="color:#96D0FF">}`</span><span style="color:#ADBAC7">}</span><span style="color:#F47067">></span></span>
+<span data-line=""><span style="color:#ADBAC7">                  {</span><span style="color:#F69D50">todoItem</span><span style="color:#ADBAC7">.</span><span style="color:#F69D50">name</span><span style="color:#ADBAC7">}</span></span>
+<span data-line=""><span style="color:#ADBAC7">                &#x3C;/</span><span style="color:#F69D50">span</span><span style="color:#ADBAC7">></span></span>
+<span data-line=""><span style="color:#ADBAC7">                &#x3C;</span><span style="color:#F69D50">button</span></span>
+<span data-line=""><span style="color:#F69D50">                  type</span><span style="color:#F47067">=</span><span style="color:#96D0FF">"button"</span></span>
+<span data-line=""><span style="color:#F69D50">                  onClick</span><span style="color:#F47067">=</span><span style="color:#ADBAC7">{() => </span><span style="color:#DCBDFB">deleteTodo</span><span style="color:#ADBAC7">(todoItem.id)}</span></span>
+<span data-line=""><span style="color:#F69D50">                  className</span><span style="color:#F47067">=</span><span style="color:#96D0FF">"text-white/80 hover:text-red-300 p-2 rounded-full hover:bg-white/10 transition-colors"</span></span>
+<span data-line=""><span style="color:#F69D50">                  aria</span><span style="color:#ADBAC7">-</span><span style="color:#F69D50">label</span><span style="color:#F47067">=</span><span style="color:#ADBAC7">{</span><span style="color:#96D0FF">`Delete todo ${</span><span style="color:#ADBAC7">todoItem</span><span style="color:#96D0FF">.</span><span style="color:#ADBAC7">name</span><span style="color:#96D0FF">}`</span><span style="color:#ADBAC7">}</span></span>
+<span data-line=""><span style="color:#ADBAC7">                ></span></span>
+<span data-line=""><span style="color:#ADBAC7">                  &#x3C;</span><span style="color:#F69D50">Trash2</span><span style="color:#F69D50"> className</span><span style="color:#F47067">=</span><span style="color:#96D0FF">"w-5 h-5"</span><span style="color:#ADBAC7"> aria</span><span style="color:#F47067">-</span><span style="color:#ADBAC7">hidden</span><span style="color:#F47067">=</span><span style="color:#96D0FF">"true"</span><span style="color:#F47067"> /></span></span>
+<span data-line=""><span style="color:#ADBAC7">                &#x3C;/</span><span style="color:#F69D50">button</span><span style="color:#ADBAC7">></span></span>
+<span data-line=""><span style="color:#ADBAC7">              &#x3C;/</span><span style="color:#F69D50">li</span><span style="color:#ADBAC7">></span></span>
+<span data-line=""><span style="color:#ADBAC7">            );</span></span>
+<span data-line=""><span style="color:#ADBAC7">          })}</span></span>
+<span data-line=""><span style="color:#F47067">        &#x3C;/</span><span style="color:#ADBAC7">ul</span><span style="color:#F47067">></span></span>
+<span data-line=""><span style="color:#F47067">        &#x3C;</span><span style="color:#ADBAC7">div className</span><span style="color:#F47067">=</span><span style="color:#96D0FF">"flex flex-col gap-2"</span><span style="color:#F47067">></span></span>
+<span data-line=""><span style="color:#F47067">          &#x3C;</span><span style="color:#F69D50">input</span></span>
+<span data-line=""><span style="color:#ADBAC7">            type</span><span style="color:#F47067">=</span><span style="color:#96D0FF">"text"</span></span>
+<span data-line=""><span style="color:#ADBAC7">            value</span><span style="color:#F47067">=</span><span style="color:#ADBAC7">{todo}</span></span>
+<span data-line=""><span style="color:#ADBAC7">            onChange</span><span style="color:#F47067">=</span><span style="color:#ADBAC7">{(event) => </span><span style="color:#DCBDFB">setTodo</span><span style="color:#ADBAC7">(event.target.value)}</span></span>
+<span data-line=""><span style="color:#ADBAC7">            onKeyDown</span><span style="color:#F47067">=</span><span style="color:#ADBAC7">{(event) => {</span></span>
+<span data-line=""><span style="color:#F47067">              if</span><span style="color:#ADBAC7"> (event.key </span><span style="color:#F47067">===</span><span style="color:#96D0FF"> "Enter"</span><span style="color:#ADBAC7">) {</span></span>
+<span data-line=""><span style="color:#DCBDFB">                submitTodo</span><span style="color:#ADBAC7">();</span></span>
+<span data-line=""><span style="color:#ADBAC7">              }</span></span>
+<span data-line=""><span style="color:#ADBAC7">            }}</span></span>
+<span data-line=""><span style="color:#ADBAC7">            placeholder</span><span style="color:#F47067">=</span><span style="color:#96D0FF">"Enter a new todo..."</span></span>
+<span data-line=""><span style="color:#ADBAC7">            className</span><span style="color:#F47067">=</span><span style="color:#96D0FF">"w-full px-4 py-3 rounded-lg border border-white/20 bg-white/10 backdrop-blur-sm text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent"</span></span>
+<span data-line=""><span style="color:#F47067">          /></span></span>
+<span data-line=""><span style="color:#F47067">          &#x3C;</span><span style="color:#F69D50">button</span></span>
+<span data-line=""><span style="color:#768390">            // oxlint-disable-next-line no-magic-numbers</span></span>
+<span data-line=""><span style="color:#ADBAC7">            disabled</span><span style="color:#F47067">=</span><span style="color:#ADBAC7">{todo.trim().length </span><span style="color:#F47067">===</span><span style="color:#6CB6FF"> 0</span><span style="color:#ADBAC7">}</span></span>
+<span data-line=""><span style="color:#ADBAC7">            onClick</span><span style="color:#F47067">=</span><span style="color:#ADBAC7">{submitTodo}</span></span>
+<span data-line=""><span style="color:#ADBAC7">            className</span><span style="color:#F47067">=</span><span style="color:#96D0FF">"bg-blue-500 hover:bg-blue-600 disabled:bg-blue-500/50 disabled:cursor-not-allowed text-white font-bold py-3 px-4 rounded-lg transition-colors"</span></span>
+<span data-line=""><span style="color:#F47067">          ></span></span>
+<span data-line=""><span style="color:#ADBAC7">            Add </span><span style="color:#F69D50">todo</span></span>
+<span data-line=""><span style="color:#F47067">          &#x3C;/</span><span style="color:#ADBAC7">button</span><span style="color:#F47067">></span></span>
+<span data-line=""><span style="color:#F47067">        &#x3C;/</span><span style="color:#ADBAC7">div</span><span style="color:#F47067">></span></span>
+<span data-line=""><span style="color:#F47067">      &#x3C;/</span><span style="color:#ADBAC7">div</span><span style="color:#F47067">></span></span>
+<span data-line=""><span style="color:#F47067">    &#x3C;/</span><span style="color:#ADBAC7">div</span><span style="color:#F47067">></span></span>
+<span data-line=""><span style="color:#ADBAC7">  );</span></span>
+<span data-line=""><span style="color:#ADBAC7">}</span></span><button type="button" title="Copy code" aria-label="Copy code" data="// oxlint-disable func-style
+import { createFileRoute } from &#x22;@tanstack/react-router&#x22;;
+import { Trash2 } from &#x22;lucide-react&#x22;;
+import { useState } from &#x22;react&#x22;;
+import { useTodo, useTodos } from &#x22;@/webapp/hooks/useDbTodos&#x22;;
+
+export const Route = createFileRoute(&#x22;/demo/db-todo&#x22;)({
+  ssr: false,
+  component: DbTodos,
+});
+
+function DbTodos() {
+  const todos = useTodos();
+  const { addTodo, toggleTodoStatus, deleteTodo } = useTodo();
+
+  const [todo, setTodo] = useState<string>(&#x22;&#x22;);
+
+  const submitTodo = () => {
+    if (todo.trim() !== &#x22;&#x22;) {
+      addTodo({ name: todo, status: &#x22;pending&#x22; });
+      setTodo(&#x22;&#x22;);
+    }
+  };
+
+  const handleTodoStatusToggle = (todoItem: (typeof todos)[number]) => {
+    if (todoItem.status === &#x22;completed&#x22;) {
+      toggleTodoStatus(todoItem.id, &#x22;pending&#x22;);
+    } else {
+      toggleTodoStatus(todoItem.id, &#x22;completed&#x22;);
+    }
+  };
+
+  return (
+    <div
+      className=&#x22;flex items-center justify-center min-h-screen bg-linear-to-br from-purple-100 to-blue-100 p-4 text-white&#x22;
+      style={{
+        backgroundImage:
+          &#x22;radial-gradient(50% 50% at 95% 5%, #4a90c2 0%, #317eb9 50%, #1e4d72 100%)&#x22;,
+      }}
+    >
+      <div className=&#x22;w-full max-w-2xl p-8 rounded-xl backdrop-blur-md bg-black/50 shadow-xl border-8 border-black/10&#x22;>
+        <h1 className=&#x22;text-2xl mb-4&#x22;>DB Todo list</h1>
+        <ul className=&#x22;mb-4 space-y-2&#x22;>
+          {todos?.map((todoItem) => {
+            const isCompleted = todoItem.status === &#x22;completed&#x22;;
+            let textClasses = &#x22;&#x22;;
+            if (isCompleted) {
+              textClasses = &#x22;line-through opacity-60&#x22;;
+            }
+            return (
+              <li
+                key={todoItem.id}
+                className=&#x22;bg-white/10 border border-white/20 rounded-lg p-3 backdrop-blur-sm shadow-md flex items-center gap-3&#x22;
+              >
+                <input
+                  type=&#x22;checkbox&#x22;
+                  checked={isCompleted}
+                  onChange={() => handleTodoStatusToggle(todoItem)}
+                  className=&#x22;w-5 h-5 cursor-pointer accent-blue-400&#x22;
+                />
+                <span className={&#x60;text-lg text-white flex-1 ${textClasses}&#x60;}>
+                  {todoItem.name}
+                </span>
+                <button
+                  type=&#x22;button&#x22;
+                  onClick={() => deleteTodo(todoItem.id)}
+                  className=&#x22;text-white/80 hover:text-red-300 p-2 rounded-full hover:bg-white/10 transition-colors&#x22;
+                  aria-label={&#x60;Delete todo ${todoItem.name}&#x60;}
+                >
+                  <Trash2 className=&#x22;w-5 h-5&#x22; aria-hidden=&#x22;true&#x22; />
+                </button>
+              </li>
+            );
+          })}
+        </ul>
+        <div className=&#x22;flex flex-col gap-2&#x22;>
+          <input
+            type=&#x22;text&#x22;
+            value={todo}
+            onChange={(event) => setTodo(event.target.value)}
+            onKeyDown={(event) => {
+              if (event.key === &#x22;Enter&#x22;) {
+                submitTodo();
+              }
+            }}
+            placeholder=&#x22;Enter a new todo...&#x22;
+            className=&#x22;w-full px-4 py-3 rounded-lg border border-white/20 bg-white/10 backdrop-blur-sm text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent&#x22;
+          />
+          <button
+            // oxlint-disable-next-line no-magic-numbers
+            disabled={todo.trim().length === 0}
+            onClick={submitTodo}
+            className=&#x22;bg-blue-500 hover:bg-blue-600 disabled:bg-blue-500/50 disabled:cursor-not-allowed text-white font-bold py-3 px-4 rounded-lg transition-colors&#x22;
+          >
+            Add todo
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}" class="rehype-pretty-copy" onclick="navigator.clipboard.writeText(this.attributes.data.value);this.classList.add(&#x27;rehype-pretty-copied&#x27;);window.setTimeout(() => this.classList.remove(&#x27;rehype-pretty-copied&#x27;), 2500);"><span class="ready"></span><span class="success"></span></button><style>:root {--copy-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Cpath fill='%23adadad' d='M16.187 9.5H12.25a1.75 1.75 0 0 0-1.75 1.75v28.5c0 .967.784 1.75 1.75 1.75h23.5a1.75 1.75 0 0 0 1.75-1.75v-28.5a1.75 1.75 0 0 0-1.75-1.75h-3.937a4.25 4.25 0 0 1-4.063 3h-7.5a4.25 4.25 0 0 1-4.063-3M31.813 7h3.937A4.25 4.25 0 0 1 40 11.25v28.5A4.25 4.25 0 0 1 35.75 44h-23.5A4.25 4.25 0 0 1 8 39.75v-28.5A4.25 4.25 0 0 1 12.25 7h3.937a4.25 4.25 0 0 1 4.063-3h7.5a4.25 4.25 0 0 1 4.063 3M18.5 8.25c0 .966.784 1.75 1.75 1.75h7.5a1.75 1.75 0 1 0 0-3.5h-7.5a1.75 1.75 0 0 0-1.75 1.75'/%3E%3C/svg%3E");--success-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%2366ff85' d='M9 16.17L5.53 12.7a.996.996 0 1 0-1.41 1.41l4.18 4.18c.39.39 1.02.39 1.41 0L20.29 7.71a.996.996 0 1 0-1.41-1.41z'/%3E%3C/svg%3E");}pre:has(code) {position: relative;}pre button.rehype-pretty-copy {right: 1px;padding: 0;width: 24px;height: 24px;display: flex;margin-top: 2px;margin-right: 8px;position: absolute;border-radius: 25%;backdrop-filter: blur(3px);& span {width: 100%;aspect-ratio: 1 / 1;}& .ready {background-image: var(--copy-icon);}& .success {display: none; background-image: var(--success-icon);}}&.rehype-pretty-copied {& .success {display: block;} & .ready {display: none;}}pre button.rehype-pretty-copy.rehype-pretty-copied {opacity: 1;& .ready { display: none; }& .success { display: block; }}</style></code></pre></figure>
+<p><a href="https://github.com/JohannesKonings/tanstack-aws/blob/main/src/webapp/routes/demo/db-todo.tsx">https://github.com/JohannesKonings/tanstack-aws/blob/main/src/webapp/routes/demo/db-todo.tsx</a></p>
+<h2 id="result">Result</h2>
+<p><img alt="result" loading="lazy" decoding="async" fetchpriority="auto" width="1532" height="666" src="/_astro/result.B7kv-2po_2lKdpw.webp" ></p>
+<h2 id="conclusion">Conclusion</h2>
+<p>This is a simple example and implementation of TanStack DB with DynamoDB on AWS.
+In a more complete example, you’d need to figure out how to map a single-table design in DynamoDB to multiple collections in TanStack DB.</p>
+<p>From here, the next natural steps are adding authentication/authorization on the API, better id generation (server-assigned ids), and a more explicit data model to support multiple entity types.</p>
+<h2 id="sources-and-references">Sources and References</h2>
+<ul>
+<li><strong>Examples (full implementation on GitHub)</strong>: <a href="https://github.com/JohannesKonings/tanstack-aws">github.com/JohannesKonings/tanstack-aws</a></li>
+<li><strong>TanStack DB documentation</strong>: <a href="https://tanstack.com/db/latest">tanstack.com/db/latest</a></li>
+</ul> <section class="giscus mx-auto mt-10 w-full"></section> <script src="https://giscus.app/client.js" data-repo="JohannesKonings/JohannesKonings.github.io" data-repo-id="MDEwOlJlcG9zaXRvcnkyODQyNTQyNjc=" data-category="Blog Post Comments" data-category-id="DIC_kwDOEPFgO84CgLJN" data-mapping="url" data-strict="0" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="bottom" data-theme="preferred_color_scheme" data-lang="en" data-loading="lazy" crossorigin="anonymous" async></script> </article> <div class="grid grid-cols-1 sm:grid-cols-2 gap-4"> <a href="/blog/2025-12-27-tanstack-start-aws-db-multiple-entities" class="group p-4 gap-3 flex items-center border rounded-lg hover:bg-black/5 hover:dark:bg-white/10 border-black/15 dark:border-white/20 blend"> <div class="order-2 w-full h-full group-hover:text-black group-hover:dark:text-white blend"> <div class="flex flex-wrap gap-2"> <div class="text-sm uppercase">Prev</div> </div> <div class="font-semibold mt-3 text-black dark:text-white"> Simple example of TanStack DB with DynamoDB on AWS with multiple entities </div> </div> <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="order-1 stroke-current group-hover:stroke-black group-hover:dark:stroke-white rotate-180"> <line x1="5" y1="12" x2="19" y2="12" class="scale-x-0 group-hover:scale-x-100 translate-x-4 group-hover:translate-x-1 transition-all duration-300 ease-in-out"></line> <polyline points="12 5 19 12 12 19" class="translate-x-0 group-hover:translate-x-1 transition-all duration-300 ease-in-out"></polyline> </svg> </a> <a href="/blog/2025-12-13-cdk-monitor-multiple-resources-using-single-alarm" class="group p-4 gap-3 flex items-center border rounded-lg hover:bg-black/5 hover:dark:bg-white/10 border-black/15 dark:border-white/20 transition-colors duration-300 ease-in-out"> <div class="w-full h-full text-right group-hover:text-black group-hover:dark:text-white blend"> <div class="text-sm uppercase">Next</div> <div class="font-semibold mt-3 text-black dark:text-white"> Monitor multiple resources using a single CloudWatch Alarm (with CDK) </div> </div> <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="stroke-current group-hover:stroke-black group-hover:dark:stroke-white"> <line x1="5" y1="12" x2="19" y2="12" class="scale-x-0 group-hover:scale-x-100 translate-x-4 group-hover:translate-x-1 transition-all duration-300 ease-in-out"></line> <polyline points="12 5 19 12 12 19" class="translate-x-0 group-hover:translate-x-1 transition-all duration-300 ease-in-out"></polyline> </svg> </a> </div> </div> </div>   </div> </div>  </main> <footer class="relative bg-white dark:bg-black"> <div class="animate"> <section class="py-5"> <div class="w-full h-full mx-auto px-5 max-w-(--breakpoint-md)">  <div class="flex items-center justify-center sm:justify-end"> <button id="back-to-top" aria-label="Back to top of page" class="group flex w-fit p-1.5 gap-1.5 text-sm items-center border rounded hover:bg-black/5 hover:dark:bg-white/10 border-black/15 dark:border-white/20 transition-colors duration-300 ease-in-out"> <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="stroke-current group-hover:stroke-black group-hover:dark:stroke-white rotate-90"> <line x1="19" y1="12" x2="5" y2="12" class="scale-x-0 group-hover:scale-x-100 translate-x-3 group-hover:translate-x-0 transition-all duration-300 ease-in-out"></line> <polyline points="12 19 5 12 12 5" class="translate-x-1 group-hover:translate-x-0 transition-all duration-300 ease-in-out"></polyline> </svg> <div class="w-full group-hover:text-black group-hover:dark:text-white transition-colors duration-300 ease-in-out">
+Back to top
+</div> </button> </div>  </div> </section> <section class="py-5 overflow-hidden whitespace-nowrap border-t border-black/10 dark:border-white/25"> <div class="w-full h-full mx-auto px-5 max-w-(--breakpoint-md)">  <div class="h-full grid grid-cols-1 sm:grid-cols-2 gap-3"> <div class="order-2 sm:order-1 flex flex-col items-center justify-center sm:items-start"> <div class="legal"> <a href="/legal/terms" class="text-current hover:text-black dark:hover:text-white transition-colors duration-300 ease-in-out">
+Terms
+</a> |
+<a href="/legal/privacy" class="text-current hover:text-black dark:hover:text-white transition-colors duration-300 ease-in-out">
+Privacy
+</a> </div> <div class="text-sm mt-2">&copy; 2026 | All rights reserved</div> </div> <div class="order-1 sm:order-2 flex justify-center sm:justify-end"> <div class="flex flex-wrap gap-1 items-center justify-center"> <a href="https://github.com/JohannesKonings/JohannesKonings.github.io" target="_blank" aria-label="GitHub repo" class="group size-10 rounded-full p-2 items-center justify-center hover:bg-black/5 dark:hover:bg-white/20 blend"> <svg class="size-full fill-current group-hover:fill-black group-hover:dark:fill-white blend"> <use href="/social.svg#github"></use> </svg> </a> </div> </div> </div>  </div> </section> </div> </footer> <script>
+  function goBackToTop(event) {
+    event.preventDefault();
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  }
+
+  function inintializeBackToTop() {
+    const backToTop = document.getElementById("back-to-top");
+    backToTop?.addEventListener("click", goBackToTop);
+  }
+
+  document.addEventListener("astro:after-swap", inintializeBackToTop);
+  inintializeBackToTop();
+</script> </body></html>

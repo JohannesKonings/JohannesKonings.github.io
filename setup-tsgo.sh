@@ -24,16 +24,12 @@ echo "🔍 Running type checks..."
 echo "Checking root project..."
 npx tsgo --noEmit --project .
 
-echo "Checking Astro project..."
-cd websites/astro && npx tsgo --noEmit && cd ../..
-
 echo "Checking TanStack project..."
 cd websites/tanstack && npx tsgo --noEmit && cd ../..
 
 echo "✅ TypeScript-Go setup complete!"
 echo ""
 echo "Next steps:"
-echo "  - Run 'pnpm dev:astro' to start Astro development"
 echo "  - Run 'pnpm dev:tanstack' to start TanStack development"
 echo "  - Run 'pnpm tsc:check' to type-check all projects"
 echo ""

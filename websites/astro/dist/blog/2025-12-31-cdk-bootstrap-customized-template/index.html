@@ -1,0 +1,1099 @@
+<!DOCTYPE html><html lang="en"> <head><script defer src="https://cloud.umami.is/script.js" data-website-id="ad18022d-5431-470e-909a-74a7882c97e2" data-domains="johanneskonings.dev"></script><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6554177261098317" crossorigin="anonymous"></script><!-- Global Metadata --><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" type="image/x-icon" href="/favicon.ico"><meta name="generator" content="Astro v5.16.5"><link rel="preload" href="/fonts/CascadiaMonoNF.woff2" as="font" type="font/woff2" crossorigin><link rel="preload" href="/fonts/CascadiaMonoNF-SemiBold.woff2" as="font" type="font/woff2" crossorigin><!-- Canonical URL --><link rel="canonical" href="https://johanneskonings.dev/blog/2025-12-31-cdk-bootstrap-customized-template/"><!-- Primary Meta Tags --><title>Use a customized CDK bootstrap template | Johannes Konings</title><meta name="title" content="Use a customized CDK bootstrap template | Johannes Konings"><meta name="description" content="Learn how to customize the AWS CDK bootstrap template to add server access logging and KMS encryption to the staging bucket. Use the CDK Toolkit library to orchestrate multi-region deployments, extract environments from CDK apps, and validate CloudFormation templates with cdk-nag."><!-- Open Graph / Facebook --><meta property="og:type" content="website"><meta property="og:url" content="https://johanneskonings.dev/blog/2025-12-31-cdk-bootstrap-customized-template/"><meta property="og:title" content="Use a customized CDK bootstrap template | Johannes Konings"><meta property="og:description" content="Learn how to customize the AWS CDK bootstrap template to add server access logging and KMS encryption to the staging bucket. Use the CDK Toolkit library to orchestrate multi-region deployments, extract environments from CDK apps, and validate CloudFormation templates with cdk-nag."><!-- Twitter --><meta property="twitter:card" content="summary_large_image"><meta property="twitter:url" content="https://johanneskonings.dev/blog/2025-12-31-cdk-bootstrap-customized-template/"><meta property="twitter:title" content="Use a customized CDK bootstrap template | Johannes Konings"><meta property="twitter:description" content="Learn how to customize the AWS CDK bootstrap template to add server access logging and KMS encryption to the staging bucket. Use the CDK Toolkit library to orchestrate multi-region deployments, extract environments from CDK apps, and validate CloudFormation templates with cdk-nag."><meta property="og:image" content="https://johanneskonings.dev/_astro/cover-image.D62Unwa5.png">
+  <meta property="twitter:image" content="https://johanneskonings.dev/open-graph.jpg"><!-- Sitemap --><link rel="sitemap" href="/sitemap-index.xml"><!-- RSS Feed --><link rel="alternate" type="application/rss+xml" title="Use a customized CDK bootstrap template | Johannes Konings" href="https://johanneskonings.dev/rss.xml"><!-- Global Scripts --><script src="/js/theme.js"></script><script src="/js/scroll.js"></script><script src="/js/animate.js"></script><!-- <ViewTransitions  /> --><script type="module">document.addEventListener("astro:before-swap",e=>[...e.newDocument.head.querySelectorAll('link[as="font"]')].forEach(o=>o.remove()));</script><link rel="stylesheet" href="/_astro/_slug_.BRrEunO4.css"></head> <body> <header id="header" class="fixed top-0 w-full h-16 z-50" data-astro-cid-3ef6ksr2> <div class="w-full h-full mx-auto px-5 max-w-(--breakpoint-md)">  <div class="relative h-full w-full" data-astro-cid-3ef6ksr2> <div class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2" data-astro-cid-3ef6ksr2> <nav class="hidden md:flex items-center justify-center text-sm gap-1" data-astro-cid-3ef6ksr2> <a href="/" class="h-8 rounded-full px-3 text-current flex items-center justify-center transition-colors duration-300 ease-in-out hover:bg-black/5 dark:hover:bg-white/20 hover:text-black dark:hover:text-white" data-astro-cid-3ef6ksr2> Home </a><a href="/blog" class="h-8 rounded-full px-3 flex items-center justify-center transition-colors duration-300 ease-in-out bg-black dark:bg-white text-white dark:text-black" data-astro-cid-3ef6ksr2> Blog </a><a href="/notes" class="h-8 rounded-full px-3 text-current flex items-center justify-center transition-colors duration-300 ease-in-out hover:bg-black/5 dark:hover:bg-white/20 hover:text-black dark:hover:text-white" data-astro-cid-3ef6ksr2> Notes </a> </nav> </div> <div class="buttons absolute right-0 top-1/2 -translate-y-1/2 flex gap-1" data-astro-cid-3ef6ksr2> <a href="/search" aria-label="Search blog posts and projects on Johannes Konings" class="hidden md:flex size-9 rounded-full p-2 items-center justify-center bg-transparent hover:bg-black/5 dark:hover:bg-white/20 stroke-current hover:stroke-black hover:dark:stroke-white border border-black/10 dark:border-white/25 transition-colors duration-300 ease-in-out" data-astro-cid-3ef6ksr2> <svg class="size-full" data-astro-cid-3ef6ksr2> <use href="/ui.svg#search" data-astro-cid-3ef6ksr2></use> </svg> </a> <a href="/rss.xml" target="_blank" aria-label="Rss feed for Johannes Konings" class="hidden md:flex size-9 rounded-full p-2 items-center justify-center bg-transparent hover:bg-black/5 dark:hover:bg-white/20 stroke-current hover:stroke-black hover:dark:stroke-white border border-black/10 dark:border-white/25 transition-colors duration-300 ease-in-out" data-astro-cid-3ef6ksr2> <svg class="size-full" data-astro-cid-3ef6ksr2> <use href="/ui.svg#rss" data-astro-cid-3ef6ksr2></use> </svg> </a> <button id="header-theme-button" aria-label="Toggle light and dark theme" class="hidden md:flex size-9 rounded-full p-2 items-center justify-center bg-transparent hover:bg-black/5 dark:hover:bg-white/20 stroke-current hover:stroke-black hover:dark:stroke-white border border-black/10 dark:border-white/25 transition-colors duration-300 ease-in-out" data-astro-cid-3ef6ksr2> <svg class="size-full block dark:hidden" data-astro-cid-3ef6ksr2> <use href="/ui.svg#sun" data-astro-cid-3ef6ksr2></use> </svg> <svg class="size-full hidden dark:block" data-astro-cid-3ef6ksr2> <use href="/ui.svg#moon" data-astro-cid-3ef6ksr2></use> </svg> </button> <button id="header-drawer-button" aria-label="Toggle drawer open and closed" class="flex md:hidden size-9 rounded-full p-2 items-center justify-center bg-transparent hover:bg-black/5 dark:hover:bg-white/20 stroke-current hover:stroke-black hover:dark:stroke-white border border-black/10 dark:border-white/25 transition-colors duration-300 ease-in-out" data-astro-cid-3ef6ksr2> <svg id="drawer-open" class="size-full" data-astro-cid-3ef6ksr2> <use href="/ui.svg#menu" data-astro-cid-3ef6ksr2></use> </svg> <svg id="drawer-close" class="size-full" data-astro-cid-3ef6ksr2> <use href="/ui.svg#x" data-astro-cid-3ef6ksr2></use> </svg> </button> </div> </div>  </div> </header>  <script>
+  function toggleDrawer() {
+    const drawer = document.getElementById("drawer");
+    const drawerButton = document.getElementById("header-drawer-button");
+    drawer?.classList.toggle("open");
+    drawerButton?.classList.toggle("open");
+  }
+
+  function initializeDrawerButton() {
+    const drawerButton = document.getElementById("header-drawer-button");
+    drawerButton?.addEventListener("click", toggleDrawer);
+  }
+
+  document.addEventListener("astro:after-swap", initializeDrawerButton);
+  initializeDrawerButton();
+</script> <div id="drawer" class="fixed inset-0 h-0 max-h-[50vh] z-40 overflow-hidden flex flex-col items-center justify-center md:hidden bg-neutral-100 dark:bg-neutral-900 transition-[height] duration-300 ease-in-out" data-astro-cid-hxtyo74s> <nav class="flex flex-col items-center space-y-2" data-astro-cid-hxtyo74s> <a href="/" class="flex items-center justify-center px-3 py-1 rounded-full text-current hover:text-black dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/20 transition-colors duration-300 ease-in-out" data-astro-cid-hxtyo74s> Home </a><a href="/blog" class="flex items-center justify-center px-3 py-1 rounded-full hover:text-black dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/20 transition-colors duration-300 ease-in-out pointer-events-none bg-black dark:bg-white text-white dark:text-black" data-astro-cid-hxtyo74s> Blog </a><a href="/notes" class="flex items-center justify-center px-3 py-1 rounded-full text-current hover:text-black dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/20 transition-colors duration-300 ease-in-out" data-astro-cid-hxtyo74s> Notes </a> </nav> <div class="flex gap-1 mt-5" data-astro-cid-hxtyo74s> <a href="/search" aria-label="Search blog posts and projects on Johannes Konings" class="size-9 rounded-full p-2 items-center justify-center bg-transparent hover:bg-black/5 dark:hover:bg-white/20 stroke-current hover:stroke-black hover:dark:stroke-white border border-black/10 dark:border-white/25 transition-colors duration-300 ease-in-out" data-astro-cid-hxtyo74s> <svg class="size-full" data-astro-cid-hxtyo74s> <use href="/ui.svg#search" data-astro-cid-hxtyo74s></use> </svg> </a> <a href="/rss.xml" target="_blank" aria-label="Rss feed for Johannes Konings" class="size-9 rounded-full p-2 items-center justify-center bg-transparent hover:bg-black/5 dark:hover:bg-white/20 stroke-current hover:stroke-black hover:dark:stroke-white border border-black/10 dark:border-white/25 transition-colors duration-300 ease-in-out" data-astro-cid-hxtyo74s> <svg class="size-full" data-astro-cid-hxtyo74s> <use href="/ui.svg#rss" data-astro-cid-hxtyo74s></use> </svg> </a> <button id="drawer-theme-button" aria-label="Toggle light and dark theme" class="size-9 rounded-full p-2 items-center justify-center bg-transparent hover:bg-black/5 dark:hover:bg-white/20 stroke-current hover:stroke-black hover:dark:stroke-white border border-black/10 dark:border-white/25 transition-colors duration-300 ease-in-out" data-astro-cid-hxtyo74s> <svg class="block dark:hidden size-full" data-astro-cid-hxtyo74s> <use href="/ui.svg#sun" data-astro-cid-hxtyo74s></use> </svg> <svg class="hidden dark:block size-full" data-astro-cid-hxtyo74s> <use href="/ui.svg#moon" data-astro-cid-hxtyo74s></use> </svg> </button> </div> </div>  <main>  <div class="pt-36 pb-5"> <div class="w-full h-full mx-auto px-5 max-w-(--breakpoint-md)">   <div class="animate"> <div> <a href="/blog" class="group w-fit p-1.5 gap-1.5 text-sm flex items-center border rounded hover:bg-black/5 hover:dark:bg-white/10 border-black/15 dark:border-white/20 transition-colors duration-300 ease-in-out"> <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="stroke-current group-hover:stroke-black group-hover:dark:stroke-white"> <line x1="19" y1="12" x2="5" y2="12" class="scale-x-0 group-hover:scale-x-100 translate-x-3 group-hover:translate-x-0 transition-all duration-300 ease-in-out"></line> <polyline points="12 19 5 12 12 5" class="translate-x-1 group-hover:translate-x-0 transition-all duration-300 ease-in-out"></polyline> </svg> <div class="w-full group-hover:text-black group-hover:dark:text-white transition-colors duration-300 ease-in-out">
+Back to blog </div> </a> <div class="flex flex-wrap text-sm uppercase mt-12 gap-3 opacity-75"> <div class="flex items-center gap-2"> <svg class="size-5 stroke-current"> <use href="/ui.svg#calendar"></use> </svg> Dec 31, 2025 </div> <div class="flex items-center gap-2"> <svg class="size-5 stroke-current"> <use href="/ui.svg#book-open"></use> </svg> 11 min read </div> </div> <div class="w-full h-auto mt-8 mb-8 rounded-lg shadow-lg overflow-hidden"> <img src="/_astro/cover-image.D62Unwa5.png" alt="Cover Image" class="w-full h-auto"> </div> <h1 class="text-3xl font-semibold text-black dark:text-white mt-2"> Use a customized CDK bootstrap template </h1> <div class="mt-1 mb-8"> Learn how to customize the AWS CDK bootstrap template to add server access logging and KMS encryption to the staging bucket. Use the CDK Toolkit library to orchestrate multi-region deployments, extract environments from CDK apps, and validate CloudFormation templates with cdk-nag. </div> <nav class="not-prose mb-2 p-4 bg-black/5 dark:bg-white/5 rounded-lg border border-black/10 dark:border-white/10"><div class="text-sm font-semibold mb-3 text-black dark:text-white">Table of Contents</div><ul class="space-y-2 text-sm"><li class=" transition-colors duration-200"><a href="#introduction" class="text-black/70 dark:text-white/70 hover:text-black dark:hover:text-white transition-colors duration-200">Introduction</a></li><li class=" transition-colors duration-200"><a href="#create-the-resources-for-bootstrap-via-cloudformation" class="text-black/70 dark:text-white/70 hover:text-black dark:hover:text-white transition-colors duration-200">Create the Resources for Bootstrap via CloudFormation</a></li><li class="ml-4 transition-colors duration-200"><a href="#kms-key-template" class="text-black/70 dark:text-white/70 hover:text-black dark:hover:text-white transition-colors duration-200">KMS Key Template</a></li><li class="ml-4 transition-colors duration-200"><a href="#s3-log-bucket-template" class="text-black/70 dark:text-white/70 hover:text-black dark:hover:text-white transition-colors duration-200">S3 Log Bucket Template</a></li><li class="ml-4 transition-colors duration-200"><a href="#the-deployment-script" class="text-black/70 dark:text-white/70 hover:text-black dark:hover:text-white transition-colors duration-200">The Deployment Script</a></li><li class=" transition-colors duration-200"><a href="#validate-cloudformation-templates-with-cdk-nag" class="text-black/70 dark:text-white/70 hover:text-black dark:hover:text-white transition-colors duration-200">Validate CloudFormation Templates with cdk-nag</a></li><li class=" transition-colors duration-200"><a href="#create-the-customized-cdk-bootstrap-template" class="text-black/70 dark:text-white/70 hover:text-black dark:hover:text-white transition-colors duration-200">Create the Customized CDK Bootstrap Template</a></li><li class="ml-4 transition-colors duration-200"><a href="#get-the-default-template" class="text-black/70 dark:text-white/70 hover:text-black dark:hover:text-white transition-colors duration-200">Get the Default Template</a></li><li class="ml-4 transition-colors duration-200"><a href="#customize-the-template" class="text-black/70 dark:text-white/70 hover:text-black dark:hover:text-white transition-colors duration-200">Customize the Template</a></li><li class=" transition-colors duration-200"><a href="#bootstrap-with-the-customized-template" class="text-black/70 dark:text-white/70 hover:text-black dark:hover:text-white transition-colors duration-200">Bootstrap with the Customized Template</a></li><li class=" transition-colors duration-200"><a href="#conclusion" class="text-black/70 dark:text-white/70 hover:text-black dark:hover:text-white transition-colors duration-200">Conclusion</a></li><li class=" transition-colors duration-200"><a href="#sources-and-references" class="text-black/70 dark:text-white/70 hover:text-black dark:hover:text-white transition-colors duration-200">Sources and References</a></li></ul></nav> </div> </div>   </div> </div> <div class="flex-1 py-5"> <div class="w-full h-full mx-auto px-5 max-w-(--breakpoint-lg)">   <div class="animate"> <div> <article> <h2 id="introduction">Introduction</h2>
+<p>In some cases, the CDK bootstrap resources need changes beyond what’s possible with the standard bootstrap parameters. While the CDK provides <a href="https://docs.aws.amazon.com/cdk/v2/guide/bootstrapping-customizing.html">customization options</a>, certain configurations require customizing of the template.</p>
+<p>This post demonstrates how to:</p>
+<ul>
+<li>Encrypt the staging bucket with a custom KMS key</li>
+<li>Enable server access logs for the staging bucket</li>
+<li>Validate CloudFormation templates with cdk-nag before deployment</li>
+<li>Use the CDK Toolkit library to orchestrate the entire process in TypeScript</li>
+</ul>
+<p>While the KMS key can be configured via bootstrap parameters, server access logging requires template customization. Since TypeScript is used for the CDK setup, all scripting will also be in TypeScript using the <a href="https://docs.aws.amazon.com/cdk/api/toolkit-lib/">AWS CDK Toolkit library</a>.</p>
+<p>Additionally, we’ll use cdk-nag to bridge the gap between CloudFormation templates and CDK validation rules.</p>
+<h2 id="create-the-resources-for-bootstrap-via-cloudformation">Create the Resources for Bootstrap via CloudFormation</h2>
+<p>Before customizing the bootstrap template, we need to create supporting resources via CloudFormation:</p>
+<ol>
+<li>A KMS key for encrypting the staging bucket</li>
+<li>A log bucket for storing server access logs</li>
+</ol>
+<p>These resources will be referenced during the bootstrap process via CloudFormation exports.</p>
+<h3 id="kms-key-template">KMS Key Template</h3>
+<details>
+<summary>Show KMS template</summary>
+<figure data-rehype-pretty-code-figure=""><pre style="background-color:#22272e;color:#adbac7" tabindex="0" data-language="yaml" data-theme="github-dark-dimmed"><code data-language="yaml" data-theme="github-dark-dimmed" style="display: grid;"><span data-line=""><span style="color:#8DDB8C">AWSTemplateFormatVersion</span><span style="color:#ADBAC7">: </span><span style="color:#96D0FF">"2010-09-09"</span></span>
+<span data-line=""><span style="color:#8DDB8C">Description</span><span style="color:#ADBAC7">: </span><span style="color:#96D0FF">KMS Key for encrypting the CDK bootstrap bucket</span></span>
+<span data-line=""><span style="color:#8DDB8C">Resources</span><span style="color:#ADBAC7">:</span></span>
+<span data-line=""><span style="color:#8DDB8C">  CdkBootstrapKmsKey</span><span style="color:#ADBAC7">:</span></span>
+<span data-line=""><span style="color:#8DDB8C">    Type</span><span style="color:#ADBAC7">: </span><span style="color:#96D0FF">AWS::KMS::Key</span></span>
+<span data-line=""><span style="color:#8DDB8C">    DeletionPolicy</span><span style="color:#ADBAC7">: </span><span style="color:#96D0FF">Retain</span></span>
+<span data-line=""><span style="color:#8DDB8C">    UpdateReplacePolicy</span><span style="color:#ADBAC7">: </span><span style="color:#96D0FF">Retain</span></span>
+<span data-line=""><span style="color:#8DDB8C">    Properties</span><span style="color:#ADBAC7">:</span></span>
+<span data-line=""><span style="color:#8DDB8C">      Description</span><span style="color:#ADBAC7">: </span><span style="color:#96D0FF">KMS Key for CDK Bootstrap Bucket</span></span>
+<span data-line=""><span style="color:#8DDB8C">      EnableKeyRotation</span><span style="color:#ADBAC7">: </span><span style="color:#6CB6FF">true</span></span>
+<span data-line=""><span style="color:#8DDB8C">      KeyPolicy</span><span style="color:#ADBAC7">:</span></span>
+<span data-line=""><span style="color:#8DDB8C">        Version</span><span style="color:#ADBAC7">: </span><span style="color:#96D0FF">"2012-10-17"</span></span>
+<span data-line=""><span style="color:#8DDB8C">        Statement</span><span style="color:#ADBAC7">:</span></span>
+<span data-line=""><span style="color:#ADBAC7">          - </span><span style="color:#8DDB8C">Sid</span><span style="color:#ADBAC7">: </span><span style="color:#96D0FF">Enable IAM User Permissions</span></span>
+<span data-line=""><span style="color:#8DDB8C">            Effect</span><span style="color:#ADBAC7">: </span><span style="color:#96D0FF">Allow</span></span>
+<span data-line=""><span style="color:#8DDB8C">            Principal</span><span style="color:#ADBAC7">:</span></span>
+<span data-line=""><span style="color:#8DDB8C">              AWS</span><span style="color:#ADBAC7">: </span><span style="color:#F47067">!Sub</span><span style="color:#96D0FF"> "arn:${AWS::Partition}:iam::${AWS::AccountId}:root"</span></span>
+<span data-line=""><span style="color:#8DDB8C">            Action</span><span style="color:#ADBAC7">: </span><span style="color:#96D0FF">"kms:*"</span></span>
+<span data-line=""><span style="color:#8DDB8C">            Resource</span><span style="color:#ADBAC7">: </span><span style="color:#96D0FF">"*"</span></span>
+<span data-line=""><span style="color:#ADBAC7">          - </span><span style="color:#8DDB8C">Sid</span><span style="color:#ADBAC7">: </span><span style="color:#96D0FF">Allow CDK roles to use the key</span></span>
+<span data-line=""><span style="color:#8DDB8C">            Effect</span><span style="color:#ADBAC7">: </span><span style="color:#96D0FF">Allow</span></span>
+<span data-line=""><span style="color:#8DDB8C">            Principal</span><span style="color:#ADBAC7">:</span></span>
+<span data-line=""><span style="color:#8DDB8C">              AWS</span><span style="color:#ADBAC7">: </span><span style="color:#F47067">!Sub</span><span style="color:#96D0FF"> "arn:${AWS::Partition}:iam::${AWS::AccountId}:root"</span></span>
+<span data-line=""><span style="color:#8DDB8C">            Action</span><span style="color:#ADBAC7">:</span></span>
+<span data-line=""><span style="color:#ADBAC7">              - </span><span style="color:#96D0FF">"kms:Encrypt"</span></span>
+<span data-line=""><span style="color:#ADBAC7">              - </span><span style="color:#96D0FF">"kms:Decrypt"</span></span>
+<span data-line=""><span style="color:#ADBAC7">              - </span><span style="color:#96D0FF">"kms:ReEncrypt*"</span></span>
+<span data-line=""><span style="color:#ADBAC7">              - </span><span style="color:#96D0FF">"kms:GenerateDataKey*"</span></span>
+<span data-line=""><span style="color:#ADBAC7">              - </span><span style="color:#96D0FF">"kms:DescribeKey"</span></span>
+<span data-line=""><span style="color:#8DDB8C">            Resource</span><span style="color:#ADBAC7">: </span><span style="color:#96D0FF">"*"</span></span>
+<span data-line=""><span style="color:#8DDB8C">            Condition</span><span style="color:#ADBAC7">:</span></span>
+<span data-line=""><span style="color:#8DDB8C">              StringLike</span><span style="color:#ADBAC7">:</span></span>
+<span data-line=""><span style="color:#96D0FF">                "aws:PrincipalArn"</span><span style="color:#ADBAC7">:</span></span>
+<span data-line=""><span style="color:#ADBAC7">                  - </span><span style="color:#F47067">!Sub</span><span style="color:#96D0FF"> "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-*-cfn-exec-role-*"</span></span>
+<span data-line=""><span style="color:#ADBAC7">                  - </span><span style="color:#F47067">!Sub</span><span style="color:#96D0FF"> "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-*-file-publishing-role-*"</span></span>
+<span data-line=""><span style="color:#ADBAC7">                  - </span><span style="color:#F47067">!Sub</span><span style="color:#96D0FF"> "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-*-image-publishing-role-*"</span></span>
+<span data-line=""><span style="color:#ADBAC7">                  - </span><span style="color:#F47067">!Sub</span><span style="color:#96D0FF"> "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-*-lookup-role-*"</span></span>
+<span data-line=""><span style="color:#ADBAC7">                  - </span><span style="color:#F47067">!Sub</span><span style="color:#96D0FF"> "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-*-deploy-role-*"</span></span>
+<span data-line=""><span style="color:#96D0FF">                "kms:ViaService"</span><span style="color:#ADBAC7">:</span></span>
+<span data-line=""><span style="color:#ADBAC7">                  - </span><span style="color:#F47067">!Sub</span><span style="color:#96D0FF"> "s3.${AWS::Region}.amazonaws.com"</span></span>
+<span data-line=""><span style="color:#ADBAC7">                  - </span><span style="color:#F47067">!Sub</span><span style="color:#96D0FF"> "ecr.${AWS::Region}.amazonaws.com"</span></span>
+<span data-line=""><span style="color:#8DDB8C">              ArnLike</span><span style="color:#ADBAC7">:</span></span>
+<span data-line=""><span style="color:#96D0FF">                "kms:EncryptionContext:aws:s3:arn"</span><span style="color:#ADBAC7">:</span></span>
+<span data-line=""><span style="color:#ADBAC7">                  - </span><span style="color:#F47067">!Sub</span><span style="color:#96D0FF"> "arn:${AWS::Partition}:s3:::cdk-*-assets-${AWS::AccountId}-${AWS::Region}/*"</span></span>
+<span data-line=""><span style="color:#96D0FF">                "kms:EncryptionContext:aws:ecr:arn"</span><span style="color:#ADBAC7">:</span></span>
+<span data-line=""><span style="color:#ADBAC7">                  - </span><span style="color:#F47067">!Sub</span><span style="color:#96D0FF"> "arn:${AWS::Partition}:ecr:${AWS::Region}:${AWS::AccountId}:repository/cdk-*-container-assets-*"</span></span>
+<span data-line=""><span style="color:#8DDB8C">  CdkBootstrapKmsKeyAlias</span><span style="color:#ADBAC7">:</span></span>
+<span data-line=""><span style="color:#8DDB8C">    Type</span><span style="color:#ADBAC7">: </span><span style="color:#96D0FF">AWS::KMS::Alias</span></span>
+<span data-line=""><span style="color:#8DDB8C">    Properties</span><span style="color:#ADBAC7">:</span></span>
+<span data-line=""><span style="color:#8DDB8C">      AliasName</span><span style="color:#ADBAC7">: </span><span style="color:#96D0FF">alias/cdk-bootstrap-key</span></span>
+<span data-line=""><span style="color:#8DDB8C">      TargetKeyId</span><span style="color:#ADBAC7">: </span><span style="color:#F47067">!Ref</span><span style="color:#96D0FF"> CdkBootstrapKmsKey</span></span>
+<span data-line=""><span style="color:#8DDB8C">Outputs</span><span style="color:#ADBAC7">:</span></span>
+<span data-line=""><span style="color:#8DDB8C">  CdkBootstrapKmsKeyId</span><span style="color:#ADBAC7">:</span></span>
+<span data-line=""><span style="color:#8DDB8C">    Value</span><span style="color:#ADBAC7">: </span><span style="color:#F47067">!Ref</span><span style="color:#96D0FF"> CdkBootstrapKmsKey</span></span>
+<span data-line=""><span style="color:#8DDB8C">    Description</span><span style="color:#ADBAC7">: </span><span style="color:#96D0FF">ID of the KMS key for CDK bootstrap</span></span>
+<span data-line=""><span style="color:#8DDB8C">    Export</span><span style="color:#ADBAC7">:</span></span>
+<span data-line=""><span style="color:#8DDB8C">      Name</span><span style="color:#ADBAC7">: </span><span style="color:#96D0FF">cdk-bootstrap-kms-key-id</span></span><button type="button" title="Copy code" aria-label="Copy code" data="AWSTemplateFormatVersion: &#x22;2010-09-09&#x22;
+Description: KMS Key for encrypting the CDK bootstrap bucket
+Resources:
+  CdkBootstrapKmsKey:
+    Type: AWS::KMS::Key
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      Description: KMS Key for CDK Bootstrap Bucket
+      EnableKeyRotation: true
+      KeyPolicy:
+        Version: &#x22;2012-10-17&#x22;
+        Statement:
+          - Sid: Enable IAM User Permissions
+            Effect: Allow
+            Principal:
+              AWS: !Sub &#x22;arn:${AWS::Partition}:iam::${AWS::AccountId}:root&#x22;
+            Action: &#x22;kms:*&#x22;
+            Resource: &#x22;*&#x22;
+          - Sid: Allow CDK roles to use the key
+            Effect: Allow
+            Principal:
+              AWS: !Sub &#x22;arn:${AWS::Partition}:iam::${AWS::AccountId}:root&#x22;
+            Action:
+              - &#x22;kms:Encrypt&#x22;
+              - &#x22;kms:Decrypt&#x22;
+              - &#x22;kms:ReEncrypt*&#x22;
+              - &#x22;kms:GenerateDataKey*&#x22;
+              - &#x22;kms:DescribeKey&#x22;
+            Resource: &#x22;*&#x22;
+            Condition:
+              StringLike:
+                &#x22;aws:PrincipalArn&#x22;:
+                  - !Sub &#x22;arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-*-cfn-exec-role-*&#x22;
+                  - !Sub &#x22;arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-*-file-publishing-role-*&#x22;
+                  - !Sub &#x22;arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-*-image-publishing-role-*&#x22;
+                  - !Sub &#x22;arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-*-lookup-role-*&#x22;
+                  - !Sub &#x22;arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-*-deploy-role-*&#x22;
+                &#x22;kms:ViaService&#x22;:
+                  - !Sub &#x22;s3.${AWS::Region}.amazonaws.com&#x22;
+                  - !Sub &#x22;ecr.${AWS::Region}.amazonaws.com&#x22;
+              ArnLike:
+                &#x22;kms:EncryptionContext:aws:s3:arn&#x22;:
+                  - !Sub &#x22;arn:${AWS::Partition}:s3:::cdk-*-assets-${AWS::AccountId}-${AWS::Region}/*&#x22;
+                &#x22;kms:EncryptionContext:aws:ecr:arn&#x22;:
+                  - !Sub &#x22;arn:${AWS::Partition}:ecr:${AWS::Region}:${AWS::AccountId}:repository/cdk-*-container-assets-*&#x22;
+  CdkBootstrapKmsKeyAlias:
+    Type: AWS::KMS::Alias
+    Properties:
+      AliasName: alias/cdk-bootstrap-key
+      TargetKeyId: !Ref CdkBootstrapKmsKey
+Outputs:
+  CdkBootstrapKmsKeyId:
+    Value: !Ref CdkBootstrapKmsKey
+    Description: ID of the KMS key for CDK bootstrap
+    Export:
+      Name: cdk-bootstrap-kms-key-id" class="rehype-pretty-copy" onclick="navigator.clipboard.writeText(this.attributes.data.value);this.classList.add(&#x27;rehype-pretty-copied&#x27;);window.setTimeout(() => this.classList.remove(&#x27;rehype-pretty-copied&#x27;), 2500);"><span class="ready"></span><span class="success"></span></button><style>:root {--copy-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Cpath fill='%23adadad' d='M16.187 9.5H12.25a1.75 1.75 0 0 0-1.75 1.75v28.5c0 .967.784 1.75 1.75 1.75h23.5a1.75 1.75 0 0 0 1.75-1.75v-28.5a1.75 1.75 0 0 0-1.75-1.75h-3.937a4.25 4.25 0 0 1-4.063 3h-7.5a4.25 4.25 0 0 1-4.063-3M31.813 7h3.937A4.25 4.25 0 0 1 40 11.25v28.5A4.25 4.25 0 0 1 35.75 44h-23.5A4.25 4.25 0 0 1 8 39.75v-28.5A4.25 4.25 0 0 1 12.25 7h3.937a4.25 4.25 0 0 1 4.063-3h7.5a4.25 4.25 0 0 1 4.063 3M18.5 8.25c0 .966.784 1.75 1.75 1.75h7.5a1.75 1.75 0 1 0 0-3.5h-7.5a1.75 1.75 0 0 0-1.75 1.75'/%3E%3C/svg%3E");--success-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%2366ff85' d='M9 16.17L5.53 12.7a.996.996 0 1 0-1.41 1.41l4.18 4.18c.39.39 1.02.39 1.41 0L20.29 7.71a.996.996 0 1 0-1.41-1.41z'/%3E%3C/svg%3E");}pre:has(code) {position: relative;}pre button.rehype-pretty-copy {right: 1px;padding: 0;width: 24px;height: 24px;display: flex;margin-top: 2px;margin-right: 8px;position: absolute;border-radius: 25%;backdrop-filter: blur(3px);& span {width: 100%;aspect-ratio: 1 / 1;}& .ready {background-image: var(--copy-icon);}& .success {display: none; background-image: var(--success-icon);}}&.rehype-pretty-copied {& .success {display: block;} & .ready {display: none;}}pre button.rehype-pretty-copy.rehype-pretty-copied {opacity: 1;& .ready { display: none; }& .success { display: block; }}</style></code></pre></figure>
+</details>
+<h3 id="s3-log-bucket-template">S3 Log Bucket Template</h3>
+<details>
+<summary>Show S3 log bucket template</summary>
+<figure data-rehype-pretty-code-figure=""><pre style="background-color:#22272e;color:#adbac7" tabindex="0" data-language="yaml" data-theme="github-dark-dimmed"><code data-language="yaml" data-theme="github-dark-dimmed" style="display: grid;"><span data-line=""><span style="color:#8DDB8C">AWSTemplateFormatVersion</span><span style="color:#ADBAC7">: </span><span style="color:#96D0FF">"2010-09-09"</span></span>
+<span data-line=""><span style="color:#8DDB8C">Description</span><span style="color:#ADBAC7">: </span><span style="color:#96D0FF">"CloudFormation template for S3 log bucket with encryption and lifecycle policies"</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#8DDB8C">Resources</span><span style="color:#ADBAC7">:</span></span>
+<span data-line=""><span style="color:#8DDB8C">  LogBucket</span><span style="color:#ADBAC7">:</span></span>
+<span data-line=""><span style="color:#8DDB8C">    Type</span><span style="color:#ADBAC7">: </span><span style="color:#96D0FF">AWS::S3::Bucket</span></span>
+<span data-line=""><span style="color:#8DDB8C">    Properties</span><span style="color:#ADBAC7">:</span></span>
+<span data-line=""><span style="color:#8DDB8C">      VersioningConfiguration</span><span style="color:#ADBAC7">:</span></span>
+<span data-line=""><span style="color:#8DDB8C">        Status</span><span style="color:#ADBAC7">: </span><span style="color:#96D0FF">Enabled</span></span>
+<span data-line=""><span style="color:#8DDB8C">      BucketEncryption</span><span style="color:#ADBAC7">:</span></span>
+<span data-line=""><span style="color:#8DDB8C">        ServerSideEncryptionConfiguration</span><span style="color:#ADBAC7">:</span></span>
+<span data-line=""><span style="color:#ADBAC7">          - </span><span style="color:#8DDB8C">ServerSideEncryptionByDefault</span><span style="color:#ADBAC7">:</span></span>
+<span data-line=""><span style="color:#8DDB8C">              SSEAlgorithm</span><span style="color:#ADBAC7">: </span><span style="color:#96D0FF">AES256</span></span>
+<span data-line=""><span style="color:#8DDB8C">      PublicAccessBlockConfiguration</span><span style="color:#ADBAC7">:</span></span>
+<span data-line=""><span style="color:#8DDB8C">        BlockPublicAcls</span><span style="color:#ADBAC7">: </span><span style="color:#6CB6FF">true</span></span>
+<span data-line=""><span style="color:#8DDB8C">        BlockPublicPolicy</span><span style="color:#ADBAC7">: </span><span style="color:#6CB6FF">true</span></span>
+<span data-line=""><span style="color:#8DDB8C">        IgnorePublicAcls</span><span style="color:#ADBAC7">: </span><span style="color:#6CB6FF">true</span></span>
+<span data-line=""><span style="color:#8DDB8C">        RestrictPublicBuckets</span><span style="color:#ADBAC7">: </span><span style="color:#6CB6FF">true</span></span>
+<span data-line=""><span style="color:#8DDB8C">      LifecycleConfiguration</span><span style="color:#ADBAC7">:</span></span>
+<span data-line=""><span style="color:#8DDB8C">        Rules</span><span style="color:#ADBAC7">:</span></span>
+<span data-line=""><span style="color:#ADBAC7">          - </span><span style="color:#8DDB8C">Id</span><span style="color:#ADBAC7">: </span><span style="color:#96D0FF">DeleteLogsAfterRetention</span></span>
+<span data-line=""><span style="color:#8DDB8C">            Status</span><span style="color:#ADBAC7">: </span><span style="color:#96D0FF">Enabled</span></span>
+<span data-line=""><span style="color:#8DDB8C">            ExpirationInDays</span><span style="color:#ADBAC7">: </span><span style="color:#6CB6FF">90</span></span>
+<span data-line=""><span style="color:#ADBAC7">          - </span><span style="color:#8DDB8C">Id</span><span style="color:#ADBAC7">: </span><span style="color:#96D0FF">DeleteOldVersions</span></span>
+<span data-line=""><span style="color:#8DDB8C">            Status</span><span style="color:#ADBAC7">: </span><span style="color:#96D0FF">Enabled</span></span>
+<span data-line=""><span style="color:#8DDB8C">            NoncurrentVersionExpiration</span><span style="color:#ADBAC7">:</span></span>
+<span data-line=""><span style="color:#8DDB8C">              NoncurrentDays</span><span style="color:#ADBAC7">: </span><span style="color:#6CB6FF">30</span></span>
+<span data-line=""><span style="color:#8DDB8C">      Tags</span><span style="color:#ADBAC7">:</span></span>
+<span data-line=""><span style="color:#ADBAC7">        - </span><span style="color:#8DDB8C">Key</span><span style="color:#ADBAC7">: </span><span style="color:#96D0FF">Purpose</span></span>
+<span data-line=""><span style="color:#8DDB8C">          Value</span><span style="color:#ADBAC7">: </span><span style="color:#96D0FF">ApplicationLogs</span></span>
+<span data-line=""><span style="color:#ADBAC7">        - </span><span style="color:#8DDB8C">Key</span><span style="color:#ADBAC7">: </span><span style="color:#96D0FF">Environment</span></span>
+<span data-line=""><span style="color:#8DDB8C">          Value</span><span style="color:#ADBAC7">: </span><span style="color:#96D0FF">Bootstrap</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#8DDB8C">  LogBucketPolicy</span><span style="color:#ADBAC7">:</span></span>
+<span data-line=""><span style="color:#8DDB8C">    Type</span><span style="color:#ADBAC7">: </span><span style="color:#96D0FF">AWS::S3::BucketPolicy</span></span>
+<span data-line=""><span style="color:#8DDB8C">    Properties</span><span style="color:#ADBAC7">:</span></span>
+<span data-line=""><span style="color:#8DDB8C">      Bucket</span><span style="color:#ADBAC7">: </span><span style="color:#F47067">!Ref</span><span style="color:#96D0FF"> LogBucket</span></span>
+<span data-line=""><span style="color:#8DDB8C">      PolicyDocument</span><span style="color:#ADBAC7">:</span></span>
+<span data-line=""><span style="color:#8DDB8C">        Version</span><span style="color:#ADBAC7">: </span><span style="color:#96D0FF">"2012-10-17"</span></span>
+<span data-line=""><span style="color:#8DDB8C">        Statement</span><span style="color:#ADBAC7">:</span></span>
+<span data-line=""><span style="color:#768390">          # AWS Best Practice: Restrict log delivery to buckets in the same account</span></span>
+<span data-line=""><span style="color:#768390">          # See: https://docs.aws.amazon.com/AmazonS3/latest/userguide/enable-server-access-logging.html</span></span>
+<span data-line=""><span style="color:#ADBAC7">          - </span><span style="color:#8DDB8C">Sid</span><span style="color:#ADBAC7">: </span><span style="color:#96D0FF">AllowS3LogDeliveryWrite</span></span>
+<span data-line=""><span style="color:#8DDB8C">            Effect</span><span style="color:#ADBAC7">: </span><span style="color:#96D0FF">Allow</span></span>
+<span data-line=""><span style="color:#8DDB8C">            Principal</span><span style="color:#ADBAC7">:</span></span>
+<span data-line=""><span style="color:#8DDB8C">              Service</span><span style="color:#ADBAC7">: </span><span style="color:#96D0FF">logging.s3.amazonaws.com</span></span>
+<span data-line=""><span style="color:#8DDB8C">            Action</span><span style="color:#ADBAC7">: </span><span style="color:#96D0FF">s3:PutObject</span></span>
+<span data-line=""><span style="color:#8DDB8C">            Resource</span><span style="color:#ADBAC7">: </span><span style="color:#F47067">!Sub</span><span style="color:#96D0FF"> "${LogBucket.Arn}/*"</span></span>
+<span data-line=""><span style="color:#8DDB8C">            Condition</span><span style="color:#ADBAC7">:</span></span>
+<span data-line=""><span style="color:#768390">              # Restrict to buckets in the same account</span></span>
+<span data-line=""><span style="color:#8DDB8C">              StringEquals</span><span style="color:#ADBAC7">:</span></span>
+<span data-line=""><span style="color:#8DDB8C">                aws:SourceAccount</span><span style="color:#ADBAC7">: </span><span style="color:#F47067">!Ref</span><span style="color:#96D0FF"> AWS::AccountId</span></span>
+<span data-line=""><span style="color:#ADBAC7">          - </span><span style="color:#8DDB8C">Sid</span><span style="color:#ADBAC7">: </span><span style="color:#96D0FF">AllowS3LogDeliveryAclCheck</span></span>
+<span data-line=""><span style="color:#8DDB8C">            Effect</span><span style="color:#ADBAC7">: </span><span style="color:#96D0FF">Allow</span></span>
+<span data-line=""><span style="color:#8DDB8C">            Principal</span><span style="color:#ADBAC7">:</span></span>
+<span data-line=""><span style="color:#8DDB8C">              Service</span><span style="color:#ADBAC7">: </span><span style="color:#96D0FF">logging.s3.amazonaws.com</span></span>
+<span data-line=""><span style="color:#8DDB8C">            Action</span><span style="color:#ADBAC7">: </span><span style="color:#96D0FF">s3:GetBucketAcl</span></span>
+<span data-line=""><span style="color:#8DDB8C">            Resource</span><span style="color:#ADBAC7">: </span><span style="color:#F47067">!GetAtt</span><span style="color:#96D0FF"> LogBucket.Arn</span></span>
+<span data-line=""><span style="color:#768390">          # Note: DenyUnencryptedObjectUploads removed per AWS best practices</span></span>
+<span data-line=""><span style="color:#768390">          # Bucket default encryption (SSE-S3) ensures all objects are encrypted</span></span>
+<span data-line=""><span style="color:#768390">          # The S3 logging service doesn't set explicit encryption headers</span></span>
+<span data-line=""><span style="color:#ADBAC7">          - </span><span style="color:#8DDB8C">Sid</span><span style="color:#ADBAC7">: </span><span style="color:#96D0FF">DenyInsecureTransport</span></span>
+<span data-line=""><span style="color:#8DDB8C">            Effect</span><span style="color:#ADBAC7">: </span><span style="color:#96D0FF">Deny</span></span>
+<span data-line=""><span style="color:#8DDB8C">            Principal</span><span style="color:#ADBAC7">: </span><span style="color:#96D0FF">"*"</span></span>
+<span data-line=""><span style="color:#8DDB8C">            Action</span><span style="color:#ADBAC7">: </span><span style="color:#96D0FF">s3:*</span></span>
+<span data-line=""><span style="color:#8DDB8C">            Resource</span><span style="color:#ADBAC7">:</span></span>
+<span data-line=""><span style="color:#ADBAC7">              - </span><span style="color:#F47067">!GetAtt</span><span style="color:#96D0FF"> LogBucket.Arn</span></span>
+<span data-line=""><span style="color:#ADBAC7">              - </span><span style="color:#F47067">!Sub</span><span style="color:#96D0FF"> "${LogBucket.Arn}/*"</span></span>
+<span data-line=""><span style="color:#8DDB8C">            Condition</span><span style="color:#ADBAC7">:</span></span>
+<span data-line=""><span style="color:#8DDB8C">              Bool</span><span style="color:#ADBAC7">:</span></span>
+<span data-line=""><span style="color:#8DDB8C">                aws:SecureTransport</span><span style="color:#ADBAC7">: </span><span style="color:#96D0FF">"false"</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#8DDB8C">Outputs</span><span style="color:#ADBAC7">:</span></span>
+<span data-line=""><span style="color:#8DDB8C">  LogBucketName</span><span style="color:#ADBAC7">:</span></span>
+<span data-line=""><span style="color:#8DDB8C">    Description</span><span style="color:#ADBAC7">: </span><span style="color:#96D0FF">Name of the log bucket</span></span>
+<span data-line=""><span style="color:#8DDB8C">    Value</span><span style="color:#ADBAC7">: </span><span style="color:#F47067">!Ref</span><span style="color:#96D0FF"> LogBucket</span></span>
+<span data-line=""><span style="color:#8DDB8C">    Export</span><span style="color:#ADBAC7">:</span></span>
+<span data-line=""><span style="color:#8DDB8C">      Name</span><span style="color:#ADBAC7">: </span><span style="color:#96D0FF">log-bucket-name</span></span><button type="button" title="Copy code" aria-label="Copy code" data="AWSTemplateFormatVersion: &#x22;2010-09-09&#x22;
+Description: &#x22;CloudFormation template for S3 log bucket with encryption and lifecycle policies&#x22;
+
+Resources:
+  LogBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      VersioningConfiguration:
+        Status: Enabled
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault:
+              SSEAlgorithm: AES256
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
+      LifecycleConfiguration:
+        Rules:
+          - Id: DeleteLogsAfterRetention
+            Status: Enabled
+            ExpirationInDays: 90
+          - Id: DeleteOldVersions
+            Status: Enabled
+            NoncurrentVersionExpiration:
+              NoncurrentDays: 30
+      Tags:
+        - Key: Purpose
+          Value: ApplicationLogs
+        - Key: Environment
+          Value: Bootstrap
+
+  LogBucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket: !Ref LogBucket
+      PolicyDocument:
+        Version: &#x22;2012-10-17&#x22;
+        Statement:
+          # AWS Best Practice: Restrict log delivery to buckets in the same account
+          # See: https://docs.aws.amazon.com/AmazonS3/latest/userguide/enable-server-access-logging.html
+          - Sid: AllowS3LogDeliveryWrite
+            Effect: Allow
+            Principal:
+              Service: logging.s3.amazonaws.com
+            Action: s3:PutObject
+            Resource: !Sub &#x22;${LogBucket.Arn}/*&#x22;
+            Condition:
+              # Restrict to buckets in the same account
+              StringEquals:
+                aws:SourceAccount: !Ref AWS::AccountId
+          - Sid: AllowS3LogDeliveryAclCheck
+            Effect: Allow
+            Principal:
+              Service: logging.s3.amazonaws.com
+            Action: s3:GetBucketAcl
+            Resource: !GetAtt LogBucket.Arn
+          # Note: DenyUnencryptedObjectUploads removed per AWS best practices
+          # Bucket default encryption (SSE-S3) ensures all objects are encrypted
+          # The S3 logging service doesn&#x27;t set explicit encryption headers
+          - Sid: DenyInsecureTransport
+            Effect: Deny
+            Principal: &#x22;*&#x22;
+            Action: s3:*
+            Resource:
+              - !GetAtt LogBucket.Arn
+              - !Sub &#x22;${LogBucket.Arn}/*&#x22;
+            Condition:
+              Bool:
+                aws:SecureTransport: &#x22;false&#x22;
+
+Outputs:
+  LogBucketName:
+    Description: Name of the log bucket
+    Value: !Ref LogBucket
+    Export:
+      Name: log-bucket-name" class="rehype-pretty-copy" onclick="navigator.clipboard.writeText(this.attributes.data.value);this.classList.add(&#x27;rehype-pretty-copied&#x27;);window.setTimeout(() => this.classList.remove(&#x27;rehype-pretty-copied&#x27;), 2500);"><span class="ready"></span><span class="success"></span></button><style>:root {--copy-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Cpath fill='%23adadad' d='M16.187 9.5H12.25a1.75 1.75 0 0 0-1.75 1.75v28.5c0 .967.784 1.75 1.75 1.75h23.5a1.75 1.75 0 0 0 1.75-1.75v-28.5a1.75 1.75 0 0 0-1.75-1.75h-3.937a4.25 4.25 0 0 1-4.063 3h-7.5a4.25 4.25 0 0 1-4.063-3M31.813 7h3.937A4.25 4.25 0 0 1 40 11.25v28.5A4.25 4.25 0 0 1 35.75 44h-23.5A4.25 4.25 0 0 1 8 39.75v-28.5A4.25 4.25 0 0 1 12.25 7h3.937a4.25 4.25 0 0 1 4.063-3h7.5a4.25 4.25 0 0 1 4.063 3M18.5 8.25c0 .966.784 1.75 1.75 1.75h7.5a1.75 1.75 0 1 0 0-3.5h-7.5a1.75 1.75 0 0 0-1.75 1.75'/%3E%3C/svg%3E");--success-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%2366ff85' d='M9 16.17L5.53 12.7a.996.996 0 1 0-1.41 1.41l4.18 4.18c.39.39 1.02.39 1.41 0L20.29 7.71a.996.996 0 1 0-1.41-1.41z'/%3E%3C/svg%3E");}pre:has(code) {position: relative;}pre button.rehype-pretty-copy {right: 1px;padding: 0;width: 24px;height: 24px;display: flex;margin-top: 2px;margin-right: 8px;position: absolute;border-radius: 25%;backdrop-filter: blur(3px);& span {width: 100%;aspect-ratio: 1 / 1;}& .ready {background-image: var(--copy-icon);}& .success {display: none; background-image: var(--success-icon);}}&.rehype-pretty-copied {& .success {display: block;} & .ready {display: none;}}pre button.rehype-pretty-copy.rehype-pretty-copied {opacity: 1;& .ready { display: none; }& .success { display: block; }}</style></code></pre></figure>
+</details>
+<h3 id="the-deployment-script">The Deployment Script</h3>
+<p>A CDK app can have stacks deployed to different regions. Each region needs to be bootstrapped, so the KMS key and log bucket must be created in every region.</p>
+<p>Using the CDK Toolkit library, we can extract the regions from the CDK app and deploy the CloudFormation templates accordingly.</p>
+<p>The script creates CloudFormation outputs to make the resource values retrievable during bootstrap.</p>
+<details>
+<summary>Show deploy script</summary>
+<figure data-rehype-pretty-code-figure=""><pre style="background-color:#22272e;color:#adbac7" tabindex="0" data-language="typescript" data-theme="github-dark-dimmed"><code data-language="typescript" data-theme="github-dark-dimmed" style="display: grid;"><span data-line=""><span style="color:#F47067">import</span><span style="color:#6CB6FF"> *</span><span style="color:#F47067"> as</span><span style="color:#ADBAC7"> fs </span><span style="color:#F47067">from</span><span style="color:#96D0FF"> "node:fs"</span><span style="color:#ADBAC7">;</span></span>
+<span data-line=""><span style="color:#F47067">import</span><span style="color:#6CB6FF"> *</span><span style="color:#F47067"> as</span><span style="color:#ADBAC7"> path </span><span style="color:#F47067">from</span><span style="color:#96D0FF"> "node:path"</span><span style="color:#ADBAC7">;</span></span>
+<span data-line=""><span style="color:#F47067">import</span><span style="color:#ADBAC7"> {</span></span>
+<span data-line=""><span style="color:#ADBAC7">  CloudFormationClient,</span></span>
+<span data-line=""><span style="color:#ADBAC7">  CreateStackCommand,</span></span>
+<span data-line=""><span style="color:#F47067">  type</span><span style="color:#ADBAC7"> CreateStackCommandInput,</span></span>
+<span data-line=""><span style="color:#ADBAC7">  UpdateStackCommand,</span></span>
+<span data-line=""><span style="color:#F47067">  type</span><span style="color:#ADBAC7"> UpdateStackCommandInput,</span></span>
+<span data-line=""><span style="color:#F47067">  type</span><span style="color:#ADBAC7"> Tag,</span></span>
+<span data-line=""><span style="color:#ADBAC7">} </span><span style="color:#F47067">from</span><span style="color:#96D0FF"> "@aws-sdk/client-cloudformation"</span><span style="color:#ADBAC7">;</span></span>
+<span data-line=""><span style="color:#F47067">import</span><span style="color:#ADBAC7"> { Toolkit } </span><span style="color:#F47067">from</span><span style="color:#96D0FF"> "@aws-cdk/toolkit-lib"</span><span style="color:#ADBAC7">;</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#768390">// Parse command line arguments</span></span>
+<span data-line=""><span style="color:#F47067">const</span><span style="color:#6CB6FF"> args</span><span style="color:#F47067"> =</span><span style="color:#ADBAC7"> process.argv.</span><span style="color:#DCBDFB">slice</span><span style="color:#ADBAC7">(</span><span style="color:#6CB6FF">2</span><span style="color:#ADBAC7">);</span></span>
+<span data-line=""><span style="color:#F47067">const</span><span style="color:#6CB6FF"> DRY_RUN</span><span style="color:#F47067"> =</span><span style="color:#ADBAC7"> args.</span><span style="color:#DCBDFB">includes</span><span style="color:#ADBAC7">(</span><span style="color:#96D0FF">"--dry-run"</span><span style="color:#ADBAC7">);</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#F47067">interface</span><span style="color:#F69D50"> TemplateConfig</span><span style="color:#ADBAC7"> {</span></span>
+<span data-line=""><span style="color:#F69D50">  filename</span><span style="color:#F47067">:</span><span style="color:#6CB6FF"> string</span><span style="color:#ADBAC7">;</span></span>
+<span data-line=""><span style="color:#F69D50">  stackName</span><span style="color:#F47067">:</span><span style="color:#6CB6FF"> string</span><span style="color:#ADBAC7">;</span></span>
+<span data-line=""><span style="color:#F69D50">  description</span><span style="color:#F47067">:</span><span style="color:#6CB6FF"> string</span><span style="color:#ADBAC7">;</span></span>
+<span data-line=""><span style="color:#ADBAC7">}</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#F47067">const</span><span style="color:#DCBDFB"> getRegions</span><span style="color:#F47067"> =</span><span style="color:#F47067"> async</span><span style="color:#ADBAC7"> ()</span><span style="color:#F47067">:</span><span style="color:#F69D50"> Promise</span><span style="color:#ADBAC7">&#x3C;</span><span style="color:#6CB6FF">string</span><span style="color:#ADBAC7">[]> </span><span style="color:#F47067">=></span><span style="color:#ADBAC7"> {</span></span>
+<span data-line=""><span style="color:#F47067">  const</span><span style="color:#6CB6FF"> toolkit</span><span style="color:#F47067"> =</span><span style="color:#F47067"> new</span><span style="color:#DCBDFB"> Toolkit</span><span style="color:#ADBAC7">();</span></span>
+<span data-line=""><span style="color:#F47067">  const</span><span style="color:#6CB6FF"> appPath</span><span style="color:#F47067"> =</span><span style="color:#ADBAC7"> path.</span><span style="color:#DCBDFB">join</span><span style="color:#ADBAC7">(</span><span style="color:#F47067">import</span><span style="color:#ADBAC7">.</span><span style="color:#6CB6FF">meta</span><span style="color:#ADBAC7">.dirname, </span><span style="color:#96D0FF">"../../bin/app.ts"</span><span style="color:#ADBAC7">);</span></span>
+<span data-line=""><span style="color:#F47067">  const</span><span style="color:#6CB6FF"> cloudAssemblySource</span><span style="color:#F47067"> =</span><span style="color:#F47067"> await</span><span style="color:#ADBAC7"> toolkit.</span><span style="color:#DCBDFB">fromCdkApp</span><span style="color:#ADBAC7">(</span><span style="color:#96D0FF">`pnpx tsx ${</span><span style="color:#ADBAC7">appPath</span><span style="color:#96D0FF">}`</span><span style="color:#ADBAC7">);</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#F47067">  const</span><span style="color:#6CB6FF"> cloudAssembly</span><span style="color:#F47067"> =</span><span style="color:#F47067"> await</span><span style="color:#ADBAC7"> toolkit.</span><span style="color:#DCBDFB">synth</span><span style="color:#ADBAC7">(cloudAssemblySource);</span></span>
+<span data-line=""><span style="color:#F47067">  const</span><span style="color:#6CB6FF"> list</span><span style="color:#F47067"> =</span><span style="color:#F47067"> await</span><span style="color:#ADBAC7"> toolkit.</span><span style="color:#DCBDFB">list</span><span style="color:#ADBAC7">(cloudAssembly);</span></span>
+<span data-line=""><span style="color:#F47067">  const</span><span style="color:#6CB6FF"> regions</span><span style="color:#F47067"> =</span><span style="color:#ADBAC7"> list.</span><span style="color:#DCBDFB">map</span><span style="color:#ADBAC7">((</span><span style="color:#F69D50">stack</span><span style="color:#ADBAC7">) </span><span style="color:#F47067">=></span><span style="color:#ADBAC7"> stack.environment.region);</span></span>
+<span data-line=""><span style="color:#F47067">  return</span><span style="color:#ADBAC7"> regions;</span></span>
+<span data-line=""><span style="color:#ADBAC7">};</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#F47067">const</span><span style="color:#6CB6FF"> templates</span><span style="color:#F47067">:</span><span style="color:#F69D50"> TemplateConfig</span><span style="color:#ADBAC7">[] </span><span style="color:#F47067">=</span><span style="color:#ADBAC7"> [</span></span>
+<span data-line=""><span style="color:#ADBAC7">  {</span></span>
+<span data-line=""><span style="color:#ADBAC7">    filename: </span><span style="color:#96D0FF">"bootstrap-kms-key.yaml"</span><span style="color:#ADBAC7">,</span></span>
+<span data-line=""><span style="color:#ADBAC7">    stackName: </span><span style="color:#96D0FF">"cdk-bootstrap-kms-key"</span><span style="color:#ADBAC7">,</span></span>
+<span data-line=""><span style="color:#ADBAC7">    description: </span><span style="color:#96D0FF">"KMS Key for encrypting the CDK bootstrap bucket"</span><span style="color:#ADBAC7">,</span></span>
+<span data-line=""><span style="color:#ADBAC7">  },</span></span>
+<span data-line=""><span style="color:#ADBAC7">  {</span></span>
+<span data-line=""><span style="color:#ADBAC7">    filename: </span><span style="color:#96D0FF">"log-bucket.yaml"</span><span style="color:#ADBAC7">,</span></span>
+<span data-line=""><span style="color:#ADBAC7">    stackName: </span><span style="color:#96D0FF">"cdk-bootstrap-log-bucket"</span><span style="color:#ADBAC7">,</span></span>
+<span data-line=""><span style="color:#ADBAC7">    description: </span><span style="color:#96D0FF">"S3 log bucket with encryption and lifecycle policies"</span><span style="color:#ADBAC7">,</span></span>
+<span data-line=""><span style="color:#ADBAC7">  },</span></span>
+<span data-line=""><span style="color:#ADBAC7">];</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#768390">// Tags to apply to all stacks</span></span>
+<span data-line=""><span style="color:#F47067">const</span><span style="color:#6CB6FF"> commonTags</span><span style="color:#F47067">:</span><span style="color:#F69D50"> Tag</span><span style="color:#ADBAC7">[] </span><span style="color:#F47067">=</span><span style="color:#ADBAC7"> [</span></span>
+<span data-line=""><span style="color:#ADBAC7">  { Key: </span><span style="color:#96D0FF">"Environment"</span><span style="color:#ADBAC7">, Value: </span><span style="color:#96D0FF">"bootstrap"</span><span style="color:#ADBAC7"> },</span></span>
+<span data-line=""><span style="color:#ADBAC7">  { Key: </span><span style="color:#96D0FF">"ManagedBy"</span><span style="color:#ADBAC7">, Value: </span><span style="color:#96D0FF">"cdk-bootstrap"</span><span style="color:#ADBAC7"> },</span></span>
+<span data-line=""><span style="color:#ADBAC7">  { Key: </span><span style="color:#96D0FF">"Purpose"</span><span style="color:#ADBAC7">, Value: </span><span style="color:#96D0FF">"cdk-deployment"</span><span style="color:#ADBAC7"> },</span></span>
+<span data-line=""><span style="color:#ADBAC7">];</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#F47067">async</span><span style="color:#F47067"> function</span><span style="color:#DCBDFB"> loadTemplateContent</span><span style="color:#ADBAC7">(</span><span style="color:#F69D50">templatePath</span><span style="color:#F47067">:</span><span style="color:#6CB6FF"> string</span><span style="color:#ADBAC7">)</span><span style="color:#F47067">:</span><span style="color:#F69D50"> Promise</span><span style="color:#ADBAC7">&#x3C;</span><span style="color:#6CB6FF">string</span><span style="color:#ADBAC7">> {</span></span>
+<span data-line=""><span style="color:#F47067">  try</span><span style="color:#ADBAC7"> {</span></span>
+<span data-line=""><span style="color:#F47067">    const</span><span style="color:#6CB6FF"> content</span><span style="color:#F47067"> =</span><span style="color:#ADBAC7"> fs.</span><span style="color:#DCBDFB">readFileSync</span><span style="color:#ADBAC7">(templatePath, </span><span style="color:#96D0FF">"utf-8"</span><span style="color:#ADBAC7">);</span></span>
+<span data-line=""><span style="color:#ADBAC7">    console.</span><span style="color:#DCBDFB">log</span><span style="color:#ADBAC7">(</span><span style="color:#96D0FF">`✓ Loaded template: ${</span><span style="color:#ADBAC7">templatePath</span><span style="color:#96D0FF">}`</span><span style="color:#ADBAC7">);</span></span>
+<span data-line=""><span style="color:#F47067">    return</span><span style="color:#ADBAC7"> content;</span></span>
+<span data-line=""><span style="color:#ADBAC7">  } </span><span style="color:#F47067">catch</span><span style="color:#ADBAC7"> (error) {</span></span>
+<span data-line=""><span style="color:#ADBAC7">    console.</span><span style="color:#DCBDFB">error</span><span style="color:#ADBAC7">(</span><span style="color:#96D0FF">`✗ Failed to load template: ${</span><span style="color:#ADBAC7">templatePath</span><span style="color:#96D0FF">}`</span><span style="color:#ADBAC7">);</span></span>
+<span data-line=""><span style="color:#F47067">    throw</span><span style="color:#ADBAC7"> error;</span></span>
+<span data-line=""><span style="color:#ADBAC7">  }</span></span>
+<span data-line=""><span style="color:#ADBAC7">}</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#F47067">async</span><span style="color:#F47067"> function</span><span style="color:#DCBDFB"> deployOrUpdateStack</span><span style="color:#ADBAC7">(</span></span>
+<span data-line=""><span style="color:#F69D50">  config</span><span style="color:#F47067">:</span><span style="color:#F69D50"> TemplateConfig</span><span style="color:#ADBAC7">,</span></span>
+<span data-line=""><span style="color:#F69D50">  templateContent</span><span style="color:#F47067">:</span><span style="color:#6CB6FF"> string</span><span style="color:#ADBAC7">,</span></span>
+<span data-line=""><span style="color:#F69D50">  region</span><span style="color:#F47067">:</span><span style="color:#6CB6FF"> string</span><span style="color:#ADBAC7">,</span></span>
+<span data-line=""><span style="color:#ADBAC7">)</span><span style="color:#F47067">:</span><span style="color:#F69D50"> Promise</span><span style="color:#ADBAC7">&#x3C;</span><span style="color:#6CB6FF">string</span><span style="color:#ADBAC7">> {</span></span>
+<span data-line=""><span style="color:#F47067">  const</span><span style="color:#6CB6FF"> cfClient</span><span style="color:#F47067"> =</span><span style="color:#F47067"> new</span><span style="color:#DCBDFB"> CloudFormationClient</span><span style="color:#ADBAC7">({ region });</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#F47067">  if</span><span style="color:#ADBAC7"> (</span><span style="color:#6CB6FF">DRY_RUN</span><span style="color:#ADBAC7">) {</span></span>
+<span data-line=""><span style="color:#ADBAC7">    console.</span><span style="color:#DCBDFB">log</span><span style="color:#ADBAC7">(</span><span style="color:#96D0FF">`✓ [DRY RUN] Would deploy/update stack`</span><span style="color:#ADBAC7">);</span></span>
+<span data-line=""><span style="color:#F47067">    return</span><span style="color:#96D0FF"> "dry-run-stack-id"</span><span style="color:#ADBAC7">;</span></span>
+<span data-line=""><span style="color:#ADBAC7">  }</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#768390">  // Try to update first</span></span>
+<span data-line=""><span style="color:#F47067">  try</span><span style="color:#ADBAC7"> {</span></span>
+<span data-line=""><span style="color:#F47067">    const</span><span style="color:#6CB6FF"> updateParams</span><span style="color:#F47067">:</span><span style="color:#F69D50"> UpdateStackCommandInput</span><span style="color:#F47067"> =</span><span style="color:#ADBAC7"> {</span></span>
+<span data-line=""><span style="color:#ADBAC7">      StackName: config.stackName,</span></span>
+<span data-line=""><span style="color:#ADBAC7">      TemplateBody: templateContent,</span></span>
+<span data-line=""><span style="color:#ADBAC7">      Tags: commonTags,</span></span>
+<span data-line=""><span style="color:#ADBAC7">    };</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#F47067">    const</span><span style="color:#6CB6FF"> updateCommand</span><span style="color:#F47067"> =</span><span style="color:#F47067"> new</span><span style="color:#DCBDFB"> UpdateStackCommand</span><span style="color:#ADBAC7">(updateParams);</span></span>
+<span data-line=""><span style="color:#F47067">    const</span><span style="color:#6CB6FF"> response</span><span style="color:#F47067"> =</span><span style="color:#F47067"> await</span><span style="color:#ADBAC7"> cfClient.</span><span style="color:#DCBDFB">send</span><span style="color:#ADBAC7">(updateCommand);</span></span>
+<span data-line=""><span style="color:#ADBAC7">    console.</span><span style="color:#DCBDFB">log</span><span style="color:#ADBAC7">(</span><span style="color:#96D0FF">`✓ Stack updated`</span><span style="color:#ADBAC7">);</span></span>
+<span data-line=""><span style="color:#F47067">    return</span><span style="color:#ADBAC7"> response.StackId</span><span style="color:#F47067">!</span><span style="color:#ADBAC7">;</span></span>
+<span data-line=""><span style="color:#ADBAC7">  } </span><span style="color:#F47067">catch</span><span style="color:#ADBAC7"> (</span><span style="color:#F69D50">error</span><span style="color:#F47067">:</span><span style="color:#6CB6FF"> any</span><span style="color:#ADBAC7">) {</span></span>
+<span data-line=""><span style="color:#768390">    // If stack doesn't exist, create it</span></span>
+<span data-line=""><span style="color:#F47067">    if</span><span style="color:#ADBAC7"> (error.message?.</span><span style="color:#DCBDFB">includes</span><span style="color:#ADBAC7">(</span><span style="color:#96D0FF">"does not exist"</span><span style="color:#ADBAC7">)) {</span></span>
+<span data-line=""><span style="color:#F47067">      const</span><span style="color:#6CB6FF"> createParams</span><span style="color:#F47067">:</span><span style="color:#F69D50"> CreateStackCommandInput</span><span style="color:#F47067"> =</span><span style="color:#ADBAC7"> {</span></span>
+<span data-line=""><span style="color:#ADBAC7">        StackName: config.stackName,</span></span>
+<span data-line=""><span style="color:#ADBAC7">        TemplateBody: templateContent,</span></span>
+<span data-line=""><span style="color:#ADBAC7">        Tags: commonTags,</span></span>
+<span data-line=""><span style="color:#ADBAC7">        OnFailure: </span><span style="color:#96D0FF">"DELETE"</span><span style="color:#ADBAC7">,</span></span>
+<span data-line=""><span style="color:#ADBAC7">        TimeoutInMinutes: </span><span style="color:#6CB6FF">10</span><span style="color:#ADBAC7">,</span></span>
+<span data-line=""><span style="color:#ADBAC7">        EnableTerminationProtection: </span><span style="color:#6CB6FF">true</span><span style="color:#ADBAC7">,</span></span>
+<span data-line=""><span style="color:#ADBAC7">      };</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#F47067">      const</span><span style="color:#6CB6FF"> createCommand</span><span style="color:#F47067"> =</span><span style="color:#F47067"> new</span><span style="color:#DCBDFB"> CreateStackCommand</span><span style="color:#ADBAC7">(createParams);</span></span>
+<span data-line=""><span style="color:#F47067">      const</span><span style="color:#6CB6FF"> response</span><span style="color:#F47067"> =</span><span style="color:#F47067"> await</span><span style="color:#ADBAC7"> cfClient.</span><span style="color:#DCBDFB">send</span><span style="color:#ADBAC7">(createCommand);</span></span>
+<span data-line=""><span style="color:#ADBAC7">      console.</span><span style="color:#DCBDFB">log</span><span style="color:#ADBAC7">(</span><span style="color:#96D0FF">`✓ Stack created`</span><span style="color:#ADBAC7">);</span></span>
+<span data-line=""><span style="color:#F47067">      return</span><span style="color:#ADBAC7"> response.StackId</span><span style="color:#F47067">!</span><span style="color:#ADBAC7">;</span></span>
+<span data-line=""><span style="color:#ADBAC7">    }</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#768390">    // If no changes are detected during update, it's still successful</span></span>
+<span data-line=""><span style="color:#F47067">    if</span><span style="color:#ADBAC7"> (error.message?.</span><span style="color:#DCBDFB">includes</span><span style="color:#ADBAC7">(</span><span style="color:#96D0FF">"No updates are to be performed"</span><span style="color:#ADBAC7">)) {</span></span>
+<span data-line=""><span style="color:#ADBAC7">      console.</span><span style="color:#DCBDFB">log</span><span style="color:#ADBAC7">(</span><span style="color:#96D0FF">`✓ Stack is up to date (no changes needed)`</span><span style="color:#ADBAC7">);</span></span>
+<span data-line=""><span style="color:#F47067">      return</span><span style="color:#96D0FF"> ""</span><span style="color:#ADBAC7">;</span></span>
+<span data-line=""><span style="color:#ADBAC7">    }</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#F47067">    throw</span><span style="color:#ADBAC7"> error;</span></span>
+<span data-line=""><span style="color:#ADBAC7">  }</span></span>
+<span data-line=""><span style="color:#ADBAC7">}</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#F47067">async</span><span style="color:#F47067"> function</span><span style="color:#DCBDFB"> deployTemplate</span><span style="color:#ADBAC7">(</span></span>
+<span data-line=""><span style="color:#F69D50">  config</span><span style="color:#F47067">:</span><span style="color:#F69D50"> TemplateConfig</span><span style="color:#ADBAC7">,</span></span>
+<span data-line=""><span style="color:#F69D50">  templatePath</span><span style="color:#F47067">:</span><span style="color:#6CB6FF"> string</span><span style="color:#ADBAC7">,</span></span>
+<span data-line=""><span style="color:#F69D50">  region</span><span style="color:#F47067">:</span><span style="color:#6CB6FF"> string</span><span style="color:#ADBAC7">,</span></span>
+<span data-line=""><span style="color:#ADBAC7">)</span><span style="color:#F47067">:</span><span style="color:#F69D50"> Promise</span><span style="color:#ADBAC7">&#x3C;</span><span style="color:#6CB6FF">void</span><span style="color:#ADBAC7">> {</span></span>
+<span data-line=""><span style="color:#F47067">  try</span><span style="color:#ADBAC7"> {</span></span>
+<span data-line=""><span style="color:#F47067">    const</span><span style="color:#6CB6FF"> templateContent</span><span style="color:#F47067"> =</span><span style="color:#F47067"> await</span><span style="color:#DCBDFB"> loadTemplateContent</span><span style="color:#ADBAC7">(templatePath);</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#ADBAC7">    console.</span><span style="color:#DCBDFB">log</span><span style="color:#ADBAC7">(</span><span style="color:#96D0FF">`</span><span style="color:#F47067">\n</span><span style="color:#96D0FF">📦 Deploying stack: ${</span><span style="color:#ADBAC7">config</span><span style="color:#96D0FF">.</span><span style="color:#ADBAC7">stackName</span><span style="color:#96D0FF">} to ${</span><span style="color:#ADBAC7">region</span><span style="color:#96D0FF">}`</span><span style="color:#ADBAC7">);</span></span>
+<span data-line=""><span style="color:#F47067">    const</span><span style="color:#6CB6FF"> stackId</span><span style="color:#F47067"> =</span><span style="color:#F47067"> await</span><span style="color:#DCBDFB"> deployOrUpdateStack</span><span style="color:#ADBAC7">(config, templateContent, region);</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#F47067">    if</span><span style="color:#ADBAC7"> (stackId) {</span></span>
+<span data-line=""><span style="color:#ADBAC7">      console.</span><span style="color:#DCBDFB">log</span><span style="color:#ADBAC7">(</span><span style="color:#96D0FF">`  Stack ID: ${</span><span style="color:#ADBAC7">stackId</span><span style="color:#96D0FF">}`</span><span style="color:#ADBAC7">);</span></span>
+<span data-line=""><span style="color:#ADBAC7">    }</span></span>
+<span data-line=""><span style="color:#ADBAC7">  } </span><span style="color:#F47067">catch</span><span style="color:#ADBAC7"> (</span><span style="color:#F69D50">error</span><span style="color:#F47067">:</span><span style="color:#6CB6FF"> any</span><span style="color:#ADBAC7">) {</span></span>
+<span data-line=""><span style="color:#ADBAC7">    console.</span><span style="color:#DCBDFB">error</span><span style="color:#ADBAC7">(</span><span style="color:#96D0FF">`✗ Failed to deploy stack ${</span><span style="color:#ADBAC7">config</span><span style="color:#96D0FF">.</span><span style="color:#ADBAC7">stackName</span><span style="color:#96D0FF">}:`</span><span style="color:#ADBAC7">);</span></span>
+<span data-line=""><span style="color:#ADBAC7">    console.</span><span style="color:#DCBDFB">error</span><span style="color:#ADBAC7">(</span><span style="color:#96D0FF">`  ${</span><span style="color:#ADBAC7">error</span><span style="color:#96D0FF">.</span><span style="color:#ADBAC7">message</span><span style="color:#96D0FF">}`</span><span style="color:#ADBAC7">);</span></span>
+<span data-line=""><span style="color:#F47067">    throw</span><span style="color:#ADBAC7"> error;</span></span>
+<span data-line=""><span style="color:#ADBAC7">  }</span></span>
+<span data-line=""><span style="color:#ADBAC7">}</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#F47067">async</span><span style="color:#F47067"> function</span><span style="color:#DCBDFB"> main</span><span style="color:#ADBAC7">()</span><span style="color:#F47067">:</span><span style="color:#F69D50"> Promise</span><span style="color:#ADBAC7">&#x3C;</span><span style="color:#6CB6FF">void</span><span style="color:#ADBAC7">> {</span></span>
+<span data-line=""><span style="color:#F47067">  const</span><span style="color:#6CB6FF"> cfTemplatesDir</span><span style="color:#F47067"> =</span><span style="color:#ADBAC7"> path.</span><span style="color:#DCBDFB">join</span><span style="color:#ADBAC7">(</span><span style="color:#F47067">import</span><span style="color:#ADBAC7">.</span><span style="color:#6CB6FF">meta</span><span style="color:#ADBAC7">.dirname, </span><span style="color:#96D0FF">"../cf-templates"</span><span style="color:#ADBAC7">);</span></span>
+<span data-line=""><span style="color:#F47067">  const</span><span style="color:#6CB6FF"> regions</span><span style="color:#F47067"> =</span><span style="color:#F47067"> await</span><span style="color:#DCBDFB"> getRegions</span><span style="color:#ADBAC7">();</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#ADBAC7">  console.</span><span style="color:#DCBDFB">log</span><span style="color:#ADBAC7">(</span><span style="color:#96D0FF">"🚀 Starting CloudFormation template deployment...</span><span style="color:#F47067">\n</span><span style="color:#96D0FF">"</span><span style="color:#ADBAC7">);</span></span>
+<span data-line=""><span style="color:#F47067">  if</span><span style="color:#ADBAC7"> (</span><span style="color:#6CB6FF">DRY_RUN</span><span style="color:#ADBAC7">) {</span></span>
+<span data-line=""><span style="color:#ADBAC7">    console.</span><span style="color:#DCBDFB">log</span><span style="color:#ADBAC7">(</span><span style="color:#96D0FF">"⚠️  DRY RUN MODE - No actual changes will be made</span><span style="color:#F47067">\n</span><span style="color:#96D0FF">"</span><span style="color:#ADBAC7">);</span></span>
+<span data-line=""><span style="color:#ADBAC7">  }</span></span>
+<span data-line=""><span style="color:#ADBAC7">  console.</span><span style="color:#DCBDFB">log</span><span style="color:#ADBAC7">(</span><span style="color:#96D0FF">`Template directory: ${</span><span style="color:#ADBAC7">cfTemplatesDir</span><span style="color:#96D0FF">}`</span><span style="color:#ADBAC7">);</span></span>
+<span data-line=""><span style="color:#ADBAC7">  console.</span><span style="color:#DCBDFB">log</span><span style="color:#ADBAC7">(</span><span style="color:#96D0FF">`Regions: ${</span><span style="color:#ADBAC7">regions</span><span style="color:#96D0FF">.</span><span style="color:#DCBDFB">join</span><span style="color:#96D0FF">(</span><span style="color:#96D0FF">", "</span><span style="color:#96D0FF">)</span><span style="color:#96D0FF">}</span><span style="color:#F47067">\n</span><span style="color:#96D0FF">`</span><span style="color:#ADBAC7">);</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#F47067">  try</span><span style="color:#ADBAC7"> {</span></span>
+<span data-line=""><span style="color:#F47067">    for</span><span style="color:#ADBAC7"> (</span><span style="color:#F47067">const</span><span style="color:#6CB6FF"> region</span><span style="color:#F47067"> of</span><span style="color:#ADBAC7"> regions) {</span></span>
+<span data-line=""><span style="color:#ADBAC7">      console.</span><span style="color:#DCBDFB">log</span><span style="color:#ADBAC7">(</span><span style="color:#96D0FF">`</span><span style="color:#F47067">\n</span><span style="color:#96D0FF">🌍 Deploying to region: ${</span><span style="color:#ADBAC7">region</span><span style="color:#96D0FF">}`</span><span style="color:#ADBAC7">);</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#F47067">      for</span><span style="color:#ADBAC7"> (</span><span style="color:#F47067">const</span><span style="color:#6CB6FF"> template</span><span style="color:#F47067"> of</span><span style="color:#ADBAC7"> templates) {</span></span>
+<span data-line=""><span style="color:#F47067">        const</span><span style="color:#6CB6FF"> templatePath</span><span style="color:#F47067"> =</span><span style="color:#ADBAC7"> path.</span><span style="color:#DCBDFB">join</span><span style="color:#ADBAC7">(cfTemplatesDir, template.filename);</span></span>
+<span data-line=""><span style="color:#F47067">        await</span><span style="color:#DCBDFB"> deployTemplate</span><span style="color:#ADBAC7">(template, templatePath, region);</span></span>
+<span data-line=""><span style="color:#ADBAC7">      }</span></span>
+<span data-line=""><span style="color:#ADBAC7">    }</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#F47067">    if</span><span style="color:#ADBAC7"> (</span><span style="color:#6CB6FF">DRY_RUN</span><span style="color:#ADBAC7">) {</span></span>
+<span data-line=""><span style="color:#ADBAC7">      console.</span><span style="color:#DCBDFB">log</span><span style="color:#ADBAC7">(</span><span style="color:#96D0FF">"</span><span style="color:#F47067">\n</span><span style="color:#96D0FF">✅ Dry run completed successfully! No changes were made."</span><span style="color:#ADBAC7">);</span></span>
+<span data-line=""><span style="color:#ADBAC7">    } </span><span style="color:#F47067">else</span><span style="color:#ADBAC7"> {</span></span>
+<span data-line=""><span style="color:#ADBAC7">      console.</span><span style="color:#DCBDFB">log</span><span style="color:#ADBAC7">(</span><span style="color:#96D0FF">"</span><span style="color:#F47067">\n</span><span style="color:#96D0FF">✅ All templates deployed successfully!"</span><span style="color:#ADBAC7">);</span></span>
+<span data-line=""><span style="color:#ADBAC7">    }</span></span>
+<span data-line=""><span style="color:#ADBAC7">  } </span><span style="color:#F47067">catch</span><span style="color:#ADBAC7"> (error) {</span></span>
+<span data-line=""><span style="color:#ADBAC7">    console.</span><span style="color:#DCBDFB">error</span><span style="color:#ADBAC7">(</span><span style="color:#96D0FF">"</span><span style="color:#F47067">\n</span><span style="color:#96D0FF">❌ Deployment failed"</span><span style="color:#ADBAC7">);</span></span>
+<span data-line=""><span style="color:#ADBAC7">    process.</span><span style="color:#DCBDFB">exit</span><span style="color:#ADBAC7">(</span><span style="color:#6CB6FF">1</span><span style="color:#ADBAC7">);</span></span>
+<span data-line=""><span style="color:#ADBAC7">  }</span></span>
+<span data-line=""><span style="color:#ADBAC7">}</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#DCBDFB">main</span><span style="color:#ADBAC7">();</span></span><button type="button" title="Copy code" aria-label="Copy code" data="import * as fs from &#x22;node:fs&#x22;;
+import * as path from &#x22;node:path&#x22;;
+import {
+  CloudFormationClient,
+  CreateStackCommand,
+  type CreateStackCommandInput,
+  UpdateStackCommand,
+  type UpdateStackCommandInput,
+  type Tag,
+} from &#x22;@aws-sdk/client-cloudformation&#x22;;
+import { Toolkit } from &#x22;@aws-cdk/toolkit-lib&#x22;;
+
+// Parse command line arguments
+const args = process.argv.slice(2);
+const DRY_RUN = args.includes(&#x22;--dry-run&#x22;);
+
+interface TemplateConfig {
+  filename: string;
+  stackName: string;
+  description: string;
+}
+
+const getRegions = async (): Promise<string[]> => {
+  const toolkit = new Toolkit();
+  const appPath = path.join(import.meta.dirname, &#x22;../../bin/app.ts&#x22;);
+  const cloudAssemblySource = await toolkit.fromCdkApp(&#x60;pnpx tsx ${appPath}&#x60;);
+
+  const cloudAssembly = await toolkit.synth(cloudAssemblySource);
+  const list = await toolkit.list(cloudAssembly);
+  const regions = list.map((stack) => stack.environment.region);
+  return regions;
+};
+
+const templates: TemplateConfig[] = [
+  {
+    filename: &#x22;bootstrap-kms-key.yaml&#x22;,
+    stackName: &#x22;cdk-bootstrap-kms-key&#x22;,
+    description: &#x22;KMS Key for encrypting the CDK bootstrap bucket&#x22;,
+  },
+  {
+    filename: &#x22;log-bucket.yaml&#x22;,
+    stackName: &#x22;cdk-bootstrap-log-bucket&#x22;,
+    description: &#x22;S3 log bucket with encryption and lifecycle policies&#x22;,
+  },
+];
+
+// Tags to apply to all stacks
+const commonTags: Tag[] = [
+  { Key: &#x22;Environment&#x22;, Value: &#x22;bootstrap&#x22; },
+  { Key: &#x22;ManagedBy&#x22;, Value: &#x22;cdk-bootstrap&#x22; },
+  { Key: &#x22;Purpose&#x22;, Value: &#x22;cdk-deployment&#x22; },
+];
+
+async function loadTemplateContent(templatePath: string): Promise<string> {
+  try {
+    const content = fs.readFileSync(templatePath, &#x22;utf-8&#x22;);
+    console.log(&#x60;✓ Loaded template: ${templatePath}&#x60;);
+    return content;
+  } catch (error) {
+    console.error(&#x60;✗ Failed to load template: ${templatePath}&#x60;);
+    throw error;
+  }
+}
+
+async function deployOrUpdateStack(
+  config: TemplateConfig,
+  templateContent: string,
+  region: string,
+): Promise<string> {
+  const cfClient = new CloudFormationClient({ region });
+
+  if (DRY_RUN) {
+    console.log(&#x60;✓ [DRY RUN] Would deploy/update stack&#x60;);
+    return &#x22;dry-run-stack-id&#x22;;
+  }
+
+  // Try to update first
+  try {
+    const updateParams: UpdateStackCommandInput = {
+      StackName: config.stackName,
+      TemplateBody: templateContent,
+      Tags: commonTags,
+    };
+
+    const updateCommand = new UpdateStackCommand(updateParams);
+    const response = await cfClient.send(updateCommand);
+    console.log(&#x60;✓ Stack updated&#x60;);
+    return response.StackId!;
+  } catch (error: any) {
+    // If stack doesn&#x27;t exist, create it
+    if (error.message?.includes(&#x22;does not exist&#x22;)) {
+      const createParams: CreateStackCommandInput = {
+        StackName: config.stackName,
+        TemplateBody: templateContent,
+        Tags: commonTags,
+        OnFailure: &#x22;DELETE&#x22;,
+        TimeoutInMinutes: 10,
+        EnableTerminationProtection: true,
+      };
+
+      const createCommand = new CreateStackCommand(createParams);
+      const response = await cfClient.send(createCommand);
+      console.log(&#x60;✓ Stack created&#x60;);
+      return response.StackId!;
+    }
+
+    // If no changes are detected during update, it&#x27;s still successful
+    if (error.message?.includes(&#x22;No updates are to be performed&#x22;)) {
+      console.log(&#x60;✓ Stack is up to date (no changes needed)&#x60;);
+      return &#x22;&#x22;;
+    }
+
+    throw error;
+  }
+}
+
+async function deployTemplate(
+  config: TemplateConfig,
+  templatePath: string,
+  region: string,
+): Promise<void> {
+  try {
+    const templateContent = await loadTemplateContent(templatePath);
+
+    console.log(&#x60;\n📦 Deploying stack: ${config.stackName} to ${region}&#x60;);
+    const stackId = await deployOrUpdateStack(config, templateContent, region);
+
+    if (stackId) {
+      console.log(&#x60;  Stack ID: ${stackId}&#x60;);
+    }
+  } catch (error: any) {
+    console.error(&#x60;✗ Failed to deploy stack ${config.stackName}:&#x60;);
+    console.error(&#x60;  ${error.message}&#x60;);
+    throw error;
+  }
+}
+
+async function main(): Promise<void> {
+  const cfTemplatesDir = path.join(import.meta.dirname, &#x22;../cf-templates&#x22;);
+  const regions = await getRegions();
+
+  console.log(&#x22;🚀 Starting CloudFormation template deployment...\n&#x22;);
+  if (DRY_RUN) {
+    console.log(&#x22;⚠️  DRY RUN MODE - No actual changes will be made\n&#x22;);
+  }
+  console.log(&#x60;Template directory: ${cfTemplatesDir}&#x60;);
+  console.log(&#x60;Regions: ${regions.join(&#x22;, &#x22;)}\n&#x60;);
+
+  try {
+    for (const region of regions) {
+      console.log(&#x60;\n🌍 Deploying to region: ${region}&#x60;);
+
+      for (const template of templates) {
+        const templatePath = path.join(cfTemplatesDir, template.filename);
+        await deployTemplate(template, templatePath, region);
+      }
+    }
+
+    if (DRY_RUN) {
+      console.log(&#x22;\n✅ Dry run completed successfully! No changes were made.&#x22;);
+    } else {
+      console.log(&#x22;\n✅ All templates deployed successfully!&#x22;);
+    }
+  } catch (error) {
+    console.error(&#x22;\n❌ Deployment failed&#x22;);
+    process.exit(1);
+  }
+}
+
+main();" class="rehype-pretty-copy" onclick="navigator.clipboard.writeText(this.attributes.data.value);this.classList.add(&#x27;rehype-pretty-copied&#x27;);window.setTimeout(() => this.classList.remove(&#x27;rehype-pretty-copied&#x27;), 2500);"><span class="ready"></span><span class="success"></span></button><style>:root {--copy-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Cpath fill='%23adadad' d='M16.187 9.5H12.25a1.75 1.75 0 0 0-1.75 1.75v28.5c0 .967.784 1.75 1.75 1.75h23.5a1.75 1.75 0 0 0 1.75-1.75v-28.5a1.75 1.75 0 0 0-1.75-1.75h-3.937a4.25 4.25 0 0 1-4.063 3h-7.5a4.25 4.25 0 0 1-4.063-3M31.813 7h3.937A4.25 4.25 0 0 1 40 11.25v28.5A4.25 4.25 0 0 1 35.75 44h-23.5A4.25 4.25 0 0 1 8 39.75v-28.5A4.25 4.25 0 0 1 12.25 7h3.937a4.25 4.25 0 0 1 4.063-3h7.5a4.25 4.25 0 0 1 4.063 3M18.5 8.25c0 .966.784 1.75 1.75 1.75h7.5a1.75 1.75 0 1 0 0-3.5h-7.5a1.75 1.75 0 0 0-1.75 1.75'/%3E%3C/svg%3E");--success-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%2366ff85' d='M9 16.17L5.53 12.7a.996.996 0 1 0-1.41 1.41l4.18 4.18c.39.39 1.02.39 1.41 0L20.29 7.71a.996.996 0 1 0-1.41-1.41z'/%3E%3C/svg%3E");}pre:has(code) {position: relative;}pre button.rehype-pretty-copy {right: 1px;padding: 0;width: 24px;height: 24px;display: flex;margin-top: 2px;margin-right: 8px;position: absolute;border-radius: 25%;backdrop-filter: blur(3px);& span {width: 100%;aspect-ratio: 1 / 1;}& .ready {background-image: var(--copy-icon);}& .success {display: none; background-image: var(--success-icon);}}&.rehype-pretty-copied {& .success {display: block;} & .ready {display: none;}}pre button.rehype-pretty-copy.rehype-pretty-copied {opacity: 1;& .ready { display: none; }& .success { display: block; }}</style></code></pre></figure>
+</details>
+<h2 id="validate-cloudformation-templates-with-cdk-nag">Validate CloudFormation Templates with cdk-nag</h2>
+<p>Resources within a CDK app can be validated with <a href="https://github.com/cdklabs/cdk-nag">cdk-nag</a>. To validate CloudFormation templates outside the CDK app, we can create a helper app that applies the same rule set to our CloudFormation templates.</p>
+<p>As described in the <a href="https://github.com/cdklabs/cdk-nag?tab=readme-ov-file#using-on-cloudformation-templates">cdk-nag documentation</a>, CloudFormation templates can be included via the <code>CfnInclude</code> construct and validated using cdk-nag aspects.</p>
+<p>This approach ensures:</p>
+<ul>
+<li>The same validation rules are applied consistently</li>
+<li>The same suppression mechanisms can be used</li>
+<li>All infrastructure code follows the same security standards</li>
+</ul>
+<p>Run the validation with this command:</p>
+<figure data-rehype-pretty-code-figure=""><pre style="background-color:#22272e;color:#adbac7" tabindex="0" data-language="bash" data-theme="github-dark-dimmed"><code data-language="bash" data-theme="github-dark-dimmed" style="display: grid;"><span data-line=""><span style="color:#F69D50">pnpm</span><span style="color:#96D0FF"> exec</span><span style="color:#96D0FF"> tsx</span><span style="color:#96D0FF"> bootstrap/app.ts</span></span><button type="button" title="Copy code" aria-label="Copy code" data="pnpm exec tsx bootstrap/app.ts" class="rehype-pretty-copy" onclick="navigator.clipboard.writeText(this.attributes.data.value);this.classList.add(&#x27;rehype-pretty-copied&#x27;);window.setTimeout(() => this.classList.remove(&#x27;rehype-pretty-copied&#x27;), 2500);"><span class="ready"></span><span class="success"></span></button><style>:root {--copy-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Cpath fill='%23adadad' d='M16.187 9.5H12.25a1.75 1.75 0 0 0-1.75 1.75v28.5c0 .967.784 1.75 1.75 1.75h23.5a1.75 1.75 0 0 0 1.75-1.75v-28.5a1.75 1.75 0 0 0-1.75-1.75h-3.937a4.25 4.25 0 0 1-4.063 3h-7.5a4.25 4.25 0 0 1-4.063-3M31.813 7h3.937A4.25 4.25 0 0 1 40 11.25v28.5A4.25 4.25 0 0 1 35.75 44h-23.5A4.25 4.25 0 0 1 8 39.75v-28.5A4.25 4.25 0 0 1 12.25 7h3.937a4.25 4.25 0 0 1 4.063-3h7.5a4.25 4.25 0 0 1 4.063 3M18.5 8.25c0 .966.784 1.75 1.75 1.75h7.5a1.75 1.75 0 1 0 0-3.5h-7.5a1.75 1.75 0 0 0-1.75 1.75'/%3E%3C/svg%3E");--success-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%2366ff85' d='M9 16.17L5.53 12.7a.996.996 0 1 0-1.41 1.41l4.18 4.18c.39.39 1.02.39 1.41 0L20.29 7.71a.996.996 0 1 0-1.41-1.41z'/%3E%3C/svg%3E");}pre:has(code) {position: relative;}pre button.rehype-pretty-copy {right: 1px;padding: 0;width: 24px;height: 24px;display: flex;margin-top: 2px;margin-right: 8px;position: absolute;border-radius: 25%;backdrop-filter: blur(3px);& span {width: 100%;aspect-ratio: 1 / 1;}& .ready {background-image: var(--copy-icon);}& .success {display: none; background-image: var(--success-icon);}}&.rehype-pretty-copied {& .success {display: block;} & .ready {display: none;}}pre button.rehype-pretty-copy.rehype-pretty-copied {opacity: 1;& .ready { display: none; }& .success { display: block; }}</style></code></pre></figure>
+<details>
+<summary>Show cdk-nag validation script</summary>
+<figure data-rehype-pretty-code-figure=""><pre style="background-color:#22272e;color:#adbac7" tabindex="0" data-language="typescript" data-theme="github-dark-dimmed"><code data-language="typescript" data-theme="github-dark-dimmed" style="display: grid;"><span data-line=""><span style="color:#F47067">import</span><span style="color:#ADBAC7"> { CfnInclude } </span><span style="color:#F47067">from</span><span style="color:#96D0FF"> "aws-cdk-lib/cloudformation-include"</span><span style="color:#ADBAC7">;</span></span>
+<span data-line=""><span style="color:#F47067">import</span><span style="color:#ADBAC7"> { Stack, StackProps } </span><span style="color:#F47067">from</span><span style="color:#96D0FF"> "aws-cdk-lib"</span><span style="color:#ADBAC7">;</span></span>
+<span data-line=""><span style="color:#F47067">import</span><span style="color:#ADBAC7"> { Toolkit } </span><span style="color:#F47067">from</span><span style="color:#96D0FF"> "@aws-cdk/toolkit-lib"</span><span style="color:#ADBAC7">;</span></span>
+<span data-line=""><span style="color:#F47067">import</span><span style="color:#ADBAC7"> { App, Aspects } </span><span style="color:#F47067">from</span><span style="color:#96D0FF"> "aws-cdk-lib"</span><span style="color:#ADBAC7">;</span></span>
+<span data-line=""><span style="color:#F47067">import</span><span style="color:#ADBAC7"> { AwsSolutionsChecks, NagSuppressions } </span><span style="color:#F47067">from</span><span style="color:#96D0FF"> "cdk-nag"</span><span style="color:#ADBAC7">;</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#768390">// Set region and avoid IMDS lookup for local checks</span></span>
+<span data-line=""><span style="color:#ADBAC7">process.env.</span><span style="color:#6CB6FF">AWS_REGION</span><span style="color:#F47067"> =</span><span style="color:#ADBAC7"> process.env.</span><span style="color:#6CB6FF">AWS_REGION</span><span style="color:#F47067"> ||</span><span style="color:#96D0FF"> "us-east-1"</span><span style="color:#ADBAC7">;</span></span>
+<span data-line=""><span style="color:#ADBAC7">process.env.</span><span style="color:#6CB6FF">AWS_SDK_LOAD_CONFIG</span><span style="color:#F47067"> =</span><span style="color:#96D0FF"> "false"</span><span style="color:#ADBAC7">; </span><span style="color:#768390">// Prevent credential lookup</span></span>
+<span data-line=""><span style="color:#ADBAC7">process.env.</span><span style="color:#6CB6FF">AWS_EC2_METADATA_SERVICE_ENDPOINT_MODE</span><span style="color:#F47067"> =</span><span style="color:#96D0FF"> "IPv4"</span><span style="color:#ADBAC7">; </span><span style="color:#768390">// Prevent IMDS timeout</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#F47067">const</span><span style="color:#6CB6FF"> toolkit</span><span style="color:#F47067"> =</span><span style="color:#F47067"> new</span><span style="color:#DCBDFB"> Toolkit</span><span style="color:#ADBAC7">();</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#F47067">const</span><span style="color:#6CB6FF"> cloudAssemblySource</span><span style="color:#F47067"> =</span><span style="color:#F47067"> await</span><span style="color:#ADBAC7"> toolkit.</span><span style="color:#DCBDFB">fromAssemblyBuilder</span><span style="color:#ADBAC7">(</span><span style="color:#F47067">async</span><span style="color:#ADBAC7"> () </span><span style="color:#F47067">=></span><span style="color:#ADBAC7"> {</span></span>
+<span data-line=""><span style="color:#F47067">  const</span><span style="color:#6CB6FF"> app</span><span style="color:#F47067"> =</span><span style="color:#F47067"> new</span><span style="color:#DCBDFB"> App</span><span style="color:#ADBAC7">();</span></span>
+<span data-line=""><span style="color:#F47067">  const</span><span style="color:#6CB6FF"> stack</span><span style="color:#F47067"> =</span><span style="color:#F47067"> new</span><span style="color:#DCBDFB"> Stack</span><span style="color:#ADBAC7">(app, </span><span style="color:#96D0FF">"CdkNagCheckStack"</span><span style="color:#ADBAC7">);</span></span>
+<span data-line=""><span style="color:#F47067">  new</span><span style="color:#DCBDFB"> CfnInclude</span><span style="color:#ADBAC7">(stack, </span><span style="color:#96D0FF">"BootstrapKmsKey"</span><span style="color:#ADBAC7">, {</span></span>
+<span data-line=""><span style="color:#ADBAC7">    templateFile: </span><span style="color:#96D0FF">"./bootstrap/cf-templates/bootstrap-kms-key.yaml"</span><span style="color:#ADBAC7">,</span></span>
+<span data-line=""><span style="color:#ADBAC7">  });</span></span>
+<span data-line=""><span style="color:#F47067">  const</span><span style="color:#6CB6FF"> logBucket</span><span style="color:#F47067"> =</span><span style="color:#F47067"> new</span><span style="color:#DCBDFB"> CfnInclude</span><span style="color:#ADBAC7">(stack, </span><span style="color:#96D0FF">"LogBucket"</span><span style="color:#ADBAC7">, {</span></span>
+<span data-line=""><span style="color:#ADBAC7">    templateFile: </span><span style="color:#96D0FF">"./bootstrap/cf-templates/log-bucket.yaml"</span><span style="color:#ADBAC7">,</span></span>
+<span data-line=""><span style="color:#ADBAC7">  });</span></span>
+<span data-line=""><span style="color:#ADBAC7">  NagSuppressions.</span><span style="color:#DCBDFB">addResourceSuppressions</span><span style="color:#ADBAC7">(</span></span>
+<span data-line=""><span style="color:#ADBAC7">    logBucket,</span></span>
+<span data-line=""><span style="color:#ADBAC7">    [</span></span>
+<span data-line=""><span style="color:#ADBAC7">      {</span></span>
+<span data-line=""><span style="color:#ADBAC7">        id: </span><span style="color:#96D0FF">"AwsSolutions-S1"</span><span style="color:#ADBAC7">,</span></span>
+<span data-line=""><span style="color:#ADBAC7">        reason: </span><span style="color:#96D0FF">"Log bucket does not have server access logs enabled"</span><span style="color:#ADBAC7">,</span></span>
+<span data-line=""><span style="color:#ADBAC7">      },</span></span>
+<span data-line=""><span style="color:#ADBAC7">    ],</span></span>
+<span data-line=""><span style="color:#6CB6FF">    true</span><span style="color:#ADBAC7">,</span></span>
+<span data-line=""><span style="color:#ADBAC7">  );</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#ADBAC7">  Aspects.</span><span style="color:#DCBDFB">of</span><span style="color:#ADBAC7">(app).</span><span style="color:#DCBDFB">add</span><span style="color:#ADBAC7">(</span><span style="color:#F47067">new</span><span style="color:#DCBDFB"> AwsSolutionsChecks</span><span style="color:#ADBAC7">({ verbose: </span><span style="color:#6CB6FF">true</span><span style="color:#ADBAC7"> }));</span></span>
+<span data-line=""><span style="color:#F47067">  return</span><span style="color:#ADBAC7"> app.</span><span style="color:#DCBDFB">synth</span><span style="color:#ADBAC7">();</span></span>
+<span data-line=""><span style="color:#ADBAC7">});</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#F47067">try</span><span style="color:#ADBAC7"> {</span></span>
+<span data-line=""><span style="color:#F47067">  await</span><span style="color:#ADBAC7"> toolkit.</span><span style="color:#DCBDFB">synth</span><span style="color:#ADBAC7">(cloudAssemblySource);</span></span>
+<span data-line=""><span style="color:#ADBAC7">  console.</span><span style="color:#DCBDFB">log</span><span style="color:#ADBAC7">(</span><span style="color:#96D0FF">"</span><span style="color:#F47067">\n</span><span style="color:#96D0FF">✓ Bootstrap templates synthesized successfully"</span><span style="color:#ADBAC7">);</span></span>
+<span data-line=""><span style="color:#ADBAC7">} </span><span style="color:#F47067">catch</span><span style="color:#ADBAC7"> (error) {</span></span>
+<span data-line=""><span style="color:#ADBAC7">  console.</span><span style="color:#DCBDFB">error</span><span style="color:#ADBAC7">(</span><span style="color:#96D0FF">"</span><span style="color:#F47067">\n</span><span style="color:#96D0FF">✗ CDK Nag violations or synthesis errors found:"</span><span style="color:#ADBAC7">);</span></span>
+<span data-line=""><span style="color:#ADBAC7">  console.</span><span style="color:#DCBDFB">error</span><span style="color:#ADBAC7">(error);</span></span>
+<span data-line=""><span style="color:#ADBAC7">  process.</span><span style="color:#DCBDFB">exit</span><span style="color:#ADBAC7">(</span><span style="color:#6CB6FF">1</span><span style="color:#ADBAC7">);</span></span>
+<span data-line=""><span style="color:#ADBAC7">}</span></span><button type="button" title="Copy code" aria-label="Copy code" data="import { CfnInclude } from &#x22;aws-cdk-lib/cloudformation-include&#x22;;
+import { Stack, StackProps } from &#x22;aws-cdk-lib&#x22;;
+import { Toolkit } from &#x22;@aws-cdk/toolkit-lib&#x22;;
+import { App, Aspects } from &#x22;aws-cdk-lib&#x22;;
+import { AwsSolutionsChecks, NagSuppressions } from &#x22;cdk-nag&#x22;;
+
+// Set region and avoid IMDS lookup for local checks
+process.env.AWS_REGION = process.env.AWS_REGION || &#x22;us-east-1&#x22;;
+process.env.AWS_SDK_LOAD_CONFIG = &#x22;false&#x22;; // Prevent credential lookup
+process.env.AWS_EC2_METADATA_SERVICE_ENDPOINT_MODE = &#x22;IPv4&#x22;; // Prevent IMDS timeout
+
+const toolkit = new Toolkit();
+
+const cloudAssemblySource = await toolkit.fromAssemblyBuilder(async () => {
+  const app = new App();
+  const stack = new Stack(app, &#x22;CdkNagCheckStack&#x22;);
+  new CfnInclude(stack, &#x22;BootstrapKmsKey&#x22;, {
+    templateFile: &#x22;./bootstrap/cf-templates/bootstrap-kms-key.yaml&#x22;,
+  });
+  const logBucket = new CfnInclude(stack, &#x22;LogBucket&#x22;, {
+    templateFile: &#x22;./bootstrap/cf-templates/log-bucket.yaml&#x22;,
+  });
+  NagSuppressions.addResourceSuppressions(
+    logBucket,
+    [
+      {
+        id: &#x22;AwsSolutions-S1&#x22;,
+        reason: &#x22;Log bucket does not have server access logs enabled&#x22;,
+      },
+    ],
+    true,
+  );
+
+  Aspects.of(app).add(new AwsSolutionsChecks({ verbose: true }));
+  return app.synth();
+});
+
+try {
+  await toolkit.synth(cloudAssemblySource);
+  console.log(&#x22;\n✓ Bootstrap templates synthesized successfully&#x22;);
+} catch (error) {
+  console.error(&#x22;\n✗ CDK Nag violations or synthesis errors found:&#x22;);
+  console.error(error);
+  process.exit(1);
+}" class="rehype-pretty-copy" onclick="navigator.clipboard.writeText(this.attributes.data.value);this.classList.add(&#x27;rehype-pretty-copied&#x27;);window.setTimeout(() => this.classList.remove(&#x27;rehype-pretty-copied&#x27;), 2500);"><span class="ready"></span><span class="success"></span></button><style>:root {--copy-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Cpath fill='%23adadad' d='M16.187 9.5H12.25a1.75 1.75 0 0 0-1.75 1.75v28.5c0 .967.784 1.75 1.75 1.75h23.5a1.75 1.75 0 0 0 1.75-1.75v-28.5a1.75 1.75 0 0 0-1.75-1.75h-3.937a4.25 4.25 0 0 1-4.063 3h-7.5a4.25 4.25 0 0 1-4.063-3M31.813 7h3.937A4.25 4.25 0 0 1 40 11.25v28.5A4.25 4.25 0 0 1 35.75 44h-23.5A4.25 4.25 0 0 1 8 39.75v-28.5A4.25 4.25 0 0 1 12.25 7h3.937a4.25 4.25 0 0 1 4.063-3h7.5a4.25 4.25 0 0 1 4.063 3M18.5 8.25c0 .966.784 1.75 1.75 1.75h7.5a1.75 1.75 0 1 0 0-3.5h-7.5a1.75 1.75 0 0 0-1.75 1.75'/%3E%3C/svg%3E");--success-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%2366ff85' d='M9 16.17L5.53 12.7a.996.996 0 1 0-1.41 1.41l4.18 4.18c.39.39 1.02.39 1.41 0L20.29 7.71a.996.996 0 1 0-1.41-1.41z'/%3E%3C/svg%3E");}pre:has(code) {position: relative;}pre button.rehype-pretty-copy {right: 1px;padding: 0;width: 24px;height: 24px;display: flex;margin-top: 2px;margin-right: 8px;position: absolute;border-radius: 25%;backdrop-filter: blur(3px);& span {width: 100%;aspect-ratio: 1 / 1;}& .ready {background-image: var(--copy-icon);}& .success {display: none; background-image: var(--success-icon);}}&.rehype-pretty-copied {& .success {display: block;} & .ready {display: none;}}pre button.rehype-pretty-copy.rehype-pretty-copied {opacity: 1;& .ready { display: none; }& .success { display: block; }}</style></code></pre></figure>
+</details>
+<h2 id="create-the-customized-cdk-bootstrap-template">Create the Customized CDK Bootstrap Template</h2>
+<h3 id="get-the-default-template">Get the Default Template</h3>
+<p>Customizations should be based on the standard CDK bootstrap template to ensure all necessary resources are included and the process remains compatible with future CDK versions.
+First, retrieve the default template using the CDK CLI.</p>
+<p>Since the Toolkit library doesn’t provide functionality to retrieve the standard template, we use the CDK CLI via a child process.</p>
+<details>
+<summary>Show script to get default template</summary>
+<figure data-rehype-pretty-code-figure=""><pre style="background-color:#22272e;color:#adbac7" tabindex="0" data-language="typescript" data-theme="github-dark-dimmed"><code data-language="typescript" data-theme="github-dark-dimmed" style="display: grid;"><span data-line=""><span style="color:#F47067">import</span><span style="color:#ADBAC7"> { execSync } </span><span style="color:#F47067">from</span><span style="color:#96D0FF"> "node:child_process"</span><span style="color:#ADBAC7">;</span></span>
+<span data-line=""><span style="color:#F47067">import</span><span style="color:#ADBAC7"> { mkdirSync, writeFileSync } </span><span style="color:#F47067">from</span><span style="color:#96D0FF"> "node:fs"</span><span style="color:#ADBAC7">;</span></span>
+<span data-line=""><span style="color:#F47067">import</span><span style="color:#ADBAC7"> { join } </span><span style="color:#F47067">from</span><span style="color:#96D0FF"> "node:path"</span><span style="color:#ADBAC7">;</span></span>
+<span data-line=""><span style="color:#F47067">import</span><span style="color:#ADBAC7"> { CDK_STANDDARD_TEMPLATE_FILE_NAME } </span><span style="color:#F47067">from</span><span style="color:#96D0FF"> "./bootstrap"</span><span style="color:#ADBAC7">;</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#F47067">const</span><span style="color:#6CB6FF"> resultCdkStandardTemplate</span><span style="color:#F47067"> =</span><span style="color:#DCBDFB"> execSync</span><span style="color:#ADBAC7">(</span></span>
+<span data-line=""><span style="color:#96D0FF">  "pnpm exec cdk bootstrap --show-template"</span><span style="color:#ADBAC7">,</span></span>
+<span data-line=""><span style="color:#ADBAC7">  {</span></span>
+<span data-line=""><span style="color:#ADBAC7">    encoding: </span><span style="color:#96D0FF">"utf8"</span><span style="color:#ADBAC7">,</span></span>
+<span data-line=""><span style="color:#ADBAC7">  },</span></span>
+<span data-line=""><span style="color:#ADBAC7">);</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#F47067">const</span><span style="color:#6CB6FF"> generatedDir</span><span style="color:#F47067"> =</span><span style="color:#DCBDFB"> join</span><span style="color:#ADBAC7">(</span><span style="color:#F47067">import</span><span style="color:#ADBAC7">.</span><span style="color:#6CB6FF">meta</span><span style="color:#ADBAC7">.dirname, </span><span style="color:#96D0FF">".."</span><span style="color:#ADBAC7">, </span><span style="color:#96D0FF">"generated"</span><span style="color:#ADBAC7">);</span></span>
+<span data-line=""><span style="color:#DCBDFB">mkdirSync</span><span style="color:#ADBAC7">(generatedDir, { recursive: </span><span style="color:#6CB6FF">true</span><span style="color:#ADBAC7"> });</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#DCBDFB">writeFileSync</span><span style="color:#ADBAC7">(</span></span>
+<span data-line=""><span style="color:#DCBDFB">  join</span><span style="color:#ADBAC7">(generatedDir, </span><span style="color:#6CB6FF">CDK_STANDDARD_TEMPLATE_FILE_NAME</span><span style="color:#ADBAC7">),</span></span>
+<span data-line=""><span style="color:#ADBAC7">  resultCdkStandardTemplate,</span></span>
+<span data-line=""><span style="color:#ADBAC7">);</span></span><button type="button" title="Copy code" aria-label="Copy code" data="import { execSync } from &#x22;node:child_process&#x22;;
+import { mkdirSync, writeFileSync } from &#x22;node:fs&#x22;;
+import { join } from &#x22;node:path&#x22;;
+import { CDK_STANDDARD_TEMPLATE_FILE_NAME } from &#x22;./bootstrap&#x22;;
+
+const resultCdkStandardTemplate = execSync(
+  &#x22;pnpm exec cdk bootstrap --show-template&#x22;,
+  {
+    encoding: &#x22;utf8&#x22;,
+  },
+);
+
+const generatedDir = join(import.meta.dirname, &#x22;..&#x22;, &#x22;generated&#x22;);
+mkdirSync(generatedDir, { recursive: true });
+
+writeFileSync(
+  join(generatedDir, CDK_STANDDARD_TEMPLATE_FILE_NAME),
+  resultCdkStandardTemplate,
+);" class="rehype-pretty-copy" onclick="navigator.clipboard.writeText(this.attributes.data.value);this.classList.add(&#x27;rehype-pretty-copied&#x27;);window.setTimeout(() => this.classList.remove(&#x27;rehype-pretty-copied&#x27;), 2500);"><span class="ready"></span><span class="success"></span></button><style>:root {--copy-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Cpath fill='%23adadad' d='M16.187 9.5H12.25a1.75 1.75 0 0 0-1.75 1.75v28.5c0 .967.784 1.75 1.75 1.75h23.5a1.75 1.75 0 0 0 1.75-1.75v-28.5a1.75 1.75 0 0 0-1.75-1.75h-3.937a4.25 4.25 0 0 1-4.063 3h-7.5a4.25 4.25 0 0 1-4.063-3M31.813 7h3.937A4.25 4.25 0 0 1 40 11.25v28.5A4.25 4.25 0 0 1 35.75 44h-23.5A4.25 4.25 0 0 1 8 39.75v-28.5A4.25 4.25 0 0 1 12.25 7h3.937a4.25 4.25 0 0 1 4.063-3h7.5a4.25 4.25 0 0 1 4.063 3M18.5 8.25c0 .966.784 1.75 1.75 1.75h7.5a1.75 1.75 0 1 0 0-3.5h-7.5a1.75 1.75 0 0 0-1.75 1.75'/%3E%3C/svg%3E");--success-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%2366ff85' d='M9 16.17L5.53 12.7a.996.996 0 1 0-1.41 1.41l4.18 4.18c.39.39 1.02.39 1.41 0L20.29 7.71a.996.996 0 1 0-1.41-1.41z'/%3E%3C/svg%3E");}pre:has(code) {position: relative;}pre button.rehype-pretty-copy {right: 1px;padding: 0;width: 24px;height: 24px;display: flex;margin-top: 2px;margin-right: 8px;position: absolute;border-radius: 25%;backdrop-filter: blur(3px);& span {width: 100%;aspect-ratio: 1 / 1;}& .ready {background-image: var(--copy-icon);}& .success {display: none; background-image: var(--success-icon);}}&.rehype-pretty-copied {& .success {display: block;} & .ready {display: none;}}pre button.rehype-pretty-copy.rehype-pretty-copied {opacity: 1;& .ready { display: none; }& .success { display: block; }}</style></code></pre></figure>
+</details>
+<h3 id="customize-the-template">Customize the Template</h3>
+<p>Using a YAML parser, the standard template is loaded and modified to add the logging configuration to the staging bucket.</p>
+<p>The log bucket configuration is embedded into the template using the CloudFormation <code>Fn::ImportValue</code> function, which references the log bucket created earlier. This approach is necessary because there’s no way to pass the log bucket name as a parameter during the bootstrap process itself.</p>
+<details>
+<summary>Show template customization script</summary>
+<figure data-rehype-pretty-code-figure=""><pre style="background-color:#22272e;color:#adbac7" tabindex="0" data-language="typescript" data-theme="github-dark-dimmed"><code data-language="typescript" data-theme="github-dark-dimmed" style="display: grid;"><span data-line=""><span style="color:#F47067">import</span><span style="color:#ADBAC7"> { mkdirSync, readFileSync, writeFileSync } </span><span style="color:#F47067">from</span><span style="color:#96D0FF"> "node:fs"</span><span style="color:#ADBAC7">;</span></span>
+<span data-line=""><span style="color:#F47067">import</span><span style="color:#ADBAC7"> { join } </span><span style="color:#F47067">from</span><span style="color:#96D0FF"> "node:path"</span><span style="color:#ADBAC7">;</span></span>
+<span data-line=""><span style="color:#F47067">import</span><span style="color:#ADBAC7"> { parse, stringify } </span><span style="color:#F47067">from</span><span style="color:#96D0FF"> "yaml"</span><span style="color:#ADBAC7">;</span></span>
+<span data-line=""><span style="color:#F47067">import</span><span style="color:#ADBAC7"> {</span></span>
+<span data-line=""><span style="color:#ADBAC7">  CDK_CUSTOMIZED_TEMPLATE_FILE_NAME,</span></span>
+<span data-line=""><span style="color:#ADBAC7">  CDK_STANDDARD_TEMPLATE_FILE_NAME,</span></span>
+<span data-line=""><span style="color:#ADBAC7">} </span><span style="color:#F47067">from</span><span style="color:#96D0FF"> "./bootstrap"</span><span style="color:#ADBAC7">;</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#F47067">const</span><span style="color:#6CB6FF"> cdkStandardTemplate</span><span style="color:#F47067"> =</span><span style="color:#DCBDFB"> readFileSync</span><span style="color:#ADBAC7">(</span></span>
+<span data-line=""><span style="color:#DCBDFB">  join</span><span style="color:#ADBAC7">(</span></span>
+<span data-line=""><span style="color:#F47067">    import</span><span style="color:#ADBAC7">.</span><span style="color:#6CB6FF">meta</span><span style="color:#ADBAC7">.dirname,</span></span>
+<span data-line=""><span style="color:#96D0FF">    ".."</span><span style="color:#ADBAC7">,</span></span>
+<span data-line=""><span style="color:#96D0FF">    "generated"</span><span style="color:#ADBAC7">,</span></span>
+<span data-line=""><span style="color:#6CB6FF">    CDK_STANDDARD_TEMPLATE_FILE_NAME</span><span style="color:#ADBAC7">,</span></span>
+<span data-line=""><span style="color:#ADBAC7">  ),</span></span>
+<span data-line=""><span style="color:#ADBAC7">  {</span></span>
+<span data-line=""><span style="color:#ADBAC7">    encoding: </span><span style="color:#96D0FF">"utf8"</span><span style="color:#ADBAC7">,</span></span>
+<span data-line=""><span style="color:#ADBAC7">  },</span></span>
+<span data-line=""><span style="color:#ADBAC7">);</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#F47067">const</span><span style="color:#6CB6FF"> cdkBootstrapTemplate</span><span style="color:#F47067"> =</span><span style="color:#DCBDFB"> parse</span><span style="color:#ADBAC7">(cdkStandardTemplate);</span></span>
+<span data-line=""><span style="color:#F47067">if</span><span style="color:#ADBAC7"> (</span><span style="color:#F47067">!</span><span style="color:#ADBAC7">cdkBootstrapTemplate) {</span></span>
+<span data-line=""><span style="color:#F47067">  throw</span><span style="color:#F47067"> new</span><span style="color:#DCBDFB"> Error</span><span style="color:#ADBAC7">(</span><span style="color:#96D0FF">"Failed to load cdk bootstrap template"</span><span style="color:#ADBAC7">);</span></span>
+<span data-line=""><span style="color:#ADBAC7">}</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#768390">// Add LoggingConfiguration to StagingBucket using Fn::ImportValue</span></span>
+<span data-line=""><span style="color:#F47067">if</span><span style="color:#ADBAC7"> (cdkBootstrapTemplate.Resources?.StagingBucket?.Properties) {</span></span>
+<span data-line=""><span style="color:#ADBAC7">  cdkBootstrapTemplate.Resources.StagingBucket.Properties.LoggingConfiguration </span><span style="color:#F47067">=</span></span>
+<span data-line=""><span style="color:#ADBAC7">    {</span></span>
+<span data-line=""><span style="color:#F69D50">      DestinationBucketName</span><span style="color:#ADBAC7">: { </span><span style="color:#96D0FF">"Fn::ImportValue"</span><span style="color:#ADBAC7">: </span><span style="color:#96D0FF">"log-bucket-name"</span><span style="color:#ADBAC7"> },</span></span>
+<span data-line=""><span style="color:#F69D50">      LogFilePrefix</span><span style="color:#ADBAC7">: </span><span style="color:#96D0FF">"staging-bucket-logs/"</span><span style="color:#ADBAC7">,</span></span>
+<span data-line=""><span style="color:#ADBAC7">    };</span></span>
+<span data-line=""><span style="color:#ADBAC7">}</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#F47067">const</span><span style="color:#6CB6FF"> generatedDir</span><span style="color:#F47067"> =</span><span style="color:#DCBDFB"> join</span><span style="color:#ADBAC7">(</span><span style="color:#F47067">import</span><span style="color:#ADBAC7">.</span><span style="color:#6CB6FF">meta</span><span style="color:#ADBAC7">.dirname, </span><span style="color:#96D0FF">".."</span><span style="color:#ADBAC7">, </span><span style="color:#96D0FF">"generated"</span><span style="color:#ADBAC7">);</span></span>
+<span data-line=""><span style="color:#DCBDFB">mkdirSync</span><span style="color:#ADBAC7">(generatedDir, { recursive: </span><span style="color:#6CB6FF">true</span><span style="color:#ADBAC7"> });</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#DCBDFB">writeFileSync</span><span style="color:#ADBAC7">(</span></span>
+<span data-line=""><span style="color:#DCBDFB">  join</span><span style="color:#ADBAC7">(generatedDir, </span><span style="color:#6CB6FF">CDK_CUSTOMIZED_TEMPLATE_FILE_NAME</span><span style="color:#ADBAC7">),</span></span>
+<span data-line=""><span style="color:#DCBDFB">  stringify</span><span style="color:#ADBAC7">(cdkBootstrapTemplate),</span></span>
+<span data-line=""><span style="color:#ADBAC7">);</span></span><button type="button" title="Copy code" aria-label="Copy code" data="import { mkdirSync, readFileSync, writeFileSync } from &#x22;node:fs&#x22;;
+import { join } from &#x22;node:path&#x22;;
+import { parse, stringify } from &#x22;yaml&#x22;;
+import {
+  CDK_CUSTOMIZED_TEMPLATE_FILE_NAME,
+  CDK_STANDDARD_TEMPLATE_FILE_NAME,
+} from &#x22;./bootstrap&#x22;;
+
+const cdkStandardTemplate = readFileSync(
+  join(
+    import.meta.dirname,
+    &#x22;..&#x22;,
+    &#x22;generated&#x22;,
+    CDK_STANDDARD_TEMPLATE_FILE_NAME,
+  ),
+  {
+    encoding: &#x22;utf8&#x22;,
+  },
+);
+
+const cdkBootstrapTemplate = parse(cdkStandardTemplate);
+if (!cdkBootstrapTemplate) {
+  throw new Error(&#x22;Failed to load cdk bootstrap template&#x22;);
+}
+
+// Add LoggingConfiguration to StagingBucket using Fn::ImportValue
+if (cdkBootstrapTemplate.Resources?.StagingBucket?.Properties) {
+  cdkBootstrapTemplate.Resources.StagingBucket.Properties.LoggingConfiguration =
+    {
+      DestinationBucketName: { &#x22;Fn::ImportValue&#x22;: &#x22;log-bucket-name&#x22; },
+      LogFilePrefix: &#x22;staging-bucket-logs/&#x22;,
+    };
+}
+
+const generatedDir = join(import.meta.dirname, &#x22;..&#x22;, &#x22;generated&#x22;);
+mkdirSync(generatedDir, { recursive: true });
+
+writeFileSync(
+  join(generatedDir, CDK_CUSTOMIZED_TEMPLATE_FILE_NAME),
+  stringify(cdkBootstrapTemplate),
+);" class="rehype-pretty-copy" onclick="navigator.clipboard.writeText(this.attributes.data.value);this.classList.add(&#x27;rehype-pretty-copied&#x27;);window.setTimeout(() => this.classList.remove(&#x27;rehype-pretty-copied&#x27;), 2500);"><span class="ready"></span><span class="success"></span></button><style>:root {--copy-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Cpath fill='%23adadad' d='M16.187 9.5H12.25a1.75 1.75 0 0 0-1.75 1.75v28.5c0 .967.784 1.75 1.75 1.75h23.5a1.75 1.75 0 0 0 1.75-1.75v-28.5a1.75 1.75 0 0 0-1.75-1.75h-3.937a4.25 4.25 0 0 1-4.063 3h-7.5a4.25 4.25 0 0 1-4.063-3M31.813 7h3.937A4.25 4.25 0 0 1 40 11.25v28.5A4.25 4.25 0 0 1 35.75 44h-23.5A4.25 4.25 0 0 1 8 39.75v-28.5A4.25 4.25 0 0 1 12.25 7h3.937a4.25 4.25 0 0 1 4.063-3h7.5a4.25 4.25 0 0 1 4.063 3M18.5 8.25c0 .966.784 1.75 1.75 1.75h7.5a1.75 1.75 0 1 0 0-3.5h-7.5a1.75 1.75 0 0 0-1.75 1.75'/%3E%3C/svg%3E");--success-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%2366ff85' d='M9 16.17L5.53 12.7a.996.996 0 1 0-1.41 1.41l4.18 4.18c.39.39 1.02.39 1.41 0L20.29 7.71a.996.996 0 1 0-1.41-1.41z'/%3E%3C/svg%3E");}pre:has(code) {position: relative;}pre button.rehype-pretty-copy {right: 1px;padding: 0;width: 24px;height: 24px;display: flex;margin-top: 2px;margin-right: 8px;position: absolute;border-radius: 25%;backdrop-filter: blur(3px);& span {width: 100%;aspect-ratio: 1 / 1;}& .ready {background-image: var(--copy-icon);}& .success {display: none; background-image: var(--success-icon);}}&.rehype-pretty-copied {& .success {display: block;} & .ready {display: none;}}pre button.rehype-pretty-copy.rehype-pretty-copied {opacity: 1;& .ready { display: none; }& .success { display: block; }}</style></code></pre></figure>
+</details>
+<h2 id="bootstrap-with-the-customized-template">Bootstrap with the Customized Template</h2>
+<p>Finally, execute the CDK bootstrap process with the customized template using the Toolkit library.</p>
+<p>Since the KMS key was created via CloudFormation, its ID must be retrieved using the CloudFormation Stack Outputs. The script:</p>
+<ol>
+<li>Extracts environments (account/region pairs) from the CDK app</li>
+<li>Retrieves the KMS key ID for each region from CloudFormation outputs</li>
+<li>Passes the KMS key ID as a parameter to the bootstrap process</li>
+</ol>
+<p>Note that the log bucket configuration is already embedded in the customized template via <code>Fn::ImportValue</code>, while the KMS key ID is passed as a parameter.</p>
+<details>
+<summary>Show bootstrap script</summary>
+<figure data-rehype-pretty-code-figure=""><pre style="background-color:#22272e;color:#adbac7" tabindex="0" data-language="typescript" data-theme="github-dark-dimmed"><code data-language="typescript" data-theme="github-dark-dimmed" style="display: grid;"><span data-line=""><span style="color:#F47067">import</span><span style="color:#ADBAC7"> {</span></span>
+<span data-line=""><span style="color:#ADBAC7">  BootstrapEnvironments,</span></span>
+<span data-line=""><span style="color:#ADBAC7">  BootstrapStackParameters,</span></span>
+<span data-line=""><span style="color:#ADBAC7">  Toolkit,</span></span>
+<span data-line=""><span style="color:#ADBAC7">} </span><span style="color:#F47067">from</span><span style="color:#96D0FF"> "@aws-cdk/toolkit-lib"</span><span style="color:#ADBAC7">;</span></span>
+<span data-line=""><span style="color:#F47067">import</span><span style="color:#ADBAC7"> {</span></span>
+<span data-line=""><span style="color:#ADBAC7">  CloudFormationClient,</span></span>
+<span data-line=""><span style="color:#ADBAC7">  DescribeStacksCommand,</span></span>
+<span data-line=""><span style="color:#ADBAC7">} </span><span style="color:#F47067">from</span><span style="color:#96D0FF"> "@aws-sdk/client-cloudformation"</span><span style="color:#ADBAC7">;</span></span>
+<span data-line=""><span style="color:#F47067">import</span><span style="color:#ADBAC7"> path </span><span style="color:#F47067">from</span><span style="color:#96D0FF"> "node:path"</span><span style="color:#ADBAC7">;</span></span>
+<span data-line=""><span style="color:#F47067">import</span><span style="color:#ADBAC7"> { join } </span><span style="color:#F47067">from</span><span style="color:#96D0FF"> "node:path"</span><span style="color:#ADBAC7">;</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#F47067">export</span><span style="color:#F47067"> const</span><span style="color:#6CB6FF"> CDK_STANDDARD_TEMPLATE_FILE_NAME</span><span style="color:#F47067"> =</span></span>
+<span data-line=""><span style="color:#96D0FF">  "resultCdkStandardTemplate.yaml"</span><span style="color:#ADBAC7">;</span></span>
+<span data-line=""><span style="color:#F47067">export</span><span style="color:#F47067"> const</span><span style="color:#6CB6FF"> CDK_CUSTOMIZED_TEMPLATE_FILE_NAME</span><span style="color:#F47067"> =</span></span>
+<span data-line=""><span style="color:#96D0FF">  "resultCdkCustomizedTemplate.yaml"</span><span style="color:#ADBAC7">;</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#F47067">const</span><span style="color:#6CB6FF"> toolkit</span><span style="color:#F47067"> =</span><span style="color:#F47067"> new</span><span style="color:#DCBDFB"> Toolkit</span><span style="color:#ADBAC7">();</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#F47067">const</span><span style="color:#6CB6FF"> templateFilePath</span><span style="color:#F47067"> =</span><span style="color:#DCBDFB"> join</span><span style="color:#ADBAC7">(</span></span>
+<span data-line=""><span style="color:#F47067">  import</span><span style="color:#ADBAC7">.</span><span style="color:#6CB6FF">meta</span><span style="color:#ADBAC7">.dirname,</span></span>
+<span data-line=""><span style="color:#96D0FF">  ".."</span><span style="color:#ADBAC7">,</span></span>
+<span data-line=""><span style="color:#96D0FF">  "generated"</span><span style="color:#ADBAC7">,</span></span>
+<span data-line=""><span style="color:#96D0FF">  "resultCdkCustomizedTemplate.yaml"</span><span style="color:#ADBAC7">,</span></span>
+<span data-line=""><span style="color:#ADBAC7">);</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#F47067">const</span><span style="color:#6CB6FF"> appPath</span><span style="color:#F47067"> =</span><span style="color:#ADBAC7"> path.</span><span style="color:#DCBDFB">join</span><span style="color:#ADBAC7">(</span><span style="color:#F47067">import</span><span style="color:#ADBAC7">.</span><span style="color:#6CB6FF">meta</span><span style="color:#ADBAC7">.dirname, </span><span style="color:#96D0FF">"../../bin/app.ts"</span><span style="color:#ADBAC7">);</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#F47067">const</span><span style="color:#6CB6FF"> cloudAssemblySource</span><span style="color:#F47067"> =</span><span style="color:#F47067"> await</span><span style="color:#ADBAC7"> toolkit.</span><span style="color:#DCBDFB">fromCdkApp</span><span style="color:#ADBAC7">(</span><span style="color:#96D0FF">`pnpx tsx ${</span><span style="color:#ADBAC7">appPath</span><span style="color:#96D0FF">}`</span><span style="color:#ADBAC7">);</span></span>
+<span data-line=""><span style="color:#768390">// const environments: BootstrapEnvironments =</span></span>
+<span data-line=""><span style="color:#768390">//   BootstrapEnvironments.fromCloudAssemblySource(cloudAssemblySource);</span></span>
+<span data-line=""><span style="color:#F47067">const</span><span style="color:#6CB6FF"> cloudAssembly</span><span style="color:#F47067"> =</span><span style="color:#F47067"> await</span><span style="color:#ADBAC7"> toolkit.</span><span style="color:#DCBDFB">synth</span><span style="color:#ADBAC7">(cloudAssemblySource);</span></span>
+<span data-line=""><span style="color:#F47067">const</span><span style="color:#6CB6FF"> list</span><span style="color:#F47067"> =</span><span style="color:#F47067"> await</span><span style="color:#ADBAC7"> toolkit.</span><span style="color:#DCBDFB">list</span><span style="color:#ADBAC7">(cloudAssembly);</span></span>
+<span data-line=""><span style="color:#F47067">const</span><span style="color:#6CB6FF"> environmentsFromApp</span><span style="color:#F47067"> =</span><span style="color:#ADBAC7"> list.</span><span style="color:#DCBDFB">map</span><span style="color:#ADBAC7">((</span><span style="color:#F69D50">stack</span><span style="color:#ADBAC7">) </span><span style="color:#F47067">=></span><span style="color:#ADBAC7"> {</span></span>
+<span data-line=""><span style="color:#F47067">  return</span><span style="color:#ADBAC7"> {</span></span>
+<span data-line=""><span style="color:#ADBAC7">    account: stack.environment.account,</span></span>
+<span data-line=""><span style="color:#ADBAC7">    region: stack.environment.region,</span></span>
+<span data-line=""><span style="color:#ADBAC7">  };</span></span>
+<span data-line=""><span style="color:#ADBAC7">});</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#F47067">for</span><span style="color:#ADBAC7"> (</span><span style="color:#F47067">const</span><span style="color:#6CB6FF"> environmentFromApp</span><span style="color:#F47067"> of</span><span style="color:#ADBAC7"> environmentsFromApp) {</span></span>
+<span data-line=""><span style="color:#768390">  // Get KMS Key ID from stack output</span></span>
+<span data-line=""><span style="color:#F47067">  const</span><span style="color:#6CB6FF"> cfnClient</span><span style="color:#F47067"> =</span><span style="color:#F47067"> new</span><span style="color:#DCBDFB"> CloudFormationClient</span><span style="color:#ADBAC7">({</span></span>
+<span data-line=""><span style="color:#ADBAC7">    region: environmentFromApp.region,</span></span>
+<span data-line=""><span style="color:#ADBAC7">  });</span></span>
+<span data-line=""><span style="color:#F47067">  const</span><span style="color:#6CB6FF"> describeStacksResponse</span><span style="color:#F47067"> =</span><span style="color:#F47067"> await</span><span style="color:#ADBAC7"> cfnClient.</span><span style="color:#DCBDFB">send</span><span style="color:#ADBAC7">(</span></span>
+<span data-line=""><span style="color:#F47067">    new</span><span style="color:#DCBDFB"> DescribeStacksCommand</span><span style="color:#ADBAC7">({</span></span>
+<span data-line=""><span style="color:#ADBAC7">      StackName: </span><span style="color:#96D0FF">"cdk-bootstrap-kms-key"</span><span style="color:#ADBAC7">,</span></span>
+<span data-line=""><span style="color:#ADBAC7">    }),</span></span>
+<span data-line=""><span style="color:#ADBAC7">  );</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#F47067">  const</span><span style="color:#6CB6FF"> kmsKeyOutput</span><span style="color:#F47067"> =</span><span style="color:#ADBAC7"> describeStacksResponse.Stacks?.[</span><span style="color:#6CB6FF">0</span><span style="color:#ADBAC7">]?.Outputs?.</span><span style="color:#DCBDFB">find</span><span style="color:#ADBAC7">(</span></span>
+<span data-line=""><span style="color:#ADBAC7">    (</span><span style="color:#F69D50">output</span><span style="color:#ADBAC7">) </span><span style="color:#F47067">=></span><span style="color:#ADBAC7"> output.ExportName </span><span style="color:#F47067">===</span><span style="color:#96D0FF"> "cdk-bootstrap-kms-key-id"</span><span style="color:#ADBAC7">,</span></span>
+<span data-line=""><span style="color:#ADBAC7">  );</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#F47067">  const</span><span style="color:#6CB6FF"> kmsKeyId</span><span style="color:#F47067"> =</span><span style="color:#ADBAC7"> kmsKeyOutput?.OutputValue;</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#F47067">  const</span><span style="color:#6CB6FF"> environments</span><span style="color:#F47067">:</span><span style="color:#F69D50"> BootstrapEnvironments</span><span style="color:#F47067"> =</span><span style="color:#ADBAC7"> BootstrapEnvironments.</span><span style="color:#DCBDFB">fromList</span><span style="color:#ADBAC7">([</span></span>
+<span data-line=""><span style="color:#96D0FF">    `aws://${</span><span style="color:#ADBAC7">environmentFromApp</span><span style="color:#96D0FF">.</span><span style="color:#ADBAC7">account</span><span style="color:#96D0FF">}/${</span><span style="color:#ADBAC7">environmentFromApp</span><span style="color:#96D0FF">.</span><span style="color:#ADBAC7">region</span><span style="color:#96D0FF">}`</span><span style="color:#ADBAC7">,</span></span>
+<span data-line=""><span style="color:#ADBAC7">  ]);</span></span>
+<span data-line=""><span style="color:#ADBAC7">  console.</span><span style="color:#DCBDFB">log</span><span style="color:#ADBAC7">(</span></span>
+<span data-line=""><span style="color:#96D0FF">    `Bootstrapping environment ${</span><span style="color:#ADBAC7">environmentFromApp</span><span style="color:#96D0FF">.</span><span style="color:#ADBAC7">account</span><span style="color:#96D0FF">}/${</span><span style="color:#ADBAC7">environmentFromApp</span><span style="color:#96D0FF">.</span><span style="color:#ADBAC7">region</span><span style="color:#96D0FF">} with KMS Key ID: ${</span><span style="color:#ADBAC7">kmsKeyId</span><span style="color:#96D0FF">}`</span><span style="color:#ADBAC7">,</span></span>
+<span data-line=""><span style="color:#ADBAC7">  );</span></span>
+<span data-line=""><span style="color:#F47067">  await</span><span style="color:#ADBAC7"> toolkit.</span><span style="color:#DCBDFB">bootstrap</span><span style="color:#ADBAC7">(environments, {</span></span>
+<span data-line=""><span style="color:#ADBAC7">    parameters: {</span></span>
+<span data-line=""><span style="color:#ADBAC7">      parameters: {</span></span>
+<span data-line=""><span style="color:#ADBAC7">        kmsKeyId,</span></span>
+<span data-line=""><span style="color:#ADBAC7">      },</span></span>
+<span data-line=""><span style="color:#ADBAC7">      keepExistingParameters: </span><span style="color:#6CB6FF">true</span><span style="color:#ADBAC7">,</span></span>
+<span data-line=""><span style="color:#ADBAC7">    },</span></span>
+<span data-line=""><span style="color:#ADBAC7">    source: {</span></span>
+<span data-line=""><span style="color:#ADBAC7">      source: </span><span style="color:#96D0FF">"custom"</span><span style="color:#ADBAC7">,</span></span>
+<span data-line=""><span style="color:#ADBAC7">      templateFile: templateFilePath,</span></span>
+<span data-line=""><span style="color:#ADBAC7">    },</span></span>
+<span data-line=""><span style="color:#ADBAC7">  });</span></span>
+<span data-line=""><span style="color:#ADBAC7">}</span></span><button type="button" title="Copy code" aria-label="Copy code" data="import {
+  BootstrapEnvironments,
+  BootstrapStackParameters,
+  Toolkit,
+} from &#x22;@aws-cdk/toolkit-lib&#x22;;
+import {
+  CloudFormationClient,
+  DescribeStacksCommand,
+} from &#x22;@aws-sdk/client-cloudformation&#x22;;
+import path from &#x22;node:path&#x22;;
+import { join } from &#x22;node:path&#x22;;
+
+export const CDK_STANDDARD_TEMPLATE_FILE_NAME =
+  &#x22;resultCdkStandardTemplate.yaml&#x22;;
+export const CDK_CUSTOMIZED_TEMPLATE_FILE_NAME =
+  &#x22;resultCdkCustomizedTemplate.yaml&#x22;;
+
+const toolkit = new Toolkit();
+
+const templateFilePath = join(
+  import.meta.dirname,
+  &#x22;..&#x22;,
+  &#x22;generated&#x22;,
+  &#x22;resultCdkCustomizedTemplate.yaml&#x22;,
+);
+
+const appPath = path.join(import.meta.dirname, &#x22;../../bin/app.ts&#x22;);
+
+const cloudAssemblySource = await toolkit.fromCdkApp(&#x60;pnpx tsx ${appPath}&#x60;);
+// const environments: BootstrapEnvironments =
+//   BootstrapEnvironments.fromCloudAssemblySource(cloudAssemblySource);
+const cloudAssembly = await toolkit.synth(cloudAssemblySource);
+const list = await toolkit.list(cloudAssembly);
+const environmentsFromApp = list.map((stack) => {
+  return {
+    account: stack.environment.account,
+    region: stack.environment.region,
+  };
+});
+
+for (const environmentFromApp of environmentsFromApp) {
+  // Get KMS Key ID from stack output
+  const cfnClient = new CloudFormationClient({
+    region: environmentFromApp.region,
+  });
+  const describeStacksResponse = await cfnClient.send(
+    new DescribeStacksCommand({
+      StackName: &#x22;cdk-bootstrap-kms-key&#x22;,
+    }),
+  );
+
+  const kmsKeyOutput = describeStacksResponse.Stacks?.[0]?.Outputs?.find(
+    (output) => output.ExportName === &#x22;cdk-bootstrap-kms-key-id&#x22;,
+  );
+
+  const kmsKeyId = kmsKeyOutput?.OutputValue;
+
+  const environments: BootstrapEnvironments = BootstrapEnvironments.fromList([
+    &#x60;aws://${environmentFromApp.account}/${environmentFromApp.region}&#x60;,
+  ]);
+  console.log(
+    &#x60;Bootstrapping environment ${environmentFromApp.account}/${environmentFromApp.region} with KMS Key ID: ${kmsKeyId}&#x60;,
+  );
+  await toolkit.bootstrap(environments, {
+    parameters: {
+      parameters: {
+        kmsKeyId,
+      },
+      keepExistingParameters: true,
+    },
+    source: {
+      source: &#x22;custom&#x22;,
+      templateFile: templateFilePath,
+    },
+  });
+}" class="rehype-pretty-copy" onclick="navigator.clipboard.writeText(this.attributes.data.value);this.classList.add(&#x27;rehype-pretty-copied&#x27;);window.setTimeout(() => this.classList.remove(&#x27;rehype-pretty-copied&#x27;), 2500);"><span class="ready"></span><span class="success"></span></button><style>:root {--copy-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Cpath fill='%23adadad' d='M16.187 9.5H12.25a1.75 1.75 0 0 0-1.75 1.75v28.5c0 .967.784 1.75 1.75 1.75h23.5a1.75 1.75 0 0 0 1.75-1.75v-28.5a1.75 1.75 0 0 0-1.75-1.75h-3.937a4.25 4.25 0 0 1-4.063 3h-7.5a4.25 4.25 0 0 1-4.063-3M31.813 7h3.937A4.25 4.25 0 0 1 40 11.25v28.5A4.25 4.25 0 0 1 35.75 44h-23.5A4.25 4.25 0 0 1 8 39.75v-28.5A4.25 4.25 0 0 1 12.25 7h3.937a4.25 4.25 0 0 1 4.063-3h7.5a4.25 4.25 0 0 1 4.063 3M18.5 8.25c0 .966.784 1.75 1.75 1.75h7.5a1.75 1.75 0 1 0 0-3.5h-7.5a1.75 1.75 0 0 0-1.75 1.75'/%3E%3C/svg%3E");--success-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%2366ff85' d='M9 16.17L5.53 12.7a.996.996 0 1 0-1.41 1.41l4.18 4.18c.39.39 1.02.39 1.41 0L20.29 7.71a.996.996 0 1 0-1.41-1.41z'/%3E%3C/svg%3E");}pre:has(code) {position: relative;}pre button.rehype-pretty-copy {right: 1px;padding: 0;width: 24px;height: 24px;display: flex;margin-top: 2px;margin-right: 8px;position: absolute;border-radius: 25%;backdrop-filter: blur(3px);& span {width: 100%;aspect-ratio: 1 / 1;}& .ready {background-image: var(--copy-icon);}& .success {display: none; background-image: var(--success-icon);}}&.rehype-pretty-copied {& .success {display: block;} & .ready {display: none;}}pre button.rehype-pretty-copy.rehype-pretty-copied {opacity: 1;& .ready { display: none; }& .success { display: block; }}</style></code></pre></figure>
+</details>
+<p>After executing this script, the staging bucket will have:</p>
+<p><strong>Custom KMS encryption:</strong>
+<img alt="staging-bucket-custom-kms-encrypted" loading="lazy" decoding="async" fetchpriority="auto" width="1252" height="526" src="/_astro/staging-bucket-custom-kms-encrypted.Di-XPAsJ_SsIFE.webp" ></p>
+<p><strong>Server access logging configuration:</strong>
+<img alt="staging-bucket-server-access-logging" loading="lazy" decoding="async" fetchpriority="auto" width="1579" height="291" src="/_astro/staging-bucket-server-access-logging.Ci4OmiR0_22Hdxd.webp" ></p>
+<h2 id="conclusion">Conclusion</h2>
+<p>With a customized CDK bootstrap template, you can extend the bootstrap resources beyond what’s possible with standard parameters. The CDK Toolkit library is an excellent tool for orchestrating the entire workflow in TypeScript, from extracting environments to deploying customized bootstrap stacks.</p>
+<p>This approach enables:</p>
+<ul>
+<li>Advanced security configurations like custom KMS encryption and access logging</li>
+<li>Consistent validation using cdk-nag across both CDK and CloudFormation resources</li>
+<li>Type-safe, programmatic control over the bootstrap process</li>
+<li>Multi-region deployments with region-specific resource management</li>
+</ul>
+<h2 id="sources-and-references">Sources and References</h2>
+<ul>
+<li><a href="https://docs.aws.amazon.com/cdk/v2/guide/bootstrapping-customizing.html">AWS CDK Bootstrapping - Customizing</a></li>
+<li><a href="https://docs.aws.amazon.com/cdk/api/toolkit-lib/">AWS CDK Toolkit Library</a></li>
+<li><a href="https://github.com/cdklabs/cdk-nag">cdk-nag GitHub Repository</a></li>
+<li><a href="https://github.com/cdklabs/cdk-nag?tab=readme-ov-file#using-on-cloudformation-templates">Using cdk-nag on CloudFormation Templates</a></li>
+</ul> <section class="giscus mx-auto mt-10 w-full"></section> <script src="https://giscus.app/client.js" data-repo="JohannesKonings/JohannesKonings.github.io" data-repo-id="MDEwOlJlcG9zaXRvcnkyODQyNTQyNjc=" data-category="Blog Post Comments" data-category-id="DIC_kwDOEPFgO84CgLJN" data-mapping="url" data-strict="0" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="bottom" data-theme="preferred_color_scheme" data-lang="en" data-loading="lazy" crossorigin="anonymous" async></script> </article> <div class="grid grid-cols-1 sm:grid-cols-2 gap-4"> <a href="/blog/2026-01-08-tanstack-start-aws-db-multiple-entities-sse" class="group p-4 gap-3 flex items-center border rounded-lg hover:bg-black/5 hover:dark:bg-white/10 border-black/15 dark:border-white/20 blend"> <div class="order-2 w-full h-full group-hover:text-black group-hover:dark:text-white blend"> <div class="flex flex-wrap gap-2"> <div class="text-sm uppercase">Prev</div> </div> <div class="font-semibold mt-3 text-black dark:text-white"> Using Server Sent Events (SSE) to sync Tanstack Db from AWS DynamoDB </div> </div> <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="order-1 stroke-current group-hover:stroke-black group-hover:dark:stroke-white rotate-180"> <line x1="5" y1="12" x2="19" y2="12" class="scale-x-0 group-hover:scale-x-100 translate-x-4 group-hover:translate-x-1 transition-all duration-300 ease-in-out"></line> <polyline points="12 5 19 12 12 19" class="translate-x-0 group-hover:translate-x-1 transition-all duration-300 ease-in-out"></polyline> </svg> </a> <a href="/blog/2025-12-27-tanstack-start-aws-db-multiple-entities" class="group p-4 gap-3 flex items-center border rounded-lg hover:bg-black/5 hover:dark:bg-white/10 border-black/15 dark:border-white/20 transition-colors duration-300 ease-in-out"> <div class="w-full h-full text-right group-hover:text-black group-hover:dark:text-white blend"> <div class="text-sm uppercase">Next</div> <div class="font-semibold mt-3 text-black dark:text-white"> Simple example of TanStack DB with DynamoDB on AWS with multiple entities </div> </div> <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="stroke-current group-hover:stroke-black group-hover:dark:stroke-white"> <line x1="5" y1="12" x2="19" y2="12" class="scale-x-0 group-hover:scale-x-100 translate-x-4 group-hover:translate-x-1 transition-all duration-300 ease-in-out"></line> <polyline points="12 5 19 12 12 19" class="translate-x-0 group-hover:translate-x-1 transition-all duration-300 ease-in-out"></polyline> </svg> </a> </div> </div> </div>   </div> </div>  </main> <footer class="relative bg-white dark:bg-black"> <div class="animate"> <section class="py-5"> <div class="w-full h-full mx-auto px-5 max-w-(--breakpoint-md)">  <div class="flex items-center justify-center sm:justify-end"> <button id="back-to-top" aria-label="Back to top of page" class="group flex w-fit p-1.5 gap-1.5 text-sm items-center border rounded hover:bg-black/5 hover:dark:bg-white/10 border-black/15 dark:border-white/20 transition-colors duration-300 ease-in-out"> <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="stroke-current group-hover:stroke-black group-hover:dark:stroke-white rotate-90"> <line x1="19" y1="12" x2="5" y2="12" class="scale-x-0 group-hover:scale-x-100 translate-x-3 group-hover:translate-x-0 transition-all duration-300 ease-in-out"></line> <polyline points="12 19 5 12 12 5" class="translate-x-1 group-hover:translate-x-0 transition-all duration-300 ease-in-out"></polyline> </svg> <div class="w-full group-hover:text-black group-hover:dark:text-white transition-colors duration-300 ease-in-out">
+Back to top
+</div> </button> </div>  </div> </section> <section class="py-5 overflow-hidden whitespace-nowrap border-t border-black/10 dark:border-white/25"> <div class="w-full h-full mx-auto px-5 max-w-(--breakpoint-md)">  <div class="h-full grid grid-cols-1 sm:grid-cols-2 gap-3"> <div class="order-2 sm:order-1 flex flex-col items-center justify-center sm:items-start"> <div class="legal"> <a href="/legal/terms" class="text-current hover:text-black dark:hover:text-white transition-colors duration-300 ease-in-out">
+Terms
+</a> |
+<a href="/legal/privacy" class="text-current hover:text-black dark:hover:text-white transition-colors duration-300 ease-in-out">
+Privacy
+</a> </div> <div class="text-sm mt-2">&copy; 2026 | All rights reserved</div> </div> <div class="order-1 sm:order-2 flex justify-center sm:justify-end"> <div class="flex flex-wrap gap-1 items-center justify-center"> <a href="https://github.com/JohannesKonings/JohannesKonings.github.io" target="_blank" aria-label="GitHub repo" class="group size-10 rounded-full p-2 items-center justify-center hover:bg-black/5 dark:hover:bg-white/20 blend"> <svg class="size-full fill-current group-hover:fill-black group-hover:dark:fill-white blend"> <use href="/social.svg#github"></use> </svg> </a> </div> </div> </div>  </div> </section> </div> </footer> <script>
+  function goBackToTop(event) {
+    event.preventDefault();
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  }
+
+  function inintializeBackToTop() {
+    const backToTop = document.getElementById("back-to-top");
+    backToTop?.addEventListener("click", goBackToTop);
+  }
+
+  document.addEventListener("astro:after-swap", inintializeBackToTop);
+  inintializeBackToTop();
+</script> </body></html>

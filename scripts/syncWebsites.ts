@@ -38,17 +38,6 @@ async function sync(from: string, to: string, pathPrefix: string) {
   }
 }
 
-const syncAstro = async () => {
-  const pathPrefix = "websites/astro/src/content";
-  await sync("_posts", "blog", pathPrefix);
-  await sync("_notes", "notes", pathPrefix);
-  await sync(
-    "_info/aws-sls-management-governance",
-    "infoSlsManagementGovernance",
-    pathPrefix,
-  );
-};
-
 const syncTanstack = async () => {
   const pathPrefix = "websites/tanstack/src/content";
   await sync("_posts", "blog", pathPrefix);
@@ -63,10 +52,7 @@ const syncTanstack = async () => {
 
 const website = process.argv[2];
 
-if (website === "astro") {
-  console.log("Syncing Astro");
-  await syncAstro();
-} else if (website === "tanstack") {
+if (website === "tanstack") {
   console.log("Synced Tanstack");
   await syncTanstack();
 } else {

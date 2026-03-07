@@ -13,7 +13,7 @@ This is the **foundational specification** that all website implementations must
 - Centralized content management from `_posts/` and `_notes/`
 - The `syncWebsites.ts` script operation
 - Critical guidelines for content editing
-- Multi-website architecture requirements
+- TanStack content sync requirements
 
 **⚠️ All developers must read this specification first.**
 
@@ -28,24 +28,13 @@ Specification for the TanStack Start-based website implementation:
 - Current implementation status (95% complete)
 - Architecture decisions and file structure
 
-### 📄 [website-astro.md](./website-astro.md)
-
-**Astro Website Implementation**
-
-Specification for the Astro-based website implementation:
-
-- Astro Content Collections integration
-- Performance and SEO requirements
-- Implementation blueprint (pending implementation)
-- Framework-specific considerations
-
 ## Important Guidelines
 
 ### Content Management
 
 - **NEVER edit content in `websites/*/src/content/` folders**
 - **ALWAYS edit content in root `_posts/` or `_notes/` directories**
-- Both websites share the same content sources
+- The TanStack website consumes the synced content copies
 - The sync system handles content distribution automatically
 
 ### Specification Updates

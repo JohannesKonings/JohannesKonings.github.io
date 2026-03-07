@@ -9,10 +9,8 @@
     "format:fix": "pnpm prettier --write .",
     "lint:check": "pnpm oxlint",
     "lint:fix": "pnpm oxlint --fix",
-    "dev:astro": "pnpm --filter astro dev",
     "dev:tanstack": "pnpm --filter tanstack dev",
     "demo:theme": "node websites/tanstack/scripts/theme-toggle-demo.mjs",
-    "build:astro": "pnpm --filter astro build",
     "build:tanstack": "pnpm --filter tanstack build",
     "verify:tanstack": "tsx scripts/verifyTanstack.ts",
     "tsc": "tsgo",
@@ -36,7 +34,6 @@
     "execa": "9.6.1",
     "knip": "5.84.1",
     "oxlint": "1.48.0",
-    "playwright": "1.58.2",
     "prettier": "3.8.1",
     "tsx": "4.21.0",
     "typescript": "5.9.3"
