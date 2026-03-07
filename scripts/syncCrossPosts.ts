@@ -57,15 +57,3 @@ const syncDevTo = async () => {
 // };
 
 await syncDevTo();
-
-// const website = process.argv[2];
-
-// if (website === "astro") {
-// 	console.log("Syncing Astro");
-// 	await syncAstro();
-// } else if (website === "tanstack") {
-// 	console.log("Synced Tanstack");
-// 	await syncTanstack();
-// } else {
-// 	console.error("Unknown website", website);
-// }

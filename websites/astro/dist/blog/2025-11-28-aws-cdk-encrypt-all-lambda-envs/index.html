@@ -1,0 +1,295 @@
+<!DOCTYPE html><html lang="en"> <head><script defer src="https://cloud.umami.is/script.js" data-website-id="ad18022d-5431-470e-909a-74a7882c97e2" data-domains="johanneskonings.dev"></script><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6554177261098317" crossorigin="anonymous"></script><!-- Global Metadata --><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" type="image/x-icon" href="/favicon.ico"><meta name="generator" content="Astro v5.16.5"><link rel="preload" href="/fonts/CascadiaMonoNF.woff2" as="font" type="font/woff2" crossorigin><link rel="preload" href="/fonts/CascadiaMonoNF-SemiBold.woff2" as="font" type="font/woff2" crossorigin><!-- Canonical URL --><link rel="canonical" href="https://johanneskonings.dev/blog/2025-11-28-aws-cdk-encrypt-all-lambda-envs/"><!-- Primary Meta Tags --><title>Encrypt All Lambda Environment Variables with AWS CDK Aspects/Mixins | Johannes Konings</title><meta name="title" content="Encrypt All Lambda Environment Variables with AWS CDK Aspects/Mixins | Johannes Konings"><meta name="description" content="A guide on how to encrypt all AWS Lambda environment variables using AWS CDK aspects/mixins. Also from third party libraries."><!-- Open Graph / Facebook --><meta property="og:type" content="website"><meta property="og:url" content="https://johanneskonings.dev/blog/2025-11-28-aws-cdk-encrypt-all-lambda-envs/"><meta property="og:title" content="Encrypt All Lambda Environment Variables with AWS CDK Aspects/Mixins | Johannes Konings"><meta property="og:description" content="A guide on how to encrypt all AWS Lambda environment variables using AWS CDK aspects/mixins. Also from third party libraries."><!-- Twitter --><meta property="twitter:card" content="summary_large_image"><meta property="twitter:url" content="https://johanneskonings.dev/blog/2025-11-28-aws-cdk-encrypt-all-lambda-envs/"><meta property="twitter:title" content="Encrypt All Lambda Environment Variables with AWS CDK Aspects/Mixins | Johannes Konings"><meta property="twitter:description" content="A guide on how to encrypt all AWS Lambda environment variables using AWS CDK aspects/mixins. Also from third party libraries."><meta property="og:image" content="https://johanneskonings.dev/_astro/cover-image.BmoDhVQH.png">
+  <meta property="twitter:image" content="https://johanneskonings.dev/open-graph.jpg"><!-- Sitemap --><link rel="sitemap" href="/sitemap-index.xml"><!-- RSS Feed --><link rel="alternate" type="application/rss+xml" title="Encrypt All Lambda Environment Variables with AWS CDK Aspects/Mixins | Johannes Konings" href="https://johanneskonings.dev/rss.xml"><!-- Global Scripts --><script src="/js/theme.js"></script><script src="/js/scroll.js"></script><script src="/js/animate.js"></script><!-- <ViewTransitions  /> --><script type="module">document.addEventListener("astro:before-swap",e=>[...e.newDocument.head.querySelectorAll('link[as="font"]')].forEach(o=>o.remove()));</script><link rel="stylesheet" href="/_astro/_slug_.BRrEunO4.css"></head> <body> <header id="header" class="fixed top-0 w-full h-16 z-50" data-astro-cid-3ef6ksr2> <div class="w-full h-full mx-auto px-5 max-w-(--breakpoint-md)">  <div class="relative h-full w-full" data-astro-cid-3ef6ksr2> <div class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2" data-astro-cid-3ef6ksr2> <nav class="hidden md:flex items-center justify-center text-sm gap-1" data-astro-cid-3ef6ksr2> <a href="/" class="h-8 rounded-full px-3 text-current flex items-center justify-center transition-colors duration-300 ease-in-out hover:bg-black/5 dark:hover:bg-white/20 hover:text-black dark:hover:text-white" data-astro-cid-3ef6ksr2> Home </a><a href="/blog" class="h-8 rounded-full px-3 flex items-center justify-center transition-colors duration-300 ease-in-out bg-black dark:bg-white text-white dark:text-black" data-astro-cid-3ef6ksr2> Blog </a><a href="/notes" class="h-8 rounded-full px-3 text-current flex items-center justify-center transition-colors duration-300 ease-in-out hover:bg-black/5 dark:hover:bg-white/20 hover:text-black dark:hover:text-white" data-astro-cid-3ef6ksr2> Notes </a> </nav> </div> <div class="buttons absolute right-0 top-1/2 -translate-y-1/2 flex gap-1" data-astro-cid-3ef6ksr2> <a href="/search" aria-label="Search blog posts and projects on Johannes Konings" class="hidden md:flex size-9 rounded-full p-2 items-center justify-center bg-transparent hover:bg-black/5 dark:hover:bg-white/20 stroke-current hover:stroke-black hover:dark:stroke-white border border-black/10 dark:border-white/25 transition-colors duration-300 ease-in-out" data-astro-cid-3ef6ksr2> <svg class="size-full" data-astro-cid-3ef6ksr2> <use href="/ui.svg#search" data-astro-cid-3ef6ksr2></use> </svg> </a> <a href="/rss.xml" target="_blank" aria-label="Rss feed for Johannes Konings" class="hidden md:flex size-9 rounded-full p-2 items-center justify-center bg-transparent hover:bg-black/5 dark:hover:bg-white/20 stroke-current hover:stroke-black hover:dark:stroke-white border border-black/10 dark:border-white/25 transition-colors duration-300 ease-in-out" data-astro-cid-3ef6ksr2> <svg class="size-full" data-astro-cid-3ef6ksr2> <use href="/ui.svg#rss" data-astro-cid-3ef6ksr2></use> </svg> </a> <button id="header-theme-button" aria-label="Toggle light and dark theme" class="hidden md:flex size-9 rounded-full p-2 items-center justify-center bg-transparent hover:bg-black/5 dark:hover:bg-white/20 stroke-current hover:stroke-black hover:dark:stroke-white border border-black/10 dark:border-white/25 transition-colors duration-300 ease-in-out" data-astro-cid-3ef6ksr2> <svg class="size-full block dark:hidden" data-astro-cid-3ef6ksr2> <use href="/ui.svg#sun" data-astro-cid-3ef6ksr2></use> </svg> <svg class="size-full hidden dark:block" data-astro-cid-3ef6ksr2> <use href="/ui.svg#moon" data-astro-cid-3ef6ksr2></use> </svg> </button> <button id="header-drawer-button" aria-label="Toggle drawer open and closed" class="flex md:hidden size-9 rounded-full p-2 items-center justify-center bg-transparent hover:bg-black/5 dark:hover:bg-white/20 stroke-current hover:stroke-black hover:dark:stroke-white border border-black/10 dark:border-white/25 transition-colors duration-300 ease-in-out" data-astro-cid-3ef6ksr2> <svg id="drawer-open" class="size-full" data-astro-cid-3ef6ksr2> <use href="/ui.svg#menu" data-astro-cid-3ef6ksr2></use> </svg> <svg id="drawer-close" class="size-full" data-astro-cid-3ef6ksr2> <use href="/ui.svg#x" data-astro-cid-3ef6ksr2></use> </svg> </button> </div> </div>  </div> </header>  <script>
+  function toggleDrawer() {
+    const drawer = document.getElementById("drawer");
+    const drawerButton = document.getElementById("header-drawer-button");
+    drawer?.classList.toggle("open");
+    drawerButton?.classList.toggle("open");
+  }
+
+  function initializeDrawerButton() {
+    const drawerButton = document.getElementById("header-drawer-button");
+    drawerButton?.addEventListener("click", toggleDrawer);
+  }
+
+  document.addEventListener("astro:after-swap", initializeDrawerButton);
+  initializeDrawerButton();
+</script> <div id="drawer" class="fixed inset-0 h-0 max-h-[50vh] z-40 overflow-hidden flex flex-col items-center justify-center md:hidden bg-neutral-100 dark:bg-neutral-900 transition-[height] duration-300 ease-in-out" data-astro-cid-hxtyo74s> <nav class="flex flex-col items-center space-y-2" data-astro-cid-hxtyo74s> <a href="/" class="flex items-center justify-center px-3 py-1 rounded-full text-current hover:text-black dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/20 transition-colors duration-300 ease-in-out" data-astro-cid-hxtyo74s> Home </a><a href="/blog" class="flex items-center justify-center px-3 py-1 rounded-full hover:text-black dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/20 transition-colors duration-300 ease-in-out pointer-events-none bg-black dark:bg-white text-white dark:text-black" data-astro-cid-hxtyo74s> Blog </a><a href="/notes" class="flex items-center justify-center px-3 py-1 rounded-full text-current hover:text-black dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/20 transition-colors duration-300 ease-in-out" data-astro-cid-hxtyo74s> Notes </a> </nav> <div class="flex gap-1 mt-5" data-astro-cid-hxtyo74s> <a href="/search" aria-label="Search blog posts and projects on Johannes Konings" class="size-9 rounded-full p-2 items-center justify-center bg-transparent hover:bg-black/5 dark:hover:bg-white/20 stroke-current hover:stroke-black hover:dark:stroke-white border border-black/10 dark:border-white/25 transition-colors duration-300 ease-in-out" data-astro-cid-hxtyo74s> <svg class="size-full" data-astro-cid-hxtyo74s> <use href="/ui.svg#search" data-astro-cid-hxtyo74s></use> </svg> </a> <a href="/rss.xml" target="_blank" aria-label="Rss feed for Johannes Konings" class="size-9 rounded-full p-2 items-center justify-center bg-transparent hover:bg-black/5 dark:hover:bg-white/20 stroke-current hover:stroke-black hover:dark:stroke-white border border-black/10 dark:border-white/25 transition-colors duration-300 ease-in-out" data-astro-cid-hxtyo74s> <svg class="size-full" data-astro-cid-hxtyo74s> <use href="/ui.svg#rss" data-astro-cid-hxtyo74s></use> </svg> </a> <button id="drawer-theme-button" aria-label="Toggle light and dark theme" class="size-9 rounded-full p-2 items-center justify-center bg-transparent hover:bg-black/5 dark:hover:bg-white/20 stroke-current hover:stroke-black hover:dark:stroke-white border border-black/10 dark:border-white/25 transition-colors duration-300 ease-in-out" data-astro-cid-hxtyo74s> <svg class="block dark:hidden size-full" data-astro-cid-hxtyo74s> <use href="/ui.svg#sun" data-astro-cid-hxtyo74s></use> </svg> <svg class="hidden dark:block size-full" data-astro-cid-hxtyo74s> <use href="/ui.svg#moon" data-astro-cid-hxtyo74s></use> </svg> </button> </div> </div>  <main>  <div class="pt-36 pb-5"> <div class="w-full h-full mx-auto px-5 max-w-(--breakpoint-md)">   <div class="animate"> <div> <a href="/blog" class="group w-fit p-1.5 gap-1.5 text-sm flex items-center border rounded hover:bg-black/5 hover:dark:bg-white/10 border-black/15 dark:border-white/20 transition-colors duration-300 ease-in-out"> <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="stroke-current group-hover:stroke-black group-hover:dark:stroke-white"> <line x1="19" y1="12" x2="5" y2="12" class="scale-x-0 group-hover:scale-x-100 translate-x-3 group-hover:translate-x-0 transition-all duration-300 ease-in-out"></line> <polyline points="12 19 5 12 12 5" class="translate-x-1 group-hover:translate-x-0 transition-all duration-300 ease-in-out"></polyline> </svg> <div class="w-full group-hover:text-black group-hover:dark:text-white transition-colors duration-300 ease-in-out">
+Back to blog </div> </a> <div class="flex flex-wrap text-sm uppercase mt-12 gap-3 opacity-75"> <div class="flex items-center gap-2"> <svg class="size-5 stroke-current"> <use href="/ui.svg#calendar"></use> </svg> Nov 28, 2025 </div> <div class="flex items-center gap-2"> <svg class="size-5 stroke-current"> <use href="/ui.svg#book-open"></use> </svg> 5 min read </div> </div> <div class="w-full h-auto mt-8 mb-8 rounded-lg shadow-lg overflow-hidden"> <img src="/_astro/cover-image.BmoDhVQH.png" alt="Cover Image" class="w-full h-auto"> </div> <h1 class="text-3xl font-semibold text-black dark:text-white mt-2"> Encrypt All Lambda Environment Variables with AWS CDK Aspects/Mixins </h1> <div class="mt-1 mb-8"> A guide on how to encrypt all AWS Lambda environment variables using AWS CDK aspects/mixins. Also from third party libraries. </div> <nav class="not-prose mb-2 p-4 bg-black/5 dark:bg-white/5 rounded-lg border border-black/10 dark:border-white/10"><div class="text-sm font-semibold mb-3 text-black dark:text-white">Table of Contents</div><ul class="space-y-2 text-sm"><li class=" transition-colors duration-200"><a href="#introduction" class="text-black/70 dark:text-white/70 hover:text-black dark:hover:text-white transition-colors duration-200">Introduction</a></li><li class=" transition-colors duration-200"><a href="#aspect-property-injection-or-mixin" class="text-black/70 dark:text-white/70 hover:text-black dark:hover:text-white transition-colors duration-200">Aspect, Property Injection or Mixin?</a></li><li class="ml-4 transition-colors duration-200"><a href="#implementation" class="text-black/70 dark:text-white/70 hover:text-black dark:hover:text-white transition-colors duration-200">Implementation</a></li><li class="ml-4 transition-colors duration-200"><a href="#aspect" class="text-black/70 dark:text-white/70 hover:text-black dark:hover:text-white transition-colors duration-200">Aspect</a></li><li class="ml-4 transition-colors duration-200"><a href="#property-injector" class="text-black/70 dark:text-white/70 hover:text-black dark:hover:text-white transition-colors duration-200">Property Injector</a></li><li class="ml-4 transition-colors duration-200"><a href="#mixin" class="text-black/70 dark:text-white/70 hover:text-black dark:hover:text-white transition-colors duration-200">Mixin</a></li><li class=" transition-colors duration-200"><a href="#conclusion" class="text-black/70 dark:text-white/70 hover:text-black dark:hover:text-white transition-colors duration-200">Conclusion</a></li><li class="ml-4 transition-colors duration-200"><a href="#which-approach-to-use" class="text-black/70 dark:text-white/70 hover:text-black dark:hover:text-white transition-colors duration-200">Which Approach to Use?</a></li><li class=" transition-colors duration-200"><a href="#sources" class="text-black/70 dark:text-white/70 hover:text-black dark:hover:text-white transition-colors duration-200">Sources</a></li></ul></nav> </div> </div>   </div> </div> <div class="flex-1 py-5"> <div class="w-full h-full mx-auto px-5 max-w-(--breakpoint-lg)">   <div class="animate"> <div> <article> <h2 id="introduction">Introduction</h2>
+<p>If you need to ensure that all AWS Lambda environment variables are encrypted with a customer-managed KMS key for compliance or security requirements, you can achieve this using AWS CDK aspects or mixins.</p>
+<p>While Lambda functions that you create directly can be configured with the <code>environmentEncryption</code> property, third-party libraries or construct libraries may create Lambda functions where you don’t have direct control over their configuration.</p>
+<p>In such cases, you can use aspects or mixins to enforce encryption on all Lambda functions in your CDK app, regardless of how they were created.</p>
+<h2 id="aspect-property-injection-or-mixin">Aspect, Property Injection or Mixin?</h2>
+<p><a href="https://docs.aws.amazon.com/cdk/v2/guide/aspects.html">Aspects</a> are a way to modify the CDK synth result on a L1 level after the constructs have been created. They are executed during the Prepare phase of the CDK lifecycle, after all constructs are created.</p>
+<p><a href="https://docs.aws.amazon.com/cdk/v2/guide/blueprints.html">Property Injection</a> is a way to modify the properties of L2 constructs before they are instantiated. Property injection happens during the Construct phase, at the time each construct is created.</p>
+<p><a href="https://github.com/aws/aws-cdk/blob/main/packages/%40aws-cdk/mixins-preview/README.md">Mixins</a> can be used to modify constructs at any level (L1, L2, or L3). They are executed immediately when applied, unlike Aspects which execute later during synthesis.</p>
+<h3 id="implementation">Implementation</h3>
+<p>The stack look like this:</p>
+<figure data-rehype-pretty-code-figure=""><pre style="background-color:#22272e;color:#adbac7" tabindex="0" data-language="typescript" data-theme="github-dark-dimmed"><code data-language="typescript" data-theme="github-dark-dimmed" style="display: grid;"><span data-line=""><span style="color:#F47067">export</span><span style="color:#F47067"> class</span><span style="color:#F69D50"> StackMain</span><span style="color:#F47067"> extends</span><span style="color:#6CB6FF"> Stack</span><span style="color:#ADBAC7"> {</span></span>
+<span data-line=""><span style="color:#F47067">  readonly</span><span style="color:#F69D50"> encryptionKey</span><span style="color:#F47067">:</span><span style="color:#F69D50"> Key</span><span style="color:#ADBAC7">;</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#F47067">  constructor</span><span style="color:#ADBAC7">(</span><span style="color:#F69D50">scope</span><span style="color:#F47067">:</span><span style="color:#F69D50"> Construct</span><span style="color:#ADBAC7">, </span><span style="color:#F69D50">id</span><span style="color:#F47067">:</span><span style="color:#6CB6FF"> string</span><span style="color:#ADBAC7">, </span><span style="color:#F69D50">props</span><span style="color:#F47067">:</span><span style="color:#F69D50"> StackMainProps</span><span style="color:#ADBAC7">) {</span></span>
+<span data-line=""><span style="color:#6CB6FF">    super</span><span style="color:#ADBAC7">(scope, id, props);</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#6CB6FF">    this</span><span style="color:#ADBAC7">.encryptionKey </span><span style="color:#F47067">=</span><span style="color:#F47067"> new</span><span style="color:#DCBDFB"> Key</span><span style="color:#ADBAC7">(</span><span style="color:#6CB6FF">this</span><span style="color:#ADBAC7">, </span><span style="color:#96D0FF">"EncryptionKey"</span><span style="color:#ADBAC7">, {</span></span>
+<span data-line=""><span style="color:#ADBAC7">      enableKeyRotation: </span><span style="color:#6CB6FF">true</span><span style="color:#ADBAC7">,</span></span>
+<span data-line=""><span style="color:#ADBAC7">    });</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#768390">    // Direct Lambda - environment encryption can be set directly</span></span>
+<span data-line=""><span style="color:#F47067">    new</span><span style="color:#DCBDFB"> Function</span><span style="color:#ADBAC7">(</span><span style="color:#6CB6FF">this</span><span style="color:#ADBAC7">, </span><span style="color:#96D0FF">"MyFunction"</span><span style="color:#ADBAC7">, {</span></span>
+<span data-line=""><span style="color:#ADBAC7">      code: Code.</span><span style="color:#DCBDFB">fromInline</span><span style="color:#ADBAC7">(</span></span>
+<span data-line=""><span style="color:#96D0FF">        'exports.handler = async function(event, context) { return "Hello World"; };'</span><span style="color:#ADBAC7">,</span></span>
+<span data-line=""><span style="color:#ADBAC7">      ),</span></span>
+<span data-line=""><span style="color:#ADBAC7">      handler: </span><span style="color:#96D0FF">"index.handler"</span><span style="color:#ADBAC7">,</span></span>
+<span data-line=""><span style="color:#ADBAC7">      runtime: Runtime.</span><span style="color:#6CB6FF">NODEJS_LATEST</span><span style="color:#ADBAC7">,</span></span>
+<span data-line=""><span style="color:#ADBAC7">      environmentEncryption: </span><span style="color:#6CB6FF">this</span><span style="color:#ADBAC7">.encryptionKey,</span></span>
+<span data-line=""><span style="color:#ADBAC7">      environment: {</span></span>
+<span data-line=""><span style="color:#ADBAC7">        DUMMY: </span><span style="color:#96D0FF">"dummy"</span><span style="color:#ADBAC7">,</span></span>
+<span data-line=""><span style="color:#ADBAC7">      },</span></span>
+<span data-line=""><span style="color:#ADBAC7">    });</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#768390">    // Indirect Lambda from third-party library - environment encryption cannot be controlled directly</span></span>
+<span data-line=""><span style="color:#768390">    // Note: This is a hypothetical third-party construct for demonstration purposes</span></span>
+<span data-line=""><span style="color:#F47067">    new</span><span style="color:#DCBDFB"> Lambda</span><span style="color:#ADBAC7">(</span><span style="color:#6CB6FF">this</span><span style="color:#ADBAC7">, </span><span style="color:#96D0FF">"DummyThirdPartyLambda"</span><span style="color:#ADBAC7">);</span></span>
+<span data-line=""><span style="color:#ADBAC7">  }</span></span>
+<span data-line=""><span style="color:#ADBAC7">}</span></span><button type="button" title="Copy code" aria-label="Copy code" data="export class StackMain extends Stack {
+  readonly encryptionKey: Key;
+
+  constructor(scope: Construct, id: string, props: StackMainProps) {
+    super(scope, id, props);
+
+    this.encryptionKey = new Key(this, &#x22;EncryptionKey&#x22;, {
+      enableKeyRotation: true,
+    });
+
+    // Direct Lambda - environment encryption can be set directly
+    new Function(this, &#x22;MyFunction&#x22;, {
+      code: Code.fromInline(
+        &#x27;exports.handler = async function(event, context) { return &#x22;Hello World&#x22;; };&#x27;,
+      ),
+      handler: &#x22;index.handler&#x22;,
+      runtime: Runtime.NODEJS_LATEST,
+      environmentEncryption: this.encryptionKey,
+      environment: {
+        DUMMY: &#x22;dummy&#x22;,
+      },
+    });
+
+    // Indirect Lambda from third-party library - environment encryption cannot be controlled directly
+    // Note: This is a hypothetical third-party construct for demonstration purposes
+    new Lambda(this, &#x22;DummyThirdPartyLambda&#x22;);
+  }
+}" class="rehype-pretty-copy" onclick="navigator.clipboard.writeText(this.attributes.data.value);this.classList.add(&#x27;rehype-pretty-copied&#x27;);window.setTimeout(() => this.classList.remove(&#x27;rehype-pretty-copied&#x27;), 2500);"><span class="ready"></span><span class="success"></span></button><style>:root {--copy-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Cpath fill='%23adadad' d='M16.187 9.5H12.25a1.75 1.75 0 0 0-1.75 1.75v28.5c0 .967.784 1.75 1.75 1.75h23.5a1.75 1.75 0 0 0 1.75-1.75v-28.5a1.75 1.75 0 0 0-1.75-1.75h-3.937a4.25 4.25 0 0 1-4.063 3h-7.5a4.25 4.25 0 0 1-4.063-3M31.813 7h3.937A4.25 4.25 0 0 1 40 11.25v28.5A4.25 4.25 0 0 1 35.75 44h-23.5A4.25 4.25 0 0 1 8 39.75v-28.5A4.25 4.25 0 0 1 12.25 7h3.937a4.25 4.25 0 0 1 4.063-3h7.5a4.25 4.25 0 0 1 4.063 3M18.5 8.25c0 .966.784 1.75 1.75 1.75h7.5a1.75 1.75 0 1 0 0-3.5h-7.5a1.75 1.75 0 0 0-1.75 1.75'/%3E%3C/svg%3E");--success-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%2366ff85' d='M9 16.17L5.53 12.7a.996.996 0 1 0-1.41 1.41l4.18 4.18c.39.39 1.02.39 1.41 0L20.29 7.71a.996.996 0 1 0-1.41-1.41z'/%3E%3C/svg%3E");}pre:has(code) {position: relative;}pre button.rehype-pretty-copy {right: 1px;padding: 0;width: 24px;height: 24px;display: flex;margin-top: 2px;margin-right: 8px;position: absolute;border-radius: 25%;backdrop-filter: blur(3px);& span {width: 100%;aspect-ratio: 1 / 1;}& .ready {background-image: var(--copy-icon);}& .success {display: none; background-image: var(--success-icon);}}&.rehype-pretty-copied {& .success {display: block;} & .ready {display: none;}}pre button.rehype-pretty-copy.rehype-pretty-copied {opacity: 1;& .ready { display: none; }& .success { display: block; }}</style></code></pre></figure>
+<p>The app could look like this (using either Aspect or Mixin):</p>
+<figure data-rehype-pretty-code-figure=""><pre style="background-color:#22272e;color:#adbac7" tabindex="0" data-language="typescript" data-theme="github-dark-dimmed"><code data-language="typescript" data-theme="github-dark-dimmed" style="display: grid;"><span data-line=""><span style="color:#F47067">const</span><span style="color:#6CB6FF"> app</span><span style="color:#F47067"> =</span><span style="color:#F47067"> new</span><span style="color:#DCBDFB"> App</span><span style="color:#ADBAC7">();</span></span>
+<span data-line=""><span style="color:#F47067">const</span><span style="color:#6CB6FF"> stack</span><span style="color:#F47067"> =</span><span style="color:#F47067"> new</span><span style="color:#DCBDFB"> StackMain</span><span style="color:#ADBAC7">(app, </span><span style="color:#96D0FF">"StackMain"</span><span style="color:#ADBAC7">, {});</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#768390">// Option 1: Use Aspect (recommended for production - stable API)</span></span>
+<span data-line=""><span style="color:#ADBAC7">Aspects.</span><span style="color:#DCBDFB">of</span><span style="color:#ADBAC7">(app).</span><span style="color:#DCBDFB">add</span><span style="color:#ADBAC7">(</span></span>
+<span data-line=""><span style="color:#F47067">  new</span><span style="color:#DCBDFB"> LambdaEnvEncryptionSetterAspect</span><span style="color:#ADBAC7">(stack.encryptionKey.keyArn),</span></span>
+<span data-line=""><span style="color:#ADBAC7">);</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#768390">// Option 2: Use Mixin (developer preview - more flexible but API may change)</span></span>
+<span data-line=""><span style="color:#768390">// Mixins.of(app).apply(</span></span>
+<span data-line=""><span style="color:#768390">//   new LambdaEnvEncryptionSetterMixin(stack.encryptionKey.keyArn),</span></span>
+<span data-line=""><span style="color:#768390">// );</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#768390">// could not be used because the functions are created before the property injection happens, but the key is needed for the injection</span></span>
+<span data-line=""><span style="color:#768390">// PropertyInjectors.of(app).add(</span></span>
+<span data-line=""><span style="color:#768390">//   new LambdaEnvEncryptionSetterAspectPropertyInjection(stack.encryptionKey),</span></span>
+<span data-line=""><span style="color:#768390">// );</span></span><button type="button" title="Copy code" aria-label="Copy code" data="const app = new App();
+const stack = new StackMain(app, &#x22;StackMain&#x22;, {});
+
+// Option 1: Use Aspect (recommended for production - stable API)
+Aspects.of(app).add(
+  new LambdaEnvEncryptionSetterAspect(stack.encryptionKey.keyArn),
+);
+
+// Option 2: Use Mixin (developer preview - more flexible but API may change)
+// Mixins.of(app).apply(
+//   new LambdaEnvEncryptionSetterMixin(stack.encryptionKey.keyArn),
+// );
+
+// could not be used because the functions are created before the property injection happens, but the key is needed for the injection
+// PropertyInjectors.of(app).add(
+//   new LambdaEnvEncryptionSetterAspectPropertyInjection(stack.encryptionKey),
+// );" class="rehype-pretty-copy" onclick="navigator.clipboard.writeText(this.attributes.data.value);this.classList.add(&#x27;rehype-pretty-copied&#x27;);window.setTimeout(() => this.classList.remove(&#x27;rehype-pretty-copied&#x27;), 2500);"><span class="ready"></span><span class="success"></span></button><style>:root {--copy-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Cpath fill='%23adadad' d='M16.187 9.5H12.25a1.75 1.75 0 0 0-1.75 1.75v28.5c0 .967.784 1.75 1.75 1.75h23.5a1.75 1.75 0 0 0 1.75-1.75v-28.5a1.75 1.75 0 0 0-1.75-1.75h-3.937a4.25 4.25 0 0 1-4.063 3h-7.5a4.25 4.25 0 0 1-4.063-3M31.813 7h3.937A4.25 4.25 0 0 1 40 11.25v28.5A4.25 4.25 0 0 1 35.75 44h-23.5A4.25 4.25 0 0 1 8 39.75v-28.5A4.25 4.25 0 0 1 12.25 7h3.937a4.25 4.25 0 0 1 4.063-3h7.5a4.25 4.25 0 0 1 4.063 3M18.5 8.25c0 .966.784 1.75 1.75 1.75h7.5a1.75 1.75 0 1 0 0-3.5h-7.5a1.75 1.75 0 0 0-1.75 1.75'/%3E%3C/svg%3E");--success-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%2366ff85' d='M9 16.17L5.53 12.7a.996.996 0 1 0-1.41 1.41l4.18 4.18c.39.39 1.02.39 1.41 0L20.29 7.71a.996.996 0 1 0-1.41-1.41z'/%3E%3C/svg%3E");}pre:has(code) {position: relative;}pre button.rehype-pretty-copy {right: 1px;padding: 0;width: 24px;height: 24px;display: flex;margin-top: 2px;margin-right: 8px;position: absolute;border-radius: 25%;backdrop-filter: blur(3px);& span {width: 100%;aspect-ratio: 1 / 1;}& .ready {background-image: var(--copy-icon);}& .success {display: none; background-image: var(--success-icon);}}&.rehype-pretty-copied {& .success {display: block;} & .ready {display: none;}}pre button.rehype-pretty-copy.rehype-pretty-copied {opacity: 1;& .ready { display: none; }& .success { display: block; }}</style></code></pre></figure>
+<h3 id="aspect">Aspect</h3>
+<p>Here is an example of an aspect that encrypts all Lambda environment variables. This aspect operates on L1 (CfnFunction) constructs and sets the <code>kmsKeyArn</code> property during the synthesis Prepare phase:</p>
+<figure data-rehype-pretty-code-figure=""><pre style="background-color:#22272e;color:#adbac7" tabindex="0" data-language="typescript" data-theme="github-dark-dimmed"><code data-language="typescript" data-theme="github-dark-dimmed" style="display: grid;"><span data-line=""><span style="color:#F47067">import</span><span style="color:#F47067"> type</span><span style="color:#ADBAC7"> { IAspect } </span><span style="color:#F47067">from</span><span style="color:#96D0FF"> "aws-cdk-lib"</span><span style="color:#ADBAC7">;</span></span>
+<span data-line=""><span style="color:#F47067">import</span><span style="color:#ADBAC7"> { CfnFunction } </span><span style="color:#F47067">from</span><span style="color:#96D0FF"> "aws-cdk-lib/aws-lambda"</span><span style="color:#ADBAC7">;</span></span>
+<span data-line=""><span style="color:#F47067">import</span><span style="color:#F47067"> type</span><span style="color:#ADBAC7"> { IConstruct } </span><span style="color:#F47067">from</span><span style="color:#96D0FF"> "constructs"</span><span style="color:#ADBAC7">;</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#F47067">export</span><span style="color:#F47067"> class</span><span style="color:#F69D50"> LambdaEnvEncryptionSetterAspect</span><span style="color:#F47067"> implements</span><span style="color:#6CB6FF"> IAspect</span><span style="color:#ADBAC7"> {</span></span>
+<span data-line=""><span style="color:#F47067">  public</span><span style="color:#F47067"> readonly</span><span style="color:#F69D50"> kmsKeyArn</span><span style="color:#F47067">:</span><span style="color:#6CB6FF"> string</span><span style="color:#ADBAC7">;</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#F47067">  constructor</span><span style="color:#ADBAC7">(</span><span style="color:#F69D50">kmsKeyArn</span><span style="color:#F47067">:</span><span style="color:#6CB6FF"> string</span><span style="color:#ADBAC7">) {</span></span>
+<span data-line=""><span style="color:#6CB6FF">    this</span><span style="color:#ADBAC7">.kmsKeyArn </span><span style="color:#F47067">=</span><span style="color:#ADBAC7"> kmsKeyArn;</span></span>
+<span data-line=""><span style="color:#ADBAC7">  }</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#DCBDFB">  visit</span><span style="color:#ADBAC7">(</span><span style="color:#F69D50">node</span><span style="color:#F47067">:</span><span style="color:#F69D50"> IConstruct</span><span style="color:#ADBAC7">)</span><span style="color:#F47067">:</span><span style="color:#6CB6FF"> void</span><span style="color:#ADBAC7"> {</span></span>
+<span data-line=""><span style="color:#F47067">    if</span><span style="color:#ADBAC7"> (node </span><span style="color:#F47067">instanceof</span><span style="color:#F69D50"> CfnFunction</span><span style="color:#ADBAC7">) {</span></span>
+<span data-line=""><span style="color:#ADBAC7">      node.kmsKeyArn </span><span style="color:#F47067">=</span><span style="color:#6CB6FF"> this</span><span style="color:#ADBAC7">.kmsKeyArn;</span></span>
+<span data-line=""><span style="color:#ADBAC7">    }</span></span>
+<span data-line=""><span style="color:#ADBAC7">  }</span></span>
+<span data-line=""><span style="color:#ADBAC7">}</span></span><button type="button" title="Copy code" aria-label="Copy code" data="import type { IAspect } from &#x22;aws-cdk-lib&#x22;;
+import { CfnFunction } from &#x22;aws-cdk-lib/aws-lambda&#x22;;
+import type { IConstruct } from &#x22;constructs&#x22;;
+
+export class LambdaEnvEncryptionSetterAspect implements IAspect {
+  public readonly kmsKeyArn: string;
+
+  constructor(kmsKeyArn: string) {
+    this.kmsKeyArn = kmsKeyArn;
+  }
+
+  visit(node: IConstruct): void {
+    if (node instanceof CfnFunction) {
+      node.kmsKeyArn = this.kmsKeyArn;
+    }
+  }
+}" class="rehype-pretty-copy" onclick="navigator.clipboard.writeText(this.attributes.data.value);this.classList.add(&#x27;rehype-pretty-copied&#x27;);window.setTimeout(() => this.classList.remove(&#x27;rehype-pretty-copied&#x27;), 2500);"><span class="ready"></span><span class="success"></span></button><style>:root {--copy-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Cpath fill='%23adadad' d='M16.187 9.5H12.25a1.75 1.75 0 0 0-1.75 1.75v28.5c0 .967.784 1.75 1.75 1.75h23.5a1.75 1.75 0 0 0 1.75-1.75v-28.5a1.75 1.75 0 0 0-1.75-1.75h-3.937a4.25 4.25 0 0 1-4.063 3h-7.5a4.25 4.25 0 0 1-4.063-3M31.813 7h3.937A4.25 4.25 0 0 1 40 11.25v28.5A4.25 4.25 0 0 1 35.75 44h-23.5A4.25 4.25 0 0 1 8 39.75v-28.5A4.25 4.25 0 0 1 12.25 7h3.937a4.25 4.25 0 0 1 4.063-3h7.5a4.25 4.25 0 0 1 4.063 3M18.5 8.25c0 .966.784 1.75 1.75 1.75h7.5a1.75 1.75 0 1 0 0-3.5h-7.5a1.75 1.75 0 0 0-1.75 1.75'/%3E%3C/svg%3E");--success-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%2366ff85' d='M9 16.17L5.53 12.7a.996.996 0 1 0-1.41 1.41l4.18 4.18c.39.39 1.02.39 1.41 0L20.29 7.71a.996.996 0 1 0-1.41-1.41z'/%3E%3C/svg%3E");}pre:has(code) {position: relative;}pre button.rehype-pretty-copy {right: 1px;padding: 0;width: 24px;height: 24px;display: flex;margin-top: 2px;margin-right: 8px;position: absolute;border-radius: 25%;backdrop-filter: blur(3px);& span {width: 100%;aspect-ratio: 1 / 1;}& .ready {background-image: var(--copy-icon);}& .success {display: none; background-image: var(--success-icon);}}&.rehype-pretty-copied {& .success {display: block;} & .ready {display: none;}}pre button.rehype-pretty-copy.rehype-pretty-copied {opacity: 1;& .ready { display: none; }& .success { display: block; }}</style></code></pre></figure>
+<h3 id="property-injector">Property Injector</h3>
+<p>Property Injection cannot be used in this specific case because:</p>
+<ol>
+<li>Property Injection only works with L2 constructs (like <code>lambda.Function</code>), not L1 constructs (like <code>lambda.CfnFunction</code>)</li>
+<li>Third-party libraries might create L1 constructs directly, bypassing the L2 construct layer</li>
+<li>Creating the KMS key in the same stack while trying to inject it creates a timing issue, as injection happens during construct instantiation</li>
+</ol>
+<p>Here’s what the code would look like if you could use it (for reference only):</p>
+<figure data-rehype-pretty-code-figure=""><pre style="background-color:#22272e;color:#adbac7" tabindex="0" data-language="typescript" data-theme="github-dark-dimmed"><code data-language="typescript" data-theme="github-dark-dimmed" style="display: grid;"><span data-line=""><span style="color:#F47067">import</span><span style="color:#ADBAC7"> { </span><span style="color:#F47067">type</span><span style="color:#ADBAC7"> InjectionContext, </span><span style="color:#F47067">type</span><span style="color:#ADBAC7"> IPropertyInjector } </span><span style="color:#F47067">from</span><span style="color:#96D0FF"> "aws-cdk-lib"</span><span style="color:#ADBAC7">;</span></span>
+<span data-line=""><span style="color:#F47067">import</span><span style="color:#ADBAC7"> { IKey } </span><span style="color:#F47067">from</span><span style="color:#96D0FF"> "aws-cdk-lib/aws-kms"</span><span style="color:#ADBAC7">;</span></span>
+<span data-line=""><span style="color:#F47067">import</span><span style="color:#ADBAC7"> { Function, FunctionProps } </span><span style="color:#F47067">from</span><span style="color:#96D0FF"> "aws-cdk-lib/aws-lambda"</span><span style="color:#ADBAC7">;</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#F47067">export</span><span style="color:#F47067"> class</span><span style="color:#F69D50"> LambdaEnvEncryptionSetterPropertyInjector</span></span>
+<span data-line=""><span style="color:#F47067">  implements</span><span style="color:#6CB6FF"> IPropertyInjector</span></span>
+<span data-line=""><span style="color:#ADBAC7">{</span></span>
+<span data-line=""><span style="color:#F47067">  public</span><span style="color:#F47067"> readonly</span><span style="color:#F69D50"> constructUniqueId</span><span style="color:#F47067">:</span><span style="color:#6CB6FF"> string</span><span style="color:#ADBAC7">;</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#F47067">  constructor</span><span style="color:#ADBAC7">(</span><span style="color:#F47067">private</span><span style="color:#F47067"> readonly</span><span style="color:#F69D50"> key</span><span style="color:#F47067">:</span><span style="color:#F69D50"> IKey</span><span style="color:#ADBAC7">) {</span></span>
+<span data-line=""><span style="color:#6CB6FF">    this</span><span style="color:#ADBAC7">.constructUniqueId </span><span style="color:#F47067">=</span><span style="color:#ADBAC7"> Function.</span><span style="color:#6CB6FF">PROPERTY_INJECTION_ID</span><span style="color:#ADBAC7">;</span></span>
+<span data-line=""><span style="color:#ADBAC7">  }</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#F47067">  public</span><span style="color:#DCBDFB"> inject</span><span style="color:#ADBAC7">(</span></span>
+<span data-line=""><span style="color:#F69D50">    originalProps</span><span style="color:#F47067">:</span><span style="color:#F69D50"> FunctionProps</span><span style="color:#ADBAC7">,</span></span>
+<span data-line=""><span style="color:#F69D50">    _context</span><span style="color:#F47067">:</span><span style="color:#F69D50"> InjectionContext</span><span style="color:#ADBAC7">,</span></span>
+<span data-line=""><span style="color:#ADBAC7">  )</span><span style="color:#F47067">:</span><span style="color:#F69D50"> FunctionProps</span><span style="color:#ADBAC7"> {</span></span>
+<span data-line=""><span style="color:#F47067">    return</span><span style="color:#ADBAC7"> {</span></span>
+<span data-line=""><span style="color:#F47067">      ...</span><span style="color:#ADBAC7">originalProps,</span></span>
+<span data-line=""><span style="color:#ADBAC7">      environmentEncryption: </span><span style="color:#6CB6FF">this</span><span style="color:#ADBAC7">.key,</span></span>
+<span data-line=""><span style="color:#ADBAC7">    };</span></span>
+<span data-line=""><span style="color:#ADBAC7">  }</span></span>
+<span data-line=""><span style="color:#ADBAC7">}</span></span><button type="button" title="Copy code" aria-label="Copy code" data="import { type InjectionContext, type IPropertyInjector } from &#x22;aws-cdk-lib&#x22;;
+import { IKey } from &#x22;aws-cdk-lib/aws-kms&#x22;;
+import { Function, FunctionProps } from &#x22;aws-cdk-lib/aws-lambda&#x22;;
+
+export class LambdaEnvEncryptionSetterPropertyInjector
+  implements IPropertyInjector
+{
+  public readonly constructUniqueId: string;
+
+  constructor(private readonly key: IKey) {
+    this.constructUniqueId = Function.PROPERTY_INJECTION_ID;
+  }
+
+  public inject(
+    originalProps: FunctionProps,
+    _context: InjectionContext,
+  ): FunctionProps {
+    return {
+      ...originalProps,
+      environmentEncryption: this.key,
+    };
+  }
+}" class="rehype-pretty-copy" onclick="navigator.clipboard.writeText(this.attributes.data.value);this.classList.add(&#x27;rehype-pretty-copied&#x27;);window.setTimeout(() => this.classList.remove(&#x27;rehype-pretty-copied&#x27;), 2500);"><span class="ready"></span><span class="success"></span></button><style>:root {--copy-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Cpath fill='%23adadad' d='M16.187 9.5H12.25a1.75 1.75 0 0 0-1.75 1.75v28.5c0 .967.784 1.75 1.75 1.75h23.5a1.75 1.75 0 0 0 1.75-1.75v-28.5a1.75 1.75 0 0 0-1.75-1.75h-3.937a4.25 4.25 0 0 1-4.063 3h-7.5a4.25 4.25 0 0 1-4.063-3M31.813 7h3.937A4.25 4.25 0 0 1 40 11.25v28.5A4.25 4.25 0 0 1 35.75 44h-23.5A4.25 4.25 0 0 1 8 39.75v-28.5A4.25 4.25 0 0 1 12.25 7h3.937a4.25 4.25 0 0 1 4.063-3h7.5a4.25 4.25 0 0 1 4.063 3M18.5 8.25c0 .966.784 1.75 1.75 1.75h7.5a1.75 1.75 0 1 0 0-3.5h-7.5a1.75 1.75 0 0 0-1.75 1.75'/%3E%3C/svg%3E");--success-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%2366ff85' d='M9 16.17L5.53 12.7a.996.996 0 1 0-1.41 1.41l4.18 4.18c.39.39 1.02.39 1.41 0L20.29 7.71a.996.996 0 1 0-1.41-1.41z'/%3E%3C/svg%3E");}pre:has(code) {position: relative;}pre button.rehype-pretty-copy {right: 1px;padding: 0;width: 24px;height: 24px;display: flex;margin-top: 2px;margin-right: 8px;position: absolute;border-radius: 25%;backdrop-filter: blur(3px);& span {width: 100%;aspect-ratio: 1 / 1;}& .ready {background-image: var(--copy-icon);}& .success {display: none; background-image: var(--success-icon);}}&.rehype-pretty-copied {& .success {display: block;} & .ready {display: none;}}pre button.rehype-pretty-copy.rehype-pretty-copied {opacity: 1;& .ready { display: none; }& .success { display: block; }}</style></code></pre></figure>
+<h3 id="mixin">Mixin</h3>
+<p>Mixins are currently in developer preview (as of November 2025). Unlike Aspects, Mixins are applied immediately when called, giving you more control over when and how changes are applied. Here is an example of a mixin that encrypts all Lambda environment variables:</p>
+<figure data-rehype-pretty-code-figure=""><pre style="background-color:#22272e;color:#adbac7" tabindex="0" data-language="typescript" data-theme="github-dark-dimmed"><code data-language="typescript" data-theme="github-dark-dimmed" style="display: grid;"><span data-line=""><span style="color:#F47067">import</span><span style="color:#ADBAC7"> { Mixin } </span><span style="color:#F47067">from</span><span style="color:#96D0FF"> "@aws-cdk/mixins-preview/core"</span><span style="color:#ADBAC7">;</span></span>
+<span data-line=""><span style="color:#F47067">import</span><span style="color:#96D0FF"> "@aws-cdk/mixins-preview/with"</span><span style="color:#ADBAC7">;</span></span>
+<span data-line=""><span style="color:#F47067">import</span><span style="color:#ADBAC7"> { IConstruct } </span><span style="color:#F47067">from</span><span style="color:#96D0FF"> "constructs"</span><span style="color:#ADBAC7">;</span></span>
+<span data-line=""><span style="color:#F47067">import</span><span style="color:#ADBAC7"> { CfnFunction } </span><span style="color:#F47067">from</span><span style="color:#96D0FF"> "aws-cdk-lib/aws-lambda"</span><span style="color:#ADBAC7">;</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#F47067">export</span><span style="color:#F47067"> class</span><span style="color:#F69D50"> LambdaEnvEncryptionSetterMixin</span><span style="color:#F47067"> implements</span><span style="color:#6CB6FF"> Mixin</span><span style="color:#ADBAC7"> {</span></span>
+<span data-line=""><span style="color:#F47067">  private</span><span style="color:#F47067"> readonly</span><span style="color:#F69D50"> kmsKeyArn</span><span style="color:#F47067">:</span><span style="color:#6CB6FF"> string</span><span style="color:#ADBAC7">;</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#F47067">  constructor</span><span style="color:#ADBAC7">(</span><span style="color:#F69D50">kmsKeyArn</span><span style="color:#F47067">:</span><span style="color:#6CB6FF"> string</span><span style="color:#ADBAC7">) {</span></span>
+<span data-line=""><span style="color:#6CB6FF">    this</span><span style="color:#ADBAC7">.kmsKeyArn </span><span style="color:#F47067">=</span><span style="color:#ADBAC7"> kmsKeyArn;</span></span>
+<span data-line=""><span style="color:#ADBAC7">  }</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#F47067">  public</span><span style="color:#DCBDFB"> supports</span><span style="color:#ADBAC7">(</span><span style="color:#F69D50">construct</span><span style="color:#F47067">:</span><span style="color:#F69D50"> IConstruct</span><span style="color:#ADBAC7">)</span><span style="color:#F47067">:</span><span style="color:#6CB6FF"> boolean</span><span style="color:#ADBAC7"> {</span></span>
+<span data-line=""><span style="color:#F47067">    return</span><span style="color:#ADBAC7"> construct </span><span style="color:#F47067">instanceof</span><span style="color:#F69D50"> CfnFunction</span><span style="color:#ADBAC7">;</span></span>
+<span data-line=""><span style="color:#ADBAC7">  }</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#F47067">  public</span><span style="color:#DCBDFB"> applyTo</span><span style="color:#ADBAC7">(</span><span style="color:#F69D50">construct</span><span style="color:#F47067">:</span><span style="color:#F69D50"> IConstruct</span><span style="color:#ADBAC7">)</span><span style="color:#F47067">:</span><span style="color:#F69D50"> IConstruct</span><span style="color:#ADBAC7"> {</span></span>
+<span data-line=""><span style="color:#F47067">    if</span><span style="color:#ADBAC7"> (construct </span><span style="color:#F47067">instanceof</span><span style="color:#F69D50"> CfnFunction</span><span style="color:#ADBAC7">) {</span></span>
+<span data-line=""><span style="color:#ADBAC7">      construct.kmsKeyArn </span><span style="color:#F47067">=</span><span style="color:#6CB6FF"> this</span><span style="color:#ADBAC7">.kmsKeyArn;</span></span>
+<span data-line=""><span style="color:#ADBAC7">    }</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#F47067">    return</span><span style="color:#ADBAC7"> construct;</span></span>
+<span data-line=""><span style="color:#ADBAC7">  }</span></span>
+<span data-line=""><span style="color:#ADBAC7">}</span></span><button type="button" title="Copy code" aria-label="Copy code" data="import { Mixin } from &#x22;@aws-cdk/mixins-preview/core&#x22;;
+import &#x22;@aws-cdk/mixins-preview/with&#x22;;
+import { IConstruct } from &#x22;constructs&#x22;;
+import { CfnFunction } from &#x22;aws-cdk-lib/aws-lambda&#x22;;
+
+export class LambdaEnvEncryptionSetterMixin implements Mixin {
+  private readonly kmsKeyArn: string;
+
+  constructor(kmsKeyArn: string) {
+    this.kmsKeyArn = kmsKeyArn;
+  }
+
+  public supports(construct: IConstruct): boolean {
+    return construct instanceof CfnFunction;
+  }
+
+  public applyTo(construct: IConstruct): IConstruct {
+    if (construct instanceof CfnFunction) {
+      construct.kmsKeyArn = this.kmsKeyArn;
+    }
+
+    return construct;
+  }
+}" class="rehype-pretty-copy" onclick="navigator.clipboard.writeText(this.attributes.data.value);this.classList.add(&#x27;rehype-pretty-copied&#x27;);window.setTimeout(() => this.classList.remove(&#x27;rehype-pretty-copied&#x27;), 2500);"><span class="ready"></span><span class="success"></span></button><style>:root {--copy-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Cpath fill='%23adadad' d='M16.187 9.5H12.25a1.75 1.75 0 0 0-1.75 1.75v28.5c0 .967.784 1.75 1.75 1.75h23.5a1.75 1.75 0 0 0 1.75-1.75v-28.5a1.75 1.75 0 0 0-1.75-1.75h-3.937a4.25 4.25 0 0 1-4.063 3h-7.5a4.25 4.25 0 0 1-4.063-3M31.813 7h3.937A4.25 4.25 0 0 1 40 11.25v28.5A4.25 4.25 0 0 1 35.75 44h-23.5A4.25 4.25 0 0 1 8 39.75v-28.5A4.25 4.25 0 0 1 12.25 7h3.937a4.25 4.25 0 0 1 4.063-3h7.5a4.25 4.25 0 0 1 4.063 3M18.5 8.25c0 .966.784 1.75 1.75 1.75h7.5a1.75 1.75 0 1 0 0-3.5h-7.5a1.75 1.75 0 0 0-1.75 1.75'/%3E%3C/svg%3E");--success-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%2366ff85' d='M9 16.17L5.53 12.7a.996.996 0 1 0-1.41 1.41l4.18 4.18c.39.39 1.02.39 1.41 0L20.29 7.71a.996.996 0 1 0-1.41-1.41z'/%3E%3C/svg%3E");}pre:has(code) {position: relative;}pre button.rehype-pretty-copy {right: 1px;padding: 0;width: 24px;height: 24px;display: flex;margin-top: 2px;margin-right: 8px;position: absolute;border-radius: 25%;backdrop-filter: blur(3px);& span {width: 100%;aspect-ratio: 1 / 1;}& .ready {background-image: var(--copy-icon);}& .success {display: none; background-image: var(--success-icon);}}&.rehype-pretty-copied {& .success {display: block;} & .ready {display: none;}}pre button.rehype-pretty-copy.rehype-pretty-copied {opacity: 1;& .ready { display: none; }& .success { display: block; }}</style></code></pre></figure>
+<h2 id="conclusion">Conclusion</h2>
+<p>Using AWS CDK aspects or mixins, you can enforce encryption on all AWS Lambda environment variables in your CDK app, even when using third-party libraries that create Lambda functions. This approach ensures that your Lambda functions adhere to security best practices without requiring direct control over their configuration.</p>
+<h3 id="which-approach-to-use">Which Approach to Use?</h3>
+<p>Based on the <a href="https://github.com/aws/aws-cdk-rfcs/pull/824">AWS CDK Mixins RFC</a>, the recommended usage is:</p>
+<ul>
+<li><strong>Aspects</strong>: Use for validation and compliance enforcement. This is the stable, production-ready approach.</li>
+<li><strong>Mixins</strong>: Use for making changes to constructs. However, since Mixins are still in Developer Preview, the API may change.</li>
+</ul>
+<p><strong>Recommendation for Production</strong>: Use <strong>Aspects</strong> for now, as they provide a stable API and are specifically designed for this type of cross-cutting concern. Once Mixins reach general availability, they may offer additional benefits for construct composition.</p>
+<h2 id="sources">Sources</h2>
+<ul>
+<li><a href="https://docs.aws.amazon.com/cdk/v2/guide/aspects.html">https://docs.aws.amazon.com/cdk/v2/guide/aspects.html</a></li>
+<li><a href="https://docs.aws.amazon.com/cdk/v2/guide/blueprints.html">https://docs.aws.amazon.com/cdk/v2/guide/blueprints.html</a></li>
+<li><a href="https://github.com/aws/aws-cdk/blob/main/packages/%40aws-cdk/mixins-preview/README.md">https://github.com/aws/aws-cdk/blob/main/packages/%40aws-cdk/mixins-preview/README.md</a></li>
+<li><a href="https://dev.to/aws-heroes/using-aws-cdk-property-injectors-2mo5">https://dev.to/aws-heroes/using-aws-cdk-property-injectors-2mo5</a></li>
+<li><a href="https://dev.to/aws-heroes/aws-cdk-introduces-mixins-a-major-feature-for-flexible-construct-composition-developer-preview-583d">https://dev.to/aws-heroes/aws-cdk-introduces-mixins-a-major-feature-for-flexible-construct-composition-developer-preview-583d</a></li>
+<li><a href="https://dev.to/aws/announcing-aws-cdk-mixins-composable-abstractions-for-aws-resources-588m">https://dev.to/aws/announcing-aws-cdk-mixins-composable-abstractions-for-aws-resources-588m</a></li>
+<li><a href="https://docs.aws.amazon.com/lambda/latest/dg/configuration-envvars.html#configuration-envvars-encryption">https://docs.aws.amazon.com/lambda/latest/dg/configuration-envvars.html#configuration-envvars-encryption</a></li>
+</ul> <section class="giscus mx-auto mt-10 w-full"></section> <script src="https://giscus.app/client.js" data-repo="JohannesKonings/JohannesKonings.github.io" data-repo-id="MDEwOlJlcG9zaXRvcnkyODQyNTQyNjc=" data-category="Blog Post Comments" data-category-id="DIC_kwDOEPFgO84CgLJN" data-mapping="url" data-strict="0" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="bottom" data-theme="preferred_color_scheme" data-lang="en" data-loading="lazy" crossorigin="anonymous" async></script> </article> <div class="grid grid-cols-1 sm:grid-cols-2 gap-4"> <a href="/blog/2025-11-30-tanstack-start-aws-serverless" class="group p-4 gap-3 flex items-center border rounded-lg hover:bg-black/5 hover:dark:bg-white/10 border-black/15 dark:border-white/20 blend"> <div class="order-2 w-full h-full group-hover:text-black group-hover:dark:text-white blend"> <div class="flex flex-wrap gap-2"> <div class="text-sm uppercase">Prev</div> </div> <div class="font-semibold mt-3 text-black dark:text-white"> Deploy TanStack Start serverless on AWS </div> </div> <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="order-1 stroke-current group-hover:stroke-black group-hover:dark:stroke-white rotate-180"> <line x1="5" y1="12" x2="19" y2="12" class="scale-x-0 group-hover:scale-x-100 translate-x-4 group-hover:translate-x-1 transition-all duration-300 ease-in-out"></line> <polyline points="12 5 19 12 12 19" class="translate-x-0 group-hover:translate-x-1 transition-all duration-300 ease-in-out"></polyline> </svg> </a> <a href="/blog/2025-11-27-aws-cdk-nag-iam5-granular-statement-suppresions" class="group p-4 gap-3 flex items-center border rounded-lg hover:bg-black/5 hover:dark:bg-white/10 border-black/15 dark:border-white/20 transition-colors duration-300 ease-in-out"> <div class="w-full h-full text-right group-hover:text-black group-hover:dark:text-white blend"> <div class="text-sm uppercase">Next</div> <div class="font-semibold mt-3 text-black dark:text-white"> Granular statement cdk-nag AwsSolutions-IAM5 Suppressions </div> </div> <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="stroke-current group-hover:stroke-black group-hover:dark:stroke-white"> <line x1="5" y1="12" x2="19" y2="12" class="scale-x-0 group-hover:scale-x-100 translate-x-4 group-hover:translate-x-1 transition-all duration-300 ease-in-out"></line> <polyline points="12 5 19 12 12 19" class="translate-x-0 group-hover:translate-x-1 transition-all duration-300 ease-in-out"></polyline> </svg> </a> </div> </div> </div>   </div> </div>  </main> <footer class="relative bg-white dark:bg-black"> <div class="animate"> <section class="py-5"> <div class="w-full h-full mx-auto px-5 max-w-(--breakpoint-md)">  <div class="flex items-center justify-center sm:justify-end"> <button id="back-to-top" aria-label="Back to top of page" class="group flex w-fit p-1.5 gap-1.5 text-sm items-center border rounded hover:bg-black/5 hover:dark:bg-white/10 border-black/15 dark:border-white/20 transition-colors duration-300 ease-in-out"> <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="stroke-current group-hover:stroke-black group-hover:dark:stroke-white rotate-90"> <line x1="19" y1="12" x2="5" y2="12" class="scale-x-0 group-hover:scale-x-100 translate-x-3 group-hover:translate-x-0 transition-all duration-300 ease-in-out"></line> <polyline points="12 19 5 12 12 5" class="translate-x-1 group-hover:translate-x-0 transition-all duration-300 ease-in-out"></polyline> </svg> <div class="w-full group-hover:text-black group-hover:dark:text-white transition-colors duration-300 ease-in-out">
+Back to top
+</div> </button> </div>  </div> </section> <section class="py-5 overflow-hidden whitespace-nowrap border-t border-black/10 dark:border-white/25"> <div class="w-full h-full mx-auto px-5 max-w-(--breakpoint-md)">  <div class="h-full grid grid-cols-1 sm:grid-cols-2 gap-3"> <div class="order-2 sm:order-1 flex flex-col items-center justify-center sm:items-start"> <div class="legal"> <a href="/legal/terms" class="text-current hover:text-black dark:hover:text-white transition-colors duration-300 ease-in-out">
+Terms
+</a> |
+<a href="/legal/privacy" class="text-current hover:text-black dark:hover:text-white transition-colors duration-300 ease-in-out">
+Privacy
+</a> </div> <div class="text-sm mt-2">&copy; 2026 | All rights reserved</div> </div> <div class="order-1 sm:order-2 flex justify-center sm:justify-end"> <div class="flex flex-wrap gap-1 items-center justify-center"> <a href="https://github.com/JohannesKonings/JohannesKonings.github.io" target="_blank" aria-label="GitHub repo" class="group size-10 rounded-full p-2 items-center justify-center hover:bg-black/5 dark:hover:bg-white/20 blend"> <svg class="size-full fill-current group-hover:fill-black group-hover:dark:fill-white blend"> <use href="/social.svg#github"></use> </svg> </a> </div> </div> </div>  </div> </section> </div> </footer> <script>
+  function goBackToTop(event) {
+    event.preventDefault();
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  }
+
+  function inintializeBackToTop() {
+    const backToTop = document.getElementById("back-to-top");
+    backToTop?.addEventListener("click", goBackToTop);
+  }
+
+  document.addEventListener("astro:after-swap", inintializeBackToTop);
+  inintializeBackToTop();
+</script> </body></html>

@@ -1,0 +1,612 @@
+<!DOCTYPE html><html lang="en"> <head><script defer src="https://cloud.umami.is/script.js" data-website-id="ad18022d-5431-470e-909a-74a7882c97e2" data-domains="johanneskonings.dev"></script><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6554177261098317" crossorigin="anonymous"></script><!-- Global Metadata --><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" type="image/x-icon" href="/favicon.ico"><meta name="generator" content="Astro v5.16.5"><link rel="preload" href="/fonts/CascadiaMonoNF.woff2" as="font" type="font/woff2" crossorigin><link rel="preload" href="/fonts/CascadiaMonoNF-SemiBold.woff2" as="font" type="font/woff2" crossorigin><!-- Canonical URL --><link rel="canonical" href="https://johanneskonings.dev/blog/2024-12-28-api-gw-sigv4-different-api-clients/"><!-- Primary Meta Tags --><title>Calling IAM authenticated API Gateway with different HTTP clients | Johannes Konings</title><meta name="title" content="Calling IAM authenticated API Gateway with different HTTP clients | Johannes Konings"><meta name="description" content="This post describes how to call an IAM authenticated API Gateway with different HTTP clients like ky, fetch, and axios via signature v4 requests."><!-- Open Graph / Facebook --><meta property="og:type" content="website"><meta property="og:url" content="https://johanneskonings.dev/blog/2024-12-28-api-gw-sigv4-different-api-clients/"><meta property="og:title" content="Calling IAM authenticated API Gateway with different HTTP clients | Johannes Konings"><meta property="og:description" content="This post describes how to call an IAM authenticated API Gateway with different HTTP clients like ky, fetch, and axios via signature v4 requests."><!-- Twitter --><meta property="twitter:card" content="summary_large_image"><meta property="twitter:url" content="https://johanneskonings.dev/blog/2024-12-28-api-gw-sigv4-different-api-clients/"><meta property="twitter:title" content="Calling IAM authenticated API Gateway with different HTTP clients | Johannes Konings"><meta property="twitter:description" content="This post describes how to call an IAM authenticated API Gateway with different HTTP clients like ky, fetch, and axios via signature v4 requests."><meta property="og:image" content="https://johanneskonings.dev/_astro/cover-image.CY20Rhdh.png">
+  <meta property="twitter:image" content="https://johanneskonings.dev/open-graph.jpg"><!-- Sitemap --><link rel="sitemap" href="/sitemap-index.xml"><!-- RSS Feed --><link rel="alternate" type="application/rss+xml" title="Calling IAM authenticated API Gateway with different HTTP clients | Johannes Konings" href="https://johanneskonings.dev/rss.xml"><!-- Global Scripts --><script src="/js/theme.js"></script><script src="/js/scroll.js"></script><script src="/js/animate.js"></script><!-- <ViewTransitions  /> --><script type="module">document.addEventListener("astro:before-swap",e=>[...e.newDocument.head.querySelectorAll('link[as="font"]')].forEach(o=>o.remove()));</script><link rel="stylesheet" href="/_astro/_slug_.BRrEunO4.css"></head> <body> <header id="header" class="fixed top-0 w-full h-16 z-50" data-astro-cid-3ef6ksr2> <div class="w-full h-full mx-auto px-5 max-w-(--breakpoint-md)">  <div class="relative h-full w-full" data-astro-cid-3ef6ksr2> <div class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2" data-astro-cid-3ef6ksr2> <nav class="hidden md:flex items-center justify-center text-sm gap-1" data-astro-cid-3ef6ksr2> <a href="/" class="h-8 rounded-full px-3 text-current flex items-center justify-center transition-colors duration-300 ease-in-out hover:bg-black/5 dark:hover:bg-white/20 hover:text-black dark:hover:text-white" data-astro-cid-3ef6ksr2> Home </a><a href="/blog" class="h-8 rounded-full px-3 flex items-center justify-center transition-colors duration-300 ease-in-out bg-black dark:bg-white text-white dark:text-black" data-astro-cid-3ef6ksr2> Blog </a><a href="/notes" class="h-8 rounded-full px-3 text-current flex items-center justify-center transition-colors duration-300 ease-in-out hover:bg-black/5 dark:hover:bg-white/20 hover:text-black dark:hover:text-white" data-astro-cid-3ef6ksr2> Notes </a> </nav> </div> <div class="buttons absolute right-0 top-1/2 -translate-y-1/2 flex gap-1" data-astro-cid-3ef6ksr2> <a href="/search" aria-label="Search blog posts and projects on Johannes Konings" class="hidden md:flex size-9 rounded-full p-2 items-center justify-center bg-transparent hover:bg-black/5 dark:hover:bg-white/20 stroke-current hover:stroke-black hover:dark:stroke-white border border-black/10 dark:border-white/25 transition-colors duration-300 ease-in-out" data-astro-cid-3ef6ksr2> <svg class="size-full" data-astro-cid-3ef6ksr2> <use href="/ui.svg#search" data-astro-cid-3ef6ksr2></use> </svg> </a> <a href="/rss.xml" target="_blank" aria-label="Rss feed for Johannes Konings" class="hidden md:flex size-9 rounded-full p-2 items-center justify-center bg-transparent hover:bg-black/5 dark:hover:bg-white/20 stroke-current hover:stroke-black hover:dark:stroke-white border border-black/10 dark:border-white/25 transition-colors duration-300 ease-in-out" data-astro-cid-3ef6ksr2> <svg class="size-full" data-astro-cid-3ef6ksr2> <use href="/ui.svg#rss" data-astro-cid-3ef6ksr2></use> </svg> </a> <button id="header-theme-button" aria-label="Toggle light and dark theme" class="hidden md:flex size-9 rounded-full p-2 items-center justify-center bg-transparent hover:bg-black/5 dark:hover:bg-white/20 stroke-current hover:stroke-black hover:dark:stroke-white border border-black/10 dark:border-white/25 transition-colors duration-300 ease-in-out" data-astro-cid-3ef6ksr2> <svg class="size-full block dark:hidden" data-astro-cid-3ef6ksr2> <use href="/ui.svg#sun" data-astro-cid-3ef6ksr2></use> </svg> <svg class="size-full hidden dark:block" data-astro-cid-3ef6ksr2> <use href="/ui.svg#moon" data-astro-cid-3ef6ksr2></use> </svg> </button> <button id="header-drawer-button" aria-label="Toggle drawer open and closed" class="flex md:hidden size-9 rounded-full p-2 items-center justify-center bg-transparent hover:bg-black/5 dark:hover:bg-white/20 stroke-current hover:stroke-black hover:dark:stroke-white border border-black/10 dark:border-white/25 transition-colors duration-300 ease-in-out" data-astro-cid-3ef6ksr2> <svg id="drawer-open" class="size-full" data-astro-cid-3ef6ksr2> <use href="/ui.svg#menu" data-astro-cid-3ef6ksr2></use> </svg> <svg id="drawer-close" class="size-full" data-astro-cid-3ef6ksr2> <use href="/ui.svg#x" data-astro-cid-3ef6ksr2></use> </svg> </button> </div> </div>  </div> </header>  <script>
+  function toggleDrawer() {
+    const drawer = document.getElementById("drawer");
+    const drawerButton = document.getElementById("header-drawer-button");
+    drawer?.classList.toggle("open");
+    drawerButton?.classList.toggle("open");
+  }
+
+  function initializeDrawerButton() {
+    const drawerButton = document.getElementById("header-drawer-button");
+    drawerButton?.addEventListener("click", toggleDrawer);
+  }
+
+  document.addEventListener("astro:after-swap", initializeDrawerButton);
+  initializeDrawerButton();
+</script> <div id="drawer" class="fixed inset-0 h-0 max-h-[50vh] z-40 overflow-hidden flex flex-col items-center justify-center md:hidden bg-neutral-100 dark:bg-neutral-900 transition-[height] duration-300 ease-in-out" data-astro-cid-hxtyo74s> <nav class="flex flex-col items-center space-y-2" data-astro-cid-hxtyo74s> <a href="/" class="flex items-center justify-center px-3 py-1 rounded-full text-current hover:text-black dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/20 transition-colors duration-300 ease-in-out" data-astro-cid-hxtyo74s> Home </a><a href="/blog" class="flex items-center justify-center px-3 py-1 rounded-full hover:text-black dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/20 transition-colors duration-300 ease-in-out pointer-events-none bg-black dark:bg-white text-white dark:text-black" data-astro-cid-hxtyo74s> Blog </a><a href="/notes" class="flex items-center justify-center px-3 py-1 rounded-full text-current hover:text-black dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/20 transition-colors duration-300 ease-in-out" data-astro-cid-hxtyo74s> Notes </a> </nav> <div class="flex gap-1 mt-5" data-astro-cid-hxtyo74s> <a href="/search" aria-label="Search blog posts and projects on Johannes Konings" class="size-9 rounded-full p-2 items-center justify-center bg-transparent hover:bg-black/5 dark:hover:bg-white/20 stroke-current hover:stroke-black hover:dark:stroke-white border border-black/10 dark:border-white/25 transition-colors duration-300 ease-in-out" data-astro-cid-hxtyo74s> <svg class="size-full" data-astro-cid-hxtyo74s> <use href="/ui.svg#search" data-astro-cid-hxtyo74s></use> </svg> </a> <a href="/rss.xml" target="_blank" aria-label="Rss feed for Johannes Konings" class="size-9 rounded-full p-2 items-center justify-center bg-transparent hover:bg-black/5 dark:hover:bg-white/20 stroke-current hover:stroke-black hover:dark:stroke-white border border-black/10 dark:border-white/25 transition-colors duration-300 ease-in-out" data-astro-cid-hxtyo74s> <svg class="size-full" data-astro-cid-hxtyo74s> <use href="/ui.svg#rss" data-astro-cid-hxtyo74s></use> </svg> </a> <button id="drawer-theme-button" aria-label="Toggle light and dark theme" class="size-9 rounded-full p-2 items-center justify-center bg-transparent hover:bg-black/5 dark:hover:bg-white/20 stroke-current hover:stroke-black hover:dark:stroke-white border border-black/10 dark:border-white/25 transition-colors duration-300 ease-in-out" data-astro-cid-hxtyo74s> <svg class="block dark:hidden size-full" data-astro-cid-hxtyo74s> <use href="/ui.svg#sun" data-astro-cid-hxtyo74s></use> </svg> <svg class="hidden dark:block size-full" data-astro-cid-hxtyo74s> <use href="/ui.svg#moon" data-astro-cid-hxtyo74s></use> </svg> </button> </div> </div>  <main>  <div class="pt-36 pb-5"> <div class="w-full h-full mx-auto px-5 max-w-(--breakpoint-md)">   <div class="animate"> <div> <a href="/blog" class="group w-fit p-1.5 gap-1.5 text-sm flex items-center border rounded hover:bg-black/5 hover:dark:bg-white/10 border-black/15 dark:border-white/20 transition-colors duration-300 ease-in-out"> <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="stroke-current group-hover:stroke-black group-hover:dark:stroke-white"> <line x1="19" y1="12" x2="5" y2="12" class="scale-x-0 group-hover:scale-x-100 translate-x-3 group-hover:translate-x-0 transition-all duration-300 ease-in-out"></line> <polyline points="12 19 5 12 12 5" class="translate-x-1 group-hover:translate-x-0 transition-all duration-300 ease-in-out"></polyline> </svg> <div class="w-full group-hover:text-black group-hover:dark:text-white transition-colors duration-300 ease-in-out">
+Back to blog </div> </a> <div class="flex flex-wrap text-sm uppercase mt-12 gap-3 opacity-75"> <div class="flex items-center gap-2"> <svg class="size-5 stroke-current"> <use href="/ui.svg#calendar"></use> </svg> Dec 28, 2024 </div> <div class="flex items-center gap-2"> <svg class="size-5 stroke-current"> <use href="/ui.svg#book-open"></use> </svg> 6 min read </div> </div> <div class="w-full h-auto mt-8 mb-8 rounded-lg shadow-lg overflow-hidden"> <img src="/_astro/cover-image.CY20Rhdh.png" alt="Cover Image" class="w-full h-auto"> </div> <h1 class="text-3xl font-semibold text-black dark:text-white mt-2"> Calling IAM authenticated API Gateway with different HTTP clients </h1> <div class="mt-1 mb-8"> This post describes how to call an IAM authenticated API Gateway with different HTTP clients like ky, fetch, and axios via signature v4 requests. </div> <nav class="not-prose mb-2 p-4 bg-black/5 dark:bg-white/5 rounded-lg border border-black/10 dark:border-white/10"><div class="text-sm font-semibold mb-3 text-black dark:text-white">Table of Contents</div><ul class="space-y-2 text-sm"><li class=" transition-colors duration-200"><a href="#use-case" class="text-black/70 dark:text-white/70 hover:text-black dark:hover:text-white transition-colors duration-200">Use case</a></li><li class=" transition-colors duration-200"><a href="#setup" class="text-black/70 dark:text-white/70 hover:text-black dark:hover:text-white transition-colors duration-200">Setup</a></li><li class="ml-4 transition-colors duration-200"><a href="#api-gateway" class="text-black/70 dark:text-white/70 hover:text-black dark:hover:text-white transition-colors duration-200">API Gateway</a></li><li class="ml-4 transition-colors duration-200"><a href="#lambda-function-for-calling-the-api-gateway" class="text-black/70 dark:text-white/70 hover:text-black dark:hover:text-white transition-colors duration-200">Lambda function for calling the API Gateway</a></li><li class=" transition-colors duration-200"><a href="#result" class="text-black/70 dark:text-white/70 hover:text-black dark:hover:text-white transition-colors duration-200">Result</a></li><li class=" transition-colors duration-200"><a href="#sources" class="text-black/70 dark:text-white/70 hover:text-black dark:hover:text-white transition-colors duration-200">Sources</a></li></ul></nav> </div> </div>   </div> </div> <div class="flex-1 py-5"> <div class="w-full h-full mx-auto px-5 max-w-(--breakpoint-lg)">   <div class="animate"> <div> <article> <h2 id="use-case">Use case</h2>
+<p>API Gateways can be secured with IAM authentication. This means that the client must sign the request with the <a href="https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_sigv.html">AWS Signature Version 4</a>. This post describes how to call an IAM authenticated API Gateway with different HTTP clients like <a href="https://github.com/sindresorhus/ky">ky</a>, <a href="https://nodejs.org/dist/v18.20.5/docs/api/globals.html#fetch">fetch</a>, and <a href="https://github.com/axios/axios">axios</a>.</p>
+<h2 id="setup">Setup</h2>
+<h3 id="api-gateway">API Gateway</h3>
+<p>The API Gateway looks like this:</p>
+<p><img alt="api gateway" loading="lazy" decoding="async" fetchpriority="auto" width="1909" height="724" src="/_astro/api-gateway.BYRQsylJ_1rUe5e.webp" ></p>
+<p>The authorisation is set to <code>AWS_IAM</code> additional to an api key.</p>
+<p>The lambda function is a simple one, which returns params, method and body.</p>
+<figure data-rehype-pretty-code-figure=""><pre style="background-color:#22272e;color:#adbac7" tabindex="0" data-language="typescript" data-theme="github-dark-dimmed"><code data-language="typescript" data-theme="github-dark-dimmed" style="display: grid;"><span data-line=""><span style="color:#6CB6FF">exports</span><span style="color:#ADBAC7">.</span><span style="color:#DCBDFB">handler</span><span style="color:#F47067"> =</span><span style="color:#F47067"> async</span><span style="color:#F47067"> function</span><span style="color:#ADBAC7"> (</span><span style="color:#F69D50">event</span><span style="color:#ADBAC7">) {</span></span>
+<span data-line=""><span style="color:#F47067">  const</span><span style="color:#6CB6FF"> params</span><span style="color:#F47067"> =</span><span style="color:#ADBAC7"> event.queryStringParameters;</span></span>
+<span data-line=""><span style="color:#F47067">  const</span><span style="color:#6CB6FF"> body</span><span style="color:#F47067"> =</span><span style="color:#ADBAC7"> event.body;</span></span>
+<span data-line=""><span style="color:#F47067">  const</span><span style="color:#6CB6FF"> method</span><span style="color:#F47067"> =</span><span style="color:#ADBAC7"> event.httpMethod;</span></span>
+<span data-line=""><span style="color:#F47067">  return</span><span style="color:#ADBAC7"> {</span></span>
+<span data-line=""><span style="color:#ADBAC7">    statusCode: </span><span style="color:#6CB6FF">200</span><span style="color:#ADBAC7">,</span></span>
+<span data-line=""><span style="color:#ADBAC7">    body: </span><span style="color:#6CB6FF">JSON</span><span style="color:#ADBAC7">.</span><span style="color:#DCBDFB">stringify</span><span style="color:#ADBAC7">({</span></span>
+<span data-line=""><span style="color:#ADBAC7">      message: </span><span style="color:#96D0FF">"API Called"</span><span style="color:#ADBAC7">,</span></span>
+<span data-line=""><span style="color:#ADBAC7">      params,</span></span>
+<span data-line=""><span style="color:#ADBAC7">      body,</span></span>
+<span data-line=""><span style="color:#ADBAC7">      method,</span></span>
+<span data-line=""><span style="color:#ADBAC7">    }),</span></span>
+<span data-line=""><span style="color:#ADBAC7">  };</span></span>
+<span data-line=""><span style="color:#ADBAC7">};</span></span><button type="button" title="Copy code" aria-label="Copy code" data="exports.handler = async function (event) {
+  const params = event.queryStringParameters;
+  const body = event.body;
+  const method = event.httpMethod;
+  return {
+    statusCode: 200,
+    body: JSON.stringify({
+      message: &#x22;API Called&#x22;,
+      params,
+      body,
+      method,
+    }),
+  };
+};" class="rehype-pretty-copy" onclick="navigator.clipboard.writeText(this.attributes.data.value);this.classList.add(&#x27;rehype-pretty-copied&#x27;);window.setTimeout(() => this.classList.remove(&#x27;rehype-pretty-copied&#x27;), 2500);"><span class="ready"></span><span class="success"></span></button><style>:root {--copy-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Cpath fill='%23adadad' d='M16.187 9.5H12.25a1.75 1.75 0 0 0-1.75 1.75v28.5c0 .967.784 1.75 1.75 1.75h23.5a1.75 1.75 0 0 0 1.75-1.75v-28.5a1.75 1.75 0 0 0-1.75-1.75h-3.937a4.25 4.25 0 0 1-4.063 3h-7.5a4.25 4.25 0 0 1-4.063-3M31.813 7h3.937A4.25 4.25 0 0 1 40 11.25v28.5A4.25 4.25 0 0 1 35.75 44h-23.5A4.25 4.25 0 0 1 8 39.75v-28.5A4.25 4.25 0 0 1 12.25 7h3.937a4.25 4.25 0 0 1 4.063-3h7.5a4.25 4.25 0 0 1 4.063 3M18.5 8.25c0 .966.784 1.75 1.75 1.75h7.5a1.75 1.75 0 1 0 0-3.5h-7.5a1.75 1.75 0 0 0-1.75 1.75'/%3E%3C/svg%3E");--success-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%2366ff85' d='M9 16.17L5.53 12.7a.996.996 0 1 0-1.41 1.41l4.18 4.18c.39.39 1.02.39 1.41 0L20.29 7.71a.996.996 0 1 0-1.41-1.41z'/%3E%3C/svg%3E");}pre:has(code) {position: relative;}pre button.rehype-pretty-copy {right: 1px;padding: 0;width: 24px;height: 24px;display: flex;margin-top: 2px;margin-right: 8px;position: absolute;border-radius: 25%;backdrop-filter: blur(3px);& span {width: 100%;aspect-ratio: 1 / 1;}& .ready {background-image: var(--copy-icon);}& .success {display: none; background-image: var(--success-icon);}}&.rehype-pretty-copied {& .success {display: block;} & .ready {display: none;}}pre button.rehype-pretty-copy.rehype-pretty-copied {opacity: 1;& .ready { display: none; }& .success { display: block; }}</style></code></pre></figure>
+<h3 id="lambda-function-for-calling-the-api-gateway">Lambda function for calling the API Gateway</h3>
+<p>Main parts are copied form here: <a href="https://github.com/zirkelc/aws-sigv4-fetch">https://github.com/zirkelc/aws-sigv4-fetch</a> by <a href="https://zirkelc.dev/">zirkelc</a>. This project can be used if the HTTP client will be fetch. If ky or axios should be used, the code must be adapted.</p>
+<p>The signing procedure is capsuled in the <code>signV4</code> function.</p>
+<figure data-rehype-pretty-code-figure=""><pre style="background-color:#22272e;color:#adbac7" tabindex="0" data-language="typescript" data-theme="github-dark-dimmed"><code data-language="typescript" data-theme="github-dark-dimmed" style="display: grid;"><span data-line=""><span style="color:#F47067">import</span><span style="color:#ADBAC7"> { Sha256 } </span><span style="color:#F47067">from</span><span style="color:#96D0FF"> "@aws-crypto/sha256-js"</span><span style="color:#ADBAC7">;</span></span>
+<span data-line=""><span style="color:#F47067">import</span><span style="color:#F47067"> type</span><span style="color:#ADBAC7"> { AwsCredentialIdentity, Provider } </span><span style="color:#F47067">from</span><span style="color:#96D0FF"> "@aws-sdk/types"</span><span style="color:#ADBAC7">;</span></span>
+<span data-line=""><span style="color:#F47067">import</span><span style="color:#ADBAC7"> { HttpRequest } </span><span style="color:#F47067">from</span><span style="color:#96D0FF"> "@smithy/protocol-http"</span><span style="color:#ADBAC7">;</span></span>
+<span data-line=""><span style="color:#F47067">import</span><span style="color:#ADBAC7"> { SignatureV4 } </span><span style="color:#F47067">from</span><span style="color:#96D0FF"> "@smithy/signature-v4"</span><span style="color:#ADBAC7">;</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#768390">// for this scope these values can be hard coded</span></span>
+<span data-line=""><span style="color:#F47067">const</span><span style="color:#6CB6FF"> REGION</span><span style="color:#F47067"> =</span><span style="color:#96D0FF"> "eu-central-1"</span><span style="color:#ADBAC7">;</span></span>
+<span data-line=""><span style="color:#F47067">const</span><span style="color:#6CB6FF"> SERVICE</span><span style="color:#F47067"> =</span><span style="color:#96D0FF"> "execute-api"</span><span style="color:#ADBAC7">;</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#F47067">type</span><span style="color:#F69D50"> SigV4Props</span><span style="color:#F47067"> =</span><span style="color:#ADBAC7"> {</span></span>
+<span data-line=""><span style="color:#F47067">  readonly</span><span style="color:#F69D50"> credentials</span><span style="color:#F47067">?:</span></span>
+<span data-line=""><span style="color:#F47067">    |</span><span style="color:#F69D50"> AwsCredentialIdentity</span></span>
+<span data-line=""><span style="color:#F47067">    |</span><span style="color:#F69D50"> Provider</span><span style="color:#ADBAC7">&#x3C;</span><span style="color:#F69D50">AwsCredentialIdentity</span><span style="color:#ADBAC7">>;</span></span>
+<span data-line=""><span style="color:#F47067">  readonly</span><span style="color:#F69D50"> method</span><span style="color:#F47067">:</span><span style="color:#6CB6FF"> string</span><span style="color:#ADBAC7">;</span></span>
+<span data-line=""><span style="color:#F47067">  readonly</span><span style="color:#F69D50"> headers</span><span style="color:#F47067">:</span><span style="color:#F69D50"> Record</span><span style="color:#ADBAC7">&#x3C;</span><span style="color:#6CB6FF">string</span><span style="color:#ADBAC7">, </span><span style="color:#6CB6FF">string</span><span style="color:#ADBAC7">>;</span></span>
+<span data-line=""><span style="color:#F47067">  readonly</span><span style="color:#F69D50"> body</span><span style="color:#F47067">?:</span><span style="color:#F69D50"> BodyInit</span><span style="color:#F47067"> |</span><span style="color:#6CB6FF"> undefined</span><span style="color:#F47067"> |</span><span style="color:#6CB6FF"> null</span><span style="color:#ADBAC7">;</span></span>
+<span data-line=""><span style="color:#F47067">  readonly</span><span style="color:#F69D50"> url</span><span style="color:#F47067">:</span><span style="color:#F69D50"> URL</span><span style="color:#ADBAC7">;</span></span>
+<span data-line=""><span style="color:#ADBAC7">};</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#F47067">export</span><span style="color:#F47067"> const</span><span style="color:#DCBDFB"> signV4</span><span style="color:#F47067"> =</span><span style="color:#F47067"> async</span><span style="color:#ADBAC7"> (</span><span style="color:#F69D50">props</span><span style="color:#F47067">:</span><span style="color:#F69D50"> SigV4Props</span><span style="color:#ADBAC7">) </span><span style="color:#F47067">=></span><span style="color:#ADBAC7"> {</span></span>
+<span data-line=""><span style="color:#F47067">  if</span><span style="color:#ADBAC7"> (</span><span style="color:#F47067">!</span><span style="color:#ADBAC7">props.credentials) {</span></span>
+<span data-line=""><span style="color:#F47067">    throw</span><span style="color:#F47067"> new</span><span style="color:#DCBDFB"> Error</span><span style="color:#ADBAC7">(</span><span style="color:#96D0FF">"Credentials are required for signing"</span><span style="color:#ADBAC7">);</span></span>
+<span data-line=""><span style="color:#ADBAC7">  }</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#F47067">  const</span><span style="color:#6CB6FF"> signer</span><span style="color:#F47067"> =</span><span style="color:#F47067"> new</span><span style="color:#DCBDFB"> SignatureV4</span><span style="color:#ADBAC7">({</span></span>
+<span data-line=""><span style="color:#ADBAC7">    credentials: props.credentials,</span></span>
+<span data-line=""><span style="color:#ADBAC7">    region: </span><span style="color:#6CB6FF">REGION</span><span style="color:#ADBAC7">,</span></span>
+<span data-line=""><span style="color:#ADBAC7">    service: </span><span style="color:#6CB6FF">SERVICE</span><span style="color:#ADBAC7">,</span></span>
+<span data-line=""><span style="color:#ADBAC7">    sha256: Sha256,</span></span>
+<span data-line=""><span style="color:#ADBAC7">  });</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#F47067">  const</span><span style="color:#ADBAC7"> { </span><span style="color:#6CB6FF">method</span><span style="color:#ADBAC7">, </span><span style="color:#6CB6FF">headers</span><span style="color:#ADBAC7">, </span><span style="color:#6CB6FF">url</span><span style="color:#ADBAC7">, </span><span style="color:#6CB6FF">body</span><span style="color:#ADBAC7"> } </span><span style="color:#F47067">=</span><span style="color:#ADBAC7"> props;</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#768390">  // https://github.com/zirkelc/aws-sigv4-fetch/blob/44d19e270783e8566c2f39eebc1eb83e1b8af3ad/src/create-signed-fetcher.ts#L36C5-L37C32</span></span>
+<span data-line=""><span style="color:#768390">  // host is required by AWS Signature V4: https://docs.aws.amazon.com/general/latest/gr/sigv4-create-canonical-request.html</span></span>
+<span data-line=""><span style="color:#ADBAC7">  headers[</span><span style="color:#96D0FF">"host"</span><span style="color:#ADBAC7">] </span><span style="color:#F47067">=</span><span style="color:#ADBAC7"> url.host;</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#F47067">  const</span><span style="color:#6CB6FF"> request</span><span style="color:#F47067"> =</span><span style="color:#F47067"> new</span><span style="color:#DCBDFB"> HttpRequest</span><span style="color:#ADBAC7">({</span></span>
+<span data-line=""><span style="color:#ADBAC7">    method: method,</span></span>
+<span data-line=""><span style="color:#ADBAC7">    body,</span></span>
+<span data-line=""><span style="color:#ADBAC7">    headers: headers,</span></span>
+<span data-line=""><span style="color:#ADBAC7">    hostname: url.hostname,</span></span>
+<span data-line=""><span style="color:#ADBAC7">    path: url.pathname,</span></span>
+<span data-line=""><span style="color:#ADBAC7">    protocol: url.protocol,</span></span>
+<span data-line=""><span style="color:#ADBAC7">    port: url.port </span><span style="color:#F47067">?</span><span style="color:#DCBDFB"> Number</span><span style="color:#ADBAC7">(url.port) </span><span style="color:#F47067">:</span><span style="color:#6CB6FF"> undefined</span><span style="color:#ADBAC7">,</span></span>
+<span data-line=""><span style="color:#ADBAC7">    username: url.username,</span></span>
+<span data-line=""><span style="color:#ADBAC7">    password: url.password,</span></span>
+<span data-line=""><span style="color:#ADBAC7">    fragment: url.hash,</span></span>
+<span data-line=""><span style="color:#ADBAC7">    query: Object.</span><span style="color:#DCBDFB">fromEntries</span><span style="color:#ADBAC7">(url.searchParams.</span><span style="color:#DCBDFB">entries</span><span style="color:#ADBAC7">()),</span></span>
+<span data-line=""><span style="color:#ADBAC7">  });</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#F47067">  const</span><span style="color:#6CB6FF"> signedRequest</span><span style="color:#F47067"> =</span><span style="color:#F47067"> await</span><span style="color:#ADBAC7"> signer.</span><span style="color:#DCBDFB">sign</span><span style="color:#ADBAC7">(request);</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#F47067">  return</span><span style="color:#ADBAC7"> signedRequest;</span></span>
+<span data-line=""><span style="color:#ADBAC7">};</span></span><button type="button" title="Copy code" aria-label="Copy code" data="import { Sha256 } from &#x22;@aws-crypto/sha256-js&#x22;;
+import type { AwsCredentialIdentity, Provider } from &#x22;@aws-sdk/types&#x22;;
+import { HttpRequest } from &#x22;@smithy/protocol-http&#x22;;
+import { SignatureV4 } from &#x22;@smithy/signature-v4&#x22;;
+
+// for this scope these values can be hard coded
+const REGION = &#x22;eu-central-1&#x22;;
+const SERVICE = &#x22;execute-api&#x22;;
+
+type SigV4Props = {
+  readonly credentials?:
+    | AwsCredentialIdentity
+    | Provider<AwsCredentialIdentity>;
+  readonly method: string;
+  readonly headers: Record<string, string>;
+  readonly body?: BodyInit | undefined | null;
+  readonly url: URL;
+};
+
+export const signV4 = async (props: SigV4Props) => {
+  if (!props.credentials) {
+    throw new Error(&#x22;Credentials are required for signing&#x22;);
+  }
+
+  const signer = new SignatureV4({
+    credentials: props.credentials,
+    region: REGION,
+    service: SERVICE,
+    sha256: Sha256,
+  });
+
+  const { method, headers, url, body } = props;
+
+  // https://github.com/zirkelc/aws-sigv4-fetch/blob/44d19e270783e8566c2f39eebc1eb83e1b8af3ad/src/create-signed-fetcher.ts#L36C5-L37C32
+  // host is required by AWS Signature V4: https://docs.aws.amazon.com/general/latest/gr/sigv4-create-canonical-request.html
+  headers[&#x22;host&#x22;] = url.host;
+
+  const request = new HttpRequest({
+    method: method,
+    body,
+    headers: headers,
+    hostname: url.hostname,
+    path: url.pathname,
+    protocol: url.protocol,
+    port: url.port ? Number(url.port) : undefined,
+    username: url.username,
+    password: url.password,
+    fragment: url.hash,
+    query: Object.fromEntries(url.searchParams.entries()),
+  });
+
+  const signedRequest = await signer.sign(request);
+
+  return signedRequest;
+};" class="rehype-pretty-copy" onclick="navigator.clipboard.writeText(this.attributes.data.value);this.classList.add(&#x27;rehype-pretty-copied&#x27;);window.setTimeout(() => this.classList.remove(&#x27;rehype-pretty-copied&#x27;), 2500);"><span class="ready"></span><span class="success"></span></button><style>:root {--copy-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Cpath fill='%23adadad' d='M16.187 9.5H12.25a1.75 1.75 0 0 0-1.75 1.75v28.5c0 .967.784 1.75 1.75 1.75h23.5a1.75 1.75 0 0 0 1.75-1.75v-28.5a1.75 1.75 0 0 0-1.75-1.75h-3.937a4.25 4.25 0 0 1-4.063 3h-7.5a4.25 4.25 0 0 1-4.063-3M31.813 7h3.937A4.25 4.25 0 0 1 40 11.25v28.5A4.25 4.25 0 0 1 35.75 44h-23.5A4.25 4.25 0 0 1 8 39.75v-28.5A4.25 4.25 0 0 1 12.25 7h3.937a4.25 4.25 0 0 1 4.063-3h7.5a4.25 4.25 0 0 1 4.063 3M18.5 8.25c0 .966.784 1.75 1.75 1.75h7.5a1.75 1.75 0 1 0 0-3.5h-7.5a1.75 1.75 0 0 0-1.75 1.75'/%3E%3C/svg%3E");--success-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%2366ff85' d='M9 16.17L5.53 12.7a.996.996 0 1 0-1.41 1.41l4.18 4.18c.39.39 1.02.39 1.41 0L20.29 7.71a.996.996 0 1 0-1.41-1.41z'/%3E%3C/svg%3E");}pre:has(code) {position: relative;}pre button.rehype-pretty-copy {right: 1px;padding: 0;width: 24px;height: 24px;display: flex;margin-top: 2px;margin-right: 8px;position: absolute;border-radius: 25%;backdrop-filter: blur(3px);& span {width: 100%;aspect-ratio: 1 / 1;}& .ready {background-image: var(--copy-icon);}& .success {display: none; background-image: var(--success-icon);}}&.rehype-pretty-copied {& .success {display: block;} & .ready {display: none;}}pre button.rehype-pretty-copy.rehype-pretty-copied {opacity: 1;& .ready { display: none; }& .success { display: block; }}</style></code></pre></figure>
+<p>The call of the API Gateway looks like following. It does mainly two parts: Assuming a role for the credentials and calling the API Gateway with different HTTP clients.</p>
+<figure data-rehype-pretty-code-figure=""><pre style="background-color:#22272e;color:#adbac7" tabindex="0" data-language="typescript" data-theme="github-dark-dimmed"><code data-language="typescript" data-theme="github-dark-dimmed" style="display: grid;"><span data-line=""><span style="color:#F47067">import</span><span style="color:#ADBAC7"> { AssumeRoleCommand, STSClient } </span><span style="color:#F47067">from</span><span style="color:#96D0FF"> "@aws-sdk/client-sts"</span><span style="color:#ADBAC7">;</span></span>
+<span data-line=""><span style="color:#F47067">import</span><span style="color:#ADBAC7"> ky </span><span style="color:#F47067">from</span><span style="color:#96D0FF"> "ky"</span><span style="color:#ADBAC7">;</span></span>
+<span data-line=""><span style="color:#F47067">import</span><span style="color:#ADBAC7"> axios </span><span style="color:#F47067">from</span><span style="color:#96D0FF"> "axios"</span><span style="color:#ADBAC7">;</span></span>
+<span data-line=""><span style="color:#F47067">import</span><span style="color:#ADBAC7"> { signV4 } </span><span style="color:#F47067">from</span><span style="color:#96D0FF"> "../utils/signV4/signV4"</span><span style="color:#ADBAC7">;</span></span>
+<span data-line=""><span style="color:#768390">// Set the AWS Region.</span></span>
+<span data-line=""><span style="color:#F47067">const</span><span style="color:#6CB6FF"> REGION</span><span style="color:#F47067"> =</span><span style="color:#96D0FF"> "eu-central-1"</span><span style="color:#ADBAC7">;</span></span>
+<span data-line=""><span style="color:#768390">// Create an AWS STS service client object.</span></span>
+<span data-line=""><span style="color:#F47067">export</span><span style="color:#F47067"> const</span><span style="color:#6CB6FF"> client</span><span style="color:#F47067"> =</span><span style="color:#F47067"> new</span><span style="color:#DCBDFB"> STSClient</span><span style="color:#ADBAC7">({ region: </span><span style="color:#6CB6FF">REGION</span><span style="color:#ADBAC7"> });</span></span>
+<span data-line=""><span style="color:#F47067">export</span><span style="color:#F47067"> const</span><span style="color:#DCBDFB"> handler</span><span style="color:#F47067"> =</span><span style="color:#F47067"> async</span><span style="color:#ADBAC7"> (</span><span style="color:#F69D50">event</span><span style="color:#F47067">:</span><span style="color:#ADBAC7"> { </span><span style="color:#F69D50">apiKey</span><span style="color:#F47067">:</span><span style="color:#6CB6FF"> string</span><span style="color:#ADBAC7"> }) </span><span style="color:#F47067">=></span><span style="color:#ADBAC7"> {</span></span>
+<span data-line=""><span style="color:#F47067">  try</span><span style="color:#ADBAC7"> {</span></span>
+<span data-line=""><span style="color:#768390">    // get the credentials via a role which is allowed to call the API Gateway</span></span>
+<span data-line=""><span style="color:#F47067">    const</span><span style="color:#6CB6FF"> command</span><span style="color:#F47067"> =</span><span style="color:#F47067"> new</span><span style="color:#DCBDFB"> AssumeRoleCommand</span><span style="color:#ADBAC7">({</span></span>
+<span data-line=""><span style="color:#768390">      // The Amazon Resource Name (ARN) of the role to assume.</span></span>
+<span data-line=""><span style="color:#ADBAC7">      RoleArn: </span><span style="color:#96D0FF">"arn:aws:iam::123456789012:role/ApiAccess"</span><span style="color:#ADBAC7">,</span></span>
+<span data-line=""><span style="color:#768390">      // An identifier for the assumed role session.</span></span>
+<span data-line=""><span style="color:#ADBAC7">      RoleSessionName: </span><span style="color:#96D0FF">"session1"</span><span style="color:#ADBAC7">,</span></span>
+<span data-line=""><span style="color:#768390">      // The duration, in seconds, of the role session. The value specified</span></span>
+<span data-line=""><span style="color:#768390">      // can range from 900 seconds (15 minutes) up to the maximum session</span></span>
+<span data-line=""><span style="color:#768390">      // duration set for the role.</span></span>
+<span data-line=""><span style="color:#ADBAC7">      DurationSeconds: </span><span style="color:#6CB6FF">900</span><span style="color:#ADBAC7">,</span></span>
+<span data-line=""><span style="color:#ADBAC7">    });</span></span>
+<span data-line=""><span style="color:#F47067">    const</span><span style="color:#6CB6FF"> response</span><span style="color:#F47067"> =</span><span style="color:#F47067"> await</span><span style="color:#ADBAC7"> client.</span><span style="color:#DCBDFB">send</span><span style="color:#ADBAC7">(command);</span></span>
+<span data-line=""><span style="color:#768390">    // console.log(response);</span></span>
+<span data-line=""><span style="color:#F47067">    if</span><span style="color:#ADBAC7"> (</span><span style="color:#F47067">!</span><span style="color:#ADBAC7">response.Credentials) {</span></span>
+<span data-line=""><span style="color:#F47067">      throw</span><span style="color:#F47067"> new</span><span style="color:#DCBDFB"> Error</span><span style="color:#ADBAC7">(</span><span style="color:#96D0FF">"No credentials found in response"</span><span style="color:#ADBAC7">);</span></span>
+<span data-line=""><span style="color:#ADBAC7">    }</span></span>
+<span data-line=""><span style="color:#F47067">    if</span><span style="color:#ADBAC7"> (</span><span style="color:#F47067">!</span><span style="color:#ADBAC7">response.Credentials.AccessKeyId) {</span></span>
+<span data-line=""><span style="color:#F47067">      throw</span><span style="color:#F47067"> new</span><span style="color:#DCBDFB"> Error</span><span style="color:#ADBAC7">(</span><span style="color:#96D0FF">"No access key found in response"</span><span style="color:#ADBAC7">);</span></span>
+<span data-line=""><span style="color:#ADBAC7">    }</span></span>
+<span data-line=""><span style="color:#F47067">    if</span><span style="color:#ADBAC7"> (</span><span style="color:#F47067">!</span><span style="color:#ADBAC7">response.Credentials.SecretAccessKey) {</span></span>
+<span data-line=""><span style="color:#F47067">      throw</span><span style="color:#F47067"> new</span><span style="color:#DCBDFB"> Error</span><span style="color:#ADBAC7">(</span><span style="color:#96D0FF">"No secret key found in response"</span><span style="color:#ADBAC7">);</span></span>
+<span data-line=""><span style="color:#ADBAC7">    }</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#768390">    // GET ky</span></span>
+<span data-line=""><span style="color:#F47067">    const</span><span style="color:#6CB6FF"> urlKyGet</span><span style="color:#F47067"> =</span></span>
+<span data-line=""><span style="color:#96D0FF">      "https://&#x3C;&#x3C;api gw id>>.execute-api.eu-central-1.amazonaws.com/default?client=ky"</span><span style="color:#ADBAC7">;</span></span>
+<span data-line=""><span style="color:#F47067">    const</span><span style="color:#6CB6FF"> signedRequestKyGet</span><span style="color:#F47067"> =</span><span style="color:#F47067"> await</span><span style="color:#DCBDFB"> signV4</span><span style="color:#ADBAC7">({</span></span>
+<span data-line=""><span style="color:#ADBAC7">      credentials: {</span></span>
+<span data-line=""><span style="color:#ADBAC7">        accessKeyId: response.Credentials.AccessKeyId,</span></span>
+<span data-line=""><span style="color:#ADBAC7">        secretAccessKey: response.Credentials.SecretAccessKey,</span></span>
+<span data-line=""><span style="color:#ADBAC7">        sessionToken: response.Credentials.SessionToken,</span></span>
+<span data-line=""><span style="color:#ADBAC7">      },</span></span>
+<span data-line=""><span style="color:#ADBAC7">      method: </span><span style="color:#96D0FF">"GET"</span><span style="color:#ADBAC7">,</span></span>
+<span data-line=""><span style="color:#ADBAC7">      headers: {</span></span>
+<span data-line=""><span style="color:#96D0FF">        "Content-Type"</span><span style="color:#ADBAC7">: </span><span style="color:#96D0FF">"application/json"</span><span style="color:#ADBAC7">,</span></span>
+<span data-line=""><span style="color:#96D0FF">        "x-api-key"</span><span style="color:#ADBAC7">: event.apiKey,</span></span>
+<span data-line=""><span style="color:#ADBAC7">      },</span></span>
+<span data-line=""><span style="color:#ADBAC7">      url: </span><span style="color:#F47067">new</span><span style="color:#DCBDFB"> URL</span><span style="color:#ADBAC7">(urlKyGet),</span></span>
+<span data-line=""><span style="color:#ADBAC7">    });</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#F47067">    const</span><span style="color:#6CB6FF"> responseApiKyGet</span><span style="color:#F47067"> =</span><span style="color:#F47067"> await</span><span style="color:#DCBDFB"> ky</span><span style="color:#ADBAC7">(urlKyGet, {</span></span>
+<span data-line=""><span style="color:#ADBAC7">      method: signedRequestKyGet.method,</span></span>
+<span data-line=""><span style="color:#ADBAC7">      headers: signedRequestKyGet.headers,</span></span>
+<span data-line=""><span style="color:#ADBAC7">    });</span></span>
+<span data-line=""><span style="color:#F47067">    const</span><span style="color:#6CB6FF"> dataKyGet</span><span style="color:#F47067"> =</span><span style="color:#F47067"> await</span><span style="color:#ADBAC7"> responseApiKyGet.</span><span style="color:#DCBDFB">json</span><span style="color:#ADBAC7">();</span></span>
+<span data-line=""><span style="color:#ADBAC7">    console.</span><span style="color:#DCBDFB">log</span><span style="color:#ADBAC7">(dataKyGet);</span></span>
+<span data-line=""><span style="color:#768390">    // GET fetch</span></span>
+<span data-line=""><span style="color:#F47067">    const</span><span style="color:#6CB6FF"> urlFetchGet</span><span style="color:#F47067"> =</span></span>
+<span data-line=""><span style="color:#96D0FF">      "https://&#x3C;&#x3C;api gw id>>.execute-api.eu-central-1.amazonaws.com/default?client=fetch"</span><span style="color:#ADBAC7">;</span></span>
+<span data-line=""><span style="color:#F47067">    const</span><span style="color:#6CB6FF"> signedRequestFetchGet</span><span style="color:#F47067"> =</span><span style="color:#F47067"> await</span><span style="color:#DCBDFB"> signV4</span><span style="color:#ADBAC7">({</span></span>
+<span data-line=""><span style="color:#ADBAC7">      credentials: {</span></span>
+<span data-line=""><span style="color:#ADBAC7">        accessKeyId: response.Credentials.AccessKeyId,</span></span>
+<span data-line=""><span style="color:#ADBAC7">        secretAccessKey: response.Credentials.SecretAccessKey,</span></span>
+<span data-line=""><span style="color:#ADBAC7">        sessionToken: response.Credentials.SessionToken,</span></span>
+<span data-line=""><span style="color:#ADBAC7">      },</span></span>
+<span data-line=""><span style="color:#ADBAC7">      method: </span><span style="color:#96D0FF">"GET"</span><span style="color:#ADBAC7">,</span></span>
+<span data-line=""><span style="color:#ADBAC7">      headers: {</span></span>
+<span data-line=""><span style="color:#96D0FF">        "Content-Type"</span><span style="color:#ADBAC7">: </span><span style="color:#96D0FF">"application/json"</span><span style="color:#ADBAC7">,</span></span>
+<span data-line=""><span style="color:#96D0FF">        "x-api-key"</span><span style="color:#ADBAC7">: event.apiKey,</span></span>
+<span data-line=""><span style="color:#ADBAC7">      },</span></span>
+<span data-line=""><span style="color:#ADBAC7">      url: </span><span style="color:#F47067">new</span><span style="color:#DCBDFB"> URL</span><span style="color:#ADBAC7">(urlFetchGet),</span></span>
+<span data-line=""><span style="color:#ADBAC7">    });</span></span>
+<span data-line=""><span style="color:#F47067">    const</span><span style="color:#6CB6FF"> responseApiFetchGet</span><span style="color:#F47067"> =</span><span style="color:#F47067"> await</span><span style="color:#DCBDFB"> fetch</span><span style="color:#ADBAC7">(urlFetchGet, {</span></span>
+<span data-line=""><span style="color:#ADBAC7">      method: signedRequestFetchGet.method,</span></span>
+<span data-line=""><span style="color:#ADBAC7">      headers: signedRequestFetchGet.headers,</span></span>
+<span data-line=""><span style="color:#ADBAC7">    });</span></span>
+<span data-line=""><span style="color:#F47067">    const</span><span style="color:#6CB6FF"> dataFetchGet</span><span style="color:#F47067"> =</span><span style="color:#F47067"> await</span><span style="color:#ADBAC7"> responseApiFetchGet.</span><span style="color:#DCBDFB">json</span><span style="color:#ADBAC7">();</span></span>
+<span data-line=""><span style="color:#ADBAC7">    console.</span><span style="color:#DCBDFB">log</span><span style="color:#ADBAC7">(dataFetchGet);</span></span>
+<span data-line=""><span style="color:#768390">    // GET axios</span></span>
+<span data-line=""><span style="color:#F47067">    const</span><span style="color:#6CB6FF"> urlAxiosGet</span><span style="color:#F47067"> =</span></span>
+<span data-line=""><span style="color:#96D0FF">      "https://&#x3C;&#x3C;api gw id>>.execute-api.eu-central-1.amazonaws.com/default?client=axios"</span><span style="color:#ADBAC7">;</span></span>
+<span data-line=""><span style="color:#F47067">    const</span><span style="color:#6CB6FF"> signedRequestAxiosGet</span><span style="color:#F47067"> =</span><span style="color:#F47067"> await</span><span style="color:#DCBDFB"> signV4</span><span style="color:#ADBAC7">({</span></span>
+<span data-line=""><span style="color:#ADBAC7">      credentials: {</span></span>
+<span data-line=""><span style="color:#ADBAC7">        accessKeyId: response.Credentials.AccessKeyId,</span></span>
+<span data-line=""><span style="color:#ADBAC7">        secretAccessKey: response.Credentials.SecretAccessKey,</span></span>
+<span data-line=""><span style="color:#ADBAC7">        sessionToken: response.Credentials.SessionToken,</span></span>
+<span data-line=""><span style="color:#ADBAC7">      },</span></span>
+<span data-line=""><span style="color:#ADBAC7">      method: </span><span style="color:#96D0FF">"GET"</span><span style="color:#ADBAC7">,</span></span>
+<span data-line=""><span style="color:#ADBAC7">      headers: {</span></span>
+<span data-line=""><span style="color:#96D0FF">        "Content-Type"</span><span style="color:#ADBAC7">: </span><span style="color:#96D0FF">"application/json"</span><span style="color:#ADBAC7">,</span></span>
+<span data-line=""><span style="color:#96D0FF">        "x-api-key"</span><span style="color:#ADBAC7">: event.apiKey,</span></span>
+<span data-line=""><span style="color:#ADBAC7">      },</span></span>
+<span data-line=""><span style="color:#ADBAC7">      url: </span><span style="color:#F47067">new</span><span style="color:#DCBDFB"> URL</span><span style="color:#ADBAC7">(urlAxiosGet),</span></span>
+<span data-line=""><span style="color:#ADBAC7">    });</span></span>
+<span data-line=""><span style="color:#F47067">    const</span><span style="color:#6CB6FF"> responseApiAxiosGet</span><span style="color:#F47067"> =</span><span style="color:#F47067"> await</span><span style="color:#ADBAC7"> axios.</span><span style="color:#DCBDFB">get</span><span style="color:#ADBAC7">(urlAxiosGet, {</span></span>
+<span data-line=""><span style="color:#ADBAC7">      headers: signedRequestAxiosGet.headers,</span></span>
+<span data-line=""><span style="color:#ADBAC7">    });</span></span>
+<span data-line=""><span style="color:#F47067">    const</span><span style="color:#6CB6FF"> dataAxiosGet</span><span style="color:#F47067"> =</span><span style="color:#ADBAC7"> responseApiAxiosGet.data;</span></span>
+<span data-line=""><span style="color:#ADBAC7">    console.</span><span style="color:#DCBDFB">log</span><span style="color:#ADBAC7">(dataAxiosGet);</span></span>
+<span data-line=""><span style="color:#768390">    // POST ky</span></span>
+<span data-line=""><span style="color:#F47067">    const</span><span style="color:#6CB6FF"> urlKyPost</span><span style="color:#F47067"> =</span></span>
+<span data-line=""><span style="color:#96D0FF">      "https://&#x3C;&#x3C;api gw id>>.execute-api.eu-central-1.amazonaws.com/default"</span><span style="color:#ADBAC7">;</span></span>
+<span data-line=""><span style="color:#F47067">    const</span><span style="color:#6CB6FF"> signedRequestKyPost</span><span style="color:#F47067"> =</span><span style="color:#F47067"> await</span><span style="color:#DCBDFB"> signV4</span><span style="color:#ADBAC7">({</span></span>
+<span data-line=""><span style="color:#ADBAC7">      credentials: {</span></span>
+<span data-line=""><span style="color:#ADBAC7">        accessKeyId: response.Credentials.AccessKeyId,</span></span>
+<span data-line=""><span style="color:#ADBAC7">        secretAccessKey: response.Credentials.SecretAccessKey,</span></span>
+<span data-line=""><span style="color:#ADBAC7">        sessionToken: response.Credentials.SessionToken,</span></span>
+<span data-line=""><span style="color:#ADBAC7">      },</span></span>
+<span data-line=""><span style="color:#ADBAC7">      method: </span><span style="color:#96D0FF">"POST"</span><span style="color:#ADBAC7">,</span></span>
+<span data-line=""><span style="color:#ADBAC7">      headers: {</span></span>
+<span data-line=""><span style="color:#96D0FF">        "Content-Type"</span><span style="color:#ADBAC7">: </span><span style="color:#96D0FF">"application/json"</span><span style="color:#ADBAC7">,</span></span>
+<span data-line=""><span style="color:#96D0FF">        "x-api-key"</span><span style="color:#ADBAC7">: event.apiKey,</span></span>
+<span data-line=""><span style="color:#ADBAC7">      },</span></span>
+<span data-line=""><span style="color:#ADBAC7">      body: </span><span style="color:#6CB6FF">JSON</span><span style="color:#ADBAC7">.</span><span style="color:#DCBDFB">stringify</span><span style="color:#ADBAC7">({ client: </span><span style="color:#96D0FF">"ky"</span><span style="color:#ADBAC7"> }),</span></span>
+<span data-line=""><span style="color:#ADBAC7">      url: </span><span style="color:#F47067">new</span><span style="color:#DCBDFB"> URL</span><span style="color:#ADBAC7">(urlKyPost),</span></span>
+<span data-line=""><span style="color:#ADBAC7">    });</span></span>
+<span data-line=""><span style="color:#F47067">    const</span><span style="color:#6CB6FF"> responseApiKyPost</span><span style="color:#F47067"> =</span><span style="color:#F47067"> await</span><span style="color:#DCBDFB"> ky</span><span style="color:#ADBAC7">(urlKyPost, {</span></span>
+<span data-line=""><span style="color:#ADBAC7">      method: signedRequestKyPost.method,</span></span>
+<span data-line=""><span style="color:#ADBAC7">      headers: signedRequestKyPost.headers,</span></span>
+<span data-line=""><span style="color:#ADBAC7">      body: signedRequestKyPost.body </span><span style="color:#F47067">as</span><span style="color:#6CB6FF"> string</span><span style="color:#ADBAC7">,</span></span>
+<span data-line=""><span style="color:#ADBAC7">    });</span></span>
+<span data-line=""><span style="color:#F47067">    const</span><span style="color:#6CB6FF"> dataKyPost</span><span style="color:#F47067"> =</span><span style="color:#F47067"> await</span><span style="color:#ADBAC7"> responseApiKyPost.</span><span style="color:#DCBDFB">json</span><span style="color:#ADBAC7">();</span></span>
+<span data-line=""><span style="color:#ADBAC7">    console.</span><span style="color:#DCBDFB">log</span><span style="color:#ADBAC7">(dataKyPost);</span></span>
+<span data-line=""><span style="color:#768390">    // POST fetch</span></span>
+<span data-line=""><span style="color:#F47067">    const</span><span style="color:#6CB6FF"> urlFetchPost</span><span style="color:#F47067"> =</span></span>
+<span data-line=""><span style="color:#96D0FF">      "https://&#x3C;&#x3C;api gw id>>.execute-api.eu-central-1.amazonaws.com/default"</span><span style="color:#ADBAC7">;</span></span>
+<span data-line=""><span style="color:#F47067">    const</span><span style="color:#6CB6FF"> signedRequestFetchPost</span><span style="color:#F47067"> =</span><span style="color:#F47067"> await</span><span style="color:#DCBDFB"> signV4</span><span style="color:#ADBAC7">({</span></span>
+<span data-line=""><span style="color:#ADBAC7">      credentials: {</span></span>
+<span data-line=""><span style="color:#ADBAC7">        accessKeyId: response.Credentials.AccessKeyId,</span></span>
+<span data-line=""><span style="color:#ADBAC7">        secretAccessKey: response.Credentials.SecretAccessKey,</span></span>
+<span data-line=""><span style="color:#ADBAC7">        sessionToken: response.Credentials.SessionToken,</span></span>
+<span data-line=""><span style="color:#ADBAC7">      },</span></span>
+<span data-line=""><span style="color:#ADBAC7">      method: </span><span style="color:#96D0FF">"POST"</span><span style="color:#ADBAC7">,</span></span>
+<span data-line=""><span style="color:#ADBAC7">      headers: {</span></span>
+<span data-line=""><span style="color:#96D0FF">        "Content-Type"</span><span style="color:#ADBAC7">: </span><span style="color:#96D0FF">"application/json"</span><span style="color:#ADBAC7">,</span></span>
+<span data-line=""><span style="color:#96D0FF">        "x-api-key"</span><span style="color:#ADBAC7">: event.apiKey,</span></span>
+<span data-line=""><span style="color:#ADBAC7">      },</span></span>
+<span data-line=""><span style="color:#ADBAC7">      body: </span><span style="color:#6CB6FF">JSON</span><span style="color:#ADBAC7">.</span><span style="color:#DCBDFB">stringify</span><span style="color:#ADBAC7">({ client: </span><span style="color:#96D0FF">"fetch"</span><span style="color:#ADBAC7"> }),</span></span>
+<span data-line=""><span style="color:#ADBAC7">      url: </span><span style="color:#F47067">new</span><span style="color:#DCBDFB"> URL</span><span style="color:#ADBAC7">(urlFetchPost),</span></span>
+<span data-line=""><span style="color:#ADBAC7">    });</span></span>
+<span data-line=""><span style="color:#F47067">    const</span><span style="color:#6CB6FF"> responseApiFetchPost</span><span style="color:#F47067"> =</span><span style="color:#F47067"> await</span><span style="color:#DCBDFB"> fetch</span><span style="color:#ADBAC7">(urlFetchPost, {</span></span>
+<span data-line=""><span style="color:#ADBAC7">      method: signedRequestFetchPost.method,</span></span>
+<span data-line=""><span style="color:#ADBAC7">      headers: signedRequestFetchPost.headers,</span></span>
+<span data-line=""><span style="color:#ADBAC7">      body: signedRequestFetchPost.body </span><span style="color:#F47067">as</span><span style="color:#6CB6FF"> string</span><span style="color:#ADBAC7">,</span></span>
+<span data-line=""><span style="color:#ADBAC7">    });</span></span>
+<span data-line=""><span style="color:#F47067">    const</span><span style="color:#6CB6FF"> dataFetchPost</span><span style="color:#F47067"> =</span><span style="color:#F47067"> await</span><span style="color:#ADBAC7"> responseApiFetchPost.</span><span style="color:#DCBDFB">json</span><span style="color:#ADBAC7">();</span></span>
+<span data-line=""><span style="color:#ADBAC7">    console.</span><span style="color:#DCBDFB">log</span><span style="color:#ADBAC7">(dataFetchPost);</span></span>
+<span data-line=""><span style="color:#768390">    // POST axios</span></span>
+<span data-line=""><span style="color:#F47067">    const</span><span style="color:#6CB6FF"> urlAxiosPost</span><span style="color:#F47067"> =</span></span>
+<span data-line=""><span style="color:#96D0FF">      "https://&#x3C;&#x3C;api gw id>>.execute-api.eu-central-1.amazonaws.com/default"</span><span style="color:#ADBAC7">;</span></span>
+<span data-line=""><span style="color:#F47067">    const</span><span style="color:#6CB6FF"> signedRequestAxiosPost</span><span style="color:#F47067"> =</span><span style="color:#F47067"> await</span><span style="color:#DCBDFB"> signV4</span><span style="color:#ADBAC7">({</span></span>
+<span data-line=""><span style="color:#ADBAC7">      credentials: {</span></span>
+<span data-line=""><span style="color:#ADBAC7">        accessKeyId: response.Credentials.AccessKeyId,</span></span>
+<span data-line=""><span style="color:#ADBAC7">        secretAccessKey: response.Credentials.SecretAccessKey,</span></span>
+<span data-line=""><span style="color:#ADBAC7">        sessionToken: response.Credentials.SessionToken,</span></span>
+<span data-line=""><span style="color:#ADBAC7">      },</span></span>
+<span data-line=""><span style="color:#ADBAC7">      method: </span><span style="color:#96D0FF">"POST"</span><span style="color:#ADBAC7">,</span></span>
+<span data-line=""><span style="color:#ADBAC7">      headers: {</span></span>
+<span data-line=""><span style="color:#96D0FF">        "Content-Type"</span><span style="color:#ADBAC7">: </span><span style="color:#96D0FF">"application/json"</span><span style="color:#ADBAC7">,</span></span>
+<span data-line=""><span style="color:#96D0FF">        "x-api-key"</span><span style="color:#ADBAC7">: event.apiKey,</span></span>
+<span data-line=""><span style="color:#ADBAC7">      },</span></span>
+<span data-line=""><span style="color:#ADBAC7">      body: </span><span style="color:#6CB6FF">JSON</span><span style="color:#ADBAC7">.</span><span style="color:#DCBDFB">stringify</span><span style="color:#ADBAC7">({ client: </span><span style="color:#96D0FF">"axios"</span><span style="color:#ADBAC7"> }),</span></span>
+<span data-line=""><span style="color:#ADBAC7">      url: </span><span style="color:#F47067">new</span><span style="color:#DCBDFB"> URL</span><span style="color:#ADBAC7">(urlAxiosPost),</span></span>
+<span data-line=""><span style="color:#ADBAC7">    });</span></span>
+<span data-line=""><span style="color:#F47067">    const</span><span style="color:#6CB6FF"> responseApiAxiosPost</span><span style="color:#F47067"> =</span><span style="color:#F47067"> await</span><span style="color:#ADBAC7"> axios.</span><span style="color:#DCBDFB">post</span><span style="color:#ADBAC7">(</span></span>
+<span data-line=""><span style="color:#ADBAC7">      urlAxiosPost,</span></span>
+<span data-line=""><span style="color:#ADBAC7">      signedRequestAxiosPost.body,</span></span>
+<span data-line=""><span style="color:#ADBAC7">      {</span></span>
+<span data-line=""><span style="color:#ADBAC7">        headers: signedRequestAxiosPost.headers,</span></span>
+<span data-line=""><span style="color:#ADBAC7">      },</span></span>
+<span data-line=""><span style="color:#ADBAC7">    );</span></span>
+<span data-line=""><span style="color:#F47067">    const</span><span style="color:#6CB6FF"> dataAxiosPost</span><span style="color:#F47067"> =</span><span style="color:#ADBAC7"> responseApiAxiosPost.data;</span></span>
+<span data-line=""><span style="color:#ADBAC7">    console.</span><span style="color:#DCBDFB">log</span><span style="color:#ADBAC7">(dataAxiosPost);</span></span>
+<span data-line=""><span style="color:#ADBAC7">  } </span><span style="color:#F47067">catch</span><span style="color:#ADBAC7"> (error) {</span></span>
+<span data-line=""><span style="color:#ADBAC7">    console.</span><span style="color:#DCBDFB">error</span><span style="color:#ADBAC7">(error);</span></span>
+<span data-line=""><span style="color:#ADBAC7">  }</span></span>
+<span data-line=""><span style="color:#ADBAC7">};</span></span><button type="button" title="Copy code" aria-label="Copy code" data="import { AssumeRoleCommand, STSClient } from &#x22;@aws-sdk/client-sts&#x22;;
+import ky from &#x22;ky&#x22;;
+import axios from &#x22;axios&#x22;;
+import { signV4 } from &#x22;../utils/signV4/signV4&#x22;;
+// Set the AWS Region.
+const REGION = &#x22;eu-central-1&#x22;;
+// Create an AWS STS service client object.
+export const client = new STSClient({ region: REGION });
+export const handler = async (event: { apiKey: string }) => {
+  try {
+    // get the credentials via a role which is allowed to call the API Gateway
+    const command = new AssumeRoleCommand({
+      // The Amazon Resource Name (ARN) of the role to assume.
+      RoleArn: &#x22;arn:aws:iam::123456789012:role/ApiAccess&#x22;,
+      // An identifier for the assumed role session.
+      RoleSessionName: &#x22;session1&#x22;,
+      // The duration, in seconds, of the role session. The value specified
+      // can range from 900 seconds (15 minutes) up to the maximum session
+      // duration set for the role.
+      DurationSeconds: 900,
+    });
+    const response = await client.send(command);
+    // console.log(response);
+    if (!response.Credentials) {
+      throw new Error(&#x22;No credentials found in response&#x22;);
+    }
+    if (!response.Credentials.AccessKeyId) {
+      throw new Error(&#x22;No access key found in response&#x22;);
+    }
+    if (!response.Credentials.SecretAccessKey) {
+      throw new Error(&#x22;No secret key found in response&#x22;);
+    }
+
+    // GET ky
+    const urlKyGet =
+      &#x22;https://<<api gw id>>.execute-api.eu-central-1.amazonaws.com/default?client=ky&#x22;;
+    const signedRequestKyGet = await signV4({
+      credentials: {
+        accessKeyId: response.Credentials.AccessKeyId,
+        secretAccessKey: response.Credentials.SecretAccessKey,
+        sessionToken: response.Credentials.SessionToken,
+      },
+      method: &#x22;GET&#x22;,
+      headers: {
+        &#x22;Content-Type&#x22;: &#x22;application/json&#x22;,
+        &#x22;x-api-key&#x22;: event.apiKey,
+      },
+      url: new URL(urlKyGet),
+    });
+
+    const responseApiKyGet = await ky(urlKyGet, {
+      method: signedRequestKyGet.method,
+      headers: signedRequestKyGet.headers,
+    });
+    const dataKyGet = await responseApiKyGet.json();
+    console.log(dataKyGet);
+    // GET fetch
+    const urlFetchGet =
+      &#x22;https://<<api gw id>>.execute-api.eu-central-1.amazonaws.com/default?client=fetch&#x22;;
+    const signedRequestFetchGet = await signV4({
+      credentials: {
+        accessKeyId: response.Credentials.AccessKeyId,
+        secretAccessKey: response.Credentials.SecretAccessKey,
+        sessionToken: response.Credentials.SessionToken,
+      },
+      method: &#x22;GET&#x22;,
+      headers: {
+        &#x22;Content-Type&#x22;: &#x22;application/json&#x22;,
+        &#x22;x-api-key&#x22;: event.apiKey,
+      },
+      url: new URL(urlFetchGet),
+    });
+    const responseApiFetchGet = await fetch(urlFetchGet, {
+      method: signedRequestFetchGet.method,
+      headers: signedRequestFetchGet.headers,
+    });
+    const dataFetchGet = await responseApiFetchGet.json();
+    console.log(dataFetchGet);
+    // GET axios
+    const urlAxiosGet =
+      &#x22;https://<<api gw id>>.execute-api.eu-central-1.amazonaws.com/default?client=axios&#x22;;
+    const signedRequestAxiosGet = await signV4({
+      credentials: {
+        accessKeyId: response.Credentials.AccessKeyId,
+        secretAccessKey: response.Credentials.SecretAccessKey,
+        sessionToken: response.Credentials.SessionToken,
+      },
+      method: &#x22;GET&#x22;,
+      headers: {
+        &#x22;Content-Type&#x22;: &#x22;application/json&#x22;,
+        &#x22;x-api-key&#x22;: event.apiKey,
+      },
+      url: new URL(urlAxiosGet),
+    });
+    const responseApiAxiosGet = await axios.get(urlAxiosGet, {
+      headers: signedRequestAxiosGet.headers,
+    });
+    const dataAxiosGet = responseApiAxiosGet.data;
+    console.log(dataAxiosGet);
+    // POST ky
+    const urlKyPost =
+      &#x22;https://<<api gw id>>.execute-api.eu-central-1.amazonaws.com/default&#x22;;
+    const signedRequestKyPost = await signV4({
+      credentials: {
+        accessKeyId: response.Credentials.AccessKeyId,
+        secretAccessKey: response.Credentials.SecretAccessKey,
+        sessionToken: response.Credentials.SessionToken,
+      },
+      method: &#x22;POST&#x22;,
+      headers: {
+        &#x22;Content-Type&#x22;: &#x22;application/json&#x22;,
+        &#x22;x-api-key&#x22;: event.apiKey,
+      },
+      body: JSON.stringify({ client: &#x22;ky&#x22; }),
+      url: new URL(urlKyPost),
+    });
+    const responseApiKyPost = await ky(urlKyPost, {
+      method: signedRequestKyPost.method,
+      headers: signedRequestKyPost.headers,
+      body: signedRequestKyPost.body as string,
+    });
+    const dataKyPost = await responseApiKyPost.json();
+    console.log(dataKyPost);
+    // POST fetch
+    const urlFetchPost =
+      &#x22;https://<<api gw id>>.execute-api.eu-central-1.amazonaws.com/default&#x22;;
+    const signedRequestFetchPost = await signV4({
+      credentials: {
+        accessKeyId: response.Credentials.AccessKeyId,
+        secretAccessKey: response.Credentials.SecretAccessKey,
+        sessionToken: response.Credentials.SessionToken,
+      },
+      method: &#x22;POST&#x22;,
+      headers: {
+        &#x22;Content-Type&#x22;: &#x22;application/json&#x22;,
+        &#x22;x-api-key&#x22;: event.apiKey,
+      },
+      body: JSON.stringify({ client: &#x22;fetch&#x22; }),
+      url: new URL(urlFetchPost),
+    });
+    const responseApiFetchPost = await fetch(urlFetchPost, {
+      method: signedRequestFetchPost.method,
+      headers: signedRequestFetchPost.headers,
+      body: signedRequestFetchPost.body as string,
+    });
+    const dataFetchPost = await responseApiFetchPost.json();
+    console.log(dataFetchPost);
+    // POST axios
+    const urlAxiosPost =
+      &#x22;https://<<api gw id>>.execute-api.eu-central-1.amazonaws.com/default&#x22;;
+    const signedRequestAxiosPost = await signV4({
+      credentials: {
+        accessKeyId: response.Credentials.AccessKeyId,
+        secretAccessKey: response.Credentials.SecretAccessKey,
+        sessionToken: response.Credentials.SessionToken,
+      },
+      method: &#x22;POST&#x22;,
+      headers: {
+        &#x22;Content-Type&#x22;: &#x22;application/json&#x22;,
+        &#x22;x-api-key&#x22;: event.apiKey,
+      },
+      body: JSON.stringify({ client: &#x22;axios&#x22; }),
+      url: new URL(urlAxiosPost),
+    });
+    const responseApiAxiosPost = await axios.post(
+      urlAxiosPost,
+      signedRequestAxiosPost.body,
+      {
+        headers: signedRequestAxiosPost.headers,
+      },
+    );
+    const dataAxiosPost = responseApiAxiosPost.data;
+    console.log(dataAxiosPost);
+  } catch (error) {
+    console.error(error);
+  }
+};" class="rehype-pretty-copy" onclick="navigator.clipboard.writeText(this.attributes.data.value);this.classList.add(&#x27;rehype-pretty-copied&#x27;);window.setTimeout(() => this.classList.remove(&#x27;rehype-pretty-copied&#x27;), 2500);"><span class="ready"></span><span class="success"></span></button><style>:root {--copy-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Cpath fill='%23adadad' d='M16.187 9.5H12.25a1.75 1.75 0 0 0-1.75 1.75v28.5c0 .967.784 1.75 1.75 1.75h23.5a1.75 1.75 0 0 0 1.75-1.75v-28.5a1.75 1.75 0 0 0-1.75-1.75h-3.937a4.25 4.25 0 0 1-4.063 3h-7.5a4.25 4.25 0 0 1-4.063-3M31.813 7h3.937A4.25 4.25 0 0 1 40 11.25v28.5A4.25 4.25 0 0 1 35.75 44h-23.5A4.25 4.25 0 0 1 8 39.75v-28.5A4.25 4.25 0 0 1 12.25 7h3.937a4.25 4.25 0 0 1 4.063-3h7.5a4.25 4.25 0 0 1 4.063 3M18.5 8.25c0 .966.784 1.75 1.75 1.75h7.5a1.75 1.75 0 1 0 0-3.5h-7.5a1.75 1.75 0 0 0-1.75 1.75'/%3E%3C/svg%3E");--success-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%2366ff85' d='M9 16.17L5.53 12.7a.996.996 0 1 0-1.41 1.41l4.18 4.18c.39.39 1.02.39 1.41 0L20.29 7.71a.996.996 0 1 0-1.41-1.41z'/%3E%3C/svg%3E");}pre:has(code) {position: relative;}pre button.rehype-pretty-copy {right: 1px;padding: 0;width: 24px;height: 24px;display: flex;margin-top: 2px;margin-right: 8px;position: absolute;border-radius: 25%;backdrop-filter: blur(3px);& span {width: 100%;aspect-ratio: 1 / 1;}& .ready {background-image: var(--copy-icon);}& .success {display: none; background-image: var(--success-icon);}}&.rehype-pretty-copied {& .success {display: block;} & .ready {display: none;}}pre button.rehype-pretty-copy.rehype-pretty-copied {opacity: 1;& .ready { display: none; }& .success { display: block; }}</style></code></pre></figure>
+<p>The role has this policy attached and allow to call API Gateways.</p>
+<figure data-rehype-pretty-code-figure=""><pre style="background-color:#22272e;color:#adbac7" tabindex="0" data-language="json" data-theme="github-dark-dimmed"><code data-language="json" data-theme="github-dark-dimmed" style="display: grid;"><span data-line=""><span style="color:#ADBAC7">{</span></span>
+<span data-line=""><span style="color:#8DDB8C">  "Version"</span><span style="color:#ADBAC7">: </span><span style="color:#96D0FF">"2012-10-17"</span><span style="color:#ADBAC7">,</span></span>
+<span data-line=""><span style="color:#8DDB8C">  "Statement"</span><span style="color:#ADBAC7">: [</span></span>
+<span data-line=""><span style="color:#ADBAC7">    {</span></span>
+<span data-line=""><span style="color:#8DDB8C">      "Action"</span><span style="color:#ADBAC7">: </span><span style="color:#96D0FF">"execute-api:Invoke"</span><span style="color:#ADBAC7">,</span></span>
+<span data-line=""><span style="color:#8DDB8C">      "Resource"</span><span style="color:#ADBAC7">: </span><span style="color:#96D0FF">"*"</span><span style="color:#ADBAC7">,</span></span>
+<span data-line=""><span style="color:#8DDB8C">      "Effect"</span><span style="color:#ADBAC7">: </span><span style="color:#96D0FF">"Allow"</span></span>
+<span data-line=""><span style="color:#ADBAC7">    }</span></span>
+<span data-line=""><span style="color:#ADBAC7">  ]</span></span>
+<span data-line=""><span style="color:#ADBAC7">}</span></span><button type="button" title="Copy code" aria-label="Copy code" data="{
+  &#x22;Version&#x22;: &#x22;2012-10-17&#x22;,
+  &#x22;Statement&#x22;: [
+    {
+      &#x22;Action&#x22;: &#x22;execute-api:Invoke&#x22;,
+      &#x22;Resource&#x22;: &#x22;*&#x22;,
+      &#x22;Effect&#x22;: &#x22;Allow&#x22;
+    }
+  ]
+}" class="rehype-pretty-copy" onclick="navigator.clipboard.writeText(this.attributes.data.value);this.classList.add(&#x27;rehype-pretty-copied&#x27;);window.setTimeout(() => this.classList.remove(&#x27;rehype-pretty-copied&#x27;), 2500);"><span class="ready"></span><span class="success"></span></button><style>:root {--copy-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Cpath fill='%23adadad' d='M16.187 9.5H12.25a1.75 1.75 0 0 0-1.75 1.75v28.5c0 .967.784 1.75 1.75 1.75h23.5a1.75 1.75 0 0 0 1.75-1.75v-28.5a1.75 1.75 0 0 0-1.75-1.75h-3.937a4.25 4.25 0 0 1-4.063 3h-7.5a4.25 4.25 0 0 1-4.063-3M31.813 7h3.937A4.25 4.25 0 0 1 40 11.25v28.5A4.25 4.25 0 0 1 35.75 44h-23.5A4.25 4.25 0 0 1 8 39.75v-28.5A4.25 4.25 0 0 1 12.25 7h3.937a4.25 4.25 0 0 1 4.063-3h7.5a4.25 4.25 0 0 1 4.063 3M18.5 8.25c0 .966.784 1.75 1.75 1.75h7.5a1.75 1.75 0 1 0 0-3.5h-7.5a1.75 1.75 0 0 0-1.75 1.75'/%3E%3C/svg%3E");--success-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%2366ff85' d='M9 16.17L5.53 12.7a.996.996 0 1 0-1.41 1.41l4.18 4.18c.39.39 1.02.39 1.41 0L20.29 7.71a.996.996 0 1 0-1.41-1.41z'/%3E%3C/svg%3E");}pre:has(code) {position: relative;}pre button.rehype-pretty-copy {right: 1px;padding: 0;width: 24px;height: 24px;display: flex;margin-top: 2px;margin-right: 8px;position: absolute;border-radius: 25%;backdrop-filter: blur(3px);& span {width: 100%;aspect-ratio: 1 / 1;}& .ready {background-image: var(--copy-icon);}& .success {display: none; background-image: var(--success-icon);}}&.rehype-pretty-copied {& .success {display: block;} & .ready {display: none;}}pre button.rehype-pretty-copy.rehype-pretty-copied {opacity: 1;& .ready { display: none; }& .success { display: block; }}</style></code></pre></figure>
+<p>The call of the API Gateway is than calling the signV4 function with the credentials and “all information” for the API call.</p>
+<p>e.g. for a GET call</p>
+<figure data-rehype-pretty-code-figure=""><pre style="background-color:#22272e;color:#adbac7" tabindex="0" data-language="typescript" data-theme="github-dark-dimmed"><code data-language="typescript" data-theme="github-dark-dimmed" style="display: grid;"><span data-line=""><span style="color:#F47067">const</span><span style="color:#6CB6FF"> urlKyGet</span><span style="color:#F47067"> =</span></span>
+<span data-line=""><span style="color:#96D0FF">  "https://&#x3C;&#x3C;api gw id>>.execute-api.eu-central-1.amazonaws.com/default?client=ky"</span><span style="color:#ADBAC7">;</span></span>
+<span data-line=""><span style="color:#F47067">const</span><span style="color:#6CB6FF"> signedRequestKyGet</span><span style="color:#F47067"> =</span><span style="color:#F47067"> await</span><span style="color:#DCBDFB"> signV4</span><span style="color:#ADBAC7">({</span></span>
+<span data-line=""><span style="color:#ADBAC7">  credentials: {</span></span>
+<span data-line=""><span style="color:#ADBAC7">    accessKeyId: response.Credentials.AccessKeyId,</span></span>
+<span data-line=""><span style="color:#ADBAC7">    secretAccessKey: response.Credentials.SecretAccessKey,</span></span>
+<span data-line=""><span style="color:#ADBAC7">    sessionToken: response.Credentials.SessionToken,</span></span>
+<span data-line=""><span style="color:#ADBAC7">  },</span></span>
+<span data-line=""><span style="color:#ADBAC7">  method: </span><span style="color:#96D0FF">"GET"</span><span style="color:#ADBAC7">,</span></span>
+<span data-line=""><span style="color:#ADBAC7">  headers: {</span></span>
+<span data-line=""><span style="color:#96D0FF">    "Content-Type"</span><span style="color:#ADBAC7">: </span><span style="color:#96D0FF">"application/json"</span><span style="color:#ADBAC7">,</span></span>
+<span data-line=""><span style="color:#96D0FF">    "x-api-key"</span><span style="color:#ADBAC7">: event.apiKey,</span></span>
+<span data-line=""><span style="color:#ADBAC7">  },</span></span>
+<span data-line=""><span style="color:#ADBAC7">  url: </span><span style="color:#F47067">new</span><span style="color:#DCBDFB"> URL</span><span style="color:#ADBAC7">(urlKyGet),</span></span>
+<span data-line=""><span style="color:#ADBAC7">});</span></span><button type="button" title="Copy code" aria-label="Copy code" data="const urlKyGet =
+  &#x22;https://<<api gw id>>.execute-api.eu-central-1.amazonaws.com/default?client=ky&#x22;;
+const signedRequestKyGet = await signV4({
+  credentials: {
+    accessKeyId: response.Credentials.AccessKeyId,
+    secretAccessKey: response.Credentials.SecretAccessKey,
+    sessionToken: response.Credentials.SessionToken,
+  },
+  method: &#x22;GET&#x22;,
+  headers: {
+    &#x22;Content-Type&#x22;: &#x22;application/json&#x22;,
+    &#x22;x-api-key&#x22;: event.apiKey,
+  },
+  url: new URL(urlKyGet),
+});" class="rehype-pretty-copy" onclick="navigator.clipboard.writeText(this.attributes.data.value);this.classList.add(&#x27;rehype-pretty-copied&#x27;);window.setTimeout(() => this.classList.remove(&#x27;rehype-pretty-copied&#x27;), 2500);"><span class="ready"></span><span class="success"></span></button><style>:root {--copy-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Cpath fill='%23adadad' d='M16.187 9.5H12.25a1.75 1.75 0 0 0-1.75 1.75v28.5c0 .967.784 1.75 1.75 1.75h23.5a1.75 1.75 0 0 0 1.75-1.75v-28.5a1.75 1.75 0 0 0-1.75-1.75h-3.937a4.25 4.25 0 0 1-4.063 3h-7.5a4.25 4.25 0 0 1-4.063-3M31.813 7h3.937A4.25 4.25 0 0 1 40 11.25v28.5A4.25 4.25 0 0 1 35.75 44h-23.5A4.25 4.25 0 0 1 8 39.75v-28.5A4.25 4.25 0 0 1 12.25 7h3.937a4.25 4.25 0 0 1 4.063-3h7.5a4.25 4.25 0 0 1 4.063 3M18.5 8.25c0 .966.784 1.75 1.75 1.75h7.5a1.75 1.75 0 1 0 0-3.5h-7.5a1.75 1.75 0 0 0-1.75 1.75'/%3E%3C/svg%3E");--success-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%2366ff85' d='M9 16.17L5.53 12.7a.996.996 0 1 0-1.41 1.41l4.18 4.18c.39.39 1.02.39 1.41 0L20.29 7.71a.996.996 0 1 0-1.41-1.41z'/%3E%3C/svg%3E");}pre:has(code) {position: relative;}pre button.rehype-pretty-copy {right: 1px;padding: 0;width: 24px;height: 24px;display: flex;margin-top: 2px;margin-right: 8px;position: absolute;border-radius: 25%;backdrop-filter: blur(3px);& span {width: 100%;aspect-ratio: 1 / 1;}& .ready {background-image: var(--copy-icon);}& .success {display: none; background-image: var(--success-icon);}}&.rehype-pretty-copied {& .success {display: block;} & .ready {display: none;}}pre button.rehype-pretty-copy.rehype-pretty-copied {opacity: 1;& .ready { display: none; }& .success { display: block; }}</style></code></pre></figure>
+<p>The return value can be used for different HTTP clients.</p>
+<figure data-rehype-pretty-code-figure=""><pre style="background-color:#22272e;color:#adbac7" tabindex="0" data-language="typescript" data-theme="github-dark-dimmed"><code data-language="typescript" data-theme="github-dark-dimmed" style="display: grid;"><span data-line=""><span style="color:#F47067">const</span><span style="color:#6CB6FF"> responseApiKyGet</span><span style="color:#F47067"> =</span><span style="color:#F47067"> await</span><span style="color:#DCBDFB"> ky</span><span style="color:#ADBAC7">(urlKyGet, {</span></span>
+<span data-line=""><span style="color:#ADBAC7">  method: signedRequestKyGet.method,</span></span>
+<span data-line=""><span style="color:#ADBAC7">  headers: signedRequestKyGet.headers,</span></span>
+<span data-line=""><span style="color:#ADBAC7">});</span></span><button type="button" title="Copy code" aria-label="Copy code" data="const responseApiKyGet = await ky(urlKyGet, {
+  method: signedRequestKyGet.method,
+  headers: signedRequestKyGet.headers,
+});" class="rehype-pretty-copy" onclick="navigator.clipboard.writeText(this.attributes.data.value);this.classList.add(&#x27;rehype-pretty-copied&#x27;);window.setTimeout(() => this.classList.remove(&#x27;rehype-pretty-copied&#x27;), 2500);"><span class="ready"></span><span class="success"></span></button><style>:root {--copy-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Cpath fill='%23adadad' d='M16.187 9.5H12.25a1.75 1.75 0 0 0-1.75 1.75v28.5c0 .967.784 1.75 1.75 1.75h23.5a1.75 1.75 0 0 0 1.75-1.75v-28.5a1.75 1.75 0 0 0-1.75-1.75h-3.937a4.25 4.25 0 0 1-4.063 3h-7.5a4.25 4.25 0 0 1-4.063-3M31.813 7h3.937A4.25 4.25 0 0 1 40 11.25v28.5A4.25 4.25 0 0 1 35.75 44h-23.5A4.25 4.25 0 0 1 8 39.75v-28.5A4.25 4.25 0 0 1 12.25 7h3.937a4.25 4.25 0 0 1 4.063-3h7.5a4.25 4.25 0 0 1 4.063 3M18.5 8.25c0 .966.784 1.75 1.75 1.75h7.5a1.75 1.75 0 1 0 0-3.5h-7.5a1.75 1.75 0 0 0-1.75 1.75'/%3E%3C/svg%3E");--success-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%2366ff85' d='M9 16.17L5.53 12.7a.996.996 0 1 0-1.41 1.41l4.18 4.18c.39.39 1.02.39 1.41 0L20.29 7.71a.996.996 0 1 0-1.41-1.41z'/%3E%3C/svg%3E");}pre:has(code) {position: relative;}pre button.rehype-pretty-copy {right: 1px;padding: 0;width: 24px;height: 24px;display: flex;margin-top: 2px;margin-right: 8px;position: absolute;border-radius: 25%;backdrop-filter: blur(3px);& span {width: 100%;aspect-ratio: 1 / 1;}& .ready {background-image: var(--copy-icon);}& .success {display: none; background-image: var(--success-icon);}}&.rehype-pretty-copied {& .success {display: block;} & .ready {display: none;}}pre button.rehype-pretty-copy.rehype-pretty-copied {opacity: 1;& .ready { display: none; }& .success { display: block; }}</style></code></pre></figure>
+<p>In that way the signing request can be abstracted and the HTTP client can be changed easily.</p>
+<h2 id="result">Result</h2>
+<p>The test result of the example lambda function will than look like this:</p>
+<p><img alt="result" loading="lazy" decoding="async" fetchpriority="auto" width="1911" height="1101" src="/_astro/result.QbeSY-cq_2jNcqg.webp" ></p>
+<h2 id="sources">Sources</h2>
+<ul>
+<li><a href="https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_sigv.html">AWS Signature Version 4 for API requests</a></li>
+<li><a href="https://github.com/zirkelc/aws-sigv4-fetch/tree/main">aws-sigv4-fetch</a> by <a href="https://zirkelc.dev/">zirkelc</a></li>
+<li><a href="https://github.com/sindresorhus/ky">ky</a></li>
+<li><a href="https://nodejs.org/dist/v18.20.5/docs/api/globals.html#fetch">fetch</a></li>
+<li><a href="https://github.com/axios/axios">axios</a></li>
+</ul> <section class="giscus mx-auto mt-10 w-full"></section> <script src="https://giscus.app/client.js" data-repo="JohannesKonings/JohannesKonings.github.io" data-repo-id="MDEwOlJlcG9zaXRvcnkyODQyNTQyNjc=" data-category="Blog Post Comments" data-category-id="DIC_kwDOEPFgO84CgLJN" data-mapping="url" data-strict="0" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="bottom" data-theme="preferred_color_scheme" data-lang="en" data-loading="lazy" crossorigin="anonymous" async></script> </article> <div class="grid grid-cols-1 sm:grid-cols-2 gap-4"> <a href="/blog/2025-01-02-aws-application-signals-config-lambda-cdk" class="group p-4 gap-3 flex items-center border rounded-lg hover:bg-black/5 hover:dark:bg-white/10 border-black/15 dark:border-white/20 blend"> <div class="order-2 w-full h-full group-hover:text-black group-hover:dark:text-white blend"> <div class="flex flex-wrap gap-2"> <div class="text-sm uppercase">Prev</div> </div> <div class="font-semibold mt-3 text-black dark:text-white"> AWS Application Signals for Node.js Lambda with CDK </div> </div> <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="order-1 stroke-current group-hover:stroke-black group-hover:dark:stroke-white rotate-180"> <line x1="5" y1="12" x2="19" y2="12" class="scale-x-0 group-hover:scale-x-100 translate-x-4 group-hover:translate-x-1 transition-all duration-300 ease-in-out"></line> <polyline points="12 5 19 12 12 19" class="translate-x-0 group-hover:translate-x-1 transition-all duration-300 ease-in-out"></polyline> </svg> </a> <a href="/blog/2024-12-07-aws-vscode-private-ec2-instance" class="group p-4 gap-3 flex items-center border rounded-lg hover:bg-black/5 hover:dark:bg-white/10 border-black/15 dark:border-white/20 transition-colors duration-300 ease-in-out"> <div class="w-full h-full text-right group-hover:text-black group-hover:dark:text-white blend"> <div class="text-sm uppercase">Next</div> <div class="font-semibold mt-3 text-black dark:text-white"> Run vs code on a private AWS ec2 instance without ssh (with AWS CDK examples) </div> </div> <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="stroke-current group-hover:stroke-black group-hover:dark:stroke-white"> <line x1="5" y1="12" x2="19" y2="12" class="scale-x-0 group-hover:scale-x-100 translate-x-4 group-hover:translate-x-1 transition-all duration-300 ease-in-out"></line> <polyline points="12 5 19 12 12 19" class="translate-x-0 group-hover:translate-x-1 transition-all duration-300 ease-in-out"></polyline> </svg> </a> </div> </div> </div>   </div> </div>  </main> <footer class="relative bg-white dark:bg-black"> <div class="animate"> <section class="py-5"> <div class="w-full h-full mx-auto px-5 max-w-(--breakpoint-md)">  <div class="flex items-center justify-center sm:justify-end"> <button id="back-to-top" aria-label="Back to top of page" class="group flex w-fit p-1.5 gap-1.5 text-sm items-center border rounded hover:bg-black/5 hover:dark:bg-white/10 border-black/15 dark:border-white/20 transition-colors duration-300 ease-in-out"> <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="stroke-current group-hover:stroke-black group-hover:dark:stroke-white rotate-90"> <line x1="19" y1="12" x2="5" y2="12" class="scale-x-0 group-hover:scale-x-100 translate-x-3 group-hover:translate-x-0 transition-all duration-300 ease-in-out"></line> <polyline points="12 19 5 12 12 5" class="translate-x-1 group-hover:translate-x-0 transition-all duration-300 ease-in-out"></polyline> </svg> <div class="w-full group-hover:text-black group-hover:dark:text-white transition-colors duration-300 ease-in-out">
+Back to top
+</div> </button> </div>  </div> </section> <section class="py-5 overflow-hidden whitespace-nowrap border-t border-black/10 dark:border-white/25"> <div class="w-full h-full mx-auto px-5 max-w-(--breakpoint-md)">  <div class="h-full grid grid-cols-1 sm:grid-cols-2 gap-3"> <div class="order-2 sm:order-1 flex flex-col items-center justify-center sm:items-start"> <div class="legal"> <a href="/legal/terms" class="text-current hover:text-black dark:hover:text-white transition-colors duration-300 ease-in-out">
+Terms
+</a> |
+<a href="/legal/privacy" class="text-current hover:text-black dark:hover:text-white transition-colors duration-300 ease-in-out">
+Privacy
+</a> </div> <div class="text-sm mt-2">&copy; 2026 | All rights reserved</div> </div> <div class="order-1 sm:order-2 flex justify-center sm:justify-end"> <div class="flex flex-wrap gap-1 items-center justify-center"> <a href="https://github.com/JohannesKonings/JohannesKonings.github.io" target="_blank" aria-label="GitHub repo" class="group size-10 rounded-full p-2 items-center justify-center hover:bg-black/5 dark:hover:bg-white/20 blend"> <svg class="size-full fill-current group-hover:fill-black group-hover:dark:fill-white blend"> <use href="/social.svg#github"></use> </svg> </a> </div> </div> </div>  </div> </section> </div> </footer> <script>
+  function goBackToTop(event) {
+    event.preventDefault();
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  }
+
+  function inintializeBackToTop() {
+    const backToTop = document.getElementById("back-to-top");
+    backToTop?.addEventListener("click", goBackToTop);
+  }
+
+  document.addEventListener("astro:after-swap", inintializeBackToTop);
+  inintializeBackToTop();
+</script> </body></html>

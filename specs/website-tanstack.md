@@ -2,7 +2,7 @@
 
 ## Deployment Role
 
-**TanStack is the primary site** served at the deployment root (e.g. `https://johanneskonings.github.io`). Astro is the secondary site at `/astro`. All canonicals, sitemaps, and SEO point to the root; ads.txt and robots.txt are at the root.
+**TanStack is the site** served at the deployment root (e.g. `https://johanneskonings.github.io`). All canonicals, sitemaps, and SEO point to the root; ads.txt and robots.txt are at the root.
 
 ## Copilot Usage Policy
 
@@ -425,6 +425,6 @@ websites/tanstack/
 
 ## Conclusion
 
-The TanStack website implementation is **95% complete** with all core functionality working excellently. The Content Collections integration provides an outstanding developer experience with type safety, hot reloading, and automatic validation. The integration with the centralized sync system ensures content consistency while maintaining independence from the Astro website implementation.
+The TanStack website implementation is **95% complete** with all core functionality working excellently. The Content Collections integration provides an outstanding developer experience with type safety, hot reloading, and automatic validation. The integration with the centralized sync system ensures content consistency while keeping authored content separate from generated website files.
 
 The remaining 5% consists of polish features and performance optimizations that can be implemented incrementally without affecting core functionality.

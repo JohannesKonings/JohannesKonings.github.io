@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://johanneskonings.dev/sitemap-index.xml

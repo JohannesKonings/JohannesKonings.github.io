@@ -1,8 +1,4 @@
 {
-  "recommendations": [
-    "TypeScriptTeam.native-preview",
-    "astro-build.astro-vscode",
-    "unifiedjs.vscode-mdx"
-  ],
+  "recommendations": ["TypeScriptTeam.native-preview", "unifiedjs.vscode-mdx"],
   "unwantedRecommendations": []
 }

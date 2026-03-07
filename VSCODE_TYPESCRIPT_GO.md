@@ -31,7 +31,6 @@ This setting tells VS Code to use TypeScript-Go instead of the built-in TypeScri
 The configuration is applied at multiple levels:
 
 - **Root workspace** (`.vscode/settings.json`): Global TypeScript-Go settings
-- **Astro workspace** (`websites/astro/.vscode/`): Astro-specific + TypeScript-Go
 - **TanStack workspace** (`websites/tanstack/.vscode/`): React-specific + TypeScript-Go
 
 ## Features in VS Code
@@ -87,11 +86,9 @@ VS Code integration works alongside command-line usage:
 pnpm tsc:check
 
 # Type check specific workspace
-pnpm --filter astro type-check
 pnpm --filter tanstack type-check
 
 # Build with type checking
-pnpm build:astro
 pnpm build:tanstack
 ```
 

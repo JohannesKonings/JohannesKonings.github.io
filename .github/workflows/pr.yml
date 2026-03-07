@@ -25,9 +25,6 @@ jobs:
       - name: Install dependencies
         run: pnpm i --frozen-lockfile
 
-      - name: Install Playwright Browsers
-        run: pnpm exec playwright install chromium --with-deps
-
       - name: Run format check
         run: pnpm run format:check
 
@@ -35,5 +32,5 @@ jobs:
         run: pnpm run lint:check
         continue-on-error: true
 
-      - name: Run astro build
-        run: pnpm run build:astro
+      - name: Run TanStack build
+        run: pnpm run build:tanstack
