@@ -45,10 +45,8 @@ function getPostUrls(): string[] {
       const dirPath = path.join(CONTENT_BLOG, ent.name);
       const files = fs.readdirSync(dirPath);
       const mdFile =
-        files.find(
-          (f) =>
-            f.endsWith(".md") && (f === "index.md" || f === ent.name + ".md"),
-        ) ?? files.find((f) => f.endsWith(".md"));
+        files.find((f) => f.endsWith(".md") && (f === "index.md" || f === ent.name + ".md")) ??
+        files.find((f) => f.endsWith(".md"));
       if (!mdFile) continue;
 
       const content = fs.readFileSync(path.join(dirPath, mdFile), "utf-8");
@@ -60,10 +58,7 @@ function getPostUrls(): string[] {
     } else if (ent.isFile() && ent.name.endsWith(".md")) {
       // Flat .md file (e.g., 2022-09-17-aws_example_ddb_analytics_quicksight_cdk.md)
       // Skip if it's in a directory (handled above)
-      const content = fs.readFileSync(
-        path.join(CONTENT_BLOG, ent.name),
-        "utf-8",
-      );
+      const content = fs.readFileSync(path.join(CONTENT_BLOG, ent.name), "utf-8");
       const { published } = parseFrontmatter(content);
       if (published === false) continue;
 
@@ -88,10 +83,7 @@ function getNoteUrls(): string[] {
   for (const file of files) {
     if (!file.isFile() || !file.name.endsWith(".md")) continue;
 
-    const content = fs.readFileSync(
-      path.join(CONTENT_NOTES, file.name),
-      "utf-8",
-    );
+    const content = fs.readFileSync(path.join(CONTENT_NOTES, file.name), "utf-8");
     const { published } = parseFrontmatter(content);
     if (published === false) continue;
 

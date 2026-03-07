@@ -2,8 +2,11 @@
   "name": "tanstack",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "keywords": [],
+  "license": "ISC",
+  "author": "",
   "type": "module",
+  "main": "index.js",
   "scripts": {
     "sync": "pnpm tsx ./../../scripts/syncWebsites.ts tanstack",
     "sync-content": "cp -r src/content public/",
@@ -14,9 +17,6 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "type-check": "tsgo --noEmit"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
   "dependencies": {
     "@emotion/styled": "11.14.1",
     "@orama/orama": "1.2.4",

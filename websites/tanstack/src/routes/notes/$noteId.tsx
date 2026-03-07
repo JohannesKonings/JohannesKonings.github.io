@@ -48,10 +48,7 @@ function NoteDetailPage() {
         {/* Note header */}
         <header className="mb-8">
           <div className="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400 mb-4">
-            <Link
-              to="/notes"
-              className="text-cyan-600 dark:text-cyan-400 hover:underline"
-            >
+            <Link to="/notes" className="text-cyan-600 dark:text-cyan-400 hover:underline">
               Notes
             </Link>
             <span>/</span>
@@ -63,9 +60,7 @@ function NoteDetailPage() {
           </h1>
 
           <div className="flex items-center gap-4 text-gray-600 dark:text-gray-400">
-            <time dateTime={note.date.toISOString()}>
-              {format(note.date, "MMMM d, yyyy")}
-            </time>
+            <time dateTime={note.date.toISOString()}>{format(note.date, "MMMM d, yyyy")}</time>
             <span>•</span>
             <span>{note.readingTime.text}</span>
           </div>
@@ -92,14 +87,8 @@ function NoteDetailPage() {
               overrides: {
                 pre: {
                   component: ({ children, ...props }) => {
-                    const child = Array.isArray(children)
-                      ? children[0]
-                      : children;
-                    if (
-                      child &&
-                      typeof child === "object" &&
-                      "props" in child
-                    ) {
+                    const child = Array.isArray(children) ? children[0] : children;
+                    if (child && typeof child === "object" && "props" in child) {
                       const codeProps = (
                         child as {
                           props?: { className?: string; children?: unknown };
@@ -160,24 +149,17 @@ function NoteDetailPage() {
               Last updated on {format(note.date, "MMMM d, yyyy")}
             </p>
 
-            <Link
-              to="/notes"
-              className="text-cyan-600 dark:text-cyan-400 hover:underline"
-            >
+            <Link to="/notes" className="text-cyan-600 dark:text-cyan-400 hover:underline">
               ← Back to Notes
             </Link>
           </div>
 
           {note.categories.length > 0 && (
             <div className="mt-4">
-              <span className="text-sm text-gray-500 dark:text-gray-400">
-                Categories:{" "}
-              </span>
+              <span className="text-sm text-gray-500 dark:text-gray-400">Categories: </span>
               {note.categories.map((category, index) => (
                 <span key={category}>
-                  <span className="text-sm text-gray-700 dark:text-gray-300">
-                    {category}
-                  </span>
+                  <span className="text-sm text-gray-700 dark:text-gray-300">{category}</span>
                   {index < note.categories.length - 1 && ", "}
                 </span>
               ))}

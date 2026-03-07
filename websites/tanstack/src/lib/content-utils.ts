@@ -70,12 +70,8 @@ export function getRelatedPosts(currentPost: (typeof allPosts)[0], limit = 3) {
       if (!post.published || post.slug === currentPost.slug) return false;
 
       // Check for common tags or categories
-      const hasCommonTag = post.tags.some((tag) =>
-        currentPost.tags.includes(tag),
-      );
-      const hasCommonCategory = post.categories.some((cat) =>
-        currentPost.categories.includes(cat),
-      );
+      const hasCommonTag = post.tags.some((tag) => currentPost.tags.includes(tag));
+      const hasCommonCategory = post.categories.some((cat) => currentPost.categories.includes(cat));
 
       return hasCommonTag || hasCommonCategory;
     })
@@ -83,12 +79,10 @@ export function getRelatedPosts(currentPost: (typeof allPosts)[0], limit = 3) {
       // Score based on common tags and categories
       const aScore =
         a.tags.filter((tag) => currentPost.tags.includes(tag)).length +
-        a.categories.filter((cat) => currentPost.categories.includes(cat))
-          .length;
+        a.categories.filter((cat) => currentPost.categories.includes(cat)).length;
       const bScore =
         b.tags.filter((tag) => currentPost.tags.includes(tag)).length +
-        b.categories.filter((cat) => currentPost.categories.includes(cat))
-          .length;
+        b.categories.filter((cat) => currentPost.categories.includes(cat)).length;
 
       if (aScore !== bScore) return bScore - aScore;
 
@@ -129,14 +123,8 @@ export function searchPosts(query: string) {
 // Get post statistics
 export function getPostStats() {
   const publishedPosts = allPosts.filter((post) => post.published);
-  const totalWords = publishedPosts.reduce(
-    (acc, post) => acc + post.readingTime.words,
-    0,
-  );
-  const totalMinutes = publishedPosts.reduce(
-    (acc, post) => acc + post.readingTime.minutes,
-    0,
-  );
+  const totalWords = publishedPosts.reduce((acc, post) => acc + post.readingTime.words, 0);
+  const totalMinutes = publishedPosts.reduce((acc, post) => acc + post.readingTime.minutes, 0);
 
   return {
     totalPosts: publishedPosts.length,

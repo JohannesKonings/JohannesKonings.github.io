@@ -8,10 +8,7 @@ interface BlogPostListProps {
   showFilters?: boolean;
 }
 
-export function BlogPostList({
-  posts,
-  showFilters = true,
-}: BlogPostListProps): JSX.Element {
+export function BlogPostList({ posts, showFilters = true }: BlogPostListProps): JSX.Element {
   const [selectedTags, setSelectedTags] = useState<Set<string>>(new Set());
   const [tagsExpanded, setTagsExpanded] = useState(false);
   const VISIBLE_TAGS = 12;
@@ -90,9 +87,7 @@ export function BlogPostList({
                     onClick={() => setTagsExpanded((v) => !v)}
                     className="px-3 py-1.5 text-sm text-cyan-600 dark:text-cyan-400 hover:underline cursor-pointer"
                   >
-                    {tagsExpanded
-                      ? "Show less"
-                      : `+${allTags.length - VISIBLE_TAGS} more`}
+                    {tagsExpanded ? "Show less" : `+${allTags.length - VISIBLE_TAGS} more`}
                   </button>
                 )}
               </div>
@@ -127,9 +122,7 @@ export function BlogPostList({
             <p className="text-gray-600 dark:text-gray-400 text-lg">
               No posts found in the digital archive.
             </p>
-            <p className="text-gray-500 text-sm mt-2">
-              Try adjusting your selected tags.
-            </p>
+            <p className="text-gray-500 text-sm mt-2">Try adjusting your selected tags.</p>
           </div>
         </div>
       ) : (

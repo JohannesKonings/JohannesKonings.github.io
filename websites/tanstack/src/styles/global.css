@@ -222,12 +222,7 @@ h3 {
 
 .animate-shimmer {
   animation: shimmer 3s linear infinite;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(34, 211, 238, 0.1),
-    transparent
-  );
+  background: linear-gradient(90deg, transparent, rgba(34, 211, 238, 0.1), transparent);
   background-size: 200px 100%;
 }
 

@@ -17,19 +17,13 @@ title: Uses
 
       <div class="related-header">
         <p>
-          <a href="{{ site.baseurl }}/settings/2020/07/31/technical_setup/"
-            >Technical setup</a
-          >
+          <a href="{{ site.baseurl }}/settings/2020/07/31/technical_setup/">Technical setup</a>
         </p>
         <p>
-          <a href="{{ site.baseurl }}/settings/2020/08/01/vscode_extensions/"
-            >VS Code extensions</a
-          >
+          <a href="{{ site.baseurl }}/settings/2020/08/01/vscode_extensions/">VS Code extensions</a>
         </p>
         <p>
-          <a href="{{ site.baseurl }}/settings/2020/08/11/chrome_extensions/"
-            >Chrome extensions</a
-          >
+          <a href="{{ site.baseurl }}/settings/2020/08/11/chrome_extensions/">Chrome extensions</a>
         </p>
         <p>
           <a href="{{ site.baseurl }}/tools/2020/08/02/web_development_tools/"
@@ -37,15 +31,12 @@ title: Uses
           >
         </p>
         <p>
-          <a href="{{ site.baseurl }}/tools/2020/08/03/aws_helper/"
-            >AWS helper</a
-          >
+          <a href="{{ site.baseurl }}/tools/2020/08/03/aws_helper/">AWS helper</a>
         </p>
       </div>
 
       <div class="error-text">
-        <a href="{{ site.baseurl }}/">Home</a> |
-        <a href="{{ site.baseurl }}/posts/">All Posts</a> |
+        <a href="{{ site.baseurl }}/">Home</a> | <a href="{{ site.baseurl }}/posts/">All Posts</a> |
         <a href="{{ site.baseurl }}/search/">Search</a>
       </div>
 
@@ -62,8 +53,8 @@ title: Uses
       <a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a>
     </div>
     <div class="excerpt">
-      {% if post.summary %} {{ post.summary | strip_html | truncatewords:30 }}
-      {% else %} {{ post.excerpt | strip_html | truncatewords:30 }} {% endif %}
+      {% if post.summary %} {{ post.summary | strip_html | truncatewords:30 }} {% else %} {{
+      post.excerpt | strip_html | truncatewords:30 }} {% endif %}
       <a href="{{ site.baseurl }}{{ post.url }}">Continue Reading</a>
     </div>
     {% endfor %}
