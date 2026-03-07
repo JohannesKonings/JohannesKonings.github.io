@@ -6,9 +6,9 @@ This is a pnpm monorepo containing the TanStack blog website under `websites/`. 
 
 ### Services
 
-| Service       | Dev command         | Port | Notes                                       |
-| ------------- | ------------------- | ---- | ------------------------------------------- |
-| TanStack blog | `pnpm dev:tanstack` | 3000 | Primary blog; serves at `/` in development  |
+| Service       | Dev command         | Port | Notes                                      |
+| ------------- | ------------------- | ---- | ------------------------------------------ |
+| TanStack blog | `pnpm dev:tanstack` | 3000 | Primary blog; serves at `/` in development |
 
 ### Key commands
 
