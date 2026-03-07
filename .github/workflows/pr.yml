@@ -32,5 +32,8 @@ jobs:
         run: pnpm run lint:check
         continue-on-error: true
 
+      - name: Run TanStack UI tests
+        run: pnpm --filter tanstack test:ui
+
       - name: Run TanStack build
         run: pnpm run build:tanstack
