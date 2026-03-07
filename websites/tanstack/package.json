@@ -11,7 +11,9 @@
     "build": "pnpm sync && pnpm tsx ../../scripts/generateTanstackSitemap.ts && pnpm tsx ../../scripts/generateTanstackRss.ts && vite build",
     "build:with-typecheck": "pnpm sync && tsgo --noEmit && vite build",
     "start": "pnpm sync && vite start",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "vitest",
+    "test:ui": "vitest run",
+    "test:ui:dev": "vitest --ui",
     "type-check": "tsgo --noEmit"
   },
   "keywords": [],
@@ -38,16 +40,22 @@
     "@iconify/react": "6.0.2",
     "@tailwindcss/vite": "4.1.11",
     "@tanstack/react-router-devtools": "^1.161.1",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.2",
+    "@testing-library/user-event": "^14.6.1",
     "@types/react": "19.2.10",
     "@types/react-dom": "19.2.3",
     "@vitejs/plugin-react": "5.1.2",
+    "@vitest/ui": "^4.0.18",
     "autoprefixer": "10.4.21",
     "date-fns": "4.1.0",
+    "jsdom": "^28.1.0",
     "postcss": "8.5.1",
     "reading-time": "1.5.0",
     "tailwindcss": "4.1.11",
     "vite": "8.0.0-beta.11",
     "vite-tsconfig-paths": "6.0.5",
+    "vitest": "^4.0.18",
     "zod": "4.3.6"
   }
 }
