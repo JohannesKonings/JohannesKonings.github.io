@@ -26,7 +26,7 @@ function formatSeriesTitle(slug: string): string {
 }
 
 function SeriesPage() {
-  const { posts, seriesSlug, seriesTitle } = Route.useRouteContext();
+  const { posts, seriesTitle } = Route.useRouteContext();
 
   return (
     <BlogLayout

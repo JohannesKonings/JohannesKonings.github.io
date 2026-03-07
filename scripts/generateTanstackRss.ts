@@ -15,13 +15,6 @@ const OUT_FILE = path.join(ROOT, "websites/tanstack/public/rss.xml");
 const SITE_TITLE = "Johannes Konings";
 const SITE_DESCRIPTION = "Contact, notes and some posts";
 
-function slugFromTitle(title: string): string {
-  return title
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-|-$/g, "");
-}
-
 function escapeXml(s: string): string {
   return s
     .replace(/&/g, "&amp;")
