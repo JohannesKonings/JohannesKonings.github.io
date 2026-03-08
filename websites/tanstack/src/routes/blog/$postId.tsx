@@ -33,7 +33,9 @@ function resolveBlogImageSrc(src: string | undefined, postSlug: string): string 
 
 export const Route = createFileRoute("/blog/$postId")({
   head: ({ params }) => {
-    const post = allPosts.find((candidate) => candidate.slug === params.postId && candidate.published);
+    const post = allPosts.find(
+      (candidate) => candidate.slug === params.postId && candidate.published,
+    );
 
     if (!post) {
       return {};

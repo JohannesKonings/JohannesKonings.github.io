@@ -8,7 +8,9 @@ import { createRouteHead, generateSEOTags } from "../../lib/seo";
 
 export const Route = createFileRoute("/notes/$noteId")({
   head: ({ params }) => {
-    const note = allNotes.find((candidate) => candidate.slug === params.noteId && candidate.published);
+    const note = allNotes.find(
+      (candidate) => candidate.slug === params.noteId && candidate.published,
+    );
 
     if (!note) {
       return {};

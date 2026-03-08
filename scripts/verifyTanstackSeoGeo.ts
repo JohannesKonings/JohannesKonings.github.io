@@ -151,10 +151,7 @@ function verifyHomePage() {
   const html = readFile(resolveRouteHtml("/"));
 
   assert((getTitle(html) ?? "").includes(siteConfig.name), "Homepage title includes site name");
-  assert(
-    Boolean(getMetaContent(html, { name: "description" })),
-    "Homepage has a meta description",
-  );
+  assert(Boolean(getMetaContent(html, { name: "description" })), "Homepage has a meta description");
   assert(
     stripTrailingSlash(getLinkHref(html, { rel: "canonical" }) ?? "") === siteConfig.baseUrl,
     "Homepage canonical uses johanneskonings.dev",
@@ -207,14 +204,8 @@ function verifyRepresentativePost() {
     getMetaContent(html, { property: "og:type" }) === "article",
     "Post Open Graph type is article",
   );
-  assert(
-    Boolean(getMetaContent(html, { property: "og:image" })),
-    "Post has an Open Graph image",
-  );
-  assert(
-    Boolean(getMetaContent(html, { name: "twitter:image" })),
-    "Post has a Twitter image",
-  );
+  assert(Boolean(getMetaContent(html, { property: "og:image" })), "Post has an Open Graph image");
+  assert(Boolean(getMetaContent(html, { name: "twitter:image" })), "Post has a Twitter image");
 
   const jsonLd = getJsonLdObjects(html).find((item) => item["@type"] === "BlogPosting");
   assert(Boolean(jsonLd), "Post includes BlogPosting JSON-LD");

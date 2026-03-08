@@ -40,3 +40,9 @@ jobs:
 
       - name: Run TanStack build
         run: pnpm run build:tanstack
+
+      - name: Verify TanStack SEO and GEO
+        run: pnpm run verify:tanstack:seo-geo
+
+      - name: Run TanStack Lighthouse checks
+        run: pnpm run verify:tanstack:lighthouse
