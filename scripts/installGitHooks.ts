@@ -10,11 +10,17 @@ const SOURCE_HOOKS_DIR = path.join(ROOT, ".githooks");
 const MANAGED_MARKER = "@johanneskonings-pre-commit-hook";
 
 function resolveHooksDirectory() {
-  const configuredHooksPath = execSync("git config --get core.hooksPath", {
-    cwd: ROOT,
-    encoding: "utf8",
-    stdio: ["ignore", "pipe", "ignore"],
-  }).trim();
+  let configuredHooksPath = "";
+
+  try {
+    configuredHooksPath = execSync("git config --get core.hooksPath", {
+      cwd: ROOT,
+      encoding: "utf8",
+      stdio: ["ignore", "pipe", "ignore"],
+    }).trim();
+  } catch {
+    return path.join(ROOT, ".git/hooks");
+  }
 
   if (!configuredHooksPath) {
     return path.join(ROOT, ".git/hooks");
