@@ -1,0 +1,23 @@
+{
+  "$schema": "https://unpkg.com/knip@5/schema.json",
+  "workspaces": {
+    ".": {
+      "entry": [
+        "scripts/syncWebsites.ts",
+        "scripts/generateTanstackSitemap.ts",
+        "scripts/generateTanstackRss.ts",
+        "scripts/syncCrossPosts.ts"
+      ],
+      "project": ["scripts/**/*.{ts,mjs}"]
+    },
+    "websites/tanstack": {
+      "entry": [
+        "src/router.tsx",
+        "content-collections.ts",
+        "public/theme-init.js",
+        "scripts/theme-toggle-demo.mjs"
+      ],
+      "project": ["src/**/*.{ts,tsx,css}", "scripts/**/*.mjs"]
+    }
+  }
+}
