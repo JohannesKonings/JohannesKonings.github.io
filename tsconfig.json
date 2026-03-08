@@ -9,12 +9,12 @@
     "skipLibCheck": true,
     "declaration": true,
     "noEmit": true,
-    "baseUrl": ".",
     "paths": {
-      "@tanstack/*": ["websites/tanstack/*"]
+      "*": ["./*"],
+      "@tanstack/*": ["./websites/tanstack/*"]
     }
   },
   "include": ["websites/*/src/**/*.ts", "websites/*/src/**/*.tsx", "scripts/**/*.ts"],
-  "exclude": ["node_modules", "**/dist", "**/build", "**/.astro"],
+  "exclude": ["node_modules", "**/dist", "**/build"],
   "references": [{ "path": "./websites/tanstack" }]
 }
