@@ -17,15 +17,11 @@ function NotesPage() {
   }, []);
 
   return (
-    <BlogLayout
-      title="Notes"
-      description="Quick reference notes on topics I care about."
-    >
+    <BlogLayout title="Notes" description="Quick reference notes on topics I care about.">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
           <p className="text-gray-600 dark:text-gray-400">
-            {publishedNotes.length} note{publishedNotes.length !== 1 ? "s" : ""}{" "}
-            available
+            {publishedNotes.length} note{publishedNotes.length !== 1 ? "s" : ""} available
           </p>
           <Link
             to="/search"
@@ -73,9 +69,7 @@ function NotesPage() {
                 </div>
 
                 <div className="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400 whitespace-nowrap">
-                  <time dateTime={note.date.toISOString()}>
-                    {format(note.date, "MMM d, yyyy")}
-                  </time>
+                  <time dateTime={note.date.toISOString()}>{format(note.date, "MMM d, yyyy")}</time>
                   <span>•</span>
                   <span>{note.readingTime.text}</span>
                 </div>

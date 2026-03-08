@@ -13,10 +13,7 @@ const LOADING = "lazy";
 
 type GiscusCategory = "blog" | "notes";
 
-const CATEGORY_CONFIG: Record<
-  GiscusCategory,
-  { category: string; categoryId: string }
-> = {
+const CATEGORY_CONFIG: Record<GiscusCategory, { category: string; categoryId: string }> = {
   blog: {
     category: "Blog Post Comments",
     categoryId: "DIC_kwDOEPFgO84CgLJN",
@@ -58,9 +55,7 @@ export function Giscus({ category = "blog" }: GiscusProps) {
     containerRef.current.appendChild(script);
 
     return () => {
-      containerRef.current
-        ?.querySelector("script[src='" + GISCUS_SCRIPT + "']")
-        ?.remove();
+      containerRef.current?.querySelector("script[src='" + GISCUS_SCRIPT + "']")?.remove();
     };
   }, [catName, categoryId]);
 

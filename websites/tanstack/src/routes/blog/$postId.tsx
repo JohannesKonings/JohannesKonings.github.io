@@ -14,10 +14,7 @@ import { getSeriesContext, getRelatedPosts } from "../../lib/content-utils";
 
 const ABSOLUTE_URL_PATTERN = /^[a-z][a-z\d+\-.]*:/i;
 
-function resolveBlogImageSrc(
-  src: string | undefined,
-  postSlug: string,
-): string | undefined {
+function resolveBlogImageSrc(src: string | undefined, postSlug: string): string | undefined {
   if (!src) return src;
 
   if (
@@ -59,10 +56,7 @@ export const Route = createFileRoute("/blog/$postId")({
 function RouteComponent() {
   const { post } = Route.useRouteContext();
 
-  const processedContent = post.content.replace(
-    /\{\{\s*site\.baseurl\s*\}\}/g,
-    "",
-  );
+  const processedContent = post.content.replace(/\{\{\s*site\.baseurl\s*\}\}/g, "");
 
   const seriesContext = getSeriesContext(post);
   const relatedPosts = getRelatedPosts(post, 3);
@@ -87,12 +81,7 @@ function RouteComponent() {
               to="/blog"
               className="inline-flex items-center text-sm text-gray-600 dark:text-gray-400 hover:text-cyan-600 dark:hover:text-cyan-400 transition-colors"
             >
-              <svg
-                className="w-4 h-4 mr-1"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
+              <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"
@@ -131,9 +120,7 @@ function RouteComponent() {
               </h1>
 
               <div className="flex items-center justify-center gap-4 text-gray-600 dark:text-gray-400 mb-6">
-                <time dateTime={post.date.toISOString()}>
-                  {format(post.date, "MMMM d, yyyy")}
-                </time>
+                <time dateTime={post.date.toISOString()}>{format(post.date, "MMMM d, yyyy")}</time>
                 <span>•</span>
                 <span>{post.readingTime.text}</span>
               </div>
@@ -171,10 +158,7 @@ function RouteComponent() {
                 overrides: {
                   h2: {
                     component: ({ children, ...props }) => {
-                      const text =
-                        typeof children === "string"
-                          ? children
-                          : String(children);
+                      const text = typeof children === "string" ? children : String(children);
                       const id = text
                         .toLowerCase()
                         .replace(/[^a-z0-9]+/g, "-")
@@ -188,10 +172,7 @@ function RouteComponent() {
                   },
                   h3: {
                     component: ({ children, ...props }) => {
-                      const text =
-                        typeof children === "string"
-                          ? children
-                          : String(children);
+                      const text = typeof children === "string" ? children : String(children);
                       const id = text
                         .toLowerCase()
                         .replace(/[^a-z0-9]+/g, "-")
@@ -205,14 +186,8 @@ function RouteComponent() {
                   },
                   pre: {
                     component: ({ children, ...props }) => {
-                      const child = Array.isArray(children)
-                        ? children[0]
-                        : children;
-                      if (
-                        child &&
-                        typeof child === "object" &&
-                        "props" in child
-                      ) {
+                      const child = Array.isArray(children) ? children[0] : children;
+                      if (child && typeof child === "object" && "props" in child) {
                         const codeProps = (
                           child as {
                             props?: { className?: string; children?: unknown };
@@ -282,9 +257,7 @@ function RouteComponent() {
                       ← Previous: {seriesContext.prev.title}
                     </Link>
                   ) : (
-                    <span className="text-gray-400 dark:text-gray-500">
-                      ← Previous
-                    </span>
+                    <span className="text-gray-400 dark:text-gray-500">← Previous</span>
                   )}
                   {seriesContext.next ? (
                     <Link
@@ -294,18 +267,14 @@ function RouteComponent() {
                       Next: {seriesContext.next.title} →
                     </Link>
                   ) : (
-                    <span className="text-gray-400 dark:text-gray-500">
-                      Next →
-                    </span>
+                    <span className="text-gray-400 dark:text-gray-500">Next →</span>
                   )}
                 </nav>
               )}
 
               {post.categories.length > 0 && (
                 <div className="mt-4">
-                  <span className="text-sm text-gray-500 dark:text-gray-400">
-                    Categories:{" "}
-                  </span>
+                  <span className="text-sm text-gray-500 dark:text-gray-400">Categories: </span>
                   {post.categories.map((category, index) => (
                     <span key={category}>
                       <Link

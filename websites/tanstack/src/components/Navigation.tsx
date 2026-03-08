@@ -106,12 +106,7 @@ export function Navigation(): JSX.Element {
             aria-label="Toggle navigation menu"
             aria-expanded={mobileOpen}
           >
-            <svg
-              className="w-6 h-6"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               {mobileOpen ? (
                 <path
                   strokeLinecap="round"
@@ -145,11 +140,7 @@ export function Navigation(): JSX.Element {
           </div>
 
           <div className="ml-auto flex items-center gap-2">
-            <a
-              href="/rss.xml"
-              aria-label="RSS feed"
-              className={iconButtonClasses}
-            >
+            <a href="/rss.xml" aria-label="RSS feed" className={iconButtonClasses}>
               <Rss className="w-5 h-5" />
             </a>
             <button
@@ -238,11 +229,7 @@ export function Navigation(): JSX.Element {
               </button>
             </div>
             <div className="max-h-[70vh] overflow-y-auto px-4 py-4">
-              <SearchComponent
-                items={searchItems}
-                onResultClick={closeSearch}
-                autoFocus
-              />
+              <SearchComponent items={searchItems} onResultClick={closeSearch} autoFocus />
             </div>
           </div>
         </div>

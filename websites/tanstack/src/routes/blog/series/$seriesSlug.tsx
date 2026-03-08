@@ -41,10 +41,7 @@ function SeriesPage() {
           <p className="text-cyan-700 dark:text-cyan-300 mb-4">
             {posts.length} post{posts.length !== 1 ? "s" : ""} in this series
           </p>
-          <Link
-            to="/blog"
-            className="text-sm text-cyan-600 dark:text-cyan-400 hover:underline"
-          >
+          <Link to="/blog" className="text-sm text-cyan-600 dark:text-cyan-400 hover:underline">
             ← All blog posts
           </Link>
         </div>

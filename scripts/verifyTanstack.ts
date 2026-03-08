@@ -16,10 +16,7 @@ const ROOT = path.join(__dirname, "..");
 
 const CONTENT_BLOG = path.join(ROOT, "websites/tanstack/src/content/blog");
 const CONTENT_NOTES = path.join(ROOT, "websites/tanstack/src/content/notes");
-const SITEMAP_FILE = path.join(
-  ROOT,
-  "websites/tanstack/public/sitemap-index.xml",
-);
+const SITEMAP_FILE = path.join(ROOT, "websites/tanstack/public/sitemap-index.xml");
 
 // ANSI color codes for output
 const colors = {
@@ -89,10 +86,8 @@ function collectPosts(): ContentItem[] {
       const dirPath = path.join(CONTENT_BLOG, ent.name);
       const files = fs.readdirSync(dirPath);
       const mdFile =
-        files.find(
-          (f) =>
-            f.endsWith(".md") && (f === "index.md" || f === ent.name + ".md"),
-        ) ?? files.find((f) => f.endsWith(".md"));
+        files.find((f) => f.endsWith(".md") && (f === "index.md" || f === ent.name + ".md")) ??
+        files.find((f) => f.endsWith(".md"));
       if (!mdFile) continue;
 
       const filePath = path.join(dirPath, mdFile);
@@ -191,10 +186,7 @@ function verifyContent(items: ContentItem[]): boolean {
   return !hasIssues;
 }
 
-function checkForDuplicates(
-  posts: ContentItem[],
-  notes: ContentItem[],
-): boolean {
+function checkForDuplicates(posts: ContentItem[], notes: ContentItem[]): boolean {
   console.log("\n🔍 Duplicate Slug Check\n");
 
   const allSlugs = new Map<string, string[]>();
@@ -251,9 +243,7 @@ function verifyBuildOutput(): boolean {
     if (content.includes("johanneskonings.dev")) {
       success("Sitemap uses correct domain (johanneskonings.dev)");
     } else if (content.includes("johanneskonings.github.io")) {
-      warn(
-        "Sitemap still uses github.io domain instead of johanneskonings.dev",
-      );
+      warn("Sitemap still uses github.io domain instead of johanneskonings.dev");
     }
   }
 
@@ -271,15 +261,9 @@ function printSummary(posts: ContentItem[], notes: ContentItem[]) {
 }
 
 function main() {
-  console.log(
-    "\n╔══════════════════════════════════════════════════════════════╗",
-  );
-  console.log(
-    "║       TanStack Website Content Verification                  ║",
-  );
-  console.log(
-    "╚══════════════════════════════════════════════════════════════╝",
-  );
+  console.log("\n╔══════════════════════════════════════════════════════════════╗");
+  console.log("║       TanStack Website Content Verification                  ║");
+  console.log("╚══════════════════════════════════════════════════════════════╝");
 
   const posts = collectPosts();
   const notes = collectNotes();
@@ -290,9 +274,7 @@ function main() {
 
   printSummary(posts, notes);
 
-  console.log(
-    "\n══════════════════════════════════════════════════════════════\n",
-  );
+  console.log("\n══════════════════════════════════════════════════════════════\n");
 
   if (contentOk && duplicatesOk && buildOk) {
     success("All checks passed!");

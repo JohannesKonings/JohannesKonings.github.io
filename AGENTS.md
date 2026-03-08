@@ -14,7 +14,7 @@ This is a pnpm monorepo containing the TanStack blog website under `websites/`. 
 
 See root `package.json` `scripts` for the full list. Highlights:
 
-- **Lint**: `pnpm run lint:check` (oxlint), `pnpm run format:check` (Prettier)
+- **Lint**: `pnpm run lint:check` (oxlint), `pnpm run format:check` (oxfmt)
 - **Build**: `pnpm run build:tanstack`
 - **Type check**: `pnpm run tsc:check` (tsgo preview — has known pre-existing errors, not run in CI)
 

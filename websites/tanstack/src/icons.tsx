@@ -23,13 +23,7 @@ export function Fa6BrandsBluesky(props: SVGProps<SVGSVGElement>): JSX.Element {
 // https://icon-sets.iconify.design/mdi/github/
 export function MdiGithub(props: SVGProps<SVGSVGElement>): JSX.Element {
   return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="1em"
-      height="1em"
-      viewBox="0 0 24 24"
-      {...props}
-    >
+    <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" {...props}>
       <title>GitHub Icon</title>
       <path
         fill="currentColor"
@@ -40,17 +34,9 @@ export function MdiGithub(props: SVGProps<SVGSVGElement>): JSX.Element {
 }
 
 // https://icon-sets.iconify.design/simple-icons/devdotto/
-export function SimpleIconsDevdotto(
-  props: SVGProps<SVGSVGElement>,
-): JSX.Element {
+export function SimpleIconsDevdotto(props: SVGProps<SVGSVGElement>): JSX.Element {
   return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="1em"
-      height="1em"
-      viewBox="0 0 24 24"
-      {...props}
-    >
+    <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" {...props}>
       <title>dev.to Icon</title>
       <path
         fill="currentColor"

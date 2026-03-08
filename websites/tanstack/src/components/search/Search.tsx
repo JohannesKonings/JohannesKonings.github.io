@@ -20,11 +20,7 @@ interface SearchProps {
   autoFocus?: boolean;
 }
 
-export function Search({
-  items,
-  onResultClick,
-  autoFocus = false,
-}: SearchProps) {
+export function Search({ items, onResultClick, autoFocus = false }: SearchProps) {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<SearchItem[]>([]);
   const [db, setDb] = useState<Awaited<ReturnType<typeof create>> | null>(null);
@@ -71,9 +67,7 @@ export function Search({
         limit: 50,
       });
       const out = hits
-        .map(
-          (h: { document?: unknown }) => h.document as SearchItem | undefined,
-        )
+        .map((h: { document?: unknown }) => h.document as SearchItem | undefined)
         .filter((d: SearchItem | undefined): d is SearchItem => Boolean(d));
       setResults(out);
     },
@@ -129,9 +123,7 @@ export function Search({
                   <span className="text-xs font-medium text-cyan-600 dark:text-cyan-400 uppercase tracking-wide">
                     {item.type}
                   </span>
-                  <h3 className="font-semibold text-gray-900 dark:text-white mt-1">
-                    {item.title}
-                  </h3>
+                  <h3 className="font-semibold text-gray-900 dark:text-white mt-1">{item.title}</h3>
                   <p className="text-sm text-gray-600 dark:text-gray-400 mt-1 line-clamp-2">
                     {item.summary || item.excerpt}
                   </p>

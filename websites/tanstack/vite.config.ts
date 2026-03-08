@@ -23,10 +23,7 @@ function syncContentPlugin() {
         copyDirectory(srcPath, destPath);
       } else {
         // Only copy if file doesn't exist or is newer
-        if (
-          !existsSync(destPath) ||
-          statSync(srcPath).mtime > statSync(destPath).mtime
-        ) {
+        if (!existsSync(destPath) || statSync(srcPath).mtime > statSync(destPath).mtime) {
           mkdirSync(dirname(destPath), { recursive: true });
           copyFileSync(srcPath, destPath);
         }
