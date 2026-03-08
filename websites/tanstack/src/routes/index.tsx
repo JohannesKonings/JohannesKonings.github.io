@@ -5,6 +5,7 @@ import { Fa6BrandsBluesky, MdiGithub, SimpleIconsDevdotto } from "../icons";
 import { Mail, Linkedin } from "lucide-react";
 import { getRecentPosts } from "../lib/content-utils";
 import { BlogPostCard } from "../components/blog/BlogPostCard";
+import { createRouteHead, generateSEOTags } from "../lib/seo";
 
 const SOCIALS = [
   { href: "mailto:mail@johanneskonings.dev", label: "Email", Icon: Mail },
@@ -31,6 +32,14 @@ const SOCIALS = [
 ] as const;
 
 export const Route = createFileRoute("/")({
+  head: () =>
+    createRouteHead({
+      seo: generateSEOTags({
+        title: "Home",
+        description: "Notes and posts on AWS and TanStack.",
+        url: "/",
+      }),
+    }),
   component: Home,
 });
 

@@ -10,6 +10,7 @@ import globalCss from "@/src/styles/global.css?url";
 import { Navigation } from "../components/Navigation";
 import { BackToTop } from "../components/BackToTop";
 import { ThemeProvider } from "../contexts/ThemeContext";
+import { siteConfig } from "../lib/site";
 
 const TanStackRouterDevtools =
   process.env.NODE_ENV === "production"
@@ -31,11 +32,19 @@ export const Route = createRootRoute({
         content: "width=device-width, initial-scale=1",
       },
       {
-        title: "Johannes Konings",
+        title: siteConfig.title,
       },
       {
         name: "description",
-        content: "Notes and posts on AWS and TanStack.",
+        content: siteConfig.description,
+      },
+      {
+        property: "og:site_name",
+        content: siteConfig.name,
+      },
+      {
+        name: "twitter:card",
+        content: "summary",
       },
     ],
     links: [
@@ -43,8 +52,12 @@ export const Route = createRootRoute({
       {
         rel: "alternate",
         type: "application/rss+xml",
-        title: "Johannes Konings",
-        href: "https://johanneskonings.github.io/rss.xml",
+        title: siteConfig.name,
+        href: siteConfig.rssUrl,
+      },
+      {
+        rel: "sitemap",
+        href: siteConfig.sitemapUrl,
       },
       {
         rel: "preload",
