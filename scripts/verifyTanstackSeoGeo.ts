@@ -2,11 +2,16 @@
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { siteConfig } from "../websites/tanstack/src/lib/site";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.join(__dirname, "..");
 const BUILD_PUBLIC_DIR = path.join(ROOT, "websites/tanstack/.output/public");
+const siteConfig = {
+  name: "Johannes Konings",
+  baseUrl: "https://johanneskonings.dev",
+  rssUrl: "https://johanneskonings.dev/rss.xml",
+  sitemapUrl: "https://johanneskonings.dev/sitemap-index.xml",
+} as const;
 
 const colors = {
   green: "\x1b[32m",

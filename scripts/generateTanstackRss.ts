@@ -5,16 +5,15 @@
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { siteConfig } from "../websites/tanstack/src/lib/site";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.join(__dirname, "..");
-const BASE_URL = siteConfig.baseUrl;
+const BASE_URL = "https://johanneskonings.dev";
 const CONTENT_BLOG = path.join(ROOT, "websites/tanstack/src/content/blog");
 const OUT_FILE = path.join(ROOT, "websites/tanstack/public/rss.xml");
 
-const SITE_TITLE = siteConfig.name;
-const SITE_DESCRIPTION = siteConfig.description;
+const SITE_TITLE = "Johannes Konings";
+const SITE_DESCRIPTION = "Notes and posts on AWS and TanStack.";
 
 function escapeXml(s: string): string {
   return s

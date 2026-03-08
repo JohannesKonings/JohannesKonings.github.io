@@ -6,13 +6,12 @@
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { siteConfig } from "../websites/tanstack/src/lib/site";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.join(__dirname, "..");
 
 // Use environment variable or default to production domain
-const BASE_URL = process.env.SITE_URL || siteConfig.baseUrl;
+const BASE_URL = process.env.SITE_URL || "https://johanneskonings.dev";
 
 const CONTENT_BLOG = path.join(ROOT, "websites/tanstack/src/content/blog");
 const CONTENT_NOTES = path.join(ROOT, "websites/tanstack/src/content/notes");
