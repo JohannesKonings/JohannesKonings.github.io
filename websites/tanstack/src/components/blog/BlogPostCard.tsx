@@ -2,7 +2,7 @@ import type { allPosts } from "content-collections";
 import { format } from "date-fns";
 import { Link } from "@tanstack/react-router";
 import type { JSX } from "react";
-import { useState, useEffect, useRef } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 
 interface BlogPostCardProps {
   post: (typeof allPosts)[0];
@@ -30,6 +30,7 @@ export function BlogPostCard({ post }: BlogPostCardProps): JSX.Element {
   const [imageError, setImageError] = useState(false);
   const [showSpinner, setShowSpinner] = useState(false);
   const imageRef = useRef<HTMLImageElement | null>(null);
+  const titleId = useId();
 
   useEffect(() => {
     setImageLoaded(false);
@@ -70,7 +71,13 @@ export function BlogPostCard({ post }: BlogPostCardProps): JSX.Element {
   };
 
   return (
-    <article className="bg-white/90 dark:bg-gray-800/80 backdrop-blur-sm rounded-xl shadow-lg overflow-hidden border border-gray-200 dark:border-gray-600/30 hover:border-cyan-400/60 transition-all duration-500 transform hover:scale-[1.02] hover:-translate-y-1 hover:shadow-xl hover:shadow-cyan-500/15 group">
+    <article className="relative cursor-pointer bg-white/90 dark:bg-gray-800/80 backdrop-blur-sm rounded-xl shadow-lg overflow-hidden border border-gray-200 dark:border-gray-600/30 hover:border-cyan-400/60 transition-all duration-500 transform hover:scale-[1.02] hover:-translate-y-1 hover:shadow-xl hover:shadow-cyan-500/15 group">
+      <Link
+        to={post.url}
+        aria-labelledby={titleId}
+        className="absolute inset-0 z-10 rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-cyan-500/60"
+      />
+
       {imageUrl && !imageError ? (
         <div className="bg-gray-200 dark:bg-gradient-to-r dark:from-gray-700 dark:to-gray-800 relative overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/8 to-blue-500/8 opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
@@ -121,7 +128,7 @@ export function BlogPostCard({ post }: BlogPostCardProps): JSX.Element {
         {/* Animated background glow - more subtle */}
         <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/2 via-transparent to-blue-500/2 opacity-0 group-hover:opacity-100 transition-opacity duration-700 rounded-b-xl"></div>
 
-        <div className="relative z-10">
+        <div className="relative">
           <div className="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400 mb-3">
             <time dateTime={post.date.toISOString()} className="text-cyan-600 dark:text-cyan-400">
               {format(post.date, "MMM d, yyyy")}
@@ -130,10 +137,11 @@ export function BlogPostCard({ post }: BlogPostCardProps): JSX.Element {
             <span className="text-blue-600 dark:text-blue-400">{post.readingTime.text}</span>
           </div>
 
-          <h2 className="text-xl font-bold text-gray-800 dark:text-gray-100 mb-3 line-clamp-2 group-hover:text-cyan-600 dark:group-hover:text-cyan-300 transition-colors duration-300">
-            <Link to={post.url} className="hover:text-cyan-400 transition-colors duration-300">
-              {post.title}
-            </Link>
+          <h2
+            id={titleId}
+            className="text-xl font-bold text-gray-800 dark:text-gray-100 mb-3 line-clamp-2 group-hover:text-cyan-600 dark:group-hover:text-cyan-300 transition-colors duration-300"
+          >
+            {post.title}
           </h2>
 
           <p className="text-gray-600 dark:text-gray-300 mb-4 line-clamp-3 leading-relaxed">
@@ -141,7 +149,7 @@ export function BlogPostCard({ post }: BlogPostCardProps): JSX.Element {
           </p>
 
           {post.tags.length > 0 && (
-            <div className="flex flex-wrap gap-2 mb-6">
+            <div className="relative z-20 flex flex-wrap gap-2 mb-6">
               {post.tags.slice(0, 3).map((tag) => (
                 <Link
                   key={tag}
@@ -160,11 +168,7 @@ export function BlogPostCard({ post }: BlogPostCardProps): JSX.Element {
             </div>
           )}
 
-          <Link
-            to={post.url}
-            className="inline-flex items-center text-cyan-400 hover:text-cyan-300 font-medium group-hover:translate-x-1 transition-all duration-300"
-            aria-label={`Read more about ${post.title}`}
-          >
+          <div className="inline-flex items-center text-cyan-400 hover:text-cyan-300 font-medium group-hover:translate-x-1 transition-all duration-300">
             <span
               className="bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent font-semibold"
               aria-hidden="true"
@@ -180,7 +184,7 @@ export function BlogPostCard({ post }: BlogPostCardProps): JSX.Element {
             >
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
             </svg>
-          </Link>
+          </div>
         </div>
       </div>
     </article>

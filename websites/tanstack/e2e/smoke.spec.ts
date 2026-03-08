@@ -1,6 +1,33 @@
 import { expect, test } from "@playwright/test";
 
 test.describe("tanstack smoke", () => {
+  test("blog preview card opens the post from image/card clicks", async ({ page }) => {
+    await page.goto("/");
+
+    const firstPreviewCard = page
+      .locator("article")
+      .filter({ has: page.locator("h2") })
+      .first();
+
+    await expect(firstPreviewCard).toBeVisible();
+    await expect
+      .poll(async () => firstPreviewCard.evaluate((element) => getComputedStyle(element).cursor))
+      .toBe("pointer");
+
+    await firstPreviewCard.click({ position: { x: 32, y: 32 } });
+    await expect(page).toHaveURL(/\/blog\/[^/]+$/);
+  });
+
+  test("blog preview card tags stay clickable", async ({ page }) => {
+    await page.goto("/");
+
+    const firstTag = page.locator('article a[href^="/blog/tag/"]').first();
+
+    await expect(firstTag).toBeVisible();
+    await firstTag.click();
+    await expect(page).toHaveURL(/\/blog\/tag\/[^/]+$/);
+  });
+
   test("desktop navigation click path works", async ({ page }) => {
     await page.goto("/");
 
