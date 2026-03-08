@@ -1,4 +1,5 @@
 import type { allPosts } from "content-collections";
+import { siteConfig, toAbsoluteAssetUrl, toAbsoluteUrl } from "./site";
 
 interface SEOProps {
   title: string;
@@ -9,6 +10,27 @@ interface SEOProps {
   publishedTime?: string;
   modifiedTime?: string;
   tags?: string[];
+}
+
+interface RouteHeadInput {
+  seo: ReturnType<typeof generateSEOTags>;
+  structuredData?: Record<string, unknown> | Array<Record<string, unknown>>;
+}
+
+function getFullTitle(title: string) {
+  return title.includes(siteConfig.name) ? title : `${title} | ${siteConfig.name}`;
+}
+
+function getPostImage(post: (typeof allPosts)[0]) {
+  if (post.cover_image) {
+    return post.cover_image;
+  }
+
+  if (post.thumbnail) {
+    return `/img/${post.thumbnail}.png`;
+  }
+
+  return undefined;
 }
 
 // Generate SEO meta tags for a page
@@ -22,10 +44,10 @@ export function generateSEOTags({
   modifiedTime,
   tags,
 }: SEOProps) {
-  const siteName = "Johannes Konings";
-  const baseUrl = "https://johanneskonings.dev";
-  const fullUrl = url ? `${baseUrl}${url}` : baseUrl;
-  const fullTitle = title.includes(siteName) ? title : `${title} | ${siteName}`;
+  const fullUrl = url ? toAbsoluteUrl(url) : siteConfig.baseUrl;
+  const fullTitle = getFullTitle(title);
+  const imageUrl = toAbsoluteAssetUrl(image);
+  const keywords = tags?.filter(Boolean).join(", ");
 
   return {
     title: fullTitle,
@@ -36,18 +58,60 @@ export function generateSEOTags({
       description,
       url: fullUrl,
       type,
-      siteName,
-      ...(image && { images: [{ url: `${baseUrl}${image}` }] }),
+      siteName: siteConfig.name,
+      ...(imageUrl && { images: [{ url: imageUrl }] }),
       ...(publishedTime && { publishedTime }),
       ...(modifiedTime && { modifiedTime }),
     },
     twitter: {
-      card: "summary_large_image",
+      card: imageUrl ? "summary_large_image" : "summary",
       title: fullTitle,
       description,
-      ...(image && { images: [{ url: `${baseUrl}${image}` }] }),
+      ...(imageUrl && { images: [{ url: imageUrl }] }),
     },
-    ...(tags && { keywords: tags.join(", ") }),
+    ...(keywords && { keywords }),
+  };
+}
+
+export function createRouteHead({ seo, structuredData }: RouteHeadInput) {
+  const structuredDataItems = Array.isArray(structuredData)
+    ? structuredData
+    : structuredData
+      ? [structuredData]
+      : [];
+
+  return {
+    meta: [
+      { title: seo.title },
+      { name: "title", content: seo.title },
+      { name: "description", content: seo.description },
+      ...(seo.keywords ? [{ name: "keywords", content: seo.keywords }] : []),
+      { property: "og:title", content: seo.openGraph.title },
+      { property: "og:description", content: seo.openGraph.description },
+      { property: "og:url", content: seo.openGraph.url },
+      { property: "og:type", content: seo.openGraph.type },
+      { property: "og:site_name", content: seo.openGraph.siteName },
+      ...(seo.openGraph.images?.[0]
+        ? [{ property: "og:image", content: seo.openGraph.images[0].url }]
+        : []),
+      ...(seo.openGraph.publishedTime
+        ? [{ property: "article:published_time", content: seo.openGraph.publishedTime }]
+        : []),
+      ...(seo.openGraph.modifiedTime
+        ? [{ property: "article:modified_time", content: seo.openGraph.modifiedTime }]
+        : []),
+      { name: "twitter:card", content: seo.twitter.card },
+      { name: "twitter:title", content: seo.twitter.title },
+      { name: "twitter:description", content: seo.twitter.description },
+      ...(seo.twitter.images?.[0]
+        ? [{ name: "twitter:image", content: seo.twitter.images[0].url }]
+        : []),
+    ],
+    links: [{ rel: "canonical", href: seo.canonical }],
+    scripts: structuredDataItems.map((data) => ({
+      type: "application/ld+json",
+      children: JSON.stringify(data),
+    })),
   };
 }
 
@@ -57,43 +121,45 @@ export function generatePostSEO(post: (typeof allPosts)[0]) {
     title: post.title,
     description: post.summary,
     url: post.url,
-    image: post.thumbnail ? `/img/${post.thumbnail}.png` : undefined,
+    image: getPostImage(post),
     type: "article",
     publishedTime: post.date.toISOString(),
+    modifiedTime: post.date.toISOString(),
     tags: [...post.tags, ...post.categories],
   });
 }
 
 // Generate structured data for a blog post
 export function generatePostStructuredData(post: (typeof allPosts)[0]) {
-  const baseUrl = "https://johanneskonings.dev";
+  const postUrl = toAbsoluteUrl(post.url);
+  const imageUrl = toAbsoluteAssetUrl(getPostImage(post));
 
   return {
     "@context": "https://schema.org",
     "@type": "BlogPosting",
     headline: post.title,
     description: post.summary,
-    url: `${baseUrl}${post.url}`,
+    url: postUrl,
     datePublished: post.date.toISOString(),
-    dateModified: post.date.toISOString(), // We could add lastModified field to content collections
+    dateModified: post.date.toISOString(),
     author: {
       "@type": "Person",
-      name: "Johannes Konings",
-      url: "https://johanneskonings.dev",
+      name: siteConfig.name,
+      url: siteConfig.baseUrl,
     },
     publisher: {
       "@type": "Person",
-      name: "Johannes Konings",
-      url: "https://johanneskonings.dev",
+      name: siteConfig.name,
+      url: siteConfig.baseUrl,
     },
     mainEntityOfPage: {
       "@type": "WebPage",
-      "@id": `${baseUrl}${post.url}`,
+      "@id": postUrl,
     },
-    ...(post.thumbnail && {
+    ...(imageUrl && {
       image: {
         "@type": "ImageObject",
-        url: `${baseUrl}/img/${post.thumbnail}.png`,
+        url: imageUrl,
       },
     }),
     keywords: [...post.tags, ...post.categories].join(", "),
@@ -104,23 +170,21 @@ export function generatePostStructuredData(post: (typeof allPosts)[0]) {
 
 // Generate structured data for blog listing
 export function generateBlogListingStructuredData() {
-  const baseUrl = "https://johanneskonings.dev";
-
   return {
     "@context": "https://schema.org",
     "@type": "Blog",
-    name: "Johannes Konings Blog",
-    description: "Posts on aws and TanStack",
-    url: `${baseUrl}/blog`,
+    name: `${siteConfig.name} Blog`,
+    description: "Posts on AWS and TanStack.",
+    url: toAbsoluteUrl("/blog"),
     author: {
       "@type": "Person",
-      name: "Johannes Konings",
-      url: "https://johanneskonings.dev",
+      name: siteConfig.name,
+      url: siteConfig.baseUrl,
     },
     publisher: {
       "@type": "Person",
-      name: "Johannes Konings",
-      url: "https://johanneskonings.dev",
+      name: siteConfig.name,
+      url: siteConfig.baseUrl,
     },
   };
 }
