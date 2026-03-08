@@ -32,6 +32,9 @@ jobs:
         run: pnpm run lint:check
         continue-on-error: true
 
+      - name: Run TypeScript check
+        run: pnpm run tsc:check
+
       - name: Install Playwright browser
         run: pnpm --filter tanstack exec playwright install --with-deps chromium
 
