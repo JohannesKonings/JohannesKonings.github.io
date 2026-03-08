@@ -26,7 +26,11 @@
     "verify:tanstack": "tsx scripts/verifyTanstack.ts",
     "tsc": "tsgo",
     "tsc:check": "tsgo --noEmit",
-    "tsc:watch": "tsgo -w"
+    "tsc:watch": "tsgo -w",
+    "checks:hook": "pnpm run format:check && pnpm run lint:check && pnpm run tsc:check",
+    "checks:pr": "pnpm run checks:hook && pnpm --filter tanstack test:all && pnpm run build:tanstack",
+    "hooks:install": "pnpm tsx scripts/installGitHooks.ts",
+    "prepare": "pnpm run hooks:install"
   },
   "devDependencies": {
     "@types/node": "24.12.0",

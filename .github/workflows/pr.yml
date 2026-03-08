@@ -26,21 +26,8 @@ jobs:
       - name: Install dependencies
         run: pnpm i --frozen-lockfile
 
-      - name: Run format check
-        run: pnpm run format:check
-
-      - name: Run lint check
-        run: pnpm run lint:check
-        continue-on-error: true
-
-      - name: Run TypeScript check
-        run: pnpm run tsc:check
-
       - name: Install Playwright browser
         run: pnpm --filter tanstack exec playwright install --with-deps chromium
 
-      - name: Run TanStack tests
-        run: pnpm --filter tanstack test:all
-
-      - name: Run TanStack build
-        run: pnpm run build:tanstack
+      - name: Run PR checks
+        run: pnpm run checks:pr
