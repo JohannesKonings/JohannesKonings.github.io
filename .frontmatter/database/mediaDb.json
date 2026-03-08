@@ -1,18 +1,7 @@
 {
-  "astro-blog": { "public": {} },
   "img": {},
   "websites": {
-    "tanstack": {},
-    "astro": {
-      "src": {
-        "content": {
-          "blog": {
-            "2025-11-30-tanstack-start-aws-serverless": {},
-            "2026-01-08-tanstack-start-aws-db-multiple-entities-sse": {}
-          }
-        }
-      }
-    }
+    "tanstack": {}
   },
   "_posts": {
     "2024-11-30-aws-sso-prowler": {},

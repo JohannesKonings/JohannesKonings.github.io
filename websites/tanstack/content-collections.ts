@@ -122,5 +122,5 @@ const notes = defineCollection({
 });
 
 export default defineConfig({
-  collections: [posts, notes],
+  content: [posts, notes],
 });
