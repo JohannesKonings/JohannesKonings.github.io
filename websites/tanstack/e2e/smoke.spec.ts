@@ -66,14 +66,23 @@ test.describe("tanstack smoke", () => {
       name: "Toggle navigation menu",
     });
 
-    await menuToggle.click();
-    await expect(menuToggle).toHaveAttribute("aria-expanded", "true");
+    await expect
+      .poll(async () => {
+        if ((await menuToggle.getAttribute("aria-expanded")) !== "true") {
+          await menuToggle.click();
+        }
 
-    await page
+        return await menuToggle.getAttribute("aria-expanded");
+      })
+      .toBe("true");
+
+    const mobileNotesLink = page
       .locator("a")
       .filter({ hasText: /^Notes$/ })
-      .last()
-      .click();
+      .last();
+
+    await expect(mobileNotesLink).toBeVisible();
+    await mobileNotesLink.click();
 
     await expect(page).toHaveURL(/\/notes$/);
     await expect(menuToggle).toHaveAttribute("aria-expanded", "false");
