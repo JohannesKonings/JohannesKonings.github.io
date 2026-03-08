@@ -11,6 +11,7 @@ import { RelatedPosts } from "../../components/blog/RelatedPosts";
 import { ReadingProgressBar } from "../../components/blog/ReadingProgressBar";
 import { ShareButtons } from "../../components/blog/ShareButtons";
 import { getSeriesContext, getRelatedPosts } from "../../lib/content-utils";
+import { createRouteHead, generatePostSEO, generatePostStructuredData } from "../../lib/seo";
 
 const ABSOLUTE_URL_PATTERN = /^[a-z][a-z\d+\-.]*:/i;
 
@@ -31,6 +32,18 @@ function resolveBlogImageSrc(src: string | undefined, postSlug: string): string 
 }
 
 export const Route = createFileRoute("/blog/$postId")({
+  head: ({ params }) => {
+    const post = allPosts.find((candidate) => candidate.slug === params.postId && candidate.published);
+
+    if (!post) {
+      return {};
+    }
+
+    return createRouteHead({
+      seo: generatePostSEO(post),
+      structuredData: generatePostStructuredData(post),
+    });
+  },
   component: RouteComponent,
   beforeLoad: ({ params }) => {
     const { postId } = params;

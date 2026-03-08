@@ -47,7 +47,7 @@ export function generateSEOTags({
   const fullUrl = url ? toAbsoluteUrl(url) : siteConfig.baseUrl;
   const fullTitle = getFullTitle(title);
   const imageUrl = toAbsoluteAssetUrl(image);
-  const keywords = tags?.filter(Boolean).join(", ");
+  const keywords = tags ? Array.from(new Set(tags.filter(Boolean))).join(", ") : undefined;
 
   return {
     title: fullTitle,
