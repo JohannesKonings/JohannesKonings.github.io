@@ -13,5 +13,6 @@ export default defineConfig({
     "**/dist/**",
     "**/.vinxi",
     "**/.output",
+    "websites/tanstack/src/routeTree.gen.ts",
   ],
 });

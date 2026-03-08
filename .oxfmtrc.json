@@ -10,6 +10,7 @@
     "**/.tanstack",
     "**/.content-collections",
     "**/.nitro",
+    "websites/tanstack/src/routeTree.gen.ts",
     "node_modules/",
     "*.min.js",
     "*.min.css",
