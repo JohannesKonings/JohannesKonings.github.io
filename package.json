@@ -24,6 +24,7 @@
     "demo:theme": "node websites/tanstack/scripts/theme-toggle-demo.mjs",
     "build:tanstack": "pnpm --filter tanstack build",
     "verify:tanstack": "tsx scripts/verifyTanstack.ts",
+    "verify:tanstack:seo-geo": "tsx scripts/verifyTanstackSeoGeo.ts",
     "tsc": "tsgo",
     "tsc:check": "tsgo --noEmit",
     "tsc:watch": "tsgo -w"
