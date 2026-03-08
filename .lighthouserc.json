@@ -1,0 +1,36 @@
+{
+  "ci": {
+    "collect": {
+      "staticDistDir": "./websites/tanstack/.output/public",
+      "url": ["/", "/blog.html", "/blog/2026-02-02-tanstack-ai-bedrock-simple/index.html"],
+      "numberOfRuns": 1,
+      "chromeFlags": "--headless=new --no-sandbox --disable-dev-shm-usage --disable-gpu",
+      "settings": {
+        "preset": "desktop"
+      }
+    },
+    "assert": {
+      "assertions": {
+        "categories:seo": [
+          "error",
+          {
+            "minScore": 0.9
+          }
+        ],
+        "categories:accessibility": [
+          "warn",
+          {
+            "minScore": 0.8
+          }
+        ],
+        "categories:best-practices": [
+          "warn",
+          {
+            "minScore": 0.8
+          }
+        ],
+        "categories:performance": "off"
+      }
+    }
+  }
+}

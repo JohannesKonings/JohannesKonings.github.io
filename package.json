@@ -24,11 +24,14 @@
     "demo:theme": "node websites/tanstack/scripts/theme-toggle-demo.mjs",
     "build:tanstack": "pnpm --filter tanstack build",
     "verify:tanstack": "tsx scripts/verifyTanstack.ts",
+    "verify:tanstack:seo-geo": "tsx scripts/verifyTanstackSeoGeo.ts",
+    "verify:tanstack:lighthouse": "tsx scripts/runTanstackLighthouse.ts",
     "tsc": "tsgo",
     "tsc:check": "tsgo --noEmit",
     "tsc:watch": "tsgo -w"
   },
   "devDependencies": {
+    "@lhci/cli": "^0.15.1",
     "@types/node": "24.12.0",
     "@typescript/native-preview": "7.0.0-dev.20260219.1",
     "execa": "9.6.1",

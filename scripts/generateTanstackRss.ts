@@ -8,19 +8,12 @@ import { fileURLToPath } from "node:url";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.join(__dirname, "..");
-const BASE_URL = "https://johanneskonings.github.io";
+const BASE_URL = "https://johanneskonings.dev";
 const CONTENT_BLOG = path.join(ROOT, "websites/tanstack/src/content/blog");
 const OUT_FILE = path.join(ROOT, "websites/tanstack/public/rss.xml");
 
 const SITE_TITLE = "Johannes Konings";
-const SITE_DESCRIPTION = "Contact, notes and some posts";
-
-function slugFromTitle(title: string): string {
-  return title
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-|-$/g, "");
-}
+const SITE_DESCRIPTION = "Notes and posts on AWS and TanStack.";
 
 function escapeXml(s: string): string {
   return s
