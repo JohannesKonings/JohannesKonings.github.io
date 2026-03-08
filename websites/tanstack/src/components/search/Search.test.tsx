@@ -77,7 +77,9 @@ describe("Search (Orama)", () => {
 
     await user.type(input, "router");
     await waitFor(() => {
-      expect(screen.getByRole("heading", { name: "TanStack Router Deep Dive" })).toBeInTheDocument();
+      expect(
+        screen.getByRole("heading", { name: "TanStack Router Deep Dive" }),
+      ).toBeInTheDocument();
     });
 
     await user.clear(input);
