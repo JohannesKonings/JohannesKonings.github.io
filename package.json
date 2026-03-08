@@ -28,7 +28,11 @@
     "verify:tanstack:lighthouse": "tsx scripts/runTanstackLighthouse.ts",
     "tsc": "tsgo",
     "tsc:check": "tsgo --noEmit",
-    "tsc:watch": "tsgo -w"
+    "tsc:watch": "tsgo -w",
+    "checks:hook": "pnpm run format:check && pnpm run lint:check && pnpm run tsc:check",
+    "checks:pr": "pnpm run checks:hook && pnpm --filter tanstack test:all && pnpm run build:tanstack && pnpm run verify:tanstack:seo-geo && pnpm run verify:tanstack:lighthouse",
+    "hooks:install": "pnpm tsx scripts/installGitHooks.ts",
+    "prepare": "pnpm run hooks:install"
   },
   "devDependencies": {
     "@lhci/cli": "^0.15.1",
