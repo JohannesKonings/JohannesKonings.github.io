@@ -15,6 +15,8 @@
     "build:with-typecheck": "pnpm sync && tsgo --noEmit && vite build",
     "start": "pnpm sync && vite start",
     "test": "vitest",
+    "test:all": "pnpm run test:ui && pnpm run test:smoke",
+    "test:smoke": "playwright test",
     "test:ui": "vitest run",
     "test:ui:dev": "vitest --ui",
     "type-check": "tsgo --noEmit"
@@ -38,6 +40,7 @@
     "@content-collections/core": "0.13.1",
     "@content-collections/vite": "0.2.8",
     "@iconify/react": "6.0.2",
+    "@playwright/test": "^1.58.2",
     "@tailwindcss/vite": "4.1.11",
     "@tanstack/react-router-devtools": "^1.161.1",
     "@testing-library/jest-dom": "^6.9.1",

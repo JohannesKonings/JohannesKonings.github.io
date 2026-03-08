@@ -32,8 +32,11 @@ jobs:
         run: pnpm run lint:check
         continue-on-error: true
 
-      - name: Run TanStack UI tests
-        run: pnpm --filter tanstack test:ui
+      - name: Install Playwright browser
+        run: pnpm --filter tanstack exec playwright install --with-deps chromium
+
+      - name: Run TanStack tests
+        run: pnpm --filter tanstack test:all
 
       - name: Run TanStack build
         run: pnpm run build:tanstack
