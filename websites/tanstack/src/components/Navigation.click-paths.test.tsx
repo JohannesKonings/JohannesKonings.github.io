@@ -70,12 +70,7 @@ const searchRoute = createRoute({
   component: () => <h1>Search page</h1>,
 });
 
-const routeTree = rootRoute.addChildren([
-  homeRoute,
-  blogRoute,
-  notesRoute,
-  searchRoute,
-]);
+const routeTree = rootRoute.addChildren([homeRoute, blogRoute, notesRoute, searchRoute]);
 
 async function renderWithRouter(initialPath = "/") {
   const router = createRouter({
@@ -103,21 +98,15 @@ describe("Navigation click paths", () => {
 
     await user.click(screen.getByRole("link", { name: "Blog" }));
     await waitFor(() => expect(router.state.location.pathname).toBe("/blog"));
-    expect(
-      screen.getByRole("heading", { name: "Blog page" }),
-    ).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Blog page" })).toBeInTheDocument();
 
     await user.click(screen.getByRole("link", { name: "Notes" }));
     await waitFor(() => expect(router.state.location.pathname).toBe("/notes"));
-    expect(
-      screen.getByRole("heading", { name: "Notes page" }),
-    ).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Notes page" })).toBeInTheDocument();
 
     await user.click(screen.getByRole("link", { name: "Home" }));
     await waitFor(() => expect(router.state.location.pathname).toBe("/"));
-    expect(
-      screen.getByRole("heading", { name: "Home page" }),
-    ).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Home page" })).toBeInTheDocument();
   });
 
   it("navigates from mobile menu links and closes menu", async () => {
@@ -144,15 +133,11 @@ describe("Navigation click paths", () => {
     const { user } = await renderWithRouter("/");
 
     await user.click(screen.getByRole("button", { name: "Search" }));
-    expect(
-      screen.getByRole("dialog", { name: "Search content" }),
-    ).toBeInTheDocument();
+    expect(screen.getByRole("dialog", { name: "Search content" })).toBeInTheDocument();
 
     await user.click(screen.getByRole("button", { name: "Close search" }));
     await waitFor(() => {
-      expect(
-        screen.queryByRole("dialog", { name: "Search content" }),
-      ).not.toBeInTheDocument();
+      expect(screen.queryByRole("dialog", { name: "Search content" })).not.toBeInTheDocument();
     });
   });
 
@@ -162,18 +147,14 @@ describe("Navigation click paths", () => {
     await user.click(screen.getByRole("button", { name: "Search" }));
     await user.keyboard("{Escape}");
     await waitFor(() => {
-      expect(
-        screen.queryByRole("dialog", { name: "Search content" }),
-      ).not.toBeInTheDocument();
+      expect(screen.queryByRole("dialog", { name: "Search content" })).not.toBeInTheDocument();
     });
 
     await user.click(screen.getByRole("button", { name: "Search" }));
     const modal = screen.getByRole("dialog", { name: "Search content" });
     fireEvent.mouseDown(modal);
     await waitFor(() => {
-      expect(
-        screen.queryByRole("dialog", { name: "Search content" }),
-      ).not.toBeInTheDocument();
+      expect(screen.queryByRole("dialog", { name: "Search content" })).not.toBeInTheDocument();
     });
   });
 });
