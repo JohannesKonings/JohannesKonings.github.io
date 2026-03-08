@@ -11,7 +11,7 @@ const REACTIONS = "1";
 const INPUT_POSITION = "bottom";
 const LOADING = "lazy";
 
-export type GiscusCategory = "blog" | "notes";
+type GiscusCategory = "blog" | "notes";
 
 const CATEGORY_CONFIG: Record<GiscusCategory, { category: string; categoryId: string }> = {
   blog: {

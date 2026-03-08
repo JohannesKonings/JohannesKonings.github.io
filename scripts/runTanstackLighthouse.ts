@@ -13,7 +13,7 @@ async function resolveSystemChromePath() {
   try {
     const { stdout } = await execa(
       "bash",
-      ["-lc", "which google-chrome || which chromium-browser || which chromium"],
+      ["-lc", "command -v google-chrome || command -v chromium-browser || command -v chromium"],
       {
         cwd: ROOT,
       },
