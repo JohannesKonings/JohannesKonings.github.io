@@ -9,7 +9,6 @@
   "ignorePatterns": [
     "**/next-blog/.next/**",
     "**/next-blog/out/**",
-    "**/.astro",
     "**/dist/**",
     "**/.vinxi",
     "**/.output"
