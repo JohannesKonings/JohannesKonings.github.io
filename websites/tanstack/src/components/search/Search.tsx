@@ -40,7 +40,7 @@ export function Search({ items, onResultClick, autoFocus = false }: SearchProps)
 
   useEffect(() => {
     let cancelled = false;
-    (async () => {
+    void (async () => {
       const database = await create({
         schema,
       });
@@ -75,7 +75,7 @@ export function Search({ items, onResultClick, autoFocus = false }: SearchProps)
   );
 
   useEffect(() => {
-    runSearch(query);
+    void runSearch(query);
   }, [query, runSearch]);
 
   return (

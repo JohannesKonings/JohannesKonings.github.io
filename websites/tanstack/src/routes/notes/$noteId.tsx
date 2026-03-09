@@ -2,9 +2,20 @@ import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { allNotes } from "content-collections";
 import Markdown from "markdown-to-jsx";
 import { format } from "date-fns";
+import { isValidElement } from "react";
 import { BlogLayout } from "../../components/blog/BlogLayout";
 import { CodeBlock } from "../../components/blog/CodeBlock";
 import { createRouteHead, generateSEOTags } from "../../lib/seo";
+
+function getTextContent(value: unknown): string {
+  if (typeof value === "string") return value;
+  if (typeof value === "number" || typeof value === "bigint") return value.toString();
+  if (Array.isArray(value)) return value.map((item) => getTextContent(item)).join("");
+  if (isValidElement<{ children?: unknown }>(value)) {
+    return getTextContent(value.props.children);
+  }
+  return "";
+}
 
 export const Route = createFileRoute("/notes/$noteId")({
   head: ({ params }) => {
@@ -57,11 +68,6 @@ function NoteDetailPage() {
   const getLanguage = (className?: string) => {
     const langMatch = (className ?? "").match(/language-([\w-]+)/);
     return langMatch ? langMatch[1] : "typescript";
-  };
-
-  const getCodeText = (children: unknown) => {
-    if (typeof children === "string") return children;
-    return String(children ?? "");
   };
 
   return (
@@ -117,12 +123,12 @@ function NoteDetailPage() {
                         }
                       ).props;
                       const language = getLanguage(codeProps?.className);
-                      const code = getCodeText(codeProps?.children);
+                      const code = getTextContent(codeProps?.children);
                       return <CodeBlock code={code} language={language} />;
                     }
                     const preProps = props as { className?: string };
                     const language = getLanguage(preProps.className);
-                    const code = getCodeText(children);
+                    const code = getTextContent(children);
                     return <CodeBlock code={code} language={language} />;
                   },
                 },
@@ -131,7 +137,7 @@ function NoteDetailPage() {
                   component: ({ children, className, ...props }) => {
                     if (className?.includes("language-")) {
                       const language = getLanguage(className);
-                      const code = getCodeText(children);
+                      const code = getTextContent(children);
                       return <CodeBlock code={code} language={language} />;
                     }
 

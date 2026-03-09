@@ -3,6 +3,7 @@ import { Link } from "@tanstack/react-router";
 import { allPosts } from "content-collections";
 import Markdown from "markdown-to-jsx";
 import { format } from "date-fns";
+import { isValidElement } from "react";
 import { BlogLayout } from "../../components/blog/BlogLayout";
 import { CodeBlock } from "../../components/blog/CodeBlock";
 import { Giscus } from "../../components/Giscus";
@@ -29,6 +30,16 @@ function resolveBlogImageSrc(src: string | undefined, postSlug: string): string 
 
   const normalizedSrc = src.replace(/^\.\//, "");
   return `/content/blog/${postSlug}/${normalizedSrc}`;
+}
+
+function getTextContent(value: unknown): string {
+  if (typeof value === "string") return value;
+  if (typeof value === "number" || typeof value === "bigint") return value.toString();
+  if (Array.isArray(value)) return value.map((item) => getTextContent(item)).join("");
+  if (isValidElement<{ children?: unknown }>(value)) {
+    return getTextContent(value.props.children);
+  }
+  return "";
 }
 
 export const Route = createFileRoute("/blog/$postId")({
@@ -78,11 +89,6 @@ function RouteComponent() {
   const getLanguage = (className?: string) => {
     const langMatch = (className ?? "").match(/language-([\w-]+)/);
     return langMatch ? langMatch[1] : "typescript";
-  };
-
-  const getCodeText = (children: unknown) => {
-    if (typeof children === "string") return children;
-    return String(children ?? "");
   };
 
   return (
@@ -173,7 +179,7 @@ function RouteComponent() {
                 overrides: {
                   h2: {
                     component: ({ children, ...props }) => {
-                      const text = typeof children === "string" ? children : String(children);
+                      const text = getTextContent(children);
                       const id = text
                         .toLowerCase()
                         .replace(/[^a-z0-9]+/g, "-")
@@ -187,7 +193,7 @@ function RouteComponent() {
                   },
                   h3: {
                     component: ({ children, ...props }) => {
-                      const text = typeof children === "string" ? children : String(children);
+                      const text = getTextContent(children);
                       const id = text
                         .toLowerCase()
                         .replace(/[^a-z0-9]+/g, "-")
@@ -209,12 +215,12 @@ function RouteComponent() {
                           }
                         ).props;
                         const language = getLanguage(codeProps?.className);
-                        const code = getCodeText(codeProps?.children);
+                        const code = getTextContent(codeProps?.children);
                         return <CodeBlock code={code} language={language} />;
                       }
                       const preProps = props as { className?: string };
                       const language = getLanguage(preProps.className);
-                      const code = getCodeText(children);
+                      const code = getTextContent(children);
                       return <CodeBlock code={code} language={language} />;
                     },
                   },
@@ -222,7 +228,7 @@ function RouteComponent() {
                     component: ({ children, className, ...props }) => {
                       if (className?.includes("language-")) {
                         const language = getLanguage(className);
-                        const code = getCodeText(children);
+                        const code = getTextContent(children);
                         return <CodeBlock code={code} language={language} />;
                       }
 
