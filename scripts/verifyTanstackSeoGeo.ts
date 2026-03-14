@@ -325,16 +325,29 @@ function verifyCrawlArtifacts() {
   );
 }
 
+function collectBuiltTextFiles(directory: string): string[] {
+  return fs.readdirSync(directory, { withFileTypes: true }).flatMap((entry) => {
+    const fullPath = path.join(directory, entry.name);
+
+    if (entry.isDirectory()) {
+      return collectBuiltTextFiles(fullPath);
+    }
+
+    const extension = path.extname(entry.name);
+    return [".html", ".xml", ".txt"].includes(extension) ? [fullPath] : [];
+  });
+}
+
 function verifyObsoleteSocialPreviewAssetIsGone() {
   console.log("\n🧹 Removed social preview asset");
 
+  const filesWithLegacyReferences = collectBuiltTextFiles(BUILD_PUBLIC_DIR)
+    .filter((filePath) => fs.readFileSync(filePath, "utf-8").includes("social-preview"))
+    .map((filePath) => path.relative(ROOT, filePath));
+
   assert(
-    !fs.existsSync(path.join(BUILD_PUBLIC_DIR, "social-preview.svg")),
-    "Build output no longer includes social-preview.svg",
-  );
-  assert(
-    !fs.existsSync(path.join(BUILD_PUBLIC_DIR, "social-preview.png")),
-    "Build output no longer includes social-preview.png",
+    filesWithLegacyReferences.length === 0,
+    "Built HTML/XML/TXT output no longer references social-preview assets",
   );
 }
 
