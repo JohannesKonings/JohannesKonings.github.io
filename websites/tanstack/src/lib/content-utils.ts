@@ -1,4 +1,4 @@
-import { allPosts } from "content-collections";
+import { allPosts } from "./content-collections";
 
 // Get all unique tags from published posts
 export function getAllTags(): string[] {
