@@ -6,26 +6,39 @@ import { nitro } from "nitro/vite";
 import { tanstackStart } from "@tanstack/react-start/plugin/vite";
 
 import contentCollections from "@content-collections/vite";
-import { copyFileSync, cpSync, existsSync, mkdirSync, readdirSync, rmSync } from "fs";
+import { copyFileSync, existsSync, mkdirSync, readdirSync, statSync } from "fs";
 import { dirname, join, resolve } from "path";
 
 // Plugin to sync src/content to public/content
 function syncContentPlugin() {
-  const mirrorDirectory = (src: string, dest: string) => {
-    rmSync(dest, { recursive: true, force: true });
-    mkdirSync(dirname(dest), { recursive: true });
-    cpSync(src, dest, { recursive: true });
+  const copyDirectory = (src: string, dest: string) => {
+    if (!existsSync(dest)) {
+      mkdirSync(dest, { recursive: true });
+    }
+
+    const items = readdirSync(src);
+    for (const item of items) {
+      const srcPath = join(src, item);
+      const destPath = join(dest, item);
+
+      if (statSync(srcPath).isDirectory()) {
+        copyDirectory(srcPath, destPath);
+      } else if (!existsSync(destPath) || statSync(srcPath).mtime > statSync(destPath).mtime) {
+        mkdirSync(dirname(destPath), { recursive: true });
+        copyFileSync(srcPath, destPath);
+      }
+    }
   };
 
   return {
     name: "sync-content",
     buildStart() {
-      mirrorDirectory("src/content", "public/content");
+      copyDirectory("src/content", "public/content");
     },
     handleHotUpdate({ file }: { file: string }) {
       if (file.includes("src/content")) {
         try {
-          mirrorDirectory("src/content", "public/content");
+          copyDirectory("src/content", "public/content");
           console.log("✅ Synced content to public directory");
         } catch (error) {
           console.error("❌ Failed to sync content:", error);
