@@ -1,11 +1,13 @@
 import { defineConfig } from "vite-plus";
 import tsConfigPaths from "vite-tsconfig-paths";
 import tailwindcss from "@tailwindcss/vite";
+import viteReact from "@vitejs/plugin-react";
+import { nitro } from "nitro/vite";
 import { tanstackStart } from "@tanstack/react-start/plugin/vite";
 
 import contentCollections from "@content-collections/vite";
 import { copyFileSync, mkdirSync, existsSync, readdirSync, statSync } from "fs";
-import { join, dirname } from "path";
+import { dirname, join, resolve } from "path";
 
 // Plugin to sync src/content to public/content
 function syncContentPlugin() {
@@ -51,8 +53,43 @@ function syncContentPlugin() {
   };
 }
 
+function syncStartManifestPlugin() {
+  return {
+    name: "sync-start-manifest",
+    closeBundle(this: { environment?: { name?: string } }) {
+      if (this.environment?.name !== "nitro") {
+        return;
+      }
+
+      const ssrAssetsDir = resolve("node_modules/.nitro/vite/services/ssr/assets");
+      if (!existsSync(ssrAssetsDir)) {
+        return;
+      }
+
+      const manifestFile = readdirSync(ssrAssetsDir).find(
+        (file) => file.startsWith("_tanstack-start-manifest_v-") && file.endsWith(".js"),
+      );
+
+      if (!manifestFile) {
+        return;
+      }
+
+      const outputManifestPath = resolve(".output/server/_tanstack-start-manifest_v.mjs");
+      mkdirSync(dirname(outputManifestPath), { recursive: true });
+      copyFileSync(join(ssrAssetsDir, manifestFile), outputManifestPath);
+    },
+  };
+}
+
 export default defineConfig(({ mode }) => ({
   base: "/",
+  environments: {
+    nitro: {
+      build: {
+        ssr: "./src/server.ts",
+      },
+    },
+  },
   server: {
     port: 3000,
     fs: {
@@ -116,12 +153,15 @@ export default defineConfig(({ mode }) => ({
   plugins: [
     tailwindcss(),
     syncContentPlugin(),
+    syncStartManifestPlugin(),
     contentCollections(),
-    // TanStack Start includes its own React plugin — no separate @vitejs/plugin-react needed
+    tsConfigPaths(),
     tanstackStart({
+      srcDirectory: "src",
       prerender: {
         enabled: true,
-        crawlLinks: true,
+        autoStaticPathsDiscovery: false,
+        crawlLinks: false,
         autoSubfolderIndex: true,
         failOnError: true,
       },
@@ -141,6 +181,7 @@ export default defineConfig(({ mode }) => ({
         },
       ],
     }),
-    tsConfigPaths(),
+    viteReact(),
+    nitro({ preset: "static" }),
   ],
 }));
