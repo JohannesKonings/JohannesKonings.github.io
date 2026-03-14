@@ -1,0 +1,109 @@
+name: Deploy branch previews
+
+on:
+  push:
+    branches-ignore: ["main"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  deployments: write
+
+concurrency:
+  group: "branch-preview-${{ github.ref_name }}"
+  cancel-in-progress: true
+
+env:
+  BUILD_PATH: "."
+  WEBSITE_TANSTACK_PATH: websites/tanstack
+
+jobs:
+  deploy-preview:
+    name: Deploy preview
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Vite+
+        uses: voidzero-dev/setup-vp@v1
+        with:
+          node-version: "24"
+          cache: true
+          run-install: false
+
+      - name: Validate preview deployment configuration
+        env:
+          CLOUDFLARE_PAGES_PROJECT_NAME: ${{ vars.CLOUDFLARE_PAGES_PROJECT_NAME }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          set -e
+
+          if [ -z "$CLOUDFLARE_PAGES_PROJECT_NAME" ]; then
+            echo "::error::Missing repository variable CLOUDFLARE_PAGES_PROJECT_NAME."
+            exit 1
+          fi
+
+          if [ -z "$CLOUDFLARE_API_TOKEN" ]; then
+            echo "::error::Missing repository secret CLOUDFLARE_API_TOKEN."
+            exit 1
+          fi
+
+          if [ -z "$CLOUDFLARE_ACCOUNT_ID" ]; then
+            echo "::error::Missing repository secret CLOUDFLARE_ACCOUNT_ID."
+            exit 1
+          fi
+
+      - name: Install dependencies
+        run: vp install --frozen-lockfile
+        working-directory: ${{ env.BUILD_PATH }}
+
+      - name: Resolve preview deployment context
+        id: deployment-context
+        run: vp exec tsx scripts/resolveDeploymentEnv.ts
+        working-directory: ${{ env.BUILD_PATH }}
+        env:
+          DEPLOYMENT_KIND: preview
+          BRANCH_NAME: ${{ github.ref_name }}
+          PREVIEW_SITE_BASE_DOMAIN: ${{ vars.CLOUDFLARE_PAGES_PREVIEW_BASE_DOMAIN != '' && vars.CLOUDFLARE_PAGES_PREVIEW_BASE_DOMAIN || format('{0}.pages.dev', vars.CLOUDFLARE_PAGES_PROJECT_NAME) }}
+
+      - name: Build preview with TanStack
+        run: NODE_ENV=production NITRO_PRESET=static vp run build:tanstack
+        working-directory: ${{ env.BUILD_PATH }}
+
+      - name: Deploy branch preview to Cloudflare Pages
+        id: deploy
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
+          command: >-
+            pages deploy websites/tanstack/.output/public
+            --project-name=${{ vars.CLOUDFLARE_PAGES_PROJECT_NAME }}
+            --branch=${{ steps.deployment-context.outputs.branch-label }}
+
+      - name: Capture preview URL
+        id: preview-url
+        run: |
+          preview_url="${{ steps.deploy.outputs.pages-deployment-alias-url || steps.deploy.outputs.deployment-alias-url || steps.deploy.outputs.deployment-url }}"
+
+          if [ -z "$preview_url" ]; then
+            echo "::error::Cloudflare Pages did not return a deployment URL."
+            exit 1
+          fi
+
+          echo "preview-url=$preview_url" >> "$GITHUB_OUTPUT"
+
+      - name: Publish preview summary
+        run: |
+          echo "## Branch preview deployment" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Source branch: \`${{ github.ref_name }}\`" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Branch label: \`${{ steps.deployment-context.outputs.branch-label }}\`" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Build URL: ${{ steps.deployment-context.outputs.site-url }}" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Deployed URL: ${{ steps.preview-url.outputs.preview-url }}" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "If the build URL and deployed URL differ, update \`CLOUDFLARE_PAGES_PREVIEW_BASE_DOMAIN\` so preview metadata uses the live preview host." >> "$GITHUB_STEP_SUMMARY"

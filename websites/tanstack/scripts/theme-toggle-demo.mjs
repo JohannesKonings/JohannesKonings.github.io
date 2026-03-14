@@ -1,7 +1,10 @@
 #!/usr/bin/env node
 /**
  * Theme toggle demo: runs Playwright in headed mode, toggles theme, saves screenshots.
- * Requires dev server running: pnpm dev:tanstack (or nr dev:tanstack)
+ * Localhost:
+ *   BASE_URL=http://localhost:3000 node websites/tanstack/scripts/theme-toggle-demo.mjs
+ * Deployed preview / production:
+ *   BASE_URL=https://<deployment-host> node websites/tanstack/scripts/theme-toggle-demo.mjs
  * Run from repo root: node websites/tanstack/scripts/theme-toggle-demo.mjs
  * Or from websites/tanstack: node scripts/theme-toggle-demo.mjs
  */

@@ -5,10 +5,20 @@
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { resolveDeploymentConfig } from "../websites/tanstack/src/lib/deployment";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.join(__dirname, "..");
-const BASE_URL = "https://johanneskonings.dev";
+const deployment = resolveDeploymentConfig({
+  deploymentKind: process.env.DEPLOYMENT_KIND ?? "production",
+  nodeEnv: process.env.NODE_ENV ?? "production",
+  siteUrl: process.env.SITE_URL,
+  branchName: process.env.BRANCH_NAME,
+  previewSiteBaseDomain: process.env.PREVIEW_SITE_BASE_DOMAIN,
+  productionSiteUrl: process.env.PRODUCTION_SITE_URL,
+  localSiteUrl: process.env.LOCAL_SITE_URL,
+});
+const BASE_URL = deployment.siteUrl;
 const CONTENT_BLOG = path.join(ROOT, "websites/tanstack/src/content/blog");
 const OUT_FILE = path.join(ROOT, "websites/tanstack/public/rss.xml");
 

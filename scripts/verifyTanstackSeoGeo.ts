@@ -2,16 +2,28 @@
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { resolveDeploymentConfig } from "../websites/tanstack/src/lib/deployment";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.join(__dirname, "..");
 const BUILD_PUBLIC_DIR = path.join(ROOT, "websites/tanstack/.output/public");
+const deployment = resolveDeploymentConfig({
+  deploymentKind: process.env.DEPLOYMENT_KIND ?? "production",
+  nodeEnv: process.env.NODE_ENV ?? "production",
+  siteUrl: process.env.SITE_URL,
+  branchName: process.env.BRANCH_NAME,
+  previewSiteBaseDomain: process.env.PREVIEW_SITE_BASE_DOMAIN,
+  productionSiteUrl: process.env.PRODUCTION_SITE_URL,
+  localSiteUrl: process.env.LOCAL_SITE_URL,
+});
 const siteConfig = {
   name: "Johannes Konings",
-  baseUrl: "https://johanneskonings.dev",
-  rssUrl: "https://johanneskonings.dev/rss.xml",
-  sitemapUrl: "https://johanneskonings.dev/sitemap-index.xml",
-  defaultSocialImage: "https://johanneskonings.dev/social-preview.png",
+  baseUrl: deployment.siteUrl,
+  rssUrl: `${deployment.siteUrl}/rss.xml`,
+  sitemapUrl: `${deployment.siteUrl}/sitemap-index.xml`,
+  defaultSocialImage: `${deployment.siteUrl}/social-preview.png`,
+  shouldIndex: deployment.shouldIndex,
+  robotsMetaContent: deployment.robotsMetaContent,
 } as const;
 
 const colors = {
@@ -172,15 +184,34 @@ function assertBuiltAssetExists(assetUrl: string, label: string) {
   assert(fs.existsSync(localAssetPath), `${label} asset exists in build output`);
 }
 
+function verifyRootMetaAndScripts(html: string, routeLabel: string) {
+  assert(
+    getMetaContent(html, { name: "robots" }) === siteConfig.robotsMetaContent,
+    `${routeLabel} robots meta matches deployment kind`,
+  );
+
+  const includesUmami = html.includes("cloud.umami.is/script.js");
+  const includesAds = html.includes("pagead2.googlesyndication.com/pagead/js/adsbygoogle.js");
+
+  if (siteConfig.shouldIndex) {
+    assert(includesUmami, `${routeLabel} includes Umami in production`);
+    assert(includesAds, `${routeLabel} includes Google Ads in production`);
+  } else {
+    assert(!includesUmami, `${routeLabel} omits Umami outside production`);
+    assert(!includesAds, `${routeLabel} omits Google Ads outside production`);
+  }
+}
+
 function verifyHomePage() {
   console.log("\n🏠 Homepage SEO");
   const html = readFile(resolveRouteHtml("/"));
+  verifyRootMetaAndScripts(html, "Homepage");
 
   assert((getTitle(html) ?? "").includes(siteConfig.name), "Homepage title includes site name");
   assert(Boolean(getMetaContent(html, { name: "description" })), "Homepage has a meta description");
   assert(
     stripTrailingSlash(getLinkHref(html, { rel: "canonical" }) ?? "") === siteConfig.baseUrl,
-    "Homepage canonical uses johanneskonings.dev",
+    "Homepage canonical uses the active site URL",
   );
   assert(
     getMetaContent(html, { property: "og:image" }) === siteConfig.defaultSocialImage,
@@ -197,13 +228,14 @@ function verifyHomePage() {
   assertBuiltAssetExists(siteConfig.defaultSocialImage, "Homepage social preview");
   assert(
     getLinkHref(html, { rel: "alternate", type: "application/rss+xml" }) === siteConfig.rssUrl,
-    "Homepage RSS alternate link uses johanneskonings.dev",
+    "Homepage RSS alternate link uses the active site URL",
   );
 }
 
 function verifyBlogListing() {
   console.log("\n📰 Blog listing SEO/GEO");
   const html = readFile(resolveRouteHtml("/blog"));
+  verifyRootMetaAndScripts(html, "Blog listing");
 
   assert((getTitle(html) ?? "").includes("Blog"), "Blog listing has a blog-specific title");
   assert(
@@ -230,13 +262,14 @@ function verifyBlogListing() {
 
   const jsonLd = getJsonLdObjects(html).find((item) => item["@type"] === "Blog");
   assert(Boolean(jsonLd), "Blog listing includes Blog JSON-LD");
-  assert(jsonLd?.url === `${siteConfig.baseUrl}/blog`, "Blog JSON-LD uses johanneskonings.dev");
+  assert(jsonLd?.url === `${siteConfig.baseUrl}/blog`, "Blog JSON-LD uses the active site URL");
 }
 
 function verifyRepresentativePost() {
   console.log("\n📝 Representative blog post SEO/GEO");
   const filePath = findRepresentativePostHtml();
   const html = readFile(filePath);
+  verifyRootMetaAndScripts(html, "Representative post");
 
   const canonical = getLinkHref(html, { rel: "canonical" }) ?? "";
 
@@ -245,7 +278,7 @@ function verifyRepresentativePost() {
   assert(Boolean(getMetaContent(html, { name: "keywords" })), "Post has keywords metadata");
   assert(
     canonical.startsWith(`${siteConfig.baseUrl}/blog/`),
-    "Post canonical points to johanneskonings.dev blog URL",
+    "Post canonical points to the active site blog URL",
   );
   assert(
     getMetaContent(html, { property: "og:url" }) === canonical,
@@ -295,19 +328,29 @@ function verifyCrawlArtifacts() {
   console.log("\n🕷️ Crawl artifacts");
 
   const robots = readFile(path.join(BUILD_PUBLIC_DIR, "robots.txt"));
+  const expectedDirective = siteConfig.shouldIndex ? "Allow: /" : "Disallow: /";
+  assert(robots.includes(expectedDirective), "robots.txt matches the deployment crawl policy");
   assert(
     robots.includes(`Sitemap: ${siteConfig.sitemapUrl}`),
-    "robots.txt points to johanneskonings.dev sitemap",
+    "robots.txt points to the active sitemap",
   );
 
   const rss = readFile(path.join(BUILD_PUBLIC_DIR, "rss.xml"));
-  assert(!rss.includes("johanneskonings.github.io"), "rss.xml no longer references github.io");
+  assert(rss.includes(siteConfig.baseUrl), "rss.xml uses the active site URL");
 
   const sitemap = readFile(path.join(BUILD_PUBLIC_DIR, "sitemap-index.xml"));
-  assert(
-    !sitemap.includes("johanneskonings.github.io"),
-    "sitemap-index.xml no longer references github.io",
-  );
+  assert(sitemap.includes(siteConfig.baseUrl), "sitemap-index.xml uses the active site URL");
+
+  if (!siteConfig.shouldIndex) {
+    assert(
+      !rss.includes("https://johanneskonings.dev"),
+      "Preview rss.xml does not leak the production URL",
+    );
+    assert(
+      !sitemap.includes("https://johanneskonings.dev"),
+      "Preview sitemap-index.xml does not leak the production URL",
+    );
+  }
 }
 
 function main() {
