@@ -1,0 +1,137 @@
+# Page snapshot
+
+```yaml
+- generic [active] [ref=e1]:
+  - link "Skip to content" [ref=e2] [cursor=pointer]:
+    - /url: "#main-content"
+  - generic [ref=e3]:
+    - navigation [ref=e8]:
+      - generic [ref=e10]:
+        - generic [ref=e11]:
+          - link "Home" [ref=e12] [cursor=pointer]:
+            - /url: /
+            - text: Home
+          - link "Blog" [ref=e14] [cursor=pointer]:
+            - /url: /blog
+            - text: Blog
+          - link "Notes" [ref=e16] [cursor=pointer]:
+            - /url: /notes
+            - text: Notes
+        - generic [ref=e17]:
+          - link "RSS feed" [ref=e18] [cursor=pointer]:
+            - /url: /rss.xml
+            - img [ref=e19]
+          - button "Search" [ref=e23] [cursor=pointer]:
+            - img [ref=e24]
+          - button "Switch to dark mode" [ref=e27] [cursor=pointer]:
+            - img [ref=e28]
+    - generic [ref=e30]:
+      - main [ref=e31]:
+        - generic [ref=e32]:
+          - generic [ref=e39]:
+            - img "Avatar" [ref=e42]
+            - generic [ref=e43]:
+              - link "Email" [ref=e44] [cursor=pointer]:
+                - /url: mailto:mail@johanneskonings.dev
+                - img [ref=e45]
+              - link "GitHub" [ref=e48] [cursor=pointer]:
+                - /url: https://github.com/JohannesKonings
+                - img "GitHub Icon" [ref=e49]
+              - link "LinkedIn" [ref=e51] [cursor=pointer]:
+                - /url: https://www.linkedin.com/in/JohannesKonings/
+                - img [ref=e52]
+              - link "Bluesky" [ref=e56] [cursor=pointer]:
+                - /url: https://bsky.app/profile/johanneskonings.dev
+                - img "Bluesky Icon" [ref=e57]
+              - link "dev.to" [ref=e59] [cursor=pointer]:
+                - /url: https://dev.to/johanneskonings
+                - img "dev.to Icon" [ref=e60]
+            - heading "Johannes Konings" [level=1] [ref=e62]
+            - paragraph [ref=e63]: Notes and posts on AWS and TanStack.
+          - generic [ref=e65]:
+            - heading "Recent posts" [level=2] [ref=e67]
+            - generic [ref=e68]:
+              - article [ref=e69] [cursor=pointer]:
+                - link "TanStack AI with AWS Bedrock on TanStack Start (simple example)" [ref=e70]:
+                  - /url: /blog/2026-02-02-tanstack-ai-bedrock-simple/
+                - img "TanStack AI with AWS Bedrock on TanStack Start (simple example)" [ref=e73]
+                - generic [ref=e77]:
+                  - generic [ref=e78]:
+                    - time [ref=e79]: Feb 2, 2026
+                    - generic [ref=e80]: •
+                    - generic [ref=e81]: 5 min read
+                  - heading "TanStack AI with AWS Bedrock on TanStack Start (simple example)" [level=2] [ref=e82]
+                  - paragraph [ref=e83]: Introduction In Deploying TanStack Start on AWS with Lambda Function URLs, I describe how to deploy TanStack Start serverless on AWS. This post shows how to add TanStack AI with AWS Bedrock to that...
+                  - generic [ref=e84]:
+                    - link "aws" [ref=e85]:
+                      - /url: /blog/tag/aws/
+                    - link "cdk" [ref=e86]:
+                      - /url: /blog/tag/cdk/
+                    - link "tanstack" [ref=e87]:
+                      - /url: /blog/tag/tanstack/
+                  - generic [ref=e88]:
+                    - generic [ref=e89]: Read more
+                    - img [ref=e90]
+              - article [ref=e92] [cursor=pointer]:
+                - link "Tag log buckets created by AWS CDK for third party tools" [ref=e93]:
+                  - /url: /blog/2026-01-11-aws-cdk-nag-log-bucket-tagger/
+                - img "Tag log buckets created by AWS CDK for third party tools" [ref=e96]
+                - generic [ref=e100]:
+                  - generic [ref=e101]:
+                    - time [ref=e102]: Jan 11, 2026
+                    - generic [ref=e103]: •
+                    - generic [ref=e104]: 5 min read
+                  - heading "Tag log buckets created by AWS CDK for third party tools" [level=2] [ref=e105]
+                  - paragraph [ref=e106]: Overview How you secure cloud configuration often starts with cdk-nag, but many teams also use third-party tools after deployments. Using the “server access logs not configured” example, this post...
+                  - generic [ref=e107]:
+                    - link "aws" [ref=e108]:
+                      - /url: /blog/tag/aws/
+                    - link "cdk" [ref=e109]:
+                      - /url: /blog/tag/cdk/
+                    - link "cdk-nag" [ref=e110]:
+                      - /url: /blog/tag/cdk-nag/
+                  - generic [ref=e111]:
+                    - generic [ref=e112]: Read more
+                    - img [ref=e113]
+              - article [ref=e115] [cursor=pointer]:
+                - link "Using Server Sent Events (SSE) to sync Tanstack Db from AWS DynamoDB" [ref=e116]:
+                  - /url: /blog/2026-01-08-tanstack-start-aws-db-multiple-entities-sse/
+                - img "Using Server Sent Events (SSE) to sync Tanstack Db from AWS DynamoDB" [ref=e119]
+                - generic [ref=e123]:
+                  - generic [ref=e124]:
+                    - time [ref=e125]: Jan 8, 2026
+                    - generic [ref=e126]: •
+                    - generic [ref=e127]: 18 min read
+                  - heading "Using Server Sent Events (SSE) to sync Tanstack Db from AWS DynamoDB" [level=2] [ref=e128]
+                  - paragraph [ref=e129]: Introduction As described in Simple example of TanStack DB with DynamoDB on AWS with multiple entities, we set up a multi-entity data model using ElectroDB and TanStack DB collections. In this post,...
+                  - generic [ref=e130]:
+                    - link "aws" [ref=e131]:
+                      - /url: /blog/tag/aws/
+                    - link "cdk" [ref=e132]:
+                      - /url: /blog/tag/cdk/
+                    - link "tanstack" [ref=e133]:
+                      - /url: /blog/tag/tanstack/
+                  - generic [ref=e134]:
+                    - generic [ref=e135]: Read more
+                    - img [ref=e136]
+            - link "View All Posts" [ref=e139] [cursor=pointer]:
+              - /url: /blog
+              - generic [ref=e140]: View All Posts
+              - img [ref=e141]
+        - generic [ref=e145]:
+          - link "RSS feed" [ref=e146] [cursor=pointer]:
+            - /url: /rss.xml
+            - text: RSS
+          - generic [ref=e147]: "|"
+          - paragraph [ref=e148]: © 2026 Johannes Konings. All rights reserved.
+      - button:
+        - img
+      - generic:
+        - contentinfo:
+          - button "Open TanStack Router Devtools" [ref=e149] [cursor=pointer]:
+            - generic [ref=e150]:
+              - img [ref=e152]
+              - img [ref=e187]
+            - generic [ref=e221]: "-"
+            - generic [ref=e222]: TanStack Router
+```

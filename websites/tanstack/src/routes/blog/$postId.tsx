@@ -153,6 +153,20 @@ function RouteComponent() {
               )}
             </div>
 
+            {post.cover_image && (
+              <figure className="mb-8">
+                <div className="overflow-hidden rounded-2xl border border-gray-200 bg-white/80 p-3 shadow-xl dark:border-gray-600/40 dark:bg-gray-800/70">
+                  <img
+                    src={post.cover_image}
+                    alt={`Cover image for ${post.title}`}
+                    className="mx-auto h-auto max-h-[32rem] w-full rounded-xl object-contain"
+                    loading="eager"
+                    decoding="async"
+                  />
+                </div>
+              </figure>
+            )}
+
             {/* Tags */}
             {post.tags.length > 0 && (
               <div className="flex flex-wrap justify-center gap-2 mb-8">
