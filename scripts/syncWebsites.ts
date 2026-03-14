@@ -1,55 +1,60 @@
 import fs from "node:fs";
 import path from "node:path";
+import { fileURLToPath } from "node:url";
 
-function mirrorDirectory(from: string, to: string) {
-  fs.rmSync(to, { recursive: true, force: true });
-  fs.mkdirSync(path.dirname(to), { recursive: true });
-  fs.cpSync(from, to, { recursive: true });
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const ROOT = path.join(__dirname, "..");
+const PUBLIC_CONTENT_ROOT = path.join(ROOT, "websites/tanstack/public/content");
+const MARKDOWN_EXTENSIONS = new Set([".md", ".mdx"]);
+
+function isMarkdownFile(filePath: string) {
+  return MARKDOWN_EXTENSIONS.has(path.extname(filePath).toLowerCase());
 }
 
-async function sync(from: string, to: string, pathPrefix: string) {
-  console.log("Syncing", from, "to", to);
-  console.log("Current directory", process.cwd());
+function copyAssetFiles(source: string, destination: string) {
+  if (!fs.existsSync(source)) {
+    return;
+  }
 
-  const fromPath = path.join("./../../", from);
-  const toPath = path.join("./../../", pathPrefix, to);
-  mirrorDirectory(fromPath, toPath);
-  console.log("files mirrored");
+  const entries = fs.readdirSync(source, { withFileTypes: true });
 
-  //   markdown post processing
+  for (const entry of entries) {
+    const sourcePath = path.join(source, entry.name);
+    const destinationPath = path.join(destination, entry.name);
 
-  const markdownFiles = fs.readdirSync(toPath, { recursive: true }).filter((file) => {
-    return path.extname(file.toString()) === ".md";
-  });
+    if (entry.isDirectory()) {
+      copyAssetFiles(sourcePath, destinationPath);
+      continue;
+    }
 
-  for (const file of markdownFiles) {
-    // Process each markdown file here
-    const filePath = path.join(toPath, file.toString());
-    const markdownContent = fs.readFileSync(filePath, "utf-8");
-    const markdownContentWithoutLayout = markdownContent.replace(/^.*layout:.*$\n?/gm, "");
-    fs.writeFileSync(filePath, markdownContentWithoutLayout);
+    if (isMarkdownFile(sourcePath)) {
+      continue;
+    }
+
+    fs.mkdirSync(path.dirname(destinationPath), { recursive: true });
+    fs.copyFileSync(sourcePath, destinationPath);
   }
 }
 
-const syncTanstack = async () => {
-  const pathPrefix = "websites/tanstack/src/content";
-  await sync("_posts", "blog", pathPrefix);
-  await sync("_notes", "notes", pathPrefix);
+function syncContentAssets(sourceDirectory: string, destinationName: "blog" | "notes") {
+  const sourcePath = path.join(ROOT, sourceDirectory);
+  const destinationPath = path.join(PUBLIC_CONTENT_ROOT, destinationName);
 
-  // Also copy content to public directory for static serving
-  console.log("Copying content to public directory for static serving");
-  mirrorDirectory(
-    "./../../websites/tanstack/src/content",
-    "./../../websites/tanstack/public/content",
+  console.log(
+    `Syncing ${sourceDirectory} assets to websites/tanstack/public/content/${destinationName}`,
   );
-  console.log("public content mirrored");
-};
+  fs.rmSync(destinationPath, { recursive: true, force: true });
+  copyAssetFiles(sourcePath, destinationPath);
+}
 
 const website = process.argv[2];
 
-if (website === "tanstack") {
-  console.log("Synced Tanstack");
-  await syncTanstack();
-} else {
+if (website && website !== "tanstack") {
   console.error("Unknown website", website);
+  process.exit(1);
 }
+
+console.log("Refreshing websites/tanstack/public/content asset mirror");
+fs.rmSync(PUBLIC_CONTENT_ROOT, { recursive: true, force: true });
+syncContentAssets("_posts", "blog");
+syncContentAssets("_notes", "notes");

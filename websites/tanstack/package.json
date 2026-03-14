@@ -8,7 +8,7 @@
   "type": "module",
   "scripts": {
     "sync": "pnpm tsx ./../../scripts/syncWebsites.ts tanstack",
-    "sync-content": "cp -r src/content public/",
+    "sync-content": "pnpm tsx ./../../scripts/syncWebsites.ts tanstack",
     "dev": "pnpm sync && vp dev",
     "build": "pnpm sync && pnpm tsx ../../scripts/generateTanstackSitemap.ts && pnpm tsx ../../scripts/generateTanstackRss.ts && vp build",
     "build:with-typecheck": "pnpm sync && tsgo --noEmit && vp build",

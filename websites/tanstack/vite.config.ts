@@ -4,27 +4,63 @@ import tailwindcss from "@tailwindcss/vite";
 import { tanstackStart } from "@tanstack/react-start/plugin/vite";
 
 import contentCollections from "@content-collections/vite";
-import { cpSync, mkdirSync, rmSync } from "fs";
-import { dirname } from "path";
+import { copyFileSync, mkdirSync, existsSync, readdirSync, rmSync, statSync } from "fs";
+import { join, dirname, extname } from "path";
 
-// Plugin to sync src/content to public/content
+// Plugin to mirror authored content assets into public/content
 function syncContentPlugin() {
-  const mirrorDirectory = (src: string, dest: string) => {
-    rmSync(dest, { recursive: true, force: true });
-    mkdirSync(dirname(dest), { recursive: true });
-    cpSync(src, dest, { recursive: true });
+  const authoredContentRoots = [
+    { source: "../../_posts", destination: "public/content/blog" },
+    { source: "../../_notes", destination: "public/content/notes" },
+  ] as const;
+
+  const isMarkdownFile = (filePath: string) =>
+    [".md", ".mdx"].includes(extname(filePath).toLowerCase());
+
+  const copyAssetFiles = (src: string, dest: string) => {
+    if (!existsSync(src)) {
+      return;
+    }
+
+    const items = readdirSync(src);
+    for (const item of items) {
+      const srcPath = join(src, item);
+      const destPath = join(dest, item);
+
+      if (statSync(srcPath).isDirectory()) {
+        copyAssetFiles(srcPath, destPath);
+        continue;
+      }
+
+      if (isMarkdownFile(srcPath)) {
+        continue;
+      }
+
+      if (!existsSync(destPath) || statSync(srcPath).mtime > statSync(destPath).mtime) {
+        mkdirSync(dirname(destPath), { recursive: true });
+        copyFileSync(srcPath, destPath);
+      }
+    }
+  };
+
+  const syncAuthoredAssets = () => {
+    rmSync("public/content", { recursive: true, force: true });
+
+    for (const { source, destination } of authoredContentRoots) {
+      copyAssetFiles(source, destination);
+    }
   };
 
   return {
     name: "sync-content",
     buildStart() {
-      mirrorDirectory("src/content", "public/content");
+      syncAuthoredAssets();
     },
     handleHotUpdate({ file }: { file: string }) {
-      if (file.includes("src/content")) {
+      if (file.includes("_posts") || file.includes("_notes")) {
         try {
-          mirrorDirectory("src/content", "public/content");
-          console.log("✅ Synced content to public directory");
+          syncAuthoredAssets();
+          console.log("✅ Synced authored content assets to public directory");
         } catch (error) {
           console.error("❌ Failed to sync content:", error);
         }

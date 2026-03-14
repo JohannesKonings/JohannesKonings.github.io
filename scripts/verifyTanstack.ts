@@ -14,8 +14,8 @@ import { fileURLToPath } from "node:url";
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.join(__dirname, "..");
 
-const CONTENT_BLOG = path.join(ROOT, "websites/tanstack/src/content/blog");
-const CONTENT_NOTES = path.join(ROOT, "websites/tanstack/src/content/notes");
+const CONTENT_BLOG = path.join(ROOT, "_posts");
+const CONTENT_NOTES = path.join(ROOT, "_notes");
 const SITEMAP_FILE = path.join(ROOT, "websites/tanstack/public/sitemap-index.xml");
 
 // ANSI color codes for output

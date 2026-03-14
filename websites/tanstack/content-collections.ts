@@ -2,6 +2,8 @@ import { defineCollection, defineConfig } from "@content-collections/core";
 import { z } from "zod";
 import readingTime from "reading-time";
 
+const LAYOUT_FRONTMATTER_PATTERN = /^.*layout:.*$\n?/gm;
+
 // Utility functions for content transformation
 function calculateReadingTime(content: string) {
   const stats = readingTime(content);
@@ -32,10 +34,14 @@ function generateExcerpt(content: string, maxLength = 200): string {
   return cleanContent.slice(0, maxLength).replace(/\s+\S*$/, "") + "...";
 }
 
+function stripLayoutFrontmatter(content: string) {
+  return content.replace(LAYOUT_FRONTMATTER_PATTERN, "");
+}
+
 // Blog posts collection
 const posts = defineCollection({
   name: "posts",
-  directory: "src/content/blog",
+  directory: "../../_posts",
   include: "**/*.{md,mdx}",
   schema: z.object({
     title: z.string(),
@@ -53,8 +59,9 @@ const posts = defineCollection({
     content: z.string(),
   }),
   transform: (data) => {
-    const readingStats = calculateReadingTime(data.content);
-    const excerpt = generateExcerpt(data.content);
+    const normalizedContent = stripLayoutFrontmatter(data.content);
+    const readingStats = calculateReadingTime(normalizedContent);
+    const excerpt = generateExcerpt(normalizedContent);
 
     const filePathParts = data._meta.filePath.split("/");
     const fileName = filePathParts[filePathParts.length - 1] ?? "";
@@ -78,6 +85,7 @@ const posts = defineCollection({
 
     return {
       ...data,
+      content: normalizedContent,
       slug,
       readingTime: readingStats,
       excerpt,
@@ -90,7 +98,7 @@ const posts = defineCollection({
 // Notes collection - simpler schema for quick reference notes
 const notes = defineCollection({
   name: "notes",
-  directory: "src/content/notes",
+  directory: "../../_notes",
   include: "**/*.md",
   schema: z.object({
     title: z.string(),
@@ -105,8 +113,9 @@ const notes = defineCollection({
     content: z.string(),
   }),
   transform: (data) => {
-    const readingStats = calculateReadingTime(data.content);
-    const excerpt = generateExcerpt(data.content);
+    const normalizedContent = stripLayoutFrontmatter(data.content);
+    const readingStats = calculateReadingTime(normalizedContent);
+    const excerpt = generateExcerpt(normalizedContent);
 
     // Slug is the filename without extension (flat structure only)
     const fileName = data._meta.filePath.split("/").pop() ?? "";
@@ -114,6 +123,7 @@ const notes = defineCollection({
 
     return {
       ...data,
+      content: normalizedContent,
       slug,
       readingTime: readingStats,
       excerpt,

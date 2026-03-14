@@ -1,6 +1,6 @@
 /**
  * Generates sitemap-index.xml for the TanStack (primary) site at build time.
- * Run after sync so src/content/blog is populated. Writes to websites/tanstack/public/sitemap-index.xml.
+ * Reads directly from the authored content roots and writes to websites/tanstack/public/sitemap-index.xml.
  * Handles both directory-based posts and flat .md files.
  */
 import fs from "node:fs";
@@ -13,8 +13,8 @@ const ROOT = path.join(__dirname, "..");
 // Use environment variable or default to production domain
 const BASE_URL = process.env.SITE_URL || "https://johanneskonings.dev";
 
-const CONTENT_BLOG = path.join(ROOT, "websites/tanstack/src/content/blog");
-const CONTENT_NOTES = path.join(ROOT, "websites/tanstack/src/content/notes");
+const CONTENT_BLOG = path.join(ROOT, "_posts");
+const CONTENT_NOTES = path.join(ROOT, "_notes");
 const OUT_FILE = path.join(ROOT, "websites/tanstack/public/sitemap-index.xml");
 
 function parseFrontmatter(content: string): {
