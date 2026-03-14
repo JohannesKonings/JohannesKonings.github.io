@@ -14,8 +14,26 @@ test.describe("tanstack smoke", () => {
       .poll(async () => firstPreviewCard.evaluate((element) => getComputedStyle(element).cursor))
       .toBe("pointer");
 
+    const previewTitle = (await firstPreviewCard.locator("h2").textContent())?.trim();
+
     await firstPreviewCard.click({ position: { x: 32, y: 32 } });
     await expect(page).toHaveURL(/\/blog\/[^/]+$/);
+
+    const headerCoverImage = page.locator("article header img").first();
+    await expect(headerCoverImage).toBeVisible();
+    await expect(headerCoverImage).toHaveAttribute("src", /\/content\/blog\/.+/);
+    await expect
+      .poll(async () =>
+        headerCoverImage.evaluate((image) => image.complete && image.naturalWidth > 0),
+      )
+      .toBe(true);
+
+    if (previewTitle) {
+      await expect(headerCoverImage).toHaveAttribute(
+        "alt",
+        new RegExp(`^Cover image for ${previewTitle.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}$`),
+      );
+    }
   });
 
   test("blog preview card tags stay clickable", async ({ page }) => {
