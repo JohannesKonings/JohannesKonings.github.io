@@ -23,7 +23,7 @@ function getFullTitle(title: string) {
 }
 
 function getPostImage(post: (typeof allPosts)[0]) {
-  return post.socialImage ?? siteConfig.defaultSocialImage;
+  return post.cover_image;
 }
 
 // Generate SEO meta tags for a page
@@ -40,7 +40,7 @@ export function generateSEOTags({
 }: SEOProps) {
   const fullUrl = url ? toAbsoluteUrl(url) : siteConfig.baseUrl;
   const fullTitle = getFullTitle(title);
-  const imageUrl = toAbsoluteAssetUrl(image ?? siteConfig.defaultSocialImage);
+  const imageUrl = toAbsoluteAssetUrl(image);
   const resolvedImageAlt = imageAlt ?? siteConfig.defaultSocialImageAlt;
   const keywords = tags ? Array.from(new Set(tags.filter(Boolean))).join(", ") : undefined;
 

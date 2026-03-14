@@ -6,7 +6,7 @@ published: true
 summary: Terraform setup to display AWS billing metrics in Grafana Cloud with S3 Backend and CI/CD pipeline
 categories: aws
 thumbnail: terraform
-cover_image: ./cover-image.avif
+cover_image: https://johanneskonings.dev/content/blog/2020-12-19-aws-billing-metrics-grafana-cloud-and-terraform/cover-image.avif
 tags:
   - aws
   - grafana
@@ -15,7 +15,7 @@ tags:
 
 # Why Terraform?
 
-In this [post](./aws_billing_metrics_and_grafana_cloud/) I described how to display AWS Billing metrics in Grafana Cloud. Therefore it was necessary to create manually the data source and the dashboard.
+In this [post](https://johanneskonings.dev/blog/2020-11-27-aws_billing_metrics_and_grafana_cloud) I described how to display AWS Billing metrics in Grafana Cloud. Therefore it was necessary to create manually the data source and the dashboard.
 With Terraform, you can describe the setup as code and benefit from the full advantages of [IaC](https://en.wikipedia.org/wiki/Infrastructure_as_code).
 
 # Terraform
@@ -91,7 +91,7 @@ In this case it's in the file [variable.tf](https://github.com/JohannesKonings/a
 Terraform can "communicate" with Grafana via an API key.
 Navigate to this URL "https://<<Grafana instance>>/org/apikeys" and create on with the role "Admin".
 
-![grafana api key creation](./grafana_api_key_creation.png)
+![grafana api key creation](https://johanneskonings.dev/content/blog/2020-12-19-aws-billing-metrics-grafana-cloud-and-terraform/grafana_api_key_creation.png)
 
 Put the API key into the .env file.
 
@@ -202,9 +202,9 @@ For the next commands, the Terraform CLI is sufficient.
 
 The dashboard can now be changed directly via the JSON file in the folder dashboards. The easier way is to do that manually in Grafana and copy the changed JSON via the share functionality.
 
-![share grafana dashboard](./share_grafana_dashboard.png)
+![share grafana dashboard](https://johanneskonings.dev/content/blog/2020-12-19-aws-billing-metrics-grafana-cloud-and-terraform/share_grafana_dashboard.png)
 
-![grafana dashboard export view json](./grafana_dashboard_export_view_json.png)
+![grafana dashboard export view json](https://johanneskonings.dev/content/blog/2020-12-19-aws-billing-metrics-grafana-cloud-and-terraform/grafana_dashboard_export_view_json.png)
 
 Overwrite the file aws-billing.json with the JSON from Grafana and redeploy.
 

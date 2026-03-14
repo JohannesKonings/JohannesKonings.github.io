@@ -6,7 +6,7 @@ published: true
 summary: This post is how to define your release draft via labels in pull requests and the update of the changelog.md after publishing a release
 categories: github
 thumbnail: github
-cover_image: ./cover-image.png
+cover_image: https://johanneskonings.dev/content/blog/2021-02-28-github-automatic-releases-and-changelog/cover-image.png
 tags:
   - github
   - github actions
@@ -137,15 +137,15 @@ The collection of the changes in a release draft.
 
 The labels in a pull request.
 
-![label-pull-request](./label-pull-request.png)
+![label-pull-request](https://johanneskonings.dev/content/blog/2021-02-28-github-automatic-releases-and-changelog/label-pull-request.png)
 
 The result in the GitHub release.
 
-![minor-enhancement](./minor-enhancement.png)
+![minor-enhancement](https://johanneskonings.dev/content/blog/2021-02-28-github-automatic-releases-and-changelog/minor-enhancement.png)
 
 The result in the CHANGELOG.md.
 
-![changelog](./changelog.png)
+![changelog](https://johanneskonings.dev/content/blog/2021-02-28-github-automatic-releases-and-changelog/changelog.png)
 
 # Code
 

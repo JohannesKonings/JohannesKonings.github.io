@@ -3,14 +3,26 @@ import { format } from "date-fns";
 import { Link } from "@tanstack/react-router";
 import type { JSX } from "react";
 import { useEffect, useId, useRef, useState } from "react";
-import { siteConfig } from "../../lib/site";
 
 interface BlogPostCardProps {
   post: (typeof allPosts)[0];
 }
 
 export function BlogPostCard({ post }: BlogPostCardProps): JSX.Element {
-  const imageUrl = post.socialImage ?? siteConfig.defaultSocialImage;
+  const resolveCoverImageUrl = (coverImage: string | null | undefined): string | null => {
+    if (!coverImage) return null;
+    if (coverImage.startsWith("http://") || coverImage.startsWith("https://")) {
+      return coverImage;
+    }
+    if (coverImage.startsWith("/")) return coverImage;
+
+    // Support frontmatter paths like "./cover-image.png" by resolving against post URL.
+    const normalizedPath = coverImage.startsWith("./") ? coverImage.slice(2) : coverImage;
+    const normalizedPostUrl = post.url.endsWith("/") ? post.url.slice(0, -1) : post.url;
+    return `${normalizedPostUrl}/${normalizedPath}`;
+  };
+
+  const imageUrl = resolveCoverImageUrl(post.cover_image);
   const [imageLoaded, setImageLoaded] = useState(false);
   const [imageError, setImageError] = useState(false);
   const [showSpinner, setShowSpinner] = useState(false);

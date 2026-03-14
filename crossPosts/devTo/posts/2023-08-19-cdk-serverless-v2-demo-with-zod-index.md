@@ -8,10 +8,10 @@ categories: aws
 thumbnail: zod
 tags:
   - aws
-  - aws cdk
+  - cdk
   - projen
   - zod
-cover_image: ./cover-image.png
+cover_image: https://johanneskonings.dev/content/blog/2023-08-19-cdk-serverless-v2-demo-with-zod/cover-image.png
 series: cdk-notifier
 ---
 
@@ -25,7 +25,7 @@ The workflow so far is to create a definition and generate Typescript types from
 
 As you can see, the types are available at development time via the OpenApi spec.
 
-![add Todo title type](./addTodoTitleType.png)
+![add Todo title type](https://johanneskonings.dev/content/blog/2023-08-19-cdk-serverless-v2-demo-with-zod/addTodoTitleType.png)
 
 This is because of the defined components in this [openApi spec](https://github.com/JohannesKonings/cdk-serverless-v2-demo/blob/main/src/definitions/myapi.yaml)
 
@@ -66,13 +66,13 @@ components:
 
 But that didn't prevent you from using the false type during runtime.
 
-![add Todo title as number](./addTodoTitleAsNumber.png)
+![add Todo title as number](https://johanneskonings.dev/content/blog/2023-08-19-cdk-serverless-v2-demo-with-zod/addTodoTitleAsNumber.png)
 
 ## Type checking with zod
 
 With a one-line parsing command, zod checks all the types.
 
-![add Todo zod parsing](./addTodoZodParsing.png)
+![add Todo zod parsing](https://johanneskonings.dev/content/blog/2023-08-19-cdk-serverless-v2-demo-with-zod/addTodoZodParsing.png)
 
 Furthermore, zod has some [string-specific validations](https://github.com/colinhacks/zod#strings) that can check if the email is valid.
 
@@ -80,7 +80,7 @@ Furthermore, zod has some [string-specific validations](https://github.com/colin
 notificationsEmail: z.string().email(),
 ```
 
-![add Todo validation result](./addTodoValidationResult.png)
+![add Todo validation result](https://johanneskonings.dev/content/blog/2023-08-19-cdk-serverless-v2-demo-with-zod/addTodoValidationResult.png)
 
 ## Implementation
 
