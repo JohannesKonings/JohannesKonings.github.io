@@ -1,3 +1,5 @@
+import avatar from "../images/avatar.png";
+
 const SITE_URL = "https://johanneskonings.dev";
 
 export const siteConfig = {
@@ -7,8 +9,8 @@ export const siteConfig = {
   baseUrl: SITE_URL,
   rssUrl: `${SITE_URL}/rss.xml`,
   sitemapUrl: `${SITE_URL}/sitemap-index.xml`,
-  defaultSocialImage: "/social-preview.png",
-  defaultSocialImageAlt: "Johannes Konings — notes and posts on AWS and TanStack.",
+  defaultSocialImage: avatar,
+  defaultSocialImageAlt: "Avatar of Johannes Konings.",
 } as const;
 
 const ABSOLUTE_URL_PATTERN = /^[a-z][a-z\d+\-.]*:/i;
