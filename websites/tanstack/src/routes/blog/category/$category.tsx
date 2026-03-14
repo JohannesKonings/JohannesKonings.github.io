@@ -3,7 +3,7 @@ import { getPostsByCategory, getAllCategories } from "../../../lib/content-utils
 import { BlogLayout } from "../../../components/blog/BlogLayout";
 import { BlogPostList } from "../../../components/blog/BlogPostList";
 import { createRouteHead, generateSEOTags } from "../../../lib/seo";
-import { toBlogArchivePath } from "../../../lib/site";
+import { siteConfig, toBlogArchivePath } from "../../../lib/site";
 
 export const Route = createFileRoute("/blog/category/$category")({
   head: ({ params }) =>
@@ -12,6 +12,7 @@ export const Route = createFileRoute("/blog/category/$category")({
         title: `Posts in "${params.category}" category`,
         description: `All blog posts in the ${params.category} category.`,
         url: toBlogArchivePath("category", params.category),
+        image: siteConfig.defaultSocialImage,
         tags: [params.category],
       }),
     }),

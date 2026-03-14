@@ -1,4 +1,5 @@
 #!/usr/bin/env tsx
+import { execFileSync } from "node:child_process";
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -11,6 +12,7 @@ const siteConfig = {
   baseUrl: "https://johanneskonings.dev",
   rssUrl: "https://johanneskonings.dev/rss.xml",
   sitemapUrl: "https://johanneskonings.dev/sitemap-index.xml",
+  defaultSocialImage: "https://johanneskonings.dev/social-preview.png",
 } as const;
 
 const colors = {
@@ -113,6 +115,37 @@ function findRepresentativeArchiveHtml(kind: "category" | "series" | "tag") {
   };
 }
 
+function getArchiveCountsFromApp() {
+  const websiteDir = path.join(ROOT, "websites/tanstack");
+  const output = execFileSync(
+    "pnpm",
+    [
+      "tsx",
+      "-e",
+      [
+        "import('./src/lib/content-utils.ts').then((m)=>{",
+        "console.log(JSON.stringify({",
+        "tags:m.getAllTags().length,",
+        "categories:m.getAllCategories().length,",
+        "series:m.getAllSeries().length",
+        "}));",
+        "}).catch((error)=>{console.error(error);process.exit(1);})",
+      ].join(""),
+    ],
+    {
+      cwd: websiteDir,
+      encoding: "utf8",
+      stdio: "pipe",
+    },
+  ).trim();
+
+  return JSON.parse(output) as {
+    categories: number;
+    series: number;
+    tags: number;
+  };
+}
+
 function getTags(html: string, tagName: string) {
   const pattern = new RegExp(`<${tagName}\\b[^>]*>`, "gi");
   return [...html.matchAll(pattern)].map((match) => match[0]);
@@ -176,6 +209,26 @@ function getJsonLdObjects(html: string) {
   return objects;
 }
 
+function getBuiltAssetPathFromAbsoluteUrl(assetUrl: string) {
+  if (!assetUrl.startsWith(siteConfig.baseUrl)) {
+    return undefined;
+  }
+
+  const pathname = new URL(assetUrl).pathname.replace(/^\/+/, "");
+  return path.join(BUILD_PUBLIC_DIR, pathname);
+}
+
+function assertBuiltAssetExists(assetUrl: string, label: string) {
+  const localAssetPath = getBuiltAssetPathFromAbsoluteUrl(assetUrl);
+
+  if (!localAssetPath) {
+    success(`${label} uses an external asset URL`);
+    return;
+  }
+
+  assert(fs.existsSync(localAssetPath), `${label} asset exists in build output`);
+}
+
 function verifyHomePage() {
   console.log("\n🏠 Homepage SEO");
   const html = readFile(resolveRouteHtml("/"));
@@ -186,6 +239,19 @@ function verifyHomePage() {
     stripTrailingSlash(getLinkHref(html, { rel: "canonical" }) ?? "") === siteConfig.baseUrl,
     "Homepage canonical uses johanneskonings.dev",
   );
+  assert(
+    getMetaContent(html, { property: "og:image" }) === siteConfig.defaultSocialImage,
+    "Homepage uses default Open Graph image",
+  );
+  assert(
+    getMetaContent(html, { name: "twitter:image" }) === siteConfig.defaultSocialImage,
+    "Homepage uses default Twitter image",
+  );
+  assert(
+    getMetaContent(html, { name: "twitter:card" }) === "summary_large_image",
+    "Homepage uses summary_large_image Twitter card",
+  );
+  assertBuiltAssetExists(siteConfig.defaultSocialImage, "Homepage social preview");
   assert(
     getLinkHref(html, { rel: "alternate", type: "application/rss+xml" }) === siteConfig.rssUrl,
     "Homepage RSS alternate link uses johanneskonings.dev",
@@ -205,6 +271,18 @@ function verifyBlogListing() {
     stripTrailingSlash(getLinkHref(html, { rel: "canonical" }) ?? "") ===
       `${siteConfig.baseUrl}/blog`,
     "Blog listing canonical points to /blog",
+  );
+  assert(
+    getMetaContent(html, { property: "og:image" }) === siteConfig.defaultSocialImage,
+    "Blog listing uses default Open Graph image",
+  );
+  assert(
+    getMetaContent(html, { name: "twitter:image" }) === siteConfig.defaultSocialImage,
+    "Blog listing uses default Twitter image",
+  );
+  assert(
+    getMetaContent(html, { name: "twitter:card" }) === "summary_large_image",
+    "Blog listing uses summary_large_image Twitter card",
   );
 
   const jsonLd = getJsonLdObjects(html).find((item) => item["@type"] === "Blog");
@@ -232,8 +310,15 @@ function verifyRepresentativePost() {
     getMetaContent(html, { property: "og:type" }) === "article",
     "Post Open Graph type is article",
   );
-  assert(Boolean(getMetaContent(html, { property: "og:image" })), "Post has an Open Graph image");
-  assert(Boolean(getMetaContent(html, { name: "twitter:image" })), "Post has a Twitter image");
+  const ogImage = getMetaContent(html, { property: "og:image" });
+  const twitterImage = getMetaContent(html, { name: "twitter:image" });
+  assert(Boolean(ogImage), "Post has an Open Graph image");
+  assert(Boolean(twitterImage), "Post has a Twitter image");
+  assert(
+    getMetaContent(html, { name: "twitter:card" }) === "summary_large_image",
+    "Post uses summary_large_image Twitter card",
+  );
+  assertBuiltAssetExists(ogImage!, "Representative post social preview");
 
   const jsonLd = getJsonLdObjects(html).find((item) => item["@type"] === "BlogPosting");
   assert(Boolean(jsonLd), "Post includes BlogPosting JSON-LD");
@@ -265,6 +350,22 @@ function verifyRepresentativeArchive(kind: "category" | "series" | "tag") {
   );
 }
 
+function verifyLegacyPostSocialPreview() {
+  console.log("\n🧾 Legacy blog post social preview");
+  const legacyRoute = "/blog/2020-10-19-example_react_average_of_items_in_different_arrays";
+  const html = readFile(resolveRouteHtml(legacyRoute));
+  const legacyOgImage = getMetaContent(html, { property: "og:image" });
+  const legacyTwitterImage = getMetaContent(html, { name: "twitter:image" });
+
+  assert(Boolean(legacyOgImage), "Legacy post has an Open Graph image");
+  assert(Boolean(legacyTwitterImage), "Legacy post has a Twitter image");
+  assert(
+    legacyOgImage !== `${siteConfig.baseUrl}/img/react.png`,
+    "Legacy post no longer points to missing generic thumbnail image",
+  );
+  assertBuiltAssetExists(legacyOgImage!, "Legacy post social preview");
+}
+
 function verifyCrawlArtifacts() {
   console.log("\n🕷️ Crawl artifacts");
 
@@ -278,6 +379,17 @@ function verifyCrawlArtifacts() {
   assert(!rss.includes("johanneskonings.github.io"), "rss.xml no longer references github.io");
 
   const sitemap = readFile(path.join(BUILD_PUBLIC_DIR, "sitemap-index.xml"));
+  const archiveCounts = getArchiveCountsFromApp();
+  const sitemapTagUrls = [
+    ...sitemap.matchAll(/<loc>https:\/\/johanneskonings\.dev\/blog\/tag\/([^<]+)<\/loc>/g),
+  ].map((match) => match[1]);
+  const sitemapCategoryUrls = [
+    ...sitemap.matchAll(/<loc>https:\/\/johanneskonings\.dev\/blog\/category\/([^<]+)<\/loc>/g),
+  ].map((match) => match[1]);
+  const sitemapSeriesUrls = [
+    ...sitemap.matchAll(/<loc>https:\/\/johanneskonings\.dev\/blog\/series\/([^<]+)<\/loc>/g),
+  ].map((match) => match[1]);
+
   assert(
     !sitemap.includes("johanneskonings.github.io"),
     "sitemap-index.xml no longer references github.io",
@@ -293,6 +405,22 @@ function verifyCrawlArtifacts() {
   assert(
     sitemap.includes(`${siteConfig.baseUrl}/blog/series/`),
     "sitemap-index.xml includes blog series archives",
+  );
+  assert(
+    sitemapTagUrls.length === archiveCounts.tags,
+    "sitemap-index.xml includes every published blog tag archive",
+  );
+  assert(
+    sitemapCategoryUrls.length === archiveCounts.categories,
+    "sitemap-index.xml includes every published blog category archive",
+  );
+  assert(
+    sitemapSeriesUrls.length === archiveCounts.series,
+    "sitemap-index.xml includes every published blog series archive",
+  );
+  assert(
+    !sitemapTagUrls.some((slug) => slug.startsWith("-%20")),
+    "sitemap-index.xml does not include malformed tag URLs",
   );
   assert(
     !new RegExp(`<loc>${siteConfig.baseUrl}/blog/(?!tag/|category/|series/)[^<]+(?<!/)</loc>`).test(
@@ -312,6 +440,10 @@ function main() {
   verifyHomePage();
   verifyBlogListing();
   verifyRepresentativePost();
+  verifyRepresentativeArchive("tag");
+  verifyRepresentativeArchive("category");
+  verifyRepresentativeArchive("series");
+  verifyLegacyPostSocialPreview();
   verifyRepresentativeArchive("tag");
   verifyRepresentativeArchive("category");
   verifyRepresentativeArchive("series");

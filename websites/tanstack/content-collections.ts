@@ -49,7 +49,7 @@ const posts = defineCollection({
       .transform((val) => (Array.isArray(val) ? val : [val]))
       .default([]),
     thumbnail: z.string().nullable().optional(),
-    cover_image: z.string().nullable().optional(),
+    cover_image: z.string(),
     series: z.string().optional(),
     content: z.string(),
   }),
@@ -57,24 +57,25 @@ const posts = defineCollection({
     const readingStats = calculateReadingTime(data.content);
     const excerpt = generateExcerpt(data.content);
 
-    // Use directory name as slug so URLs match the deployed blog permalink.
     const filePathParts = data._meta.filePath.split("/");
-    const slug =
-      filePathParts.length >= 2
-        ? filePathParts[filePathParts.length - 2]
-        : (filePathParts[0] ?? "").replace(/\.(md|mdx)$/i, "") ||
-          data.title
-            .toLowerCase()
-            .replace(/[^a-z0-9]+/g, "-")
-            .replace(/^-|-$/g, "");
+    const fileName = filePathParts[filePathParts.length - 1] ?? "";
+    const slug = filePathParts[filePathParts.length - 2] ?? "";
+
+    if (filePathParts.length < 2 || fileName !== "index.md" || slug.length === 0) {
+      throw new Error(
+        `Blog posts must use the bundled structure src/content/blog/<slug>/index.md. Invalid file: ${data._meta.filePath}`,
+      );
+    }
+
+    if (!data.cover_image.startsWith("./")) {
+      throw new Error(
+        `Blog post cover_image must be a local relative asset like ./cover-image.png. Invalid value for ${data._meta.filePath}: ${data.cover_image}`,
+      );
+    }
 
     // Process cover_image path - convert relative paths to importable paths
-    let processedCoverImage = data.cover_image;
-    if (data.cover_image && data.cover_image.startsWith("./")) {
-      const fileName = data.cover_image.replace("./", "");
-      // Create a path that can be imported by Vite - this will be processed as a static asset
-      processedCoverImage = `/content/blog/${slug}/${fileName}`;
-    }
+    const coverFileName = data.cover_image.replace("./", "");
+    const processedCoverImage = `/content/blog/${slug}/${coverFileName}`;
 
     return {
       ...data,

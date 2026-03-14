@@ -1,10 +1,10 @@
 import * as React from "react";
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { allNotes } from "content-collections";
 import { BlogLayout } from "../../components/blog/BlogLayout";
 import { format } from "date-fns";
 import { createRouteHead, generateSEOTags } from "../../lib/seo";
-import { toBlogArchivePath } from "../../lib/site";
+import { siteConfig, toBlogArchivePath } from "../../lib/site";
 
 export const Route = createFileRoute("/notes/")({
   head: () =>
@@ -13,6 +13,7 @@ export const Route = createFileRoute("/notes/")({
         title: "Notes",
         description: "Quick reference notes on topics I care about.",
         url: "/notes",
+        image: siteConfig.defaultSocialImage,
       }),
     }),
   component: NotesPage,
@@ -33,12 +34,12 @@ function NotesPage() {
           <p className="text-gray-600 dark:text-gray-400">
             {publishedNotes.length} note{publishedNotes.length !== 1 ? "s" : ""} available
           </p>
-          <Link
-            to="/search"
+          <a
+            href="/search"
             className="inline-flex items-center text-cyan-600 dark:text-cyan-400 hover:underline"
           >
             Search all posts and notes →
-          </Link>
+          </a>
         </div>
 
         {/* Notes list */}
@@ -50,7 +51,7 @@ function NotesPage() {
             >
               <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2">
                 <div className="flex-1">
-                  <Link to={note.url} className="block group">
+                  <a href={note.url} className="block group">
                     <h2 className="text-lg font-semibold text-gray-900 dark:text-white group-hover:text-cyan-600 dark:group-hover:text-cyan-400 transition-colors">
                       {note.title}
                     </h2>
@@ -59,7 +60,7 @@ function NotesPage() {
                         {note.summary || note.excerpt}
                       </p>
                     )}
-                  </Link>
+                  </a>
 
                   {/* Tags */}
                   {note.tags.length > 0 && (

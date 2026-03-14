@@ -22,6 +22,7 @@
     "dev:tanstack": "vp run --filter tanstack dev",
     "demo:theme": "node websites/tanstack/scripts/theme-toggle-demo.mjs",
     "build:tanstack": "vp run --filter tanstack build",
+    "test:scripts": "vp exec node --test scripts/runTanstackLighthouseConfig.test.js scripts/generateTanstackFeeds.test.js",
     "verify:tanstack": "vp exec tsx scripts/verifyTanstack.ts",
     "verify:tanstack:seo-geo": "vp exec tsx scripts/verifyTanstackSeoGeo.ts",
     "verify:tanstack:lighthouse": "vp exec tsx scripts/runTanstackLighthouse.ts",
@@ -29,7 +30,7 @@
     "tsc:check": "vp exec tsgo --noEmit",
     "tsc:watch": "vp exec tsgo -w",
     "checks:hook": "vp check",
-    "checks:pr": "vp check && vp run --filter tanstack test:all && vp run build:tanstack && vp run verify:tanstack:seo-geo && vp run verify:tanstack:lighthouse",
+    "checks:pr": "vp check && vp run test:scripts && vp run --filter tanstack test:all && vp run build:tanstack && vp run verify:tanstack:seo-geo && vp run verify:tanstack:lighthouse",
     "prepare": "vp config"
   },
   "devDependencies": {

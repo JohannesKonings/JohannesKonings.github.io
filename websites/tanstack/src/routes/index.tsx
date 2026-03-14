@@ -6,6 +6,7 @@ import { Mail, Linkedin } from "lucide-react";
 import { getRecentPosts } from "../lib/content-utils";
 import { BlogPostCard } from "../components/blog/BlogPostCard";
 import { createRouteHead, generateSEOTags } from "../lib/seo";
+import { siteConfig } from "../lib/site";
 
 const SOCIALS = [
   { href: "mailto:mail@johanneskonings.dev", label: "Email", Icon: Mail },
@@ -38,6 +39,7 @@ export const Route = createFileRoute("/")({
         title: "Home",
         description: "Notes and posts on AWS and TanStack.",
         url: "/",
+        image: siteConfig.defaultSocialImage,
       }),
     }),
   component: Home,

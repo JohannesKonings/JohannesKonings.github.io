@@ -1,0 +1,60 @@
+<svg width="1200" height="630" viewBox="0 0 1200 630" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="80" y1="40" x2="1120" y2="590" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#0F172A" />
+      <stop offset="0.5" stop-color="#111827" />
+      <stop offset="1" stop-color="#082F49" />
+    </linearGradient>
+    <linearGradient id="accent" x1="168" y1="170" x2="937" y2="476" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#22D3EE" />
+      <stop offset="1" stop-color="#3B82F6" />
+    </linearGradient>
+    <filter id="blur" x="-120" y="-120" width="1440" height="870" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feGaussianBlur stdDeviation="60" />
+    </filter>
+  </defs>
+
+  <rect width="1200" height="630" rx="36" fill="url(#bg)" />
+
+  <g filter="url(#blur)" opacity="0.5">
+    <circle cx="204" cy="128" r="124" fill="#22D3EE" />
+    <circle cx="1056" cy="144" r="112" fill="#3B82F6" />
+    <circle cx="982" cy="526" r="110" fill="#0891B2" />
+    <circle cx="265" cy="522" r="104" fill="#0EA5E9" />
+  </g>
+
+  <rect x="84" y="76" width="1032" height="478" rx="34" fill="#0F172A" fill-opacity="0.82" stroke="#67E8F9" stroke-opacity="0.35" stroke-width="2" />
+  <rect x="108" y="100" width="984" height="430" rx="28" fill="#0B1120" fill-opacity="0.6" />
+
+  <rect x="148" y="154" width="156" height="156" rx="28" fill="url(#accent)" fill-opacity="0.12" stroke="#67E8F9" stroke-opacity="0.3" />
+  <circle cx="226" cy="232" r="48" stroke="#67E8F9" stroke-width="12" />
+  <path d="M182 288C194 253 214 236 226 236C238 236 258 253 270 288" stroke="#93C5FD" stroke-width="14" stroke-linecap="round" />
+
+  <rect x="352" y="154" width="262" height="48" rx="24" fill="#164E63" fill-opacity="0.82" />
+  <text x="383" y="186" fill="#67E8F9" font-family="Inter, Arial, sans-serif" font-size="26" font-weight="700">Johannes Konings</text>
+
+  <text x="352" y="276" fill="white" font-family="Inter, Arial, sans-serif" font-size="60" font-weight="800">
+    Notes and posts on
+  </text>
+  <text x="352" y="354" fill="#67E8F9" font-family="Inter, Arial, sans-serif" font-size="68" font-weight="900">
+    AWS &amp; TanStack
+  </text>
+  <text x="352" y="418" fill="#CBD5E1" font-family="Inter, Arial, sans-serif" font-size="25" font-weight="500">
+    Practical posts, architecture notes, and implementation guides.
+  </text>
+
+  <g>
+    <rect x="352" y="458" width="140" height="48" rx="24" fill="#0F766E" fill-opacity="0.92" />
+    <text x="396" y="489" fill="white" font-family="Inter, Arial, sans-serif" font-size="24" font-weight="700">AWS</text>
+
+    <rect x="510" y="458" width="186" height="48" rx="24" fill="#1D4ED8" fill-opacity="0.92" />
+    <text x="547" y="489" fill="white" font-family="Inter, Arial, sans-serif" font-size="24" font-weight="700">TanStack</text>
+
+    <rect x="714" y="458" width="174" height="48" rx="24" fill="#334155" fill-opacity="0.92" />
+    <text x="752" y="489" fill="white" font-family="Inter, Arial, sans-serif" font-size="24" font-weight="700">Blog &amp; Notes</text>
+  </g>
+
+  <text x="148" y="566" fill="#7DD3FC" font-family="Inter, Arial, sans-serif" font-size="24" font-weight="600">
+    johanneskonings.dev
+  </text>
+</svg>

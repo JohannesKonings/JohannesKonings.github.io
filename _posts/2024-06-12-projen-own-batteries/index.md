@@ -6,7 +6,7 @@ published: false
 summary: How to setup a projen project to store central decisions to apply across all own repositories
 categories: []
 thumbnail: cdk
-cover_image: null
+cover_image: ./cover-image.svg
 tags:
   - projen
 type: default
@@ -66,7 +66,7 @@ The tag will then be added to all resources in the synthesized cloudformation te
 
 Because the tag is in the template, it will then be shown in the diff.
 
-![diff tag of]({{ site.baseurl }}/img/2024-04-20-cdk-notifier-and-tags/diff-tag-of.png)
+![diff tag of](./diff-tag-of.png)
 
 <https://github.com/JohannesKonings/cdk-notifier-examples/pull/5>
 

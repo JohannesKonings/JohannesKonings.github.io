@@ -1,6 +1,5 @@
 import type { allPosts } from "content-collections";
 import { format } from "date-fns";
-import { Link } from "@tanstack/react-router";
 import type { JSX } from "react";
 import { useEffect, useId, useRef, useState } from "react";
 import { toBlogArchivePath } from "../../lib/site";
@@ -23,10 +22,7 @@ export function BlogPostCard({ post }: BlogPostCardProps): JSX.Element {
     return `${normalizedPostUrl}/${normalizedPath}`;
   };
 
-  // Prioritize cover_image over thumbnail
-  const imageUrl =
-    resolveCoverImageUrl(post.cover_image) ||
-    (post.thumbnail ? `/img/${post.thumbnail}.png` : null);
+  const imageUrl = resolveCoverImageUrl(post.cover_image);
   const [imageLoaded, setImageLoaded] = useState(false);
   const [imageError, setImageError] = useState(false);
   const [showSpinner, setShowSpinner] = useState(false);
@@ -73,8 +69,8 @@ export function BlogPostCard({ post }: BlogPostCardProps): JSX.Element {
 
   return (
     <article className="relative cursor-pointer bg-white/90 dark:bg-gray-800/80 backdrop-blur-sm rounded-xl shadow-lg overflow-hidden border border-gray-200 dark:border-gray-600/30 hover:border-cyan-400/60 transition-all duration-500 transform hover:scale-[1.02] hover:-translate-y-1 hover:shadow-xl hover:shadow-cyan-500/15 group">
-      <Link
-        to={post.url}
+      <a
+        href={post.url}
         aria-labelledby={titleId}
         className="absolute inset-0 z-10 rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-cyan-500/60"
       />

@@ -6,6 +6,7 @@ interface SEOProps {
   description: string;
   url?: string;
   image?: string;
+  imageAlt?: string;
   type?: "website" | "article";
   publishedTime?: string;
   modifiedTime?: string;
@@ -22,15 +23,7 @@ function getFullTitle(title: string) {
 }
 
 function getPostImage(post: (typeof allPosts)[0]) {
-  if (post.cover_image) {
-    return post.cover_image;
-  }
-
-  if (post.thumbnail) {
-    return `/img/${post.thumbnail}.png`;
-  }
-
-  return undefined;
+  return post.cover_image;
 }
 
 // Generate SEO meta tags for a page
@@ -39,6 +32,7 @@ export function generateSEOTags({
   description,
   url,
   image,
+  imageAlt,
   type = "website",
   publishedTime,
   modifiedTime,
@@ -47,6 +41,7 @@ export function generateSEOTags({
   const fullUrl = url ? toAbsoluteUrl(url) : siteConfig.baseUrl;
   const fullTitle = getFullTitle(title);
   const imageUrl = toAbsoluteAssetUrl(image);
+  const resolvedImageAlt = imageAlt ?? siteConfig.defaultSocialImageAlt;
   const keywords = tags ? Array.from(new Set(tags.filter(Boolean))).join(", ") : undefined;
 
   return {
@@ -59,7 +54,7 @@ export function generateSEOTags({
       url: fullUrl,
       type,
       siteName: siteConfig.name,
-      ...(imageUrl && { images: [{ url: imageUrl }] }),
+      ...(imageUrl && { images: [{ url: imageUrl, alt: resolvedImageAlt }] }),
       ...(publishedTime && { publishedTime }),
       ...(modifiedTime && { modifiedTime }),
     },
@@ -67,7 +62,7 @@ export function generateSEOTags({
       card: imageUrl ? "summary_large_image" : "summary",
       title: fullTitle,
       description,
-      ...(imageUrl && { images: [{ url: imageUrl }] }),
+      ...(imageUrl && { images: [{ url: imageUrl, alt: resolvedImageAlt }] }),
     },
     ...(keywords && { keywords }),
   };
@@ -93,6 +88,9 @@ export function createRouteHead({ seo, structuredData }: RouteHeadInput) {
       ...(seo.openGraph.images?.[0]
         ? [{ property: "og:image", content: seo.openGraph.images[0].url }]
         : []),
+      ...(seo.openGraph.images?.[0]?.alt
+        ? [{ property: "og:image:alt", content: seo.openGraph.images[0].alt }]
+        : []),
       ...(seo.openGraph.publishedTime
         ? [{ property: "article:published_time", content: seo.openGraph.publishedTime }]
         : []),
@@ -104,6 +102,9 @@ export function createRouteHead({ seo, structuredData }: RouteHeadInput) {
       { name: "twitter:description", content: seo.twitter.description },
       ...(seo.twitter.images?.[0]
         ? [{ name: "twitter:image", content: seo.twitter.images[0].url }]
+        : []),
+      ...(seo.twitter.images?.[0]?.alt
+        ? [{ name: "twitter:image:alt", content: seo.twitter.images[0].alt }]
         : []),
     ],
     links: [{ rel: "canonical", href: seo.canonical }],
@@ -121,6 +122,7 @@ export function generatePostSEO(post: (typeof allPosts)[0]) {
     description: post.summary,
     url: post.url,
     image: getPostImage(post),
+    imageAlt: post.title,
     type: "article",
     publishedTime: post.date.toISOString(),
     modifiedTime: post.date.toISOString(),
@@ -169,12 +171,15 @@ export function generatePostStructuredData(post: (typeof allPosts)[0]) {
 
 // Generate structured data for blog listing
 export function generateBlogListingStructuredData() {
+  const imageUrl = toAbsoluteAssetUrl(siteConfig.defaultSocialImage);
+
   return {
     "@context": "https://schema.org",
     "@type": "Blog",
     name: `${siteConfig.name} Blog`,
     description: "Posts on AWS and TanStack.",
     url: toAbsoluteUrl("/blog"),
+    ...(imageUrl && { image: imageUrl }),
     author: {
       "@type": "Person",
       name: siteConfig.name,

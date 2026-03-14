@@ -5,7 +5,7 @@
     <link>https://johanneskonings.dev</link>
     <description>Notes and posts on AWS and TanStack.</description>
     <language>en</language>
-    <lastBuildDate>Sat, 14 Mar 2026 17:50:17 GMT</lastBuildDate>
+    <lastBuildDate>Sat, 14 Mar 2026 19:54:09 GMT</lastBuildDate>
     <atom:link href="https://johanneskonings.dev/rss.xml" rel="self" type="application/rss+xml"/>
     <item>
       <title>TanStack AI with AWS Bedrock on TanStack Start (simple example)</title>
@@ -169,6 +169,34 @@
       <guid isPermaLink="true">https://johanneskonings.dev/blog/2022-10-03-aws-example-ddb-export-athena-query/</guid>
     </item>
     <item>
+      <title>Example how to visualize DynamoDB item changes with Quicksight (S3 source) created with CDK</title>
+      <link>https://johanneskonings.dev/blog/2022-09-17-aws_example_ddb_analytics_quicksight_cdk/</link>
+      <description>This post is how to visualize the streamed data changes of a DynamoDb table via Kinesis Data Stream and Kinesis Firehose to S3. Build with CDK.</description>
+      <pubDate>Sat, 17 Sep 2022 00:00:00 GMT</pubDate>
+      <guid isPermaLink="true">https://johanneskonings.dev/blog/2022-09-17-aws_example_ddb_analytics_quicksight_cdk/</guid>
+    </item>
+    <item>
+      <title>Example how to create Athena saved queries with CDK</title>
+      <link>https://johanneskonings.dev/blog/2022-08-22-aws_example_ddb_analytics_athena_saved_queries_cdk/</link>
+      <description>This post is about how saved queries are created with CDK. This is useful to have important queries prepared for any users.</description>
+      <pubDate>Mon, 22 Aug 2022 00:00:00 GMT</pubDate>
+      <guid isPermaLink="true">https://johanneskonings.dev/blog/2022-08-22-aws_example_ddb_analytics_athena_saved_queries_cdk/</guid>
+    </item>
+    <item>
+      <title>Example how to analyze DynamoDB item changes with Kinesis and Athena created with CDK</title>
+      <link>https://johanneskonings.dev/blog/2021-10-26-aws_example_ddb_analytics_cdk/</link>
+      <description>This post is how stream data changes of a DynamoDb table via Kinesis Data Stream and Kinesis Firehose to S3, and analyze the data with Athena. Build with CDK.</description>
+      <pubDate>Tue, 26 Oct 2021 00:00:00 GMT</pubDate>
+      <guid isPermaLink="true">https://johanneskonings.dev/blog/2021-10-26-aws_example_ddb_analytics_cdk/</guid>
+    </item>
+    <item>
+      <title>Example how to analyze DynamoDB item changes with Kinesis and Athena created with Terraform</title>
+      <link>https://johanneskonings.dev/blog/2021-08-27-aws_example_ddb_analytics/</link>
+      <description>This post is how stream data changes of a DynamoDb table via Kinesis Data Stream and Kinesis Firehose to S3, and analyze the data with Athena</description>
+      <pubDate>Fri, 27 Aug 2021 00:00:00 GMT</pubDate>
+      <guid isPermaLink="true">https://johanneskonings.dev/blog/2021-08-27-aws_example_ddb_analytics/</guid>
+    </item>
+    <item>
       <title>GitHub actions example for automatic release drafts and changelog.md creation</title>
       <link>https://johanneskonings.dev/blog/2021-02-28-github-automatic-releases-and-changelog/</link>
       <description>This post is how to define your release draft via labels in pull requests and the update of the changelog.md after publishing a release</description>
@@ -181,6 +209,34 @@
       <description>Terraform setup to display AWS billing metrics in Grafana Cloud with S3 Backend and CI/CD pipeline</description>
       <pubDate>Sat, 19 Dec 2020 00:00:00 GMT</pubDate>
       <guid isPermaLink="true">https://johanneskonings.dev/blog/2020-12-19-aws-billing-metrics-grafana-cloud-and-terraform/</guid>
+    </item>
+    <item>
+      <title>AWS Amplify Admin UI user management instead of self sign up</title>
+      <link>https://johanneskonings.dev/blog/2020-12-06-amplify_admin_ui_user_management/</link>
+      <description>Description of the change from a self sign up to user management from an admin</description>
+      <pubDate>Sun, 06 Dec 2020 00:00:00 GMT</pubDate>
+      <guid isPermaLink="true">https://johanneskonings.dev/blog/2020-12-06-amplify_admin_ui_user_management/</guid>
+    </item>
+    <item>
+      <title>How to display AWS billing metrics in Grafana Cloud</title>
+      <link>https://johanneskonings.dev/blog/2020-11-27-aws_billing_metrics_and_grafana_cloud/</link>
+      <description>Configuration of Grafana Cloud to display AWS billing metrics</description>
+      <pubDate>Fri, 27 Nov 2020 00:00:00 GMT</pubDate>
+      <guid isPermaLink="true">https://johanneskonings.dev/blog/2020-11-27-aws_billing_metrics_and_grafana_cloud/</guid>
+    </item>
+    <item>
+      <title>Quick example to get the average of items from different arrays</title>
+      <link>https://johanneskonings.dev/blog/2020-10-19-example_react_average_of_items_in_different_arrays/</link>
+      <description>Example how to calculate the average of different arrays Javascript (map, reduce, concat, ...)</description>
+      <pubDate>Mon, 19 Oct 2020 00:00:00 GMT</pubDate>
+      <guid isPermaLink="true">https://johanneskonings.dev/blog/2020-10-19-example_react_average_of_items_in_different_arrays/</guid>
+    </item>
+    <item>
+      <title>Quick example: pass data to a React component and get the changed value back</title>
+      <link>https://johanneskonings.dev/blog/2020-08-31-example_react_component_props_events/</link>
+      <description>An quick example how to pass data to componenents and get data from components</description>
+      <pubDate>Mon, 31 Aug 2020 00:00:00 GMT</pubDate>
+      <guid isPermaLink="true">https://johanneskonings.dev/blog/2020-08-31-example_react_component_props_events/</guid>
     </item>
     <item>
       <title>AWS Amplify Console: How I changed master branchenv to main</title>

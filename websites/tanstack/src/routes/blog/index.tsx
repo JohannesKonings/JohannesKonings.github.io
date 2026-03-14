@@ -4,6 +4,7 @@ import { allPosts } from "content-collections";
 import { BlogLayout } from "../../components/blog/BlogLayout";
 import { BlogPostList } from "../../components/blog/BlogPostList";
 import { createRouteHead, generateBlogListingStructuredData, generateSEOTags } from "../../lib/seo";
+import { siteConfig } from "../../lib/site";
 
 export const Route = createFileRoute("/blog/")({
   head: () =>
@@ -12,6 +13,7 @@ export const Route = createFileRoute("/blog/")({
         title: "Blog",
         description: "Posts on AWS and TanStack.",
         url: "/blog",
+        image: siteConfig.defaultSocialImage,
       }),
       structuredData: generateBlogListingStructuredData(),
     }),

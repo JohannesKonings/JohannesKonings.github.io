@@ -44,8 +44,21 @@ function getFrontmatterBlock(content: string) {
 }
 
 function parseScalarField(block: string, field: string) {
-  const value = block.match(new RegExp(`^${field}:\\s*(.+)$`, "m"))?.[1]?.trim();
-  return value?.replace(/^['"]|['"]$/g, "");
+  for (const line of block.split("\n")) {
+    const trimmedLine = line.trim();
+    if (!trimmedLine.startsWith(`${field}:`)) {
+      continue;
+    }
+
+    const value = trimmedLine.slice(field.length + 1).trim();
+    if (!value.length) {
+      return undefined;
+    }
+
+    return value.replace(/^['"]|['"]$/g, "");
+  }
+
+  return undefined;
 }
 
 function parseListField(block: string, field: string): string[] {

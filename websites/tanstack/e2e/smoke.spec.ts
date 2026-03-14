@@ -1,6 +1,29 @@
 import { expect, test } from "@playwright/test";
 
 test.describe("tanstack smoke", () => {
+  test("blog and notes routes do not emit route-match warnings during navigation", async ({
+    page,
+  }) => {
+    const routeWarnings = [];
+
+    page.on("console", (message) => {
+      if (
+        message.type() === "warning" &&
+        message.text().includes("Could not find match for from:")
+      ) {
+        routeWarnings.push(message.text());
+      }
+    });
+
+    await page.goto("/blog");
+    await expect(page.getByRole("heading", { name: "Blog" })).toBeVisible();
+
+    await page.goto("/notes");
+    await expect(page.getByRole("heading", { name: "Notes" })).toBeVisible();
+
+    expect(routeWarnings).toEqual([]);
+  });
+
   test("blog preview card opens the post from image/card clicks", async ({ page }) => {
     await page.goto("/");
 

@@ -6,7 +6,7 @@ published: true
 summary: Use the browser based vs code for file handling on a private ec2 instance without ssh
 categories: aws
 thumbnail: ec2
-cover_image: ./cover-image.png
+cover_image: https://johanneskonings.dev/content/blog/2024-12-07-aws-vscode-private-ec2-instance/cover-image.png
 tags:
   - aws
   - cdk
@@ -101,7 +101,7 @@ With the following commands vs code can than be installed.
 curl -fsSL https://code-server.dev/install.sh | sh
 ```
 
-![install code-server](./install-code-server.png)
+![install code-server](https://johanneskonings.dev/content/blog/2024-12-07-aws-vscode-private-ec2-instance/install-code-server.png)
 
 More details here: https://github.com/coder/code-server?tab=readme-ov-file#getting-started
 
@@ -111,7 +111,7 @@ Now run the code-server with the following command:
 code-server
 ```
 
-![run code-server](./run-code-server.png)
+![run code-server](https://johanneskonings.dev/content/blog/2024-12-07-aws-vscode-private-ec2-instance/run-code-server.png)
 
 As you can see, the code-server is running on `http://127.0.0.1:8080/` (1.) and the password is in file `/home/ssm-user/.config/code-server/config.yaml` (2.).
 
@@ -134,8 +134,8 @@ Now the code-server can be accessed via the browser with the following URL: `htt
 
 Login with the password from the config.yaml file.
 
-![code server login](./code-server-login.png)
+![code server login](https://johanneskonings.dev/content/blog/2024-12-07-aws-vscode-private-ec2-instance/code-server-login.png)
 
 Now you can handle the files via vs code 🥳
 
-![code server file handling](./code-server-file-handling.png)
+![code server file handling](https://johanneskonings.dev/content/blog/2024-12-07-aws-vscode-private-ec2-instance/code-server-file-handling.png)
