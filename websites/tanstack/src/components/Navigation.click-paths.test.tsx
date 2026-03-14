@@ -8,7 +8,7 @@ import {
   createRouter,
 } from "@tanstack/react-router";
 import { createMemoryHistory } from "@tanstack/react-router";
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vite-plus/test";
 import { Navigation } from "./Navigation";
 import { ThemeProvider } from "../contexts/ThemeContext";
 
