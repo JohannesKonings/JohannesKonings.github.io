@@ -26,24 +26,22 @@ async function resolveSystemChromePath() {
 }
 
 async function resolveChromiumPath() {
-  const systemChromePath = await resolveSystemChromePath();
+  try {
+    const { stdout } = await execa(
+      "node",
+      [
+        "-e",
+        "import('@playwright/test').then(({ chromium }) => console.log(chromium.executablePath()))",
+      ],
+      {
+        cwd: TANSTACK_DIR,
+      },
+    );
 
-  if (systemChromePath) {
-    return systemChromePath;
+    return stdout.trim();
+  } catch {
+    return await resolveSystemChromePath();
   }
-
-  const { stdout } = await execa(
-    "node",
-    [
-      "-e",
-      "import('@playwright/test').then(({ chromium }) => console.log(chromium.executablePath()))",
-    ],
-    {
-      cwd: TANSTACK_DIR,
-    },
-  );
-
-  return stdout.trim();
 }
 
 async function main() {
@@ -62,13 +60,13 @@ async function main() {
     CHROME_PATH: chromePath,
   };
 
-  await execa("pnpm", ["exec", "lhci", "collect", "--config=.lighthouserc.json"], {
+  await execa("vp", ["exec", "--", "lhci", "collect", "--config=.lighthouserc.json"], {
     cwd: ROOT,
     env,
     stdio: "inherit",
   });
 
-  await execa("pnpm", ["exec", "lhci", "assert", "--config=.lighthouserc.json"], {
+  await execa("vp", ["exec", "--", "lhci", "assert", "--config=.lighthouserc.json"], {
     cwd: ROOT,
     env,
     stdio: "inherit",
