@@ -3,6 +3,7 @@ import { format } from "date-fns";
 import { Link } from "@tanstack/react-router";
 import type { JSX } from "react";
 import { useEffect, useId, useRef, useState } from "react";
+import { toBlogArchivePath } from "../../lib/site";
 
 interface BlogPostCardProps {
   post: (typeof allPosts)[0];
@@ -151,14 +152,13 @@ export function BlogPostCard({ post }: BlogPostCardProps): JSX.Element {
           {post.tags.length > 0 && (
             <div className="relative z-20 flex flex-wrap gap-2 mb-6">
               {post.tags.slice(0, 3).map((tag) => (
-                <Link
+                <a
                   key={tag}
-                  to="/blog/tag/$tag"
-                  params={{ tag }}
+                  href={toBlogArchivePath("tag", tag)}
                   className="px-3 py-1.5 text-xs bg-cyan-50 dark:bg-cyan-500/20 text-cyan-700 dark:text-cyan-300 rounded-full border border-cyan-200 dark:border-cyan-500/30 hover:bg-cyan-100 dark:hover:bg-cyan-500/30 transition-all duration-300"
                 >
                   {tag}
-                </Link>
+                </a>
               ))}
               {post.tags.length > 3 && (
                 <span className="px-3 py-1.5 text-xs bg-gray-100 dark:bg-gray-600/50 text-gray-600 dark:text-gray-300 rounded-full border border-gray-300 dark:border-gray-500/30">

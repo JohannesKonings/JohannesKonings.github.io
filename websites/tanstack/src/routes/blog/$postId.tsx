@@ -13,6 +13,7 @@ import { ReadingProgressBar } from "../../components/blog/ReadingProgressBar";
 import { ShareButtons } from "../../components/blog/ShareButtons";
 import { getSeriesContext, getRelatedPosts } from "../../lib/content-utils";
 import { createRouteHead, generatePostSEO, generatePostStructuredData } from "../../lib/seo";
+import { toBlogArchivePath } from "../../lib/site";
 
 const ABSOLUTE_URL_PATTERN = /^[a-z][a-z\d+\-.]*:/i;
 
@@ -119,16 +120,15 @@ function RouteComponent() {
             <div className="mb-6 py-2 px-4 rounded-lg bg-cyan-500/10 dark:bg-cyan-400/10 border border-cyan-500/20 dark:border-cyan-400/20">
               <p className="text-sm text-cyan-700 dark:text-cyan-300">
                 Part {seriesContext.index} of {seriesContext.total} ·{" "}
-                <Link
-                  to="/blog/series/$seriesSlug"
-                  params={{ seriesSlug: seriesContext.seriesSlug }}
+                <a
+                  href={toBlogArchivePath("series", seriesContext.seriesSlug)}
                   className="font-medium hover:underline"
                 >
                   {seriesContext.seriesSlug
                     .split("-")
                     .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
                     .join(" ")}
-                </Link>
+                </a>
               </p>
             </div>
           )}
@@ -157,14 +157,13 @@ function RouteComponent() {
             {post.tags.length > 0 && (
               <div className="flex flex-wrap justify-center gap-2 mb-8">
                 {post.tags.map((tag) => (
-                  <Link
+                  <a
                     key={tag}
-                    to="/blog/tag/$tag"
-                    params={{ tag }}
+                    href={toBlogArchivePath("tag", tag)}
                     className="px-3 py-1 text-sm bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-full hover:bg-blue-200 dark:hover:bg-blue-900/50 transition-colors"
                   >
                     {tag}
-                  </Link>
+                  </a>
                 ))}
               </div>
             )}
@@ -298,13 +297,12 @@ function RouteComponent() {
                   <span className="text-sm text-gray-500 dark:text-gray-400">Categories: </span>
                   {post.categories.map((category, index) => (
                     <span key={category}>
-                      <Link
-                        to="/blog/category/$category"
-                        params={{ category }}
+                      <a
+                        href={toBlogArchivePath("category", category)}
                         className="text-sm text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
                       >
                         {category}
-                      </Link>
+                      </a>
                       {index < post.categories.length - 1 && ", "}
                     </span>
                   ))}

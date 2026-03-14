@@ -4,6 +4,7 @@ import { allNotes } from "content-collections";
 import { BlogLayout } from "../../components/blog/BlogLayout";
 import { format } from "date-fns";
 import { createRouteHead, generateSEOTags } from "../../lib/seo";
+import { toBlogArchivePath } from "../../lib/site";
 
 export const Route = createFileRoute("/notes/")({
   head: () =>
@@ -64,14 +65,13 @@ function NotesPage() {
                   {note.tags.length > 0 && (
                     <div className="flex flex-wrap gap-2 mt-3">
                       {note.tags.map((tag) => (
-                        <Link
+                        <a
                           key={tag}
-                          to="/blog/tag/$tag"
-                          params={{ tag }}
+                          href={toBlogArchivePath("tag", tag)}
                           className="px-2 py-0.5 text-xs bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-full hover:bg-blue-200 dark:hover:bg-blue-900/50 transition-colors"
                         >
                           {tag}
-                        </Link>
+                        </a>
                       ))}
                     </div>
                   )}
