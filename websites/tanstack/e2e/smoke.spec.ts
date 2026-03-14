@@ -8,14 +8,16 @@ test.describe("tanstack smoke", () => {
       .locator("article")
       .filter({ has: page.locator("h2") })
       .first();
+    const cardOverlayLink = firstPreviewCard.locator("a[aria-labelledby]").first();
 
     await expect(firstPreviewCard).toBeVisible();
+    await expect(cardOverlayLink).toBeVisible();
     await expect
       .poll(async () => firstPreviewCard.evaluate((element) => getComputedStyle(element).cursor))
       .toBe("pointer");
 
-    await firstPreviewCard.click({ position: { x: 32, y: 32 } });
-    await expect(page).toHaveURL(/\/blog\/[^/]+$/);
+    await cardOverlayLink.click({ position: { x: 32, y: 32 } });
+    await expect(page).toHaveURL(/\/blog\/[^/]+\/?$/);
   });
 
   test("blog preview card tags stay clickable", async ({ page }) => {
@@ -25,7 +27,7 @@ test.describe("tanstack smoke", () => {
 
     await expect(firstTag).toBeVisible();
     await firstTag.click();
-    await expect(page).toHaveURL(/\/blog\/tag\/[^/]+$/);
+    await expect(page).toHaveURL(/\/blog\/tag\/[^/]+\/$/);
   });
 
   test("desktop navigation click path works", async ({ page }) => {
