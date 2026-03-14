@@ -6,6 +6,7 @@ date: 2020-08-31 08:15:18
 summary: An quick example how to pass data to componenents and get data from components
 categories: react
 thumbnail: react
+cover_image: ./components_overview.png
 tags:
   - react
   - react components
@@ -19,7 +20,7 @@ This is a quick example how I pass data to a React component and get the changed
 
 In different cases it's neccessary to pass data to a component and get the data back. In this quick example there are two child components. One is used to determine the height of increase in the count. The other one is used to increase the count via a button click with the height of increase from the other component.
 
-![result]({{ site.baseurl }}/img/2020-08-31-example_react_component_props_events/components_overview.png)
+![result](./components_overview.png)
 
 # Implementation
 
@@ -133,7 +134,7 @@ Button.propTypes = {
 
 # Result
 
-![result]({{ site.baseurl }}/img/2020-08-31-example_react_component_props_events/result.gif)
+![result](./result.gif)
 
 # Coding
 

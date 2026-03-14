@@ -5,6 +5,7 @@ date: 2020-11-27 08:15:18
 summary: Configuration of Grafana Cloud to display AWS billing metrics
 categories: aws
 thumbnail: grafana
+cover_image: ./grafana_cloud_created_dashboard.png
 tags:
   - aws
   - grafana
@@ -25,17 +26,17 @@ Here [https://grafana.com/products/cloud/](https://grafana.com/products/cloud/) 
 
 It's free for this use case (and many more :))
 
-![Grafana Cloud pricing]({{ site.baseurl }}/img/2020-11-27-aws_billing_metrics_and_grafana_cloud/grafana_cloud_pricing.png)
+![Grafana Cloud pricing](./grafana_cloud_pricing.png)
 
 After login, create a stack with the starter plan.
 
-![Grafana Cloud add stack]({{ site.baseurl }}/img/2020-11-27-aws_billing_metrics_and_grafana_cloud/grafana_cloud_add_stack.png)
+![Grafana Cloud add stack](./grafana_cloud_add_stack.png)
 
-![Grafana Cloud starter plan]({{ site.baseurl }}/img/2020-11-27-aws_billing_metrics_and_grafana_cloud/grafana_cloud_starter_plan.png)
+![Grafana Cloud starter plan](./grafana_cloud_starter_plan.png)
 
 Then log in to your instance.
 
-![Grafana Cloud instance login]({{ site.baseurl }}/img/2020-11-27-aws_billing_metrics_and_grafana_cloud/grafana_cloud_instance_login.png)
+![Grafana Cloud instance login](./grafana_cloud_instance_login.png)
 
 # Creation of an IAM user for the CloudWatch data source
 
@@ -47,25 +48,25 @@ The CloudWatch data source needs an access key and a secret key. Therefore is an
 
 The next step is to add the CloudWatch data source to your Grafana cloud instance.
 
-![Grafana Cloud add datasource]({{ site.baseurl }}/img/2020-11-27-aws_billing_metrics_and_grafana_cloud/grafana_cloud_add_datasource.png)
+![Grafana Cloud add datasource](./grafana_cloud_add_datasource.png)
 
-![Grafana Cloud select cloudwatch datasource]({{ site.baseurl }}/img/2020-11-27-aws_billing_metrics_and_grafana_cloud/grafana_cloud_select_cloudwatch_datasource.png)
+![Grafana Cloud select cloudwatch datasource](./grafana_cloud_select_cloudwatch_datasource.png)
 
 As for credentials, use the access key and secret key from the IAM user.
 
-![Grafana Cloud configuration cloudwatch datasource]({{ site.baseurl }}/img/2020-11-27-aws_billing_metrics_and_grafana_cloud/grafana_cloud_configuration_cloudwatch_datasource.png)
+![Grafana Cloud configuration cloudwatch datasource](./grafana_cloud_configuration_cloudwatch_datasource.png)
 
 # Creation of a dashboard with a graph panel
 
 Now you can use the data source in the panels of a dashboard.
 
-![Grafana Cloud create dashboard]({{ site.baseurl }}/img/2020-11-27-aws_billing_metrics_and_grafana_cloud/grafana_cloud_create_dashboard.png)
+![Grafana Cloud create dashboard](./grafana_cloud_create_dashboard.png)
 
-![Grafana Cloud add panel]({{ site.baseurl }}/img/2020-11-27-aws_billing_metrics_and_grafana_cloud/grafana_cloud_add_panel.png)
+![Grafana Cloud add panel](./grafana_cloud_add_panel.png)
 
 This is a panel configuration example for the costs of all linked accounts.
 
-![Grafana Cloud accounts panel]({{ site.baseurl }}/img/2020-11-27-aws_billing_metrics_and_grafana_cloud/grafana_cloud_accounts_panel.png)
+![Grafana Cloud accounts panel](./grafana_cloud_accounts_panel.png)
 
 This should be considered:
 
@@ -75,7 +76,7 @@ This should be considered:
 
 And ready to go 🎉
 
-![Grafana Cloud created dashboard]({{ site.baseurl }}/img/2020-11-27-aws_billing_metrics_and_grafana_cloud/grafana_cloud_created_dashboard.png)
+![Grafana Cloud created dashboard](./grafana_cloud_created_dashboard.png)
 
 # Usage of a prepared dashboard
 
@@ -83,15 +84,15 @@ Here [https://grafana.com/grafana/dashboards](https://grafana.com/grafana/dashbo
 
 You can import a URL or ID from the list or, e.g., this [https://grafana.com/grafana/dashboards/13446](https://grafana.com/grafana/dashboards/13446) Dashboard in that way.
 
-![Grafana Cloud import dashboard]({{ site.baseurl }}/img/2020-11-27-aws_billing_metrics_and_grafana_cloud/grafana_cloud_import_dashboard.png)
+![Grafana Cloud import dashboard](./grafana_cloud_import_dashboard.png)
 
 The selection of the data source is required.
 
-![Grafana Cloud import dashboard2]({{ site.baseurl }}/img/2020-11-27-aws_billing_metrics_and_grafana_cloud/grafana_cloud_import_dashboard2.png)
+![Grafana Cloud import dashboard2](./grafana_cloud_import_dashboard2.png)
 
 And ready to go 🎉
 
-![Grafana Cloud imported dashboard]({{ site.baseurl }}/img/2020-11-27-aws_billing_metrics_and_grafana_cloud/grafana_cloud_imported_dashboard.png)
+![Grafana Cloud imported dashboard](./grafana_cloud_imported_dashboard.png)
 
 # more dashboards
 
