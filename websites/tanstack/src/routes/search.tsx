@@ -3,6 +3,7 @@ import { allPosts, allNotes } from "content-collections";
 import { BlogLayout } from "../components/blog/BlogLayout";
 import { Search as SearchComponent } from "../components/search/Search";
 import { createRouteHead, generateSEOTags } from "../lib/seo";
+import { siteConfig } from "../lib/site";
 
 export const Route = createFileRoute("/search")({
   head: () =>
@@ -11,6 +12,7 @@ export const Route = createFileRoute("/search")({
         title: "Search",
         description: "Search blog posts and notes.",
         url: "/search",
+        image: siteConfig.defaultSocialImage,
       }),
     }),
   component: SearchPage,

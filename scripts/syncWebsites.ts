@@ -1,8 +1,9 @@
+import { execa } from "execa";
 import fs from "node:fs";
 import path from "node:path";
 
-function mirrorDirectory(from: string, to: string) {
-  fs.rmSync(to, { recursive: true, force: true });
+async function mirrorDirectory(from: string, to: string) {
+  await execa("rm", ["-rf", to]);
   fs.mkdirSync(path.dirname(to), { recursive: true });
   fs.cpSync(from, to, { recursive: true });
 }
@@ -13,7 +14,7 @@ async function sync(from: string, to: string, pathPrefix: string) {
 
   const fromPath = path.join("./../../", from);
   const toPath = path.join("./../../", pathPrefix, to);
-  mirrorDirectory(fromPath, toPath);
+  await mirrorDirectory(fromPath, toPath);
   console.log("files mirrored");
 
   //   markdown post processing
@@ -38,7 +39,7 @@ const syncTanstack = async () => {
 
   // Also copy content to public directory for static serving
   console.log("Copying content to public directory for static serving");
-  mirrorDirectory(
+  await mirrorDirectory(
     "./../../websites/tanstack/src/content",
     "./../../websites/tanstack/public/content",
   );

@@ -4,6 +4,7 @@ import { allNotes } from "content-collections";
 import { BlogLayout } from "../../components/blog/BlogLayout";
 import { format } from "date-fns";
 import { createRouteHead, generateSEOTags } from "../../lib/seo";
+import { siteConfig } from "../../lib/site";
 
 export const Route = createFileRoute("/notes/")({
   head: () =>
@@ -12,6 +13,7 @@ export const Route = createFileRoute("/notes/")({
         title: "Notes",
         description: "Quick reference notes on topics I care about.",
         url: "/notes",
+        image: siteConfig.defaultSocialImage,
       }),
     }),
   component: NotesPage,
