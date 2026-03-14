@@ -2,7 +2,7 @@ import { useMemo, useState, useEffect, useCallback } from "react";
 import { Link, useRouter } from "@tanstack/react-router";
 import type { JSX } from "react";
 import { Rss, Search, X } from "lucide-react";
-import { allNotes, allPosts } from "content-collections";
+import { allNotes, allPosts } from "../lib/content-collections";
 import { ThemeToggle } from "./ThemeToggle";
 import { Search as SearchComponent, type SearchItem } from "./search/Search";
 

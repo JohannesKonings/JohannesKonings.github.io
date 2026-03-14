@@ -1,4 +1,4 @@
-import type { allPosts } from "content-collections";
+import type { allPosts } from "../../lib/content-collections";
 import { BlogPostCard } from "./BlogPostCard";
 import { useState, useMemo } from "react";
 import type { JSX } from "react";

@@ -15,7 +15,7 @@
     "start": "pnpm sync && vp start",
     "test": "vp test",
     "test:all": "pnpm run test:ui && pnpm run test:smoke",
-    "test:smoke": "playwright test",
+    "test:smoke": "cd ../.. && ./node_modules/.bin/vp run --filter tanstack build && cd websites/tanstack && playwright test",
     "test:ui": "vp test run",
     "test:ui:dev": "vp test --ui",
     "type-check": "tsgo --noEmit"

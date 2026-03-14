@@ -12,7 +12,7 @@ import { beforeEach, describe, expect, it, vi } from "vite-plus/test";
 import { Navigation } from "./Navigation";
 import { ThemeProvider } from "../contexts/ThemeContext";
 
-vi.mock("content-collections", () => ({
+vi.mock("../lib/content-collections", () => ({
   allPosts: [
     {
       published: true,

@@ -78,6 +78,11 @@ function syncStartManifestPlugin() {
 
 export default defineConfig(({ mode }) => ({
   base: "/",
+  resolve: {
+    alias: {
+      "content-collections": resolve("src/lib/content-collections.ts"),
+    },
+  },
   environments: {
     nitro: {
       build: {
@@ -176,7 +181,7 @@ export default defineConfig(({ mode }) => ({
         },
       ],
     }),
-    viteReact(),
     nitro({ preset: "static" }),
+    viteReact(),
   ],
 }));
