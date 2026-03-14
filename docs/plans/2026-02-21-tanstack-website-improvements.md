@@ -274,12 +274,7 @@ export function Navigation(): JSX.Element {
             aria-label="Toggle navigation menu"
             aria-expanded={mobileOpen}
           >
-            <svg
-              className="w-6 h-6"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               {mobileOpen ? (
                 <path
                   strokeLinecap="round"
@@ -375,12 +370,8 @@ function DefaultNotFound() {
   return (
     <div className="min-h-[60vh] flex items-center justify-center px-4">
       <div className="text-center">
-        <h1 className="text-6xl font-bold text-gray-300 dark:text-gray-600 mb-4">
-          404
-        </h1>
-        <p className="text-xl text-gray-700 dark:text-gray-300 mb-6">
-          Page not found
-        </p>
+        <h1 className="text-6xl font-bold text-gray-300 dark:text-gray-600 mb-4">404</h1>
+        <p className="text-xl text-gray-700 dark:text-gray-300 mb-6">Page not found</p>
         <a
           href="/"
           className="inline-flex items-center px-6 py-3 bg-cyan-50 dark:bg-cyan-500/20 text-cyan-700 dark:text-cyan-300 rounded-lg border border-cyan-200 dark:border-cyan-500/30 hover:bg-cyan-100 dark:hover:bg-cyan-500/30 transition-colors"
@@ -798,9 +789,7 @@ export function RelatedPosts({ posts }: RelatedPostsProps) {
 
   return (
     <section className="mt-12 pt-8 border-t border-gray-200 dark:border-gray-700">
-      <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-6">
-        Related Posts
-      </h2>
+      <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-6">Related Posts</h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {posts.map((post) => (
           <Link
@@ -865,18 +854,14 @@ Change the tag rendering to show counts:
 // Compute tag counts
 const tagCounts = useMemo(() => {
   const counts = new Map<string, number>();
-  posts.forEach((post) =>
-    post.tags.forEach((tag) => counts.set(tag, (counts.get(tag) ?? 0) + 1)),
-  );
+  posts.forEach((post) => post.tags.forEach((tag) => counts.set(tag, (counts.get(tag) ?? 0) + 1)));
   return counts;
 }, [posts]);
 
 const categoryCounts = useMemo(() => {
   const counts = new Map<string, number>();
   posts.forEach((post) =>
-    post.categories.forEach((cat) =>
-      counts.set(cat, (counts.get(cat) ?? 0) + 1),
-    ),
+    post.categories.forEach((cat) => counts.set(cat, (counts.get(cat) ?? 0) + 1)),
   );
   return counts;
 }, [posts]);
@@ -1002,11 +987,8 @@ export function ReadingProgressBar() {
   useEffect(() => {
     const update = () => {
       const scrollTop = window.scrollY;
-      const docHeight =
-        document.documentElement.scrollHeight - window.innerHeight;
-      setProgress(
-        docHeight > 0 ? Math.min((scrollTop / docHeight) * 100, 100) : 0,
-      );
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      setProgress(docHeight > 0 ? Math.min((scrollTop / docHeight) * 100, 100) : 0);
     };
 
     window.addEventListener("scroll", update, { passive: true });
@@ -1246,20 +1228,10 @@ export function ShareButtons({ title, url }: ShareButtonsProps) {
             stroke="currentColor"
             viewBox="0 0 24 24"
           >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M5 13l4 4L19 7"
-            />
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
           </svg>
         ) : (
-          <svg
-            className="w-4 h-4"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
+          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path
               strokeLinecap="round"
               strokeLinejoin="round"
@@ -1330,18 +1302,8 @@ export function BackToTop() {
       className="fixed bottom-6 right-6 z-50 p-3 rounded-full bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-600 shadow-lg text-gray-600 dark:text-gray-300 hover:text-cyan-600 dark:hover:text-cyan-400 hover:border-cyan-300 dark:hover:border-cyan-500/50 transition-all duration-300"
       aria-label="Back to top"
     >
-      <svg
-        className="w-5 h-5"
-        fill="none"
-        stroke="currentColor"
-        viewBox="0 0 24 24"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth={2}
-          d="M5 15l7-7 7 7"
-        />
+      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
       </svg>
     </button>
   );

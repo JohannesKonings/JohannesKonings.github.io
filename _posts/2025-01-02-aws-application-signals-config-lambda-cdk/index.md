@@ -53,9 +53,7 @@ const applicationSignalsStartDiscovery = new AwsCustomResource(
     onCreate: {
       service: "@aws-sdk/client-application-signals",
       action: "StartDiscovery",
-      physicalResourceId: PhysicalResourceId.of(
-        "ApplicationSignalsStartDiscovery",
-      ),
+      physicalResourceId: PhysicalResourceId.of("ApplicationSignalsStartDiscovery"),
     },
     // fromSdkCalls didn't work, that's why the policy is set manually
     // policy: AwsCustomResourcePolicy.fromSdkCalls({ resources: AwsCustomResourcePolicy.ANY_RESOURCE }),
@@ -124,14 +122,10 @@ const LAMBDA_APPLICATION_SIGNALS_ENV = {
 const lambda = new NodejsFunction(this, id, {
   runtime: Runtime.NODEJS_22_X,
   timeout: Duration.seconds(10),
-  environment: props.enableApplicationSignals
-    ? LAMBDA_APPLICATION_SIGNALS_ENV
-    : {},
+  environment: props.enableApplicationSignals ? LAMBDA_APPLICATION_SIGNALS_ENV : {},
 });
 lambda.role?.addManagedPolicy(
-  ManagedPolicy.fromAwsManagedPolicyName(
-    "CloudWatchLambdaApplicationSignalsExecutionRolePolicy",
-  ),
+  ManagedPolicy.fromAwsManagedPolicyName("CloudWatchLambdaApplicationSignalsExecutionRolePolicy"),
 );
 NagSuppressions.addResourceSuppressions(
   lambda,

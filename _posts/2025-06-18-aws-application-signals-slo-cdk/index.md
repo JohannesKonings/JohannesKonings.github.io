@@ -59,11 +59,7 @@ While Aspects handle the general removal policy, S3 buckets need the `autoDelete
 The Property Injector for S3 buckets looks like this:
 
 ```typescript
-import {
-  InjectionContext,
-  IPropertyInjector,
-  RemovalPolicy,
-} from "aws-cdk-lib";
+import { InjectionContext, IPropertyInjector, RemovalPolicy } from "aws-cdk-lib";
 import { Bucket, BucketProps } from "aws-cdk-lib/aws-s3";
 
 export class BucketAutoDeletionSetter implements IPropertyInjector {
@@ -73,18 +69,13 @@ export class BucketAutoDeletionSetter implements IPropertyInjector {
     this.constructUniqueId = Bucket.PROPERTY_INJECTION_ID;
   }
 
-  public inject(
-    originalProps: BucketProps,
-    _context: InjectionContext,
-  ): BucketProps {
+  public inject(originalProps: BucketProps, _context: InjectionContext): BucketProps {
     return {
       ...originalProps,
       autoDeleteObjects: this.autoDeleteObjects,
       // If autoDeleteObjects is true, RemovalPolicy must be DESTROY.
       // Otherwise, retain the original policy.
-      removalPolicy: this.autoDeleteObjects
-        ? RemovalPolicy.DESTROY
-        : originalProps.removalPolicy,
+      removalPolicy: this.autoDeleteObjects ? RemovalPolicy.DESTROY : originalProps.removalPolicy,
     };
   }
 }
@@ -213,12 +204,7 @@ When `EPHEMERAL_STACKS` is true, the generated CloudFormation will include `Dele
         "PolicyDocument": {
           "Statement": [
             {
-              "Action": [
-                "s3:DeleteObject*",
-                "s3:GetBucket*",
-                "s3:List*",
-                "s3:PutBucketPolicy"
-              ],
+              "Action": ["s3:DeleteObject*", "s3:GetBucket*", "s3:List*", "s3:PutBucketPolicy"],
               "Effect": "Allow",
               "Principal": {
                 "AWS": {
@@ -259,10 +245,7 @@ When `EPHEMERAL_STACKS` is true, the generated CloudFormation will include `Dele
       "Type": "Custom::S3AutoDeleteObjects",
       "Properties": {
         "ServiceToken": {
-          "Fn::GetAtt": [
-            "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F",
-            "Arn"
-          ]
+          "Fn::GetAtt": ["CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F", "Arn"]
         },
         "BucketName": {
           "Ref": "Bucket83908E77"
@@ -315,10 +298,7 @@ When `EPHEMERAL_STACKS` is true, the generated CloudFormation will include `Dele
         "MemorySize": 128,
         "Handler": "index.handler",
         "Role": {
-          "Fn::GetAtt": [
-            "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092",
-            "Arn"
-          ]
+          "Fn::GetAtt": ["CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092", "Arn"]
         },
         "Runtime": "nodejs22.x",
         "Description": {
@@ -334,9 +314,7 @@ When `EPHEMERAL_STACKS` is true, the generated CloudFormation will include `Dele
           ]
         }
       },
-      "DependsOn": [
-        "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092"
-      ],
+      "DependsOn": ["CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092"],
       "UpdateReplacePolicy": "Delete",
       "DeletionPolicy": "Delete",
       "Metadata": {

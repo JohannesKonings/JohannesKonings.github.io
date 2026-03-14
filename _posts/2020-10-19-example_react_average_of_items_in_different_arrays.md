@@ -89,9 +89,7 @@ Basket 1 and 2 are selected. This two arrays will be merged with this coding.
 
 ```javascript
 selectedFruitBaskets.forEach((selectedFruitBasket) => {
-  const found = fruitBaskets.find(
-    (fruitBasket) => fruitBasket.name === selectedFruitBasket.name,
-  );
+  const found = fruitBaskets.find((fruitBasket) => fruitBasket.name === selectedFruitBasket.name);
   fruits.push(found.fruitBasket);
 });
 

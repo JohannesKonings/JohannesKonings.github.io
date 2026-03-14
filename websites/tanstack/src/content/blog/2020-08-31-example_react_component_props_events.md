@@ -54,10 +54,7 @@ export default function App() {
       <p>current counterStepsInput: {counterSteps}</p>
       <p>current count: {count}</p>
       <CounterSteps onCurrentInput={handleCurrentInput} />
-      <Button
-        counterSteps={counterSteps}
-        onCounterIncreased={handleCounterIncreased}
-      />
+      <Button counterSteps={counterSteps} onCounterIncreased={handleCounterIncreased} />
     </div>
   );
 }

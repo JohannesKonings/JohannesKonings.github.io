@@ -188,8 +188,7 @@ import { Entity, type EntityConfiguration, Service } from "electrodb";
 // Table Configuration
 // =============================================================================
 
-const TABLE_NAME =
-  process.env.DDB_PERSONS_TABLE_NAME ?? "TanstackAwsStack-db-persons";
+const TABLE_NAME = process.env.DDB_PERSONS_TABLE_NAME ?? "TanstackAwsStack-db-persons";
 
 const getEntityConfig = (): EntityConfiguration => ({
   client: getDdbDocClient(),
@@ -431,10 +430,7 @@ export const createPerson = async (person: Person): Promise<Person> => {
  * Update a person
  * Uses put with merged data to ensure GSI1 composite keys are properly formatted
  */
-export const updatePerson = async (
-  personId: string,
-  updates: Partial<Person>,
-): Promise<Person> => {
+export const updatePerson = async (personId: string, updates: Partial<Person>): Promise<Person> => {
   // First, get the current person to merge with updates
   const current = await PersonEntity.get({ id: personId }).go();
   if (!current.data) {
@@ -470,18 +466,10 @@ export const deletePerson = async (personId: string): Promise<void> => {
 
   // Delete all related items
   await Promise.all([
-    ...addresses.data.map((addr) =>
-      AddressEntity.delete({ personId, id: addr.id }).go(),
-    ),
-    ...bankAccounts.data.map((bank) =>
-      BankAccountEntity.delete({ personId, id: bank.id }).go(),
-    ),
-    ...contacts.data.map((contact) =>
-      ContactInfoEntity.delete({ personId, id: contact.id }).go(),
-    ),
-    ...employments.data.map((emp) =>
-      EmploymentEntity.delete({ personId, id: emp.id }).go(),
-    ),
+    ...addresses.data.map((addr) => AddressEntity.delete({ personId, id: addr.id }).go()),
+    ...bankAccounts.data.map((bank) => BankAccountEntity.delete({ personId, id: bank.id }).go()),
+    ...contacts.data.map((contact) => ContactInfoEntity.delete({ personId, id: contact.id }).go()),
+    ...employments.data.map((emp) => EmploymentEntity.delete({ personId, id: emp.id }).go()),
     PersonEntity.delete({ id: personId }).go(),
   ]);
 };
@@ -509,10 +497,7 @@ export const updateAddress = async (address: Address): Promise<Address> => {
   return result.data as Address;
 };
 
-export const deleteAddress = async (
-  personId: string,
-  addressId: string,
-): Promise<void> => {
+export const deleteAddress = async (personId: string, addressId: string): Promise<void> => {
   await AddressEntity.delete({ personId, id: addressId }).go();
 };
 
@@ -528,24 +513,17 @@ export const getAllBankAccounts = async (): Promise<BankAccount[]> => {
   return result.data as BankAccount[];
 };
 
-export const createBankAccount = async (
-  bankAccount: BankAccount,
-): Promise<BankAccount> => {
+export const createBankAccount = async (bankAccount: BankAccount): Promise<BankAccount> => {
   const result = await BankAccountEntity.put(bankAccount).go();
   return result.data as BankAccount;
 };
 
-export const updateBankAccount = async (
-  bankAccount: BankAccount,
-): Promise<BankAccount> => {
+export const updateBankAccount = async (bankAccount: BankAccount): Promise<BankAccount> => {
   const result = await BankAccountEntity.put(bankAccount).go();
   return result.data as BankAccount;
 };
 
-export const deleteBankAccount = async (
-  personId: string,
-  bankAccountId: string,
-): Promise<void> => {
+export const deleteBankAccount = async (personId: string, bankAccountId: string): Promise<void> => {
   await BankAccountEntity.delete({ personId, id: bankAccountId }).go();
 };
 
@@ -561,24 +539,17 @@ export const getAllContacts = async (): Promise<ContactInfo[]> => {
   return result.data as ContactInfo[];
 };
 
-export const createContact = async (
-  contact: ContactInfo,
-): Promise<ContactInfo> => {
+export const createContact = async (contact: ContactInfo): Promise<ContactInfo> => {
   const result = await ContactInfoEntity.put(contact).go();
   return result.data as ContactInfo;
 };
 
-export const updateContact = async (
-  contact: ContactInfo,
-): Promise<ContactInfo> => {
+export const updateContact = async (contact: ContactInfo): Promise<ContactInfo> => {
   const result = await ContactInfoEntity.put(contact).go();
   return result.data as ContactInfo;
 };
 
-export const deleteContact = async (
-  personId: string,
-  contactId: string,
-): Promise<void> => {
+export const deleteContact = async (personId: string, contactId: string): Promise<void> => {
   await ContactInfoEntity.delete({ personId, id: contactId }).go();
 };
 
@@ -600,28 +571,17 @@ export const getAllEmployments = async (): Promise<Employment[]> => {
   return result.data as Employment[];
 };
 
-export const createEmployment = async (
-  employment: Employment,
-): Promise<Employment> => {
-  const result = await EmploymentEntity.put(
-    normalizeEmployment(employment),
-  ).go();
+export const createEmployment = async (employment: Employment): Promise<Employment> => {
+  const result = await EmploymentEntity.put(normalizeEmployment(employment)).go();
   return result.data as Employment;
 };
 
-export const updateEmployment = async (
-  employment: Employment,
-): Promise<Employment> => {
-  const result = await EmploymentEntity.put(
-    normalizeEmployment(employment),
-  ).go();
+export const updateEmployment = async (employment: Employment): Promise<Employment> => {
+  const result = await EmploymentEntity.put(normalizeEmployment(employment)).go();
   return result.data as Employment;
 };
 
-export const deleteEmployment = async (
-  personId: string,
-  employmentId: string,
-): Promise<void> => {
+export const deleteEmployment = async (personId: string, employmentId: string): Promise<void> => {
   await EmploymentEntity.delete({ personId, id: employmentId }).go();
 };
 ```
@@ -638,12 +598,7 @@ The DynamoDB table uses a single GSI that serves all entity types with different
 <summary>Click to expand DatabasePersons.ts</summary>
 
 ```typescript
-import {
-  AttributeType,
-  BillingMode,
-  ProjectionType,
-  Table,
-} from "aws-cdk-lib/aws-dynamodb";
+import { AttributeType, BillingMode, ProjectionType, Table } from "aws-cdk-lib/aws-dynamodb";
 import { Construct } from "constructs";
 
 export class DatabasePersons extends Construct {
@@ -721,8 +676,8 @@ const fetchAllAddresses = createServerFn({ method: "GET" }).handler(async () =>
 /**
  * Get all bank accounts (global)
  */
-const fetchAllBankAccounts = createServerFn({ method: "GET" }).handler(
-  async () => electrodbClient.getAllBankAccounts(),
+const fetchAllBankAccounts = createServerFn({ method: "GET" }).handler(async () =>
+  electrodbClient.getAllBankAccounts(),
 );
 
 /**
@@ -735,8 +690,8 @@ const fetchAllContacts = createServerFn({ method: "GET" }).handler(async () =>
 /**
  * Get all employments (global)
  */
-const fetchAllEmployments = createServerFn({ method: "GET" }).handler(
-  async () => electrodbClient.getAllEmployments(),
+const fetchAllEmployments = createServerFn({ method: "GET" }).handler(async () =>
+  electrodbClient.getAllEmployments(),
 );
 
 // ... mutation server functions (createPersonFn, updatePersonFn, etc.)
@@ -778,9 +733,7 @@ export const personsCollection = createCollection(
     },
     onDelete: async ({ transaction }) => {
       await Promise.all(
-        transaction.mutations.map((mutation) =>
-          deletePersonFn({ data: mutation.key as string }),
-        ),
+        transaction.mutations.map((mutation) => deletePersonFn({ data: mutation.key as string })),
       );
     },
   }),
@@ -957,9 +910,7 @@ export function usePersonDetail(personId: string) {
   // Query person by ID using eq() from global collection
   const personQuery = useLiveQuery(
     (query) =>
-      query
-        .from({ persons: personsCollection })
-        .where(({ persons }) => eq(persons.id, personId)),
+      query.from({ persons: personsCollection }).where(({ persons }) => eq(persons.id, personId)),
     [personId],
   );
 
@@ -1104,11 +1055,7 @@ A seed script populates the DynamoDB table with realistic test data using Faker.
  *   pnpm seed:persons --clear # Clear existing data first
  */
 
-import type {
-  ContactInfo,
-  Employment,
-  PersonWithRelations,
-} from "#src/webapp/types/person.ts";
+import type { ContactInfo, Employment, PersonWithRelations } from "#src/webapp/types/person.ts";
 import { generatePersons, initFaker } from "#src/webapp/data/fake-persons.ts";
 import {
   createAddress,
@@ -1152,9 +1099,7 @@ const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 // Seed Functions
 // =============================================================================
 
-const seedOnePerson = async (
-  personData: PersonWithRelations,
-): Promise<void> => {
+const seedOnePerson = async (personData: PersonWithRelations): Promise<void> => {
   // Create the person
   await createPerson({
     id: personData.id,
@@ -1170,18 +1115,12 @@ const seedOnePerson = async (
   await Promise.all([
     ...personData.addresses.map((addr) => createAddress(addr)),
     ...personData.bankAccounts.map((bank) => createBankAccount(bank)),
-    ...personData.contacts.map((contact) =>
-      createContact(normalizeContactInfo(contact)),
-    ),
-    ...personData.employments.map((emp) =>
-      createEmployment(normalizeEmployment(emp)),
-    ),
+    ...personData.contacts.map((contact) => createContact(normalizeContactInfo(contact))),
+    ...personData.employments.map((emp) => createEmployment(normalizeEmployment(emp))),
   ]);
 };
 
-const seedPersonsBatch = async (
-  persons: PersonWithRelations[],
-): Promise<number> => {
+const seedPersonsBatch = async (persons: PersonWithRelations[]): Promise<number> => {
   let successCount = 0;
 
   for (const person of persons) {
@@ -1207,9 +1146,7 @@ const clearAllPersons = async (): Promise<number> => {
       await deletePerson(person.id);
       deletedCount++;
       if (deletedCount % LOG_INTERVAL === 0) {
-        console.log(
-          `  Deleted ${deletedCount}/${existingPersons.length} persons...`,
-        );
+        console.log(`  Deleted ${deletedCount}/${existingPersons.length} persons...`);
       }
     } catch (error) {
       console.error(`Failed to delete person ${person.id}:`, error);

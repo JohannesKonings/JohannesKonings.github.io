@@ -56,11 +56,7 @@ export class QuicksightRole extends Construct {
 
     const quicksightRoleName = "aws-quicksight-service-role-v0";
 
-    const quicksightRole = iam.Role.fromRoleName(
-      this,
-      "quicksight-role",
-      quicksightRoleName,
-    );
+    const quicksightRole = iam.Role.fromRoleName(this, "quicksight-role", quicksightRoleName);
 
     quicksightRole.attachInlinePolicy(
       new iam.Policy(this, `${props.name}-policy`, {
@@ -314,8 +310,7 @@ const customResourceDeleteObject = new custom_resources.AwsCustomResource(
         Bucket: props.bucket.bucketName,
         Key: `${props.prefix}/dummy.json`,
       },
-      physicalResourceId:
-        custom_resources.PhysicalResourceId.of("prefix-creation"),
+      physicalResourceId: custom_resources.PhysicalResourceId.of("prefix-creation"),
     },
     policy: custom_resources.AwsCustomResourcePolicy.fromSdkCalls({
       resources: custom_resources.AwsCustomResourcePolicy.ANY_RESOURCE,

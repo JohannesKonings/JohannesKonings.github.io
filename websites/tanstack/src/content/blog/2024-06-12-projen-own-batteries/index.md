@@ -75,15 +75,11 @@ The other way is to pass the tags as stack properties (<https://docs.aws.amazon.
 This could look like this:
 
 ```typescript
-new CdkNotfifierFeatureStackExample(
-  app,
-  `cdk-notifier-feature-stacks-${branchName}`,
-  {
-    tags: {
-      branch: branchName,
-    },
+new CdkNotfifierFeatureStackExample(app, `cdk-notifier-feature-stacks-${branchName}`, {
+  tags: {
+    branch: branchName,
   },
-);
+});
 ```
 
 <https://github.com/JohannesKonings/cdk-notifier-examples/blob/66874c06b8204b09781e9ad3ab8707590b948000/src/main.ts#L23>

@@ -113,10 +113,7 @@ export class WebappServer extends Construct {
 
     this.webappServer = new Function(this, "WebappServer", {
       code: Code.fromAsset(
-        path.join(
-          path.dirname(new URL(import.meta.url).pathname),
-          "../../.output/server",
-        ),
+        path.join(path.dirname(new URL(import.meta.url).pathname), "../../.output/server"),
       ),
       handler: "index.handler",
       memorySize: 2048,
@@ -127,10 +124,7 @@ export class WebappServer extends Construct {
 
     this.webappServer.addToRolePolicy(
       new PolicyStatement({
-        actions: [
-          "bedrock:InvokeModel",
-          "bedrock:InvokeModelWithResponseStream",
-        ],
+        actions: ["bedrock:InvokeModel", "bedrock:InvokeModelWithResponseStream"],
         effect: Effect.ALLOW,
         resources: ["*"],
       }),
@@ -184,11 +178,7 @@ type WebappAssetsDeploymentProps = {
 };
 
 export class WebappAssetsDeployment extends Construct {
-  constructor(
-    scope: Construct,
-    id: string,
-    props: WebappAssetsDeploymentProps,
-  ) {
+  constructor(scope: Construct, id: string, props: WebappAssetsDeploymentProps) {
     super(scope, id);
 
     const { assetsBucket, distribution } = props;
@@ -221,11 +211,7 @@ Create a REST API Gateway that integrates with the Lambda function and enables s
 > **Reference**: [`lib/constructs/WebappApi.ts`](https://github.com/JohannesKonings/tanstack-aws/blob/main/lib/constructs/WebappApi.ts)
 
 ```ts
-import {
-  EndpointType,
-  LambdaRestApi,
-  ResponseTransferMode,
-} from "aws-cdk-lib/aws-apigateway";
+import { EndpointType, LambdaRestApi, ResponseTransferMode } from "aws-cdk-lib/aws-apigateway";
 import { Construct } from "constructs";
 import { Function } from "aws-cdk-lib/aws-lambda";
 
@@ -276,10 +262,7 @@ import {
   ViewerProtocolPolicy,
 } from "aws-cdk-lib/aws-cloudfront";
 import { Construct } from "constructs";
-import {
-  RestApiOrigin,
-  S3BucketOrigin,
-} from "aws-cdk-lib/aws-cloudfront-origins";
+import { RestApiOrigin, S3BucketOrigin } from "aws-cdk-lib/aws-cloudfront-origins";
 import type { Bucket } from "aws-cdk-lib/aws-s3";
 import type { RestApi } from "aws-cdk-lib/aws-apigateway";
 

@@ -47,10 +47,7 @@ This app contains different usage patterns for log buckets and shows how the cus
 ```typescript
 #!/usr/bin/env node
 import { App, Aspects, Stack } from "aws-cdk-lib";
-import {
-  CustomChecks,
-  CustomChecksSuppressions,
-} from "@jaykingson/cdk-nag-custom-nag-pack";
+import { CustomChecks, CustomChecksSuppressions } from "@jaykingson/cdk-nag-custom-nag-pack";
 import { Bucket } from "aws-cdk-lib/aws-s3";
 
 const app = new App();
@@ -63,17 +60,11 @@ const stack2 = new Stack(app, "Stack2");
 
 // Create a dedicated log bucket that will serve as the central logging destination
 // for other application buckets across the infrastructure
-const logBucketForOtherAppsBuckets = new Bucket(
-  stack,
-  "LogBucketForOtherAppsBuckets",
-  {
-    enforceSSL: true,
-  },
-);
+const logBucketForOtherAppsBuckets = new Bucket(stack, "LogBucketForOtherAppsBuckets", {
+  enforceSSL: true,
+});
 // Usage of the new supression, which also tag as an log bucket
-CustomChecksSuppressions.addLogBucketS1Suppression(
-  logBucketForOtherAppsBuckets,
-);
+CustomChecksSuppressions.addLogBucketS1Suppression(logBucketForOtherAppsBuckets);
 
 // Reference an existing log bucket in Stack2 by its ARN (Amazon Resource Name)
 // This demonstrates importing external resources that may already exist in your AWS account
