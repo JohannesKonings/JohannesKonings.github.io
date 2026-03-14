@@ -1,9 +1,0 @@
-#!/bin/sh
-# @johanneskonings-pre-commit-hook
-
-set -e
-
-REPO_ROOT="$(git rev-parse --show-toplevel)"
-cd "$REPO_ROOT"
-
-pnpm run checks:hook

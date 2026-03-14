@@ -4,6 +4,11 @@
       "command": "pnpx",
       "args": ["@upstash/context7-mcp"],
       "type": "stdio"
+    },
+    "vite-plus": {
+      "command": "npx",
+      "args": ["vp", "mcp"],
+      "type": "stdio"
     }
   },
   "inputs": []

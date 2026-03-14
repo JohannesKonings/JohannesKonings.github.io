@@ -54,22 +54,14 @@ function subscribeToTheme(callback: () => void): () => void {
 }
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
-  const theme = useSyncExternalStore(
-    subscribeToTheme,
-    getThemeSnapshot,
-    getServerSnapshot,
-  );
+  const theme = useSyncExternalStore(subscribeToTheme, getThemeSnapshot, getServerSnapshot);
 
   const setTheme = useCallback((next: Theme) => {
     document.documentElement.classList.toggle("dark", next === "dark");
     localStorage.setItem("theme", next);
   }, []);
 
-  return (
-    <ThemeContext.Provider value={{ theme, setTheme }}>
-      {children}
-    </ThemeContext.Provider>
-  );
+  return <ThemeContext.Provider value={{ theme, setTheme }}>{children}</ThemeContext.Provider>;
 }
 
 export function useTheme() {
@@ -423,10 +415,7 @@ function Home() {
               </h2>
             </div>
 
-            <div
-              ref={cards.ref}
-              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
-            >
+            <div ref={cards.ref} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {recentPosts.map((post, i) => (
                 <div
                   key={post.slug}
@@ -544,9 +533,7 @@ Replace the posts grid section (lines 227-233). Wrap each card in a reveal div:
         <p className="text-gray-600 dark:text-gray-400 text-lg">
           No posts found in the digital archive.
         </p>
-        <p className="text-gray-500 text-sm mt-2">
-          Try adjusting your search criteria.
-        </p>
+        <p className="text-gray-500 text-sm mt-2">Try adjusting your search criteria.</p>
       </div>
     </div>
   ) : (
@@ -564,20 +551,11 @@ Replace the posts grid section (lines 227-233). Wrap each card in a reveal div:
 Add above the `BlogPostList` function:
 
 ```tsx
-function RevealCard({
-  post,
-  index,
-}: {
-  post: (typeof allPosts)[0];
-  index: number;
-}) {
+function RevealCard({ post, index }: { post: (typeof allPosts)[0]; index: number }) {
   const { ref, inView } = useInView({ rootMargin: "0px 0px -20px 0px" });
   const stagger = (index % 3) + 1;
   return (
-    <div
-      ref={ref}
-      className={`reveal ${inView ? "visible" : ""} stagger-${stagger}`}
-    >
+    <div ref={ref} className={`reveal ${inView ? "visible" : ""} stagger-${stagger}`}>
       <BlogPostCard post={post} />
     </div>
   );
@@ -693,25 +671,13 @@ export function BackToTop() {
       type="button"
       onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
       className={`fixed bottom-6 right-6 z-50 p-3 rounded-full bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-600 shadow-lg text-gray-600 dark:text-gray-300 hover:text-cyan-600 dark:hover:text-cyan-400 hover:border-cyan-300 dark:hover:border-cyan-500/50 hover:shadow-cyan-500/20 transition-all duration-300 ${
-        visible
-          ? "opacity-100 translate-y-0"
-          : "opacity-0 translate-y-4 pointer-events-none"
+        visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4 pointer-events-none"
       }`}
       aria-label="Back to top"
       aria-hidden={!visible}
     >
-      <svg
-        className="w-5 h-5"
-        fill="none"
-        stroke="currentColor"
-        viewBox="0 0 24 24"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth={2}
-          d="M5 15l7-7 7 7"
-        />
+      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
       </svg>
     </button>
   );
@@ -773,9 +739,7 @@ export function RelatedPosts({ posts }: RelatedPostsProps) {
       ref={ref}
       className={`mt-12 pt-8 border-t border-gray-200 dark:border-gray-700 reveal-fade reveal ${inView ? "visible" : ""}`}
     >
-      <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-6">
-        Related Posts
-      </h2>
+      <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-6">Related Posts</h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {posts.map((post, i) => (
           <Link

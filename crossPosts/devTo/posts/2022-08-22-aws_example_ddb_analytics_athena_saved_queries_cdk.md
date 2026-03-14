@@ -66,17 +66,11 @@ export class SavedQueries extends Construct {
     super(scope, id);
 
     const getSqlString = (file: string): string => {
-      let personsDdbStateSqlCommand = readFileSync(
-        join(__dirname, `${file}`),
-        "utf-8",
-      ).toString();
+      let personsDdbStateSqlCommand = readFileSync(join(__dirname, `${file}`), "utf-8").toString();
       const athenaDbName = props.glueDb.databaseName;
       let athenaTableName = props.athenaTableName;
       athenaTableName = athenaTableName.replace(/-/g, "_");
-      personsDdbStateSqlCommand = personsDdbStateSqlCommand.replace(
-        /athenaDbName/g,
-        athenaDbName,
-      );
+      personsDdbStateSqlCommand = personsDdbStateSqlCommand.replace(/athenaDbName/g, athenaDbName);
       personsDdbStateSqlCommand = personsDdbStateSqlCommand.replace(
         /athenaTableName/g,
         athenaTableName,

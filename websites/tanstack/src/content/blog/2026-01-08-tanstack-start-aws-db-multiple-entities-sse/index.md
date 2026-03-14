@@ -139,18 +139,9 @@ const queryEventsSince = async (
     Limit: 100,
   };
 
-  console.log(
-    "Persons SSE: Querying events table:",
-    EVENTS_TABLE,
-    "cursor:",
-    lastEventSk,
-  );
+  console.log("Persons SSE: Querying events table:", EVENTS_TABLE, "cursor:", lastEventSk);
   const result = await ddbClient.send(new QueryCommand(params));
-  console.log(
-    "Persons SSE: Query returned",
-    result.Items?.length ?? 0,
-    "events",
-  );
+  console.log("Persons SSE: Query returned", result.Items?.length ?? 0, "events");
   return (result.Items ?? []) as Array<Record<string, unknown>>;
 };
 
@@ -205,14 +196,9 @@ export const Route = createFileRoute("/api/persons-stream")({
 
             // Send initial connected event
             controller.enqueue(
-              encoder.encode(
-                'event: connected\ndata: {"status":"connected"}\n\n',
-              ),
+              encoder.encode('event: connected\ndata: {"status":"connected"}\n\n'),
             );
-            console.log(
-              "Persons SSE: Client connected, EVENTS_TABLE:",
-              EVENTS_TABLE,
-            );
+            console.log("Persons SSE: Client connected, EVENTS_TABLE:", EVENTS_TABLE);
 
             // Define the poll function
             const poll = async (): Promise<void> => {
@@ -224,11 +210,7 @@ export const Route = createFileRoute("/api/persons-stream")({
                 for (const event of events) {
                   controller.enqueue(encoder.encode(formatSseEvent(event)));
                   lastSk = event.sk as string;
-                  console.log(
-                    "Persons SSE: Sent event:",
-                    event.eventType,
-                    event.entityType,
-                  );
+                  console.log("Persons SSE: Sent event:", event.eventType, event.entityType);
                 }
               } catch (error) {
                 console.error("Persons SSE: Poll error:", error);
@@ -254,10 +236,7 @@ export const Route = createFileRoute("/api/persons-stream")({
             }, POLL_INTERVAL_MS);
 
             // Send heartbeats at regular intervals to keep connection alive
-            heartbeatIntervalId = setInterval(
-              sendHeartbeat,
-              HEARTBEAT_INTERVAL_MS,
-            );
+            heartbeatIntervalId = setInterval(sendHeartbeat, HEARTBEAT_INTERVAL_MS);
 
             // Gracefully close the stream before Lambda timeout
             // EventSource will automatically reconnect
@@ -266,14 +245,10 @@ export const Route = createFileRoute("/api/persons-stream")({
               clearInterval(heartbeatIntervalId);
               // Send a final event to signal graceful close
               controller.enqueue(
-                encoder.encode(
-                  'event: reconnect\ndata: {"reason":"timeout"}\n\n',
-                ),
+                encoder.encode('event: reconnect\ndata: {"reason":"timeout"}\n\n'),
               );
               controller.close();
-              console.log(
-                "Persons SSE: Stream closed gracefully before timeout",
-              );
+              console.log("Persons SSE: Stream closed gracefully before timeout");
             }, STREAM_DURATION_MS);
           },
           cancel() {
@@ -378,12 +353,7 @@ export const isFromSse = (): boolean => isApplyingSseChange;
 // Types
 // =============================================================================
 
-type EntityType =
-  | "person"
-  | "address"
-  | "bankAccount"
-  | "contactInfo"
-  | "employment";
+type EntityType = "person" | "address" | "bankAccount" | "contactInfo" | "employment";
 type EventType = "INSERT" | "MODIFY" | "REMOVE";
 
 interface ChangeEventData {
@@ -406,10 +376,7 @@ interface SseSyncState {
 /**
  * Apply an INSERT change to the collection
  */
-const applyInsert = (
-  entityType: EntityType,
-  entity: object | null | undefined,
-): void => {
+const applyInsert = (entityType: EntityType, entity: object | null | undefined): void => {
   if (!entity) {
     return;
   }
@@ -438,10 +405,7 @@ const applyInsert = (
 /**
  * Apply a MODIFY change to the collection
  */
-const applyModify = (
-  entityType: EntityType,
-  entity: object | null | undefined,
-): void => {
+const applyModify = (entityType: EntityType, entity: object | null | undefined): void => {
   if (!entity) {
     return;
   }

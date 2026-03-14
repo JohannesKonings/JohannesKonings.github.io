@@ -94,15 +94,11 @@ const s3Destination = new destinations.S3Bucket(firehoseBucket, {
   processor: lambdaProcessor,
 });
 
-const firehoseDeliveryStream = new firehose.DeliveryStream(
-  this,
-  "Delivery Stream",
-  {
-    deliveryStreamName: `${name}-firehose`,
-    sourceStream: stream,
-    destinations: [s3Destination],
-  },
-);
+const firehoseDeliveryStream = new firehose.DeliveryStream(this, "Delivery Stream", {
+  deliveryStreamName: `${name}-firehose`,
+  sourceStream: stream,
+  destinations: [s3Destination],
+});
 ```
 
 The delivery of the data to the S3 bucket is buffered. Here are the default values.
@@ -139,16 +135,12 @@ const glueDb = new glue.Database(this, "glue db", {
   databaseName: `${name}-db`,
 });
 
-const glueSecurityOptions = new glue.SecurityConfiguration(
-  this,
-  "glue security options",
-  {
-    securityConfigurationName: `${name}-security-options`,
-    s3Encryption: {
-      mode: glue.S3EncryptionMode.KMS,
-    },
+const glueSecurityOptions = new glue.SecurityConfiguration(this, "glue security options", {
+  securityConfigurationName: `${name}-security-options`,
+  s3Encryption: {
+    mode: glue.S3EncryptionMode.KMS,
   },
-);
+});
 
 const crawler = new glue.CfnCrawler(this, "crawler", {
   name: `${name}-crawler`,

@@ -61,10 +61,7 @@ export class WebappServer extends Construct {
 
     this.webappServer = new Function(this, "WebappServer", {
       code: Code.fromAsset(
-        path.join(
-          path.dirname(new URL(import.meta.url).pathname),
-          "../../.output/server",
-        ),
+        path.join(path.dirname(new URL(import.meta.url).pathname), "../../.output/server"),
       ),
       handler: "index.handler",
       memorySize: 2048,
@@ -75,10 +72,7 @@ export class WebappServer extends Construct {
 
     this.webappServer.addToRolePolicy(
       new PolicyStatement({
-        actions: [
-          "bedrock:InvokeModel",
-          "bedrock:InvokeModelWithResponseStream",
-        ],
+        actions: ["bedrock:InvokeModel", "bedrock:InvokeModelWithResponseStream"],
         effect: Effect.ALLOW,
         resources: ["*"],
       }),

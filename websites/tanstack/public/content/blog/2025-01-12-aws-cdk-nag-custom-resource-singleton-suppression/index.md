@@ -253,19 +253,12 @@ const customResourceSuppressPaths = new Set([
 ]);
 
 // Get all existing paths in the stack
-const allExistingPaths = new Set(
-  stack.node.findAll().map((node) => `/${node.node.path}`),
-);
+const allExistingPaths = new Set(stack.node.findAll().map((node) => `/${node.node.path}`));
 
 // Apply suppressions only to paths that exist
 for (const path of customResourceSuppressPaths) {
   if (allExistingPaths.has(path)) {
-    NagSuppressions.addResourceSuppressionsByPath(
-      stack,
-      path,
-      suppressions,
-      true,
-    );
+    NagSuppressions.addResourceSuppressionsByPath(stack, path, suppressions, true);
   }
 }
 ```

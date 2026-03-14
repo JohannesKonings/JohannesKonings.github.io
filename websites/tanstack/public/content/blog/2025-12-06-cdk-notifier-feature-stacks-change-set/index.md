@@ -81,10 +81,7 @@ const app = new App();
 const branchName = process.env.BRANCH_NAME || "dev";
 console.log(`Deploying with stack postfix ${branchName}`);
 
-new CdkNotfifierFeatureStackExample(
-  app,
-  `cdk-notifier-feature-stacks-${branchName}`,
-);
+new CdkNotfifierFeatureStackExample(app, `cdk-notifier-feature-stacks-${branchName}`);
 
 app.synth();
 ```

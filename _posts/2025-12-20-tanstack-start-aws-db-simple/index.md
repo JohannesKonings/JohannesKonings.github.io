@@ -87,10 +87,7 @@ This keeps the application code decoupled from CDK: the Lambda only needs to kno
 ```typescript
 this.webappServer = new Function(this, "WebappServer", {
   code: Code.fromAsset(
-    path.join(
-      path.dirname(new URL(import.meta.url).pathname),
-      "../../.output/server",
-    ),
+    path.join(path.dirname(new URL(import.meta.url).pathname), "../../.output/server"),
   ),
   // functionName: PhysicalName.GENERATE_IF_NEEDED,
   handler: "index.handler",
@@ -202,10 +199,7 @@ const retryBatchWrite = async (args: {
   );
 
   const unprocessedItems = response.UnprocessedItems;
-  if (
-    !unprocessedItems ||
-    Object.keys(unprocessedItems).length === EMPTY_LENGTH
-  ) {
+  if (!unprocessedItems || Object.keys(unprocessedItems).length === EMPTY_LENGTH) {
     return;
   }
 
@@ -300,8 +294,7 @@ export const createTodosDdbClient = (): TodosDdbClient => {
                   sk: todoSortKey(update.id),
                 },
                 UpdateExpression: `SET ${sets.join(", ")}`,
-                ConditionExpression:
-                  "attribute_exists(#pk) AND attribute_exists(#sk)",
+                ConditionExpression: "attribute_exists(#pk) AND attribute_exists(#sk)",
                 ExpressionAttributeNames: names,
                 ExpressionAttributeValues: values,
               }),
@@ -437,9 +430,7 @@ const api = {
     });
   },
 
-  async updateTodos(
-    updates: { id: number; changes: Partial<Omit<Todo, "id">> }[],
-  ) {
+  async updateTodos(updates: { id: number; changes: Partial<Omit<Todo, "id">> }[]) {
     await fetch(todoApiPath, {
       method: "PUT",
       headers: {

@@ -61,9 +61,7 @@ const REGION = "eu-central-1";
 const SERVICE = "execute-api";
 
 type SigV4Props = {
-  readonly credentials?:
-    | AwsCredentialIdentity
-    | Provider<AwsCredentialIdentity>;
+  readonly credentials?: AwsCredentialIdentity | Provider<AwsCredentialIdentity>;
   readonly method: string;
   readonly headers: Record<string, string>;
   readonly body?: BodyInit | undefined | null;
@@ -211,8 +209,7 @@ export const handler = async (event: { apiKey: string }) => {
     const dataAxiosGet = responseApiAxiosGet.data;
     console.log(dataAxiosGet);
     // POST ky
-    const urlKyPost =
-      "https://<<api gw id>>.execute-api.eu-central-1.amazonaws.com/default";
+    const urlKyPost = "https://<<api gw id>>.execute-api.eu-central-1.amazonaws.com/default";
     const signedRequestKyPost = await signV4({
       credentials: {
         accessKeyId: response.Credentials.AccessKeyId,
@@ -235,8 +232,7 @@ export const handler = async (event: { apiKey: string }) => {
     const dataKyPost = await responseApiKyPost.json();
     console.log(dataKyPost);
     // POST fetch
-    const urlFetchPost =
-      "https://<<api gw id>>.execute-api.eu-central-1.amazonaws.com/default";
+    const urlFetchPost = "https://<<api gw id>>.execute-api.eu-central-1.amazonaws.com/default";
     const signedRequestFetchPost = await signV4({
       credentials: {
         accessKeyId: response.Credentials.AccessKeyId,
@@ -259,8 +255,7 @@ export const handler = async (event: { apiKey: string }) => {
     const dataFetchPost = await responseApiFetchPost.json();
     console.log(dataFetchPost);
     // POST axios
-    const urlAxiosPost =
-      "https://<<api gw id>>.execute-api.eu-central-1.amazonaws.com/default";
+    const urlAxiosPost = "https://<<api gw id>>.execute-api.eu-central-1.amazonaws.com/default";
     const signedRequestAxiosPost = await signV4({
       credentials: {
         accessKeyId: response.Credentials.AccessKeyId,
@@ -275,13 +270,9 @@ export const handler = async (event: { apiKey: string }) => {
       body: JSON.stringify({ client: "axios" }),
       url: new URL(urlAxiosPost),
     });
-    const responseApiAxiosPost = await axios.post(
-      urlAxiosPost,
-      signedRequestAxiosPost.body,
-      {
-        headers: signedRequestAxiosPost.headers,
-      },
-    );
+    const responseApiAxiosPost = await axios.post(urlAxiosPost, signedRequestAxiosPost.body, {
+      headers: signedRequestAxiosPost.headers,
+    });
     const dataAxiosPost = responseApiAxiosPost.data;
     console.log(dataAxiosPost);
   } catch (error) {
@@ -310,8 +301,7 @@ The call of the API Gateway is than calling the signV4 function with the credent
 e.g. for a GET call
 
 ```typescript
-const urlKyGet =
-  "https://<<api gw id>>.execute-api.eu-central-1.amazonaws.com/default?client=ky";
+const urlKyGet = "https://<<api gw id>>.execute-api.eu-central-1.amazonaws.com/default?client=ky";
 const signedRequestKyGet = await signV4({
   credentials: {
     accessKeyId: response.Credentials.AccessKeyId,

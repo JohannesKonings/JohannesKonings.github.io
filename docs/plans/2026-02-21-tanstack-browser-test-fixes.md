@@ -89,18 +89,8 @@ export function BackToTop() {
       className="fixed bottom-6 right-6 z-50 p-3 rounded-full bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-600 shadow-lg text-gray-600 dark:text-gray-300 hover:text-cyan-600 dark:hover:text-cyan-400 hover:border-cyan-300 dark:hover:border-cyan-500/50 transition-all duration-300"
       aria-label="Back to top"
     >
-      <svg
-        className="w-5 h-5"
-        fill="none"
-        stroke="currentColor"
-        viewBox="0 0 24 24"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth={2}
-          d="M5 15l7-7 7 7"
-        />
+      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
       </svg>
     </button>
   );
@@ -148,11 +138,8 @@ export function ReadingProgressBar() {
 
     const update = () => {
       const scrollTop = window.scrollY;
-      const docHeight =
-        document.documentElement.scrollHeight - window.innerHeight;
-      setProgress(
-        docHeight > 0 ? Math.min((scrollTop / docHeight) * 100, 100) : 0,
-      );
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      setProgress(docHeight > 0 ? Math.min((scrollTop / docHeight) * 100, 100) : 0);
     };
 
     update();
@@ -206,8 +193,7 @@ git commit -m "fix: add SSR guard to ReadingProgressBar scroll listener"
 useEffect(() => {
   const stored = localStorage.getItem("theme");
   const prefersDark =
-    typeof window !== "undefined" &&
-    window.matchMedia?.("(prefers-color-scheme: dark)").matches;
+    typeof window !== "undefined" && window.matchMedia?.("(prefers-color-scheme: dark)").matches;
   const dark = stored === "dark" || (!stored && prefersDark);
   setThemeState(dark ? "dark" : "light");
 }, []);
@@ -224,11 +210,7 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     localStorage.setItem("theme", next);
   }, []);
 
-  return (
-    <ThemeContext.Provider value={{ theme, setTheme }}>
-      {children}
-    </ThemeContext.Provider>
-  );
+  return <ThemeContext.Provider value={{ theme, setTheme }}>{children}</ThemeContext.Provider>;
 }
 ```
 

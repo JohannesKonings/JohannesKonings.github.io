@@ -3,21 +3,21 @@
   "version": "1.0.0",
   "description": "",
   "keywords": [],
-  "license": "ISC",
+  "license": "MIT",
   "author": "",
   "type": "module",
   "scripts": {
     "sync": "pnpm tsx ./../../scripts/syncWebsites.ts tanstack",
     "sync-content": "cp -r src/content public/",
-    "dev": "pnpm sync && vite dev",
-    "build": "pnpm sync && pnpm tsx ../../scripts/generateTanstackSitemap.ts && pnpm tsx ../../scripts/generateTanstackRss.ts && vite build",
-    "build:with-typecheck": "pnpm sync && tsgo --noEmit && vite build",
-    "start": "pnpm sync && vite start",
-    "test": "vitest",
+    "dev": "pnpm sync && vp dev",
+    "build": "pnpm sync && pnpm tsx ../../scripts/generateTanstackSitemap.ts && pnpm tsx ../../scripts/generateTanstackRss.ts && vp build",
+    "build:with-typecheck": "pnpm sync && tsgo --noEmit && vp build",
+    "start": "pnpm sync && vp start",
+    "test": "vp test",
     "test:all": "pnpm run test:ui && pnpm run test:smoke",
     "test:smoke": "playwright test",
-    "test:ui": "vitest run",
-    "test:ui:dev": "vitest --ui",
+    "test:ui": "vp test run",
+    "test:ui:dev": "vp test --ui",
     "type-check": "tsgo --noEmit"
   },
   "dependencies": {
@@ -51,9 +51,10 @@
     "postcss": "8.5.8",
     "reading-time": "1.5.0",
     "tailwindcss": "4.2.1",
-    "vite": "8.0.0-beta.11",
+    "vite": "catalog:",
+    "vite-plus": "catalog:",
     "vite-tsconfig-paths": "6.1.1",
-    "vitest": "^4.0.18",
+    "vitest": "catalog:",
     "zod": "4.3.6"
   }
 }

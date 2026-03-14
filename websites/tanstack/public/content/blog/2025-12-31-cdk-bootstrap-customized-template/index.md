@@ -465,20 +465,14 @@ import { mkdirSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { CDK_STANDDARD_TEMPLATE_FILE_NAME } from "./bootstrap";
 
-const resultCdkStandardTemplate = execSync(
-  "pnpm exec cdk bootstrap --show-template",
-  {
-    encoding: "utf8",
-  },
-);
+const resultCdkStandardTemplate = execSync("pnpm exec cdk bootstrap --show-template", {
+  encoding: "utf8",
+});
 
 const generatedDir = join(import.meta.dirname, "..", "generated");
 mkdirSync(generatedDir, { recursive: true });
 
-writeFileSync(
-  join(generatedDir, CDK_STANDDARD_TEMPLATE_FILE_NAME),
-  resultCdkStandardTemplate,
-);
+writeFileSync(join(generatedDir, CDK_STANDDARD_TEMPLATE_FILE_NAME), resultCdkStandardTemplate);
 ```
 
 </details>
@@ -496,18 +490,10 @@ The log bucket configuration is embedded into the template using the CloudFormat
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { parse, stringify } from "yaml";
-import {
-  CDK_CUSTOMIZED_TEMPLATE_FILE_NAME,
-  CDK_STANDDARD_TEMPLATE_FILE_NAME,
-} from "./bootstrap";
+import { CDK_CUSTOMIZED_TEMPLATE_FILE_NAME, CDK_STANDDARD_TEMPLATE_FILE_NAME } from "./bootstrap";
 
 const cdkStandardTemplate = readFileSync(
-  join(
-    import.meta.dirname,
-    "..",
-    "generated",
-    CDK_STANDDARD_TEMPLATE_FILE_NAME,
-  ),
+  join(import.meta.dirname, "..", "generated", CDK_STANDDARD_TEMPLATE_FILE_NAME),
   {
     encoding: "utf8",
   },
@@ -520,11 +506,10 @@ if (!cdkBootstrapTemplate) {
 
 // Add LoggingConfiguration to StagingBucket using Fn::ImportValue
 if (cdkBootstrapTemplate.Resources?.StagingBucket?.Properties) {
-  cdkBootstrapTemplate.Resources.StagingBucket.Properties.LoggingConfiguration =
-    {
-      DestinationBucketName: { "Fn::ImportValue": "log-bucket-name" },
-      LogFilePrefix: "staging-bucket-logs/",
-    };
+  cdkBootstrapTemplate.Resources.StagingBucket.Properties.LoggingConfiguration = {
+    DestinationBucketName: { "Fn::ImportValue": "log-bucket-name" },
+    LogFilePrefix: "staging-bucket-logs/",
+  };
 }
 
 const generatedDir = join(import.meta.dirname, "..", "generated");
@@ -554,22 +539,13 @@ Note that the log bucket configuration is already embedded in the customized tem
 <summary>Show bootstrap script</summary>
 
 ```typescript
-import {
-  BootstrapEnvironments,
-  BootstrapStackParameters,
-  Toolkit,
-} from "@aws-cdk/toolkit-lib";
-import {
-  CloudFormationClient,
-  DescribeStacksCommand,
-} from "@aws-sdk/client-cloudformation";
+import { BootstrapEnvironments, BootstrapStackParameters, Toolkit } from "@aws-cdk/toolkit-lib";
+import { CloudFormationClient, DescribeStacksCommand } from "@aws-sdk/client-cloudformation";
 import path from "node:path";
 import { join } from "node:path";
 
-export const CDK_STANDDARD_TEMPLATE_FILE_NAME =
-  "resultCdkStandardTemplate.yaml";
-export const CDK_CUSTOMIZED_TEMPLATE_FILE_NAME =
-  "resultCdkCustomizedTemplate.yaml";
+export const CDK_STANDDARD_TEMPLATE_FILE_NAME = "resultCdkStandardTemplate.yaml";
+export const CDK_CUSTOMIZED_TEMPLATE_FILE_NAME = "resultCdkCustomizedTemplate.yaml";
 
 const toolkit = new Toolkit();
 

@@ -4,9 +4,9 @@
       "staticDistDir": "./websites/tanstack/.output/public",
       "url": ["/", "/blog.html", "/blog/2026-02-02-tanstack-ai-bedrock-simple/index.html"],
       "numberOfRuns": 1,
-      "chromeFlags": "--headless=new --no-sandbox --disable-dev-shm-usage --disable-gpu",
       "settings": {
-        "preset": "desktop"
+        "preset": "desktop",
+        "chromeFlags": "--headless=new --no-sandbox --disable-dev-shm-usage --disable-gpu"
       }
     },
     "assert": {

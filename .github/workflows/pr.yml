@@ -4,79 +4,29 @@ on:
   pull_request:
     branches:
       - main
+      - vite-plus
 
 jobs:
-  format-check:
-    name: Format check
+  checks:
+    name: Repo checks
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - uses: pnpm/action-setup@v4
+      - name: Setup Vite+
+        uses: voidzero-dev/setup-vp@v1
         with:
-          version: 9
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version-file: .nvmrc
-          check-latest: true
+          node-version: "24"
+          cache: true
+          run-install: false
 
       - name: Install dependencies
-        run: pnpm i --frozen-lockfile
+        run: vp install --frozen-lockfile
 
-      - name: Run format check
-        run: pnpm run format:check
-
-  lint-check:
-    name: Lint check
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - uses: pnpm/action-setup@v4
-        with:
-          version: 9
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version-file: .nvmrc
-          check-latest: true
-
-      - name: Install dependencies
-        run: pnpm i --frozen-lockfile
-
-      - name: Run lint check
-        run: pnpm run lint:check
-
-  typescript-check:
-    name: TypeScript check
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - uses: pnpm/action-setup@v4
-        with:
-          version: 9
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version-file: .nvmrc
-          check-latest: true
-
-      - name: Install dependencies
-        run: pnpm i --frozen-lockfile
-
-      - name: Run TypeScript check
-        run: pnpm run tsc:check
+      - name: Run repo checks
+        run: vp check
 
   tanstack-tests:
     name: TanStack tests
@@ -86,24 +36,21 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - uses: pnpm/action-setup@v4
+      - name: Setup Vite+
+        uses: voidzero-dev/setup-vp@v1
         with:
-          version: 9
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version-file: .nvmrc
-          check-latest: true
+          node-version: "24"
+          cache: true
+          run-install: false
 
       - name: Install dependencies
-        run: pnpm i --frozen-lockfile
+        run: vp install --frozen-lockfile
 
       - name: Install Playwright browser
-        run: pnpm --filter tanstack exec playwright install --with-deps chromium
+        run: vp exec --filter tanstack -- playwright install --with-deps chromium
 
       - name: Run TanStack tests
-        run: pnpm --filter tanstack test:all
+        run: vp run --filter tanstack test:all
 
   tanstack-build:
     name: TanStack build
@@ -113,21 +60,18 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - uses: pnpm/action-setup@v4
+      - name: Setup Vite+
+        uses: voidzero-dev/setup-vp@v1
         with:
-          version: 9
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version-file: .nvmrc
-          check-latest: true
+          node-version: "24"
+          cache: true
+          run-install: false
 
       - name: Install dependencies
-        run: pnpm i --frozen-lockfile
+        run: vp install --frozen-lockfile
 
       - name: Run TanStack build
-        run: pnpm run build:tanstack
+        run: vp run build:tanstack
 
       - name: Upload TanStack build artifact
         uses: actions/upload-artifact@v4
@@ -145,18 +89,15 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - uses: pnpm/action-setup@v4
+      - name: Setup Vite+
+        uses: voidzero-dev/setup-vp@v1
         with:
-          version: 9
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version-file: .nvmrc
-          check-latest: true
+          node-version: "24"
+          cache: true
+          run-install: false
 
       - name: Install dependencies
-        run: pnpm i --frozen-lockfile
+        run: vp install --frozen-lockfile
 
       - name: Download TanStack build artifact
         uses: actions/download-artifact@v4
@@ -165,7 +106,7 @@ jobs:
           path: websites/tanstack/.output/public
 
       - name: Verify TanStack SEO and GEO
-        run: pnpm run verify:tanstack:seo-geo
+        run: vp run verify:tanstack:seo-geo
 
   tanstack-lighthouse:
     name: TanStack Lighthouse
@@ -176,21 +117,18 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - uses: pnpm/action-setup@v4
+      - name: Setup Vite+
+        uses: voidzero-dev/setup-vp@v1
         with:
-          version: 9
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version-file: .nvmrc
-          check-latest: true
+          node-version: "24"
+          cache: true
+          run-install: false
 
       - name: Install dependencies
-        run: pnpm i --frozen-lockfile
+        run: vp install --frozen-lockfile
 
       - name: Install Playwright browser
-        run: pnpm --filter tanstack exec playwright install --with-deps chromium
+        run: vp exec --filter tanstack -- playwright install --with-deps chromium
 
       - name: Download TanStack build artifact
         uses: actions/download-artifact@v4
@@ -199,4 +137,4 @@ jobs:
           path: websites/tanstack/.output/public
 
       - name: Run TanStack Lighthouse checks
-        run: pnpm run verify:tanstack:lighthouse
+        run: vp run verify:tanstack:lighthouse

@@ -136,15 +136,11 @@ extendZodWithOpenApi(z);
 
 const registry = new OpenAPIRegistry();
 
-const apiKeyComponent = registry.registerComponent(
-  "securitySchemes",
-  "api_key",
-  {
-    type: "apiKey",
-    name: "x-api-key",
-    in: "header",
-  },
-);
+const apiKeyComponent = registry.registerComponent("securitySchemes", "api_key", {
+  type: "apiKey",
+  name: "x-api-key",
+  in: "header",
+});
 
 registry.register("Todo", schemaTodoApi.openapi({}));
 registry.register("AddTodo", schemaAddTodoApi.openapi({}));
@@ -322,8 +318,7 @@ const modelTodoFields = Object.keys(schemaTodoValues).reduce((acc, key) => {
   const keyOfSchemaTodoKeyValues = key as keyof typeof schemaTodoValues;
   const shapeType = schemaTodoDdb.shape[keyOfSchemaTodoKeyValues];
 
-  const { type, required, generate, enumValues, defaultValue } =
-    deriveAttributes(shapeType);
+  const { type, required, generate, enumValues, defaultValue } = deriveAttributes(shapeType);
 
   return {
     ...acc,
@@ -412,10 +407,7 @@ const onetable = {
   queries: {},
 };
 
-fs.writeFileSync(
-  "./src/definitions/mymodel-zod.json",
-  JSON.stringify(onetable, null, 2),
-);
+fs.writeFileSync("./src/definitions/mymodel-zod.json", JSON.stringify(onetable, null, 2));
 ```
 
 ### Integration into the file creation workflow
@@ -424,10 +416,7 @@ The definition files can now be generated based on a zod schema. So that that wi
 
 ```typescript
 const taskDefinitionsCreation = project.addTask("definitionsCreation", {
-  steps: [
-    { exec: "ts-node ./src/zod/openapi.ts" },
-    { exec: "ts-node ./src/zod/onetable.ts" },
-  ],
+  steps: [{ exec: "ts-node ./src/zod/openapi.ts" }, { exec: "ts-node ./src/zod/onetable.ts" }],
 });
 project.defaultTask!.prependSpawn(taskDefinitionsCreation);
 ```

@@ -6,7 +6,7 @@
   "bugs": {
     "url": "https://github.com/JohannesKonings/JohannesKonings.github.io/issues"
   },
-  "license": "GPL-3.0-or-later",
+  "license": "MIT",
   "author": "Johannes Konings",
   "repository": {
     "type": "git",
@@ -14,25 +14,23 @@
   },
   "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "knip": "knip",
-    "format:check": "pnpm oxfmt --config ./.oxfmtrc.json --check \"**/*.{js,mjs,cjs,jsx,ts,tsx,json,css,html}\"",
-    "format:fix": "pnpm oxfmt --config ./.oxfmtrc.json --write \"**/*.{js,mjs,cjs,jsx,ts,tsx,json,css,html}\"",
-    "lint:check": "pnpm oxlint --config ./oxlint.config.ts",
-    "lint:fix": "pnpm oxlint --config ./oxlint.config.ts --fix",
-    "dev:tanstack": "pnpm --filter tanstack dev",
+    "knip": "vp exec knip",
+    "format:check": "vp fmt --check",
+    "format:fix": "vp fmt",
+    "lint:check": "vp lint",
+    "lint:fix": "vp lint --fix",
+    "dev:tanstack": "vp run --filter tanstack dev",
     "demo:theme": "node websites/tanstack/scripts/theme-toggle-demo.mjs",
-    "build:tanstack": "pnpm --filter tanstack build",
-    "verify:tanstack": "tsx scripts/verifyTanstack.ts",
-    "verify:tanstack:seo-geo": "tsx scripts/verifyTanstackSeoGeo.ts",
-    "verify:tanstack:lighthouse": "tsx scripts/runTanstackLighthouse.ts",
-    "tsc": "tsgo",
-    "tsc:check": "tsgo --noEmit",
-    "tsc:watch": "tsgo -w",
-    "checks:hook": "pnpm run format:check && pnpm run lint:check && pnpm run tsc:check",
-    "checks:pr": "pnpm run checks:hook && pnpm --filter tanstack test:all && pnpm run build:tanstack && pnpm run verify:tanstack:seo-geo && pnpm run verify:tanstack:lighthouse",
-    "hooks:install": "pnpm tsx scripts/installGitHooks.ts",
-    "prepare": "pnpm run hooks:install"
+    "build:tanstack": "vp run --filter tanstack build",
+    "verify:tanstack": "vp exec tsx scripts/verifyTanstack.ts",
+    "verify:tanstack:seo-geo": "vp exec tsx scripts/verifyTanstackSeoGeo.ts",
+    "verify:tanstack:lighthouse": "vp exec tsx scripts/runTanstackLighthouse.ts",
+    "tsc": "vp exec tsgo",
+    "tsc:check": "vp exec tsgo --noEmit",
+    "tsc:watch": "vp exec tsgo -w",
+    "checks:hook": "vp check",
+    "checks:pr": "vp check && vp run --filter tanstack test:all && vp run build:tanstack && vp run verify:tanstack:seo-geo && vp run verify:tanstack:lighthouse",
+    "prepare": "vp config"
   },
   "devDependencies": {
     "@lhci/cli": "^0.15.1",
@@ -40,12 +38,11 @@
     "@typescript/native-preview": "7.0.0-dev.20260219.1",
     "execa": "9.6.1",
     "knip": "5.86.0",
-    "oxfmt": "0.36.0",
-    "oxlint": "1.51.0",
-    "oxlint-tsgolint": "^0.16.0",
     "tsx": "4.21.0",
-    "typescript": "5.9.3"
+    "typescript": "5.9.3",
+    "vite-plus": "catalog:"
   },
+  "packageManager": "pnpm@10.32.1",
   "pnpm": {
     "overrides": {
       "@isaacs/brace-expansion@^5.0.0": "5.0.1",

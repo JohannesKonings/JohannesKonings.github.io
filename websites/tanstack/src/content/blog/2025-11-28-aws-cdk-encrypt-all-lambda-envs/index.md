@@ -69,9 +69,7 @@ const app = new App();
 const stack = new StackMain(app, "StackMain", {});
 
 // Option 1: Use Aspect (recommended for production - stable API)
-Aspects.of(app).add(
-  new LambdaEnvEncryptionSetterAspect(stack.encryptionKey.keyArn),
-);
+Aspects.of(app).add(new LambdaEnvEncryptionSetterAspect(stack.encryptionKey.keyArn));
 
 // Option 2: Use Mixin (developer preview - more flexible but API may change)
 // Mixins.of(app).apply(
@@ -130,10 +128,7 @@ export class LambdaEnvEncryptionSetterPropertyInjector implements IPropertyInjec
     this.constructUniqueId = Function.PROPERTY_INJECTION_ID;
   }
 
-  public inject(
-    originalProps: FunctionProps,
-    _context: InjectionContext,
-  ): FunctionProps {
+  public inject(originalProps: FunctionProps, _context: InjectionContext): FunctionProps {
     return {
       ...originalProps,
       environmentEncryption: this.key,
