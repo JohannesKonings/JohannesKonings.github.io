@@ -1,8 +1,8 @@
 #!/usr/bin/env tsx
-import { execFileSync } from "node:child_process";
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { auditTanstackBlogContent } from "./tanstackContentAudit";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.join(__dirname, "..");
@@ -116,33 +116,11 @@ function findRepresentativeArchiveHtml(kind: "category" | "series" | "tag") {
 }
 
 function getArchiveCountsFromApp() {
-  const websiteDir = path.join(ROOT, "websites/tanstack");
-  const output = execFileSync(
-    "pnpm",
-    [
-      "tsx",
-      "-e",
-      [
-        "import('./src/lib/content-utils.ts').then((m)=>{",
-        "console.log(JSON.stringify({",
-        "tags:m.getAllTags().length,",
-        "categories:m.getAllCategories().length,",
-        "series:m.getAllSeries().length",
-        "}));",
-        "}).catch((error)=>{console.error(error);process.exit(1);})",
-      ].join(""),
-    ],
-    {
-      cwd: websiteDir,
-      encoding: "utf8",
-      stdio: "pipe",
-    },
-  ).trim();
-
-  return JSON.parse(output) as {
-    categories: number;
-    series: number;
-    tags: number;
+  const audit = auditTanstackBlogContent(path.join(ROOT, "websites/tanstack/src/content/blog"));
+  return {
+    categories: audit.categoryCount,
+    series: audit.seriesCount,
+    tags: audit.tagCount,
   };
 }
 

@@ -4,10 +4,12 @@ import fs from "node:fs";
 import path from "node:path";
 import test from "node:test";
 import { fileURLToPath } from "node:url";
+import { auditTanstackBlogContent } from "./tanstackContentAudit.ts";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.join(__dirname, "..");
 const WEBSITE_DIR = path.join(ROOT, "websites", "tanstack");
+const CONTENT_BLOG_DIR = path.join(WEBSITE_DIR, "src", "content", "blog");
 const SITEMAP_PATH = path.join(WEBSITE_DIR, "public", "sitemap-index.xml");
 const RSS_PATH = path.join(WEBSITE_DIR, "public", "rss.xml");
 
@@ -19,38 +21,6 @@ function runInWebsite(...args) {
   });
 }
 
-function getArchiveCountsFromApp() {
-  const output = runInWebsite(
-    "tsx",
-    "-e",
-    [
-      "import('./src/lib/content-utils.ts').then((m)=>{",
-      "console.log(JSON.stringify({",
-      "tags:m.getAllTags().length,",
-      "categories:m.getAllCategories().length,",
-      "series:m.getAllSeries().length",
-      "}));",
-      "}).catch((error)=>{console.error(error);process.exit(1);})",
-    ].join(""),
-  ).trim();
-
-  return JSON.parse(output);
-}
-
-function getPublishedPostCountFromApp() {
-  const output = runInWebsite(
-    "tsx",
-    "-e",
-    [
-      "import('content-collections').then((m)=>{",
-      "console.log(JSON.stringify({publishedPosts:m.allPosts.filter((post)=>post.published).length}));",
-      "}).catch((error)=>{console.error(error);process.exit(1);})",
-    ].join(""),
-  ).trim();
-
-  return JSON.parse(output).publishedPosts;
-}
-
 function countMatches(value, pattern) {
   return (value.match(pattern) || []).length;
 }
@@ -59,21 +29,21 @@ void test("sitemap generator keeps blog archive coverage aligned with app conten
   runInWebsite("tsx", "../../scripts/generateTanstackSitemap.ts");
 
   const sitemap = fs.readFileSync(SITEMAP_PATH, "utf8");
-  const archiveCounts = getArchiveCountsFromApp();
+  const archiveCounts = auditTanstackBlogContent(CONTENT_BLOG_DIR);
 
   assert.equal(
     countMatches(sitemap, /<loc>https:\/\/johanneskonings\.dev\/blog\/tag\/[^<]+<\/loc>/g),
-    archiveCounts.tags,
+    archiveCounts.tagCount,
     "sitemap should include one URL per published blog tag",
   );
   assert.equal(
     countMatches(sitemap, /<loc>https:\/\/johanneskonings\.dev\/blog\/category\/[^<]+<\/loc>/g),
-    archiveCounts.categories,
+    archiveCounts.categoryCount,
     "sitemap should include one URL per published blog category",
   );
   assert.equal(
     countMatches(sitemap, /<loc>https:\/\/johanneskonings\.dev\/blog\/series\/[^<]+<\/loc>/g),
-    archiveCounts.series,
+    archiveCounts.seriesCount,
     "sitemap should include one URL per published blog series",
   );
   assert.doesNotMatch(
@@ -87,7 +57,7 @@ void test("rss generator includes every published blog post including flat markd
   runInWebsite("tsx", "../../scripts/generateTanstackRss.ts");
 
   const rss = fs.readFileSync(RSS_PATH, "utf8");
-  const publishedPosts = getPublishedPostCountFromApp();
+  const publishedPosts = auditTanstackBlogContent(CONTENT_BLOG_DIR).publishedPostCount;
 
   assert.equal(
     countMatches(rss, /<item>/g),
