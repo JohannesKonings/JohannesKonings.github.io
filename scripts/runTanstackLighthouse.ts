@@ -7,7 +7,6 @@ import { execa } from "execa";
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.join(__dirname, "..");
 const LIGHTHOUSE_OUTPUT_DIR = path.join(ROOT, ".lighthouseci");
-const TANSTACK_DIR = path.join(ROOT, "websites/tanstack");
 
 async function resolveSystemChromePath() {
   try {
@@ -34,7 +33,7 @@ async function resolveChromiumPath() {
         "import('@playwright/test').then(({ chromium }) => console.log(chromium.executablePath()))",
       ],
       {
-        cwd: TANSTACK_DIR,
+        cwd: ROOT,
       },
     );
 

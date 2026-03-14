@@ -9,8 +9,8 @@ import { fileURLToPath } from "node:url";
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.join(__dirname, "..");
 const BASE_URL = "https://johanneskonings.dev";
-const CONTENT_BLOG = path.join(ROOT, "websites/tanstack/src/content/blog");
-const OUT_FILE = path.join(ROOT, "websites/tanstack/public/rss.xml");
+const CONTENT_BLOG = path.join(ROOT, "src/content/blog");
+const OUT_FILE = path.join(ROOT, "public/rss.xml");
 
 const SITE_TITLE = "Johannes Konings";
 const SITE_DESCRIPTION = "Notes and posts on AWS and TanStack.";
