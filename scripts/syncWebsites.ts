@@ -1,56 +1,91 @@
-import { execa } from "execa";
 import fs from "node:fs";
 import path from "node:path";
+import { fileURLToPath } from "node:url";
 
-async function sync(from: string, to: string, pathPrefix: string) {
-  console.log("Syncing", from, "to", to);
-  console.log("Current directory", process.cwd());
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const ROOT = path.join(__dirname, "..");
+const CONTENT_ROOT = path.join(ROOT, "src/content");
+const PUBLIC_CONTENT_ROOT = path.join(ROOT, "public/content");
+const MARKDOWN_EXTENSIONS = new Set([".md", ".mdx"]);
 
-  const { stdout: stdoutCleanup } = await execa`rm -rf ./../../${pathPrefix}/${to}`;
-  console.log("current files removed", stdoutCleanup);
-  const { stdout: stdoutCopy } =
-    // await execa`cp -r ./../../${from}/ ./../../${pathPrefix}`;
-    await execa`cp -r ./../../${from}/ ./../../${pathPrefix}/${to}`;
-  console.log("files copied", stdoutCopy);
-  // rename _posts to blog -> copy of folders below _posts was somehow not possible
-  // const { stdout: stdoutRename } =
-  // 	await execa`mv ./../../${pathPrefix}/${from} ./../../${pathPrefix}/${to}`;
-  // console.log("moved", stdoutRename);
+function copyDirectory(source: string, destination: string) {
+  fs.rmSync(destination, { recursive: true, force: true });
+  fs.mkdirSync(path.dirname(destination), { recursive: true });
+  fs.cpSync(source, destination, { recursive: true });
+}
 
-  //   markdown post processing
+function isMarkdownFile(filePath: string) {
+  return MARKDOWN_EXTENSIONS.has(path.extname(filePath).toLowerCase());
+}
 
-  const markdownFiles = fs
-    .readdirSync(`./../../${pathPrefix}/${to}`, { recursive: true })
-    .filter((file) => {
-      return path.extname(file.toString()) === ".md";
-    });
+function copyAssetFiles(source: string, destination: string) {
+  const entries = fs.readdirSync(source, { withFileTypes: true });
 
-  for (const file of markdownFiles) {
-    // Process each markdown file here
-    const filePath = path.join(`./../../${pathPrefix}/${to}`, file.toString());
+  for (const entry of entries) {
+    const sourcePath = path.join(source, entry.name);
+    const destinationPath = path.join(destination, entry.name);
+
+    if (entry.isDirectory()) {
+      copyAssetFiles(sourcePath, destinationPath);
+      continue;
+    }
+
+    if (isMarkdownFile(sourcePath)) {
+      continue;
+    }
+
+    fs.mkdirSync(path.dirname(destinationPath), { recursive: true });
+    fs.copyFileSync(sourcePath, destinationPath);
+  }
+}
+
+function collectMarkdownFiles(directory: string): string[] {
+  const entries = fs.readdirSync(directory, { withFileTypes: true });
+  const markdownFiles: string[] = [];
+
+  for (const entry of entries) {
+    const entryPath = path.join(directory, entry.name);
+
+    if (entry.isDirectory()) {
+      markdownFiles.push(...collectMarkdownFiles(entryPath));
+      continue;
+    }
+
+    if (path.extname(entry.name) === ".md") {
+      markdownFiles.push(entryPath);
+    }
+  }
+
+  return markdownFiles;
+}
+
+function stripLayoutFrontmatter(directory: string) {
+  for (const filePath of collectMarkdownFiles(directory)) {
     const markdownContent = fs.readFileSync(filePath, "utf-8");
     const markdownContentWithoutLayout = markdownContent.replace(/^.*layout:.*$\n?/gm, "");
     fs.writeFileSync(filePath, markdownContentWithoutLayout);
   }
 }
 
-const syncTanstack = async () => {
-  const pathPrefix = "websites/tanstack/src/content";
-  await sync("_posts", "blog", pathPrefix);
-  await sync("_notes", "notes", pathPrefix);
+function syncContentSource(sourceDirectory: string, destinationName: "blog" | "notes") {
+  const sourcePath = path.join(ROOT, sourceDirectory);
+  const destinationPath = path.join(CONTENT_ROOT, destinationName);
 
-  // Also copy content to public directory for static serving
-  console.log("Copying content to public directory for static serving");
-  const { stdout: stdoutPublicCopy } =
-    await execa`cp -r ./../../websites/tanstack/src/content ./../../websites/tanstack/public/`;
-  console.log("public content copied", stdoutPublicCopy);
-};
+  console.log(`Syncing ${sourceDirectory} to src/content/${destinationName}`);
+  copyDirectory(sourcePath, destinationPath);
+  stripLayoutFrontmatter(destinationPath);
+}
 
 const website = process.argv[2];
 
-if (website === "tanstack") {
-  console.log("Synced Tanstack");
-  await syncTanstack();
-} else {
+if (website && website !== "tanstack") {
   console.error("Unknown website", website);
+  process.exit(1);
 }
+
+syncContentSource("_posts", "blog");
+syncContentSource("_notes", "notes");
+
+console.log("Copying synced assets to public/content");
+fs.rmSync(PUBLIC_CONTENT_ROOT, { recursive: true, force: true });
+copyAssetFiles(CONTENT_ROOT, PUBLIC_CONTENT_ROOT);

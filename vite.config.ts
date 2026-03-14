@@ -1,6 +1,122 @@
 import { defineConfig } from "vite-plus";
+import tsConfigPaths from "vite-tsconfig-paths";
+import tailwindcss from "@tailwindcss/vite";
+import { tanstackStart } from "@tanstack/react-start/plugin/vite";
+import contentCollections from "@content-collections/vite";
+import { copyFileSync, mkdirSync, existsSync, readdirSync, rmSync, statSync } from "fs";
+import { join, dirname, extname } from "path";
+
+function syncContentPlugin() {
+  const isMarkdownFile = (filePath: string) =>
+    [".md", ".mdx"].includes(extname(filePath).toLowerCase());
+
+  const copyAssetFiles = (src: string, dest: string) => {
+    const items = readdirSync(src);
+    for (const item of items) {
+      const srcPath = join(src, item);
+      const destPath = join(dest, item);
+
+      if (statSync(srcPath).isDirectory()) {
+        copyAssetFiles(srcPath, destPath);
+      } else {
+        if (isMarkdownFile(srcPath)) {
+          continue;
+        }
+
+        if (!existsSync(destPath) || statSync(srcPath).mtime > statSync(destPath).mtime) {
+          mkdirSync(dirname(destPath), { recursive: true });
+          copyFileSync(srcPath, destPath);
+        }
+      }
+    }
+  };
+
+  return {
+    name: "sync-content",
+    buildStart() {
+      rmSync("public/content", { recursive: true, force: true });
+      copyAssetFiles("src/content", "public/content");
+    },
+    handleHotUpdate({ file }: { file: string }) {
+      if (file.includes("src/content")) {
+        try {
+          rmSync("public/content", { recursive: true, force: true });
+          copyAssetFiles("src/content", "public/content");
+          console.log("Synced content assets to public directory");
+        } catch (error) {
+          console.error("Failed to sync content:", error);
+        }
+      }
+    },
+  };
+}
 
 export default defineConfig({
+  base: "/",
+  server: {
+    port: 3000,
+    watch: {
+      ignored: [
+        "**/.pnpm-store/**",
+        "**/.git/**",
+        "**/.output/**",
+        "**/.tanstack/**",
+        "**/.content-collections/**",
+        "**/.nitro/**",
+      ],
+    },
+  },
+  publicDir: "public",
+  assetsInclude: [
+    "**/*.png",
+    "**/*.jpg",
+    "**/*.jpeg",
+    "**/*.gif",
+    "**/*.svg",
+    "**/*.avif",
+    "**/*.webp",
+  ],
+  optimizeDeps: {
+    include: ["react", "react-dom", "@tanstack/react-router", "@tanstack/react-start"],
+  },
+  build: {
+    target: "esnext",
+  },
+  test: {
+    environment: "jsdom",
+    setupFiles: ["./src/test/setup.ts"],
+    include: ["src/**/*.test.ts", "src/**/*.test.tsx"],
+    css: true,
+  },
+  plugins: [
+    tailwindcss(),
+    syncContentPlugin(),
+    contentCollections(),
+    tanstackStart({
+      prerender: {
+        enabled: true,
+        crawlLinks: true,
+        autoSubfolderIndex: true,
+        failOnError: true,
+      },
+      pages: [
+        { path: "/", prerender: { enabled: true, outputPath: "/index.html" } },
+        {
+          path: "/blog",
+          prerender: { enabled: true, outputPath: "/blog.html" },
+        },
+        {
+          path: "/notes",
+          prerender: { enabled: true, outputPath: "/notes.html" },
+        },
+        {
+          path: "/search",
+          prerender: { enabled: true, outputPath: "/search.html" },
+        },
+      ],
+    }),
+    tsConfigPaths(),
+  ],
   staged: {
     "*": "vp check --fix",
   },
@@ -11,17 +127,14 @@ export default defineConfig({
       es2022: true,
     },
     ignorePatterns: [
-      "**/next-blog/.next/**",
-      "**/next-blog/out/**",
-      "**/.astro",
       "**/dist/**",
       "**/.vinxi",
       "**/.output",
       "**/.tanstack",
       "**/.content-collections",
       "**/.nitro",
-      "websites/tanstack/src/routeTree.gen.ts",
-      "websites/tanstack/test-results/**",
+      "src/routeTree.gen.ts",
+      "test-results/**",
     ],
     options: {
       typeAware: true,
@@ -29,17 +142,14 @@ export default defineConfig({
   },
   fmt: {
     ignorePatterns: [
-      "**/next-blog/.next/**",
-      "**/next-blog/out/**",
-      "**/.astro",
       "**/dist/**",
       "**/.vinxi",
       "**/.output",
       "**/.tanstack",
       "**/.content-collections",
       "**/.nitro",
-      "websites/tanstack/src/routeTree.gen.ts",
-      "websites/tanstack/test-results/**",
+      "src/routeTree.gen.ts",
+      "test-results/**",
       "node_modules/",
       "*.min.js",
       "*.min.css",

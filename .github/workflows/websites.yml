@@ -22,7 +22,6 @@ concurrency:
 
 env:
   BUILD_PATH: "." # default value when not using subfolders
-  WEBSITE_TANSTACK_PATH: websites/tanstack
 
 jobs:
   build:
@@ -44,13 +43,13 @@ jobs:
         run: vp install --frozen-lockfile
         working-directory: ${{ env.BUILD_PATH }}
       - name: Build with Tanstack
-        run: NODE_ENV=production NITRO_PRESET=static vp run build:tanstack
+        run: NODE_ENV=production NITRO_PRESET=static vp run build
         working-directory: ${{ env.BUILD_PATH }}
       - name: Prepare deployment artifact
         run: |
           set -e
           mkdir -p ${{ env.BUILD_PATH }}/dist
-          cp -r ${{ env.WEBSITE_TANSTACK_PATH }}/.output/public/. ${{ env.BUILD_PATH }}/dist/
+          cp -r ${{ env.BUILD_PATH }}/.output/public/. ${{ env.BUILD_PATH }}/dist/
 
           # Preserve GitHub Pages custom domain configuration
           if [ -f "${{ env.BUILD_PATH }}/CNAME" ]; then

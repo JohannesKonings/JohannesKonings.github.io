@@ -1,7 +1,7 @@
 {
   "ci": {
     "collect": {
-      "staticDistDir": "./websites/tanstack/.output/public",
+      "staticDistDir": "./.output/public",
       "url": ["/", "/blog.html", "/blog/2026-02-02-tanstack-ai-bedrock-simple/index.html"],
       "numberOfRuns": 1,
       "settings": {
