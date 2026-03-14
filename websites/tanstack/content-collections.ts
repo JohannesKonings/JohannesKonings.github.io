@@ -1,6 +1,7 @@
 import { defineCollection, defineConfig } from "@content-collections/core";
 import { z } from "zod";
 import readingTime from "reading-time";
+import { toBlogPostPath } from "./src/lib/site";
 
 // Utility functions for content transformation
 function calculateReadingTime(content: string) {
@@ -56,7 +57,7 @@ const posts = defineCollection({
     const readingStats = calculateReadingTime(data.content);
     const excerpt = generateExcerpt(data.content);
 
-    // Use directory name as slug so URLs match existing site (e.g. /blog/2026-02-02-tanstack-ai-bedrock-simple)
+    // Use directory name as slug so URLs match the deployed blog permalink.
     const filePathParts = data._meta.filePath.split("/");
     const slug =
       filePathParts.length >= 2
@@ -80,7 +81,7 @@ const posts = defineCollection({
       slug,
       readingTime: readingStats,
       excerpt,
-      url: `/blog/${slug}`,
+      url: toBlogPostPath(slug),
       cover_image: processedCoverImage,
     };
   },

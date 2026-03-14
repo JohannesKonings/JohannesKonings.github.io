@@ -85,7 +85,32 @@ function findRepresentativePostHtml() {
   });
 
   const entry = preferred ?? entries[0];
-  return path.join(blogDir, entry.name, "index.html");
+  return {
+    filePath: path.join(blogDir, entry.name, "index.html"),
+    slug: entry.name,
+  };
+}
+
+function findRepresentativeArchiveHtml(kind: "category" | "series" | "tag") {
+  const archiveDir = path.join(BUILD_PUBLIC_DIR, "blog", kind);
+  assert(fs.existsSync(archiveDir), `Found built /blog/${kind} directory`);
+
+  const entries = fs
+    .readdirSync(archiveDir, { withFileTypes: true })
+    .filter(
+      (candidate) =>
+        candidate.isDirectory() &&
+        fs.existsSync(path.join(archiveDir, candidate.name, "index.html")),
+    )
+    .sort((a, b) => a.name.localeCompare(b.name));
+
+  assert(entries.length > 0, `Found representative built blog ${kind} archive`);
+
+  const entry = entries[0];
+  return {
+    filePath: path.join(archiveDir, entry.name, "index.html"),
+    slug: entry.name,
+  };
 }
 
 function getTags(html: string, tagName: string) {
@@ -189,18 +214,16 @@ function verifyBlogListing() {
 
 function verifyRepresentativePost() {
   console.log("\n📝 Representative blog post SEO/GEO");
-  const filePath = findRepresentativePostHtml();
+  const { filePath, slug } = findRepresentativePostHtml();
   const html = readFile(filePath);
 
   const canonical = getLinkHref(html, { rel: "canonical" }) ?? "";
+  const expectedCanonical = `${siteConfig.baseUrl}/blog/${slug}/`;
 
   assert((getTitle(html) ?? "").includes(siteConfig.name), "Post title includes site name");
   assert(Boolean(getMetaContent(html, { name: "description" })), "Post has a meta description");
   assert(Boolean(getMetaContent(html, { name: "keywords" })), "Post has keywords metadata");
-  assert(
-    canonical.startsWith(`${siteConfig.baseUrl}/blog/`),
-    "Post canonical points to johanneskonings.dev blog URL",
-  );
+  assert(canonical === expectedCanonical, "Post canonical uses the final trailing-slash blog URL");
   assert(
     getMetaContent(html, { property: "og:url" }) === canonical,
     "Post Open Graph URL matches canonical URL",
@@ -222,6 +245,26 @@ function verifyRepresentativePost() {
   );
 }
 
+function verifyRepresentativeArchive(kind: "category" | "series" | "tag") {
+  console.log(`\n🗂️ Representative blog ${kind} archive SEO/GEO`);
+  const { filePath, slug } = findRepresentativeArchiveHtml(kind);
+  const html = readFile(filePath);
+  const canonical = getLinkHref(html, { rel: "canonical" }) ?? "";
+
+  assert(
+    (getTitle(html) ?? "").includes(siteConfig.name),
+    `${kind} archive title includes site name`,
+  );
+  assert(
+    Boolean(getMetaContent(html, { name: "description" })),
+    `${kind} archive has a meta description`,
+  );
+  assert(
+    canonical === `${siteConfig.baseUrl}/blog/${kind}/${slug}/`,
+    `${kind} archive canonical uses the final trailing-slash blog URL`,
+  );
+}
+
 function verifyCrawlArtifacts() {
   console.log("\n🕷️ Crawl artifacts");
 
@@ -239,6 +282,24 @@ function verifyCrawlArtifacts() {
     !sitemap.includes("johanneskonings.github.io"),
     "sitemap-index.xml no longer references github.io",
   );
+  assert(
+    sitemap.includes(`${siteConfig.baseUrl}/blog/tag/`),
+    "sitemap-index.xml includes blog tag archives",
+  );
+  assert(
+    sitemap.includes(`${siteConfig.baseUrl}/blog/category/`),
+    "sitemap-index.xml includes blog category archives",
+  );
+  assert(
+    sitemap.includes(`${siteConfig.baseUrl}/blog/series/`),
+    "sitemap-index.xml includes blog series archives",
+  );
+  assert(
+    !new RegExp(`<loc>${siteConfig.baseUrl}/blog/(?!tag/|category/|series/)[^<]+(?<!/)</loc>`).test(
+      sitemap,
+    ),
+    "sitemap-index.xml uses trailing-slash blog post URLs",
+  );
 }
 
 function main() {
@@ -251,6 +312,9 @@ function main() {
   verifyHomePage();
   verifyBlogListing();
   verifyRepresentativePost();
+  verifyRepresentativeArchive("tag");
+  verifyRepresentativeArchive("category");
+  verifyRepresentativeArchive("series");
   verifyCrawlArtifacts();
 
   console.log("\nAll SEO/GEO checks passed.\n");

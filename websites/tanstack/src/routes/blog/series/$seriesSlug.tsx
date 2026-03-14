@@ -4,6 +4,7 @@ import { getPostsBySeries, getAllSeries } from "../../../lib/content-utils";
 import { BlogLayout } from "../../../components/blog/BlogLayout";
 import { BlogPostList } from "../../../components/blog/BlogPostList";
 import { createRouteHead, generateSEOTags } from "../../../lib/seo";
+import { toBlogArchivePath } from "../../../lib/site";
 
 export const Route = createFileRoute("/blog/series/$seriesSlug")({
   head: ({ params }) => {
@@ -13,7 +14,7 @@ export const Route = createFileRoute("/blog/series/$seriesSlug")({
       seo: generateSEOTags({
         title: `Series: ${seriesTitle}`,
         description: `Blog posts in the ${seriesTitle} series.`,
-        url: `/blog/series/${encodeURIComponent(params.seriesSlug)}`,
+        url: toBlogArchivePath("series", params.seriesSlug),
       }),
     });
   },

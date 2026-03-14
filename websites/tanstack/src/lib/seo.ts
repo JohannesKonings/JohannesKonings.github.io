@@ -83,7 +83,6 @@ export function createRouteHead({ seo, structuredData }: RouteHeadInput) {
   return {
     meta: [
       { title: seo.title },
-      { name: "title", content: seo.title },
       { name: "description", content: seo.description },
       ...(seo.keywords ? [{ name: "keywords", content: seo.keywords }] : []),
       { property: "og:title", content: seo.openGraph.title },

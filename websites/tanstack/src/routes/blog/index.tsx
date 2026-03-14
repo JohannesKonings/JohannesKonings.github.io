@@ -27,7 +27,7 @@ function RouteComponent() {
   }, []);
 
   return (
-    <BlogLayout title="Blog" description="Posts on aws and TanStack">
+    <BlogLayout title="Blog" description="Posts on AWS and TanStack.">
       <BlogPostList posts={publishedPosts} />
     </BlogLayout>
   );
