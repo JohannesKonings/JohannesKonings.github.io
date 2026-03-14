@@ -2,19 +2,23 @@
   "compilerOptions": {
     "target": "esnext",
     "module": "esnext",
+    "jsx": "react-jsx",
     "moduleResolution": "bundler",
     "strict": true,
+    "strictNullChecks": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "skipLibCheck": true,
     "declaration": true,
+    "declarationMap": true,
     "noEmit": true,
+    "outDir": "./dist",
     "paths": {
       "*": ["./*"],
-      "@tanstack/*": ["./websites/tanstack/*"]
+      "@/*": ["./*"],
+      "content-collections": ["./.content-collections/generated"]
     }
   },
-  "include": ["websites/*/src/**/*.ts", "websites/*/src/**/*.tsx", "scripts/**/*.ts"],
-  "exclude": ["node_modules", "**/dist", "**/build"],
-  "references": [{ "path": "./websites/tanstack" }]
+  "include": ["src/**/*.ts", "src/**/*.tsx", "e2e/**/*.ts", "scripts/**/*.ts", "*.ts", "*.tsx"],
+  "exclude": ["node_modules", "dist", "build"]
 }

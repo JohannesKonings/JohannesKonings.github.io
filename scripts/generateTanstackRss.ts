@@ -10,7 +10,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.join(__dirname, "..");
 const BASE_URL = "https://johanneskonings.dev";
 const CONTENT_BLOG = path.join(ROOT, "_posts");
-const OUT_FILE = path.join(ROOT, "websites/tanstack/public/rss.xml");
+const OUT_FILE = path.join(ROOT, "public/rss.xml");
 
 const SITE_TITLE = "Johannes Konings";
 const SITE_DESCRIPTION = "Notes and posts on AWS and TanStack.";

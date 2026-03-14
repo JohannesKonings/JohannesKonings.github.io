@@ -1,25 +1,29 @@
 # Personal website and blog
 
-This repository contains the TanStack-based website and the supporting content/distribution scripts used for the blog.
+This repository contains the single TanStack Start website at the repository root, plus the supporting content and distribution scripts used for the blog.
 
-The canonical authored content lives in `_posts/` and `_notes/`. The website now reads markdown directly from those authored roots, while sync/build flows mirror only non-markdown assets into `websites/tanstack/public/content/`.
+The canonical authored content lives in `_posts/` and `_notes/`. The website reads markdown directly from those authored roots, while sync/build flows mirror only non-markdown assets into `public/content/` so relative content assets continue to resolve.
 
-## website
+## Website
 
-- local development: `pnpm dev:tanstack`
-- production build: `pnpm build:tanstack`
-- content verification: `pnpm verify:tanstack`
+- local development: `vp run dev`
+- production build: `vp run build`
+- UI tests: `vp run test:ui`
+- smoke tests: `vp run test:smoke`
+- content verification: `vp run verify`
+- SEO/GEO verification: `vp run verify:seo-geo`
+- Lighthouse verification: `vp run verify:lighthouse`
 
-## blog post distribution
+## Blog post distribution
 
 - build process for dev.to, hashnode and medium incl. image optimization
 
-`nlx tsx ./scripts/syncCrossPosts.ts`
+`vp exec tsx scripts/syncCrossPosts.ts`
 
-## rss feed
+## RSS feed
 
 ...
 
-## search
+## Search
 
 ...

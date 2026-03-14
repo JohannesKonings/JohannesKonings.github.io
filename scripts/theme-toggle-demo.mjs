@@ -1,9 +1,8 @@
 #!/usr/bin/env node
 /**
  * Theme toggle demo: runs Playwright in headed mode, toggles theme, saves screenshots.
- * Requires dev server running: pnpm dev:tanstack (or nr dev:tanstack)
- * Run from repo root: node websites/tanstack/scripts/theme-toggle-demo.mjs
- * Or from websites/tanstack: node scripts/theme-toggle-demo.mjs
+ * Requires dev server running: vp run dev
+ * Run from repo root: node scripts/theme-toggle-demo.mjs
  */
 import { chromium } from "playwright";
 import path from "path";

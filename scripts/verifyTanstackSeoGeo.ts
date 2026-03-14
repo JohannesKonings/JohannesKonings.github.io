@@ -5,7 +5,7 @@ import { fileURLToPath } from "node:url";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.join(__dirname, "..");
-const BUILD_PUBLIC_DIR = path.join(ROOT, "websites/tanstack/.output/public");
+const BUILD_PUBLIC_DIR = path.join(ROOT, ".output/public");
 const siteConfig = {
   name: "Johannes Konings",
   baseUrl: "https://johanneskonings.dev",

@@ -16,7 +16,7 @@ const ROOT = path.join(__dirname, "..");
 
 const CONTENT_BLOG = path.join(ROOT, "_posts");
 const CONTENT_NOTES = path.join(ROOT, "_notes");
-const SITEMAP_FILE = path.join(ROOT, "websites/tanstack/public/sitemap-index.xml");
+const SITEMAP_FILE = path.join(ROOT, "public/sitemap-index.xml");
 
 // ANSI color codes for output
 const colors = {

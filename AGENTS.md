@@ -2,13 +2,13 @@
 
 ## Cursor Cloud specific instructions
 
-This is a pnpm-backed monorepo managed through Vite+. The TanStack blog website lives under `websites/`, and the supported entrypoints are the root `vp` commands and `vp run` scripts.
+This is a pnpm-backed single-app repository managed through Vite+. The TanStack Start blog lives at the repository root, and the supported entrypoints are the root `vp` commands and `vp run` scripts.
 
 ### Services
 
-| Service       | Dev command           | Port | Notes                                      |
-| ------------- | --------------------- | ---- | ------------------------------------------ |
-| TanStack blog | `vp run dev:tanstack` | 3000 | Primary blog; serves at `/` in development |
+| Service       | Dev command  | Port | Notes                                      |
+| ------------- | ------------ | ---- | ------------------------------------------ |
+| TanStack blog | `vp run dev` | 3000 | Primary blog; serves at `/` in development |
 
 ### Key commands
 
@@ -16,15 +16,15 @@ See root `package.json` `scripts` for the full list. Highlights:
 
 - **Install**: `vp install` or `vp install --frozen-lockfile`
 - **Checks**: `vp check`
-- **Build**: `vp run build:tanstack`
-- **Tests**: `vp run --filter tanstack test:ui`, `vp run --filter tanstack test:smoke`
-- **Verification**: `vp run verify:tanstack:seo-geo`, `vp run verify:tanstack:lighthouse`
+- **Build**: `vp run build`
+- **Tests**: `vp run test:ui`, `vp run test:smoke`
+- **Verification**: `vp run verify:seo-geo`, `vp run verify:lighthouse`
 - **Optional type check**: `vp exec tsgo --noEmit`
 
 ### Gotchas
 
 - **pnpm 10 build scripts**: The repo now runs installs through `vp install`, but the root `pnpm.onlyBuiltDependencies` field is still required so pnpm can build native dependencies like `esbuild`, `sharp`, `@tailwindcss/oxide`, and `@parcel/watcher`.
-- **Content sync**: The TanStack website reads markdown directly from root `_posts/` and `_notes/`. Sync flows only mirror non-markdown assets into `websites/tanstack/public/content/`, so no manual content bootstrap step is needed before checks/tests on a clean checkout.
+- **Content sync**: The app reads markdown directly from root `_posts/` and `_notes/`. Sync/build flows only mirror non-markdown assets into `public/content/`, so no manual content bootstrap step is needed before checks/tests on a clean checkout.
 - **Git hooks**: Hook setup is Vite+-owned via `vp config`, and the repo pre-commit flow runs `vp staged`.
 
 <!--VITE PLUS START-->
@@ -101,5 +101,5 @@ These commands map to their corresponding tools. For example, `vp dev --port 300
 ## Review Checklist for Agents
 
 - [ ] Run `vp install` after pulling remote changes and before getting started.
-- [ ] Run `vp check` and `vp test` to validate changes.
+- [ ] Run `vp check`, `vp run test:all`, and `vp run build` to validate changes.
 <!--VITE PLUS END-->

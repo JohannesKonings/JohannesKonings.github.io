@@ -4,7 +4,7 @@ import { fileURLToPath } from "node:url";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.join(__dirname, "..");
-const PUBLIC_CONTENT_ROOT = path.join(ROOT, "websites/tanstack/public/content");
+const PUBLIC_CONTENT_ROOT = path.join(ROOT, "public/content");
 const MARKDOWN_EXTENSIONS = new Set([".md", ".mdx"]);
 
 function isMarkdownFile(filePath: string) {
@@ -40,9 +40,7 @@ function syncContentAssets(sourceDirectory: string, destinationName: "blog" | "n
   const sourcePath = path.join(ROOT, sourceDirectory);
   const destinationPath = path.join(PUBLIC_CONTENT_ROOT, destinationName);
 
-  console.log(
-    `Syncing ${sourceDirectory} assets to websites/tanstack/public/content/${destinationName}`,
-  );
+  console.log(`Syncing ${sourceDirectory} assets to public/content/${destinationName}`);
   fs.rmSync(destinationPath, { recursive: true, force: true });
   copyAssetFiles(sourcePath, destinationPath);
 }
@@ -54,7 +52,7 @@ if (website && website !== "tanstack") {
   process.exit(1);
 }
 
-console.log("Refreshing websites/tanstack/public/content asset mirror");
+console.log("Refreshing public/content asset mirror");
 fs.rmSync(PUBLIC_CONTENT_ROOT, { recursive: true, force: true });
 syncContentAssets("_posts", "blog");
 syncContentAssets("_notes", "notes");

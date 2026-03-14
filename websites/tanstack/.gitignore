@@ -1,9 +1,0 @@
-.nitro/
-.output/
-.tanstack/
-.content-collections/
-app.config.timestamp*
-dist/
-src/content/
-public/content/
-test-results/

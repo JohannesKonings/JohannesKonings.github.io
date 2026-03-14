@@ -41,7 +41,7 @@ function stripLayoutFrontmatter(content: string) {
 // Blog posts collection
 const posts = defineCollection({
   name: "posts",
-  directory: "../../_posts",
+  directory: "_posts",
   include: "**/*.{md,mdx}",
   schema: z.object({
     title: z.string(),
@@ -69,7 +69,7 @@ const posts = defineCollection({
 
     if (filePathParts.length < 2 || fileName !== "index.md" || slug.length === 0) {
       throw new Error(
-        `Blog posts must use the bundled structure src/content/blog/<slug>/index.md. Invalid file: ${data._meta.filePath}`,
+        `Blog posts must use the bundled structure _posts/<slug>/index.md. Invalid file: ${data._meta.filePath}`,
       );
     }
 
@@ -98,7 +98,7 @@ const posts = defineCollection({
 // Notes collection - simpler schema for quick reference notes
 const notes = defineCollection({
   name: "notes",
-  directory: "../../_notes",
+  directory: "_notes",
   include: "**/*.md",
   schema: z.object({
     title: z.string(),

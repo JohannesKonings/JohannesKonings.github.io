@@ -1,0 +1,20 @@
+# Dependencies and package manager caches
+node_modules/
+.pnpm-store/
+
+# Local-only workspace artifacts
+.worktrees/
+.lighthouseci/
+
+# Generated app build/runtime artifacts
+.nitro/
+.output/
+.tanstack/
+.content-collections/
+dist/
+app.config.timestamp*
+test-results/
+
+# Generated duplicate content trees
+src/content/
+public/content/
