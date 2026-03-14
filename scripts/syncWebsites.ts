@@ -39,6 +39,8 @@ const syncTanstack = async () => {
   await sync("_posts", "blog", pathPrefix);
   await sync("_notes", "notes", pathPrefix);
 
+  await sync("img", "img", "websites/tanstack/public");
+
   // Also copy content to public directory for static serving
   console.log("Copying content to public directory for static serving");
   const { stdout: stdoutPublicCopy } =

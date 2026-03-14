@@ -1,6 +1,7 @@
 import { defineCollection, defineConfig } from "@content-collections/core";
 import { z } from "zod";
 import readingTime from "reading-time";
+import { normalizeContentImagePath, resolvePostSocialImage } from "./src/lib/social-images";
 
 // Utility functions for content transformation
 function calculateReadingTime(content: string) {
@@ -68,12 +69,12 @@ const posts = defineCollection({
             .replace(/^-|-$/g, "");
 
     // Process cover_image path - convert relative paths to importable paths
-    let processedCoverImage = data.cover_image;
-    if (data.cover_image && data.cover_image.startsWith("./")) {
-      const fileName = data.cover_image.replace("./", "");
-      // Create a path that can be imported by Vite - this will be processed as a static asset
-      processedCoverImage = `/content/blog/${slug}/${fileName}`;
-    }
+    const processedCoverImage = normalizeContentImagePath(data.cover_image, slug) ?? null;
+    const socialImage = resolvePostSocialImage({
+      coverImage: data.cover_image,
+      content: data.content,
+      slug,
+    });
 
     return {
       ...data,
@@ -82,6 +83,7 @@ const posts = defineCollection({
       excerpt,
       url: `/blog/${slug}`,
       cover_image: processedCoverImage,
+      socialImage,
     };
   },
 });
