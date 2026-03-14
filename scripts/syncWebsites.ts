@@ -1,33 +1,30 @@
-import { execa } from "execa";
 import fs from "node:fs";
 import path from "node:path";
+
+function mirrorDirectory(from: string, to: string) {
+  fs.rmSync(to, { recursive: true, force: true });
+  fs.mkdirSync(path.dirname(to), { recursive: true });
+  fs.cpSync(from, to, { recursive: true });
+}
 
 async function sync(from: string, to: string, pathPrefix: string) {
   console.log("Syncing", from, "to", to);
   console.log("Current directory", process.cwd());
 
-  const { stdout: stdoutCleanup } = await execa`rm -rf ./../../${pathPrefix}/${to}`;
-  console.log("current files removed", stdoutCleanup);
-  const { stdout: stdoutCopy } =
-    // await execa`cp -r ./../../${from}/ ./../../${pathPrefix}`;
-    await execa`cp -r ./../../${from}/ ./../../${pathPrefix}/${to}`;
-  console.log("files copied", stdoutCopy);
-  // rename _posts to blog -> copy of folders below _posts was somehow not possible
-  // const { stdout: stdoutRename } =
-  // 	await execa`mv ./../../${pathPrefix}/${from} ./../../${pathPrefix}/${to}`;
-  // console.log("moved", stdoutRename);
+  const fromPath = path.join("./../../", from);
+  const toPath = path.join("./../../", pathPrefix, to);
+  mirrorDirectory(fromPath, toPath);
+  console.log("files mirrored");
 
   //   markdown post processing
 
-  const markdownFiles = fs
-    .readdirSync(`./../../${pathPrefix}/${to}`, { recursive: true })
-    .filter((file) => {
-      return path.extname(file.toString()) === ".md";
-    });
+  const markdownFiles = fs.readdirSync(toPath, { recursive: true }).filter((file) => {
+    return path.extname(file.toString()) === ".md";
+  });
 
   for (const file of markdownFiles) {
     // Process each markdown file here
-    const filePath = path.join(`./../../${pathPrefix}/${to}`, file.toString());
+    const filePath = path.join(toPath, file.toString());
     const markdownContent = fs.readFileSync(filePath, "utf-8");
     const markdownContentWithoutLayout = markdownContent.replace(/^.*layout:.*$\n?/gm, "");
     fs.writeFileSync(filePath, markdownContentWithoutLayout);
@@ -41,9 +38,11 @@ const syncTanstack = async () => {
 
   // Also copy content to public directory for static serving
   console.log("Copying content to public directory for static serving");
-  const { stdout: stdoutPublicCopy } =
-    await execa`cp -r ./../../websites/tanstack/src/content ./../../websites/tanstack/public/`;
-  console.log("public content copied", stdoutPublicCopy);
+  mirrorDirectory(
+    "./../../websites/tanstack/src/content",
+    "./../../websites/tanstack/public/content",
+  );
+  console.log("public content mirrored");
 };
 
 const website = process.argv[2];

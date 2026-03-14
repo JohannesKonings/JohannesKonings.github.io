@@ -22,10 +22,7 @@ export function BlogPostCard({ post }: BlogPostCardProps): JSX.Element {
     return `${normalizedPostUrl}/${normalizedPath}`;
   };
 
-  // Prioritize cover_image over thumbnail
-  const imageUrl =
-    resolveCoverImageUrl(post.cover_image) ||
-    (post.thumbnail ? `/img/${post.thumbnail}.png` : null);
+  const imageUrl = resolveCoverImageUrl(post.cover_image);
   const [imageLoaded, setImageLoaded] = useState(false);
   const [imageError, setImageError] = useState(false);
   const [showSpinner, setShowSpinner] = useState(false);

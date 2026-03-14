@@ -1,57 +1,199 @@
-import { execa } from "execa";
 import fs from "node:fs";
 import path from "node:path";
+import { fileURLToPath } from "node:url";
 
-async function sync(from: string, to: string, pathPrefix: string) {
-  console.log("Syncing", from, "to", to);
-  console.log("Current directory", process.cwd());
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const ROOT = path.join(__dirname, "..");
+const SITE_BASE_URL = "https://johanneskonings.dev";
+const IMAGE_EXTENSIONS = new Set([".png", ".jpg", ".jpeg", ".gif", ".svg", ".webp", ".avif"]);
 
-  const fromPath = `./${from}`;
-  const toPath = `./${pathPrefix}/${to}`;
+type PostSource = {
+  slug: string;
+  sourceFilePath: string;
+  outputFileName: string;
+};
 
-  const { stdout: stdoutCleanup } = await execa`rm -rf ${toPath}`;
-  fs.mkdirSync(toPath, { recursive: true });
-  console.log("current files removed", stdoutCleanup);
-  // const { stdout: stdoutCopy } =
-  // 	await execa`cp -r ./../../${from}/ ./../../${pathPrefix}`;
-  // console.log("files copied", stdoutCopy);
-  // // rename _posts to blog -> copy of folders below _posts was somehow not possible
-  // const { stdout: stdoutRename } =
-  // 	await execa`mv ./../../${pathPrefix}/${from} ./../../${pathPrefix}/${to}`;
-  // console.log("moved", stdoutRename);
+function normalizePathSeparators(value: string): string {
+  return value.replaceAll("\\", "/");
+}
 
-  const markdownFiles = fs.readdirSync(fromPath, { recursive: true }).filter((file) => {
-    return path.extname(file.toString()) === ".md";
+function isImagePath(value: string): boolean {
+  const cleanValue = value.split("?")[0]?.split("#")[0] ?? value;
+  return IMAGE_EXTENSIONS.has(path.extname(cleanValue).toLowerCase());
+}
+
+function toContentAssetUrl(slug: string, fileName: string): string {
+  return `${SITE_BASE_URL}/content/blog/${slug}/${fileName}`;
+}
+
+function getPostSources(postsDirectory: string): PostSource[] {
+  const sources: PostSource[] = [];
+  const entries = fs.readdirSync(postsDirectory, { withFileTypes: true });
+
+  for (const entry of entries) {
+    if (entry.isDirectory()) {
+      const slug = entry.name;
+      const indexPath = path.join(postsDirectory, slug, "index.md");
+      if (!fs.existsSync(indexPath)) continue;
+      sources.push({
+        slug,
+        sourceFilePath: indexPath,
+        outputFileName: `${slug}-index.md`,
+      });
+      continue;
+    }
+
+    if (entry.isFile() && entry.name.endsWith(".md")) {
+      const slug = entry.name.replace(/\.md$/i, "");
+      sources.push({
+        slug,
+        sourceFilePath: path.join(postsDirectory, entry.name),
+        outputFileName: entry.name,
+      });
+    }
+  }
+
+  return sources.sort((a, b) => a.slug.localeCompare(b.slug));
+}
+
+function createSlugAliases(postSources: PostSource[]): Map<string, string> {
+  const aliases = new Map<string, string>();
+
+  for (const postSource of postSources) {
+    const slug = postSource.slug;
+    const withoutDatePrefix = slug.replace(/^\d{4}-\d{2}-(?:\d{2}|xx)-/, "");
+    const values = new Set([slug, withoutDatePrefix, `${withoutDatePrefix}.html`]);
+
+    for (const value of values) {
+      if (value.length > 0 && !aliases.has(value)) {
+        aliases.set(value, slug);
+      }
+    }
+  }
+
+  return aliases;
+}
+
+function tryResolvePostSlug(reference: string, aliases: Map<string, string>): string | null {
+  const normalizedReference = reference.replace(/\{\{\s*site\.baseurl\s*\}\}/g, "").trim();
+  const cleanReference = normalizedReference.split("?")[0]?.split("#")[0] ?? normalizedReference;
+  const trimmedReference = cleanReference.replace(/\/+$/, "");
+  const fileName = path.basename(trimmedReference);
+  const withoutExtension = fileName.replace(/\.html?$/i, "");
+
+  const candidates = [
+    trimmedReference,
+    fileName,
+    withoutExtension,
+    trimmedReference.split("/").filter(Boolean).pop() ?? "",
+  ].filter(Boolean);
+
+  for (const candidate of candidates) {
+    const resolved = aliases.get(candidate);
+    if (resolved) {
+      return resolved;
+    }
+  }
+
+  return null;
+}
+
+function rewriteMarkdownContent(args: {
+  content: string;
+  currentSlug: string;
+  aliases: Map<string, string>;
+}): string {
+  let content = args.content;
+
+  content = content.replace(
+    /^cover_image:\s*\.(\/[^\s]+)\s*$/gm,
+    (_match, relativePath: string) => {
+      const fileName = relativePath.replace(/^\//, "");
+      return `cover_image: ${toContentAssetUrl(args.currentSlug, fileName)}`;
+    },
+  );
+
+  content = content.replace(/(!?\[[^\]]*\]\()([^)]+)(\))/g, (fullMatch, prefix, target, suffix) => {
+    const normalizedTarget = target.trim();
+
+    if (
+      normalizedTarget.startsWith("http://") ||
+      normalizedTarget.startsWith("https://") ||
+      normalizedTarget.startsWith("mailto:") ||
+      normalizedTarget.startsWith("#") ||
+      normalizedTarget.startsWith("data:")
+    ) {
+      return fullMatch;
+    }
+
+    if (normalizedTarget.startsWith("./") && isImagePath(normalizedTarget)) {
+      return `${prefix}${toContentAssetUrl(args.currentSlug, normalizedTarget.slice(2))}${suffix}`;
+    }
+
+    const legacyImgMatch = normalizedTarget.match(
+      /\{\{\s*site\.baseurl\s*\}\}\/img\/([^/]+)\/([^)\s?#]+)([?#][^)]+)?/,
+    );
+    if (legacyImgMatch) {
+      const [, imageSlug, fileName] = legacyImgMatch;
+      return `${prefix}${toContentAssetUrl(imageSlug, fileName)}${suffix}`;
+    }
+
+    if (normalizedTarget.startsWith("/img/")) {
+      const imgMatch = normalizedTarget.match(/\/img\/([^/]+)\/([^)\s?#]+)([?#][^)]+)?/);
+      if (imgMatch) {
+        const [, imageSlug, fileName] = imgMatch;
+        return `${prefix}${toContentAssetUrl(imageSlug, fileName)}${suffix}`;
+      }
+    }
+
+    if (normalizedTarget.startsWith("./")) {
+      const resolvedSlug = tryResolvePostSlug(normalizedTarget, args.aliases);
+      if (resolvedSlug) {
+        return `${prefix}${SITE_BASE_URL}/blog/${resolvedSlug}${suffix}`;
+      }
+    }
+
+    if (normalizedTarget.includes("{{ site.baseurl }}") || normalizedTarget.startsWith("/")) {
+      const resolvedSlug = tryResolvePostSlug(normalizedTarget, args.aliases);
+      if (resolvedSlug) {
+        return `${prefix}${SITE_BASE_URL}/blog/${resolvedSlug}${suffix}`;
+      }
+    }
+
+    return fullMatch;
   });
 
-  console.log(`${markdownFiles.length} markdown files found`);
+  return content;
+}
 
-  for (const file of markdownFiles) {
-    // Process each markdown file here
-    const filePathFrom = path.join(fromPath, file.toString());
-    const markdownContent = fs.readFileSync(filePathFrom, "utf-8");
-    const filename = file.toString().endsWith("index.md")
-      ? file.toString().split("/").slice(-2).join("-")
-      : file.toString();
-    console.log("filename", filename);
-    const filePathTo = path.join(toPath, filename);
+function syncCrossPosts() {
+  const postsDirectory = path.join(ROOT, "_posts");
+  const outputDirectory = path.join(ROOT, "crossPosts/devTo/posts");
 
-    // postprocessing
-    // links from github
-    // links to other blog post on the same website
+  console.log("Syncing", postsDirectory, "to", outputDirectory);
+  fs.rmSync(outputDirectory, { recursive: true, force: true });
+  fs.mkdirSync(outputDirectory, { recursive: true });
 
-    fs.writeFileSync(filePathTo, markdownContent);
+  const postSources = getPostSources(postsDirectory);
+  const aliases = createSlugAliases(postSources);
+
+  console.log(`${postSources.length} markdown files found`);
+
+  for (const postSource of postSources) {
+    const markdownContent = fs.readFileSync(postSource.sourceFilePath, "utf-8");
+    const rewrittenContent = rewriteMarkdownContent({
+      content: markdownContent,
+      currentSlug: postSource.slug,
+      aliases,
+    });
+    const outputFilePath = path.join(
+      outputDirectory,
+      normalizePathSeparators(postSource.outputFileName),
+    );
+
+    console.log("filename", postSource.outputFileName);
+    fs.writeFileSync(outputFilePath, rewrittenContent);
   }
 }
 
-const syncDevTo = async () => {
-  const pathPrefix = "crossPosts/devTo";
-  await sync("_posts", "posts", pathPrefix);
-};
-
-// const syncTanstack = async () => {
-// 	const pathPrefix = "websites/tanstack/src/content";
-// 	await sync("_posts", "blog", pathPrefix);
-// };
-
-await syncDevTo();
+syncCrossPosts();

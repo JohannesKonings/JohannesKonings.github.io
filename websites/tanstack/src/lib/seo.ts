@@ -22,15 +22,7 @@ function getFullTitle(title: string) {
 }
 
 function getPostImage(post: (typeof allPosts)[0]) {
-  if (post.cover_image) {
-    return post.cover_image;
-  }
-
-  if (post.thumbnail) {
-    return `/img/${post.thumbnail}.png`;
-  }
-
-  return undefined;
+  return post.cover_image;
 }
 
 // Generate SEO meta tags for a page

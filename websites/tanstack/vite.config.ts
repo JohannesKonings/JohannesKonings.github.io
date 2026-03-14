@@ -4,44 +4,26 @@ import tailwindcss from "@tailwindcss/vite";
 import { tanstackStart } from "@tanstack/react-start/plugin/vite";
 
 import contentCollections from "@content-collections/vite";
-import { copyFileSync, mkdirSync, existsSync, readdirSync, statSync } from "fs";
-import { join, dirname } from "path";
+import { cpSync, mkdirSync, rmSync } from "fs";
+import { dirname } from "path";
 
 // Plugin to sync src/content to public/content
 function syncContentPlugin() {
-  const copyDirectory = (src: string, dest: string) => {
-    if (!existsSync(dest)) {
-      mkdirSync(dest, { recursive: true });
-    }
-
-    const items = readdirSync(src);
-    for (const item of items) {
-      const srcPath = join(src, item);
-      const destPath = join(dest, item);
-
-      if (statSync(srcPath).isDirectory()) {
-        copyDirectory(srcPath, destPath);
-      } else {
-        // Only copy if file doesn't exist or is newer
-        if (!existsSync(destPath) || statSync(srcPath).mtime > statSync(destPath).mtime) {
-          mkdirSync(dirname(destPath), { recursive: true });
-          copyFileSync(srcPath, destPath);
-        }
-      }
-    }
+  const mirrorDirectory = (src: string, dest: string) => {
+    rmSync(dest, { recursive: true, force: true });
+    mkdirSync(dirname(dest), { recursive: true });
+    cpSync(src, dest, { recursive: true });
   };
 
   return {
     name: "sync-content",
     buildStart() {
-      // Initial sync on build start
-      copyDirectory("src/content", "public/content");
+      mirrorDirectory("src/content", "public/content");
     },
     handleHotUpdate({ file }: { file: string }) {
-      // Sync when content files change
       if (file.includes("src/content")) {
         try {
-          copyDirectory("src/content", "public/content");
+          mirrorDirectory("src/content", "public/content");
           console.log("✅ Synced content to public directory");
         } catch (error) {
           console.error("❌ Failed to sync content:", error);
