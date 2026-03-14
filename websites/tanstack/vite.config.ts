@@ -107,6 +107,12 @@ export default defineConfig(({ mode }) => ({
     //   }
     // }
   },
+  test: {
+    environment: "jsdom",
+    setupFiles: ["./src/test/setup.ts"],
+    include: ["src/**/*.test.ts", "src/**/*.test.tsx"],
+    css: true,
+  },
   plugins: [
     tailwindcss(),
     syncContentPlugin(),
