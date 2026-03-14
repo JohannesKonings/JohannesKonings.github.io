@@ -18,11 +18,9 @@ async function sync(from: string, to: string, pathPrefix: string) {
 
   //   markdown post processing
 
-  const markdownFiles = fs
-    .readdirSync(toPath, { recursive: true })
-    .filter((file) => {
-      return path.extname(file.toString()) === ".md";
-    });
+  const markdownFiles = fs.readdirSync(toPath, { recursive: true }).filter((file) => {
+    return path.extname(file.toString()) === ".md";
+  });
 
   for (const file of markdownFiles) {
     // Process each markdown file here
@@ -40,7 +38,10 @@ const syncTanstack = async () => {
 
   // Also copy content to public directory for static serving
   console.log("Copying content to public directory for static serving");
-  mirrorDirectory("./../../websites/tanstack/src/content", "./../../websites/tanstack/public/content");
+  mirrorDirectory(
+    "./../../websites/tanstack/src/content",
+    "./../../websites/tanstack/public/content",
+  );
   console.log("public content mirrored");
 };
 
