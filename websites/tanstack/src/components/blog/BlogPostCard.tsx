@@ -1,8 +1,8 @@
 import type { allPosts } from "content-collections";
 import { format } from "date-fns";
-import { Link } from "@tanstack/react-router";
 import type { JSX } from "react";
 import { useEffect, useId, useRef, useState } from "react";
+import { toBlogArchivePath } from "../../lib/site";
 
 interface BlogPostCardProps {
   post: (typeof allPosts)[0];
@@ -69,8 +69,8 @@ export function BlogPostCard({ post }: BlogPostCardProps): JSX.Element {
 
   return (
     <article className="relative cursor-pointer bg-white/90 dark:bg-gray-800/80 backdrop-blur-sm rounded-xl shadow-lg overflow-hidden border border-gray-200 dark:border-gray-600/30 hover:border-cyan-400/60 transition-all duration-500 transform hover:scale-[1.02] hover:-translate-y-1 hover:shadow-xl hover:shadow-cyan-500/15 group">
-      <Link
-        to={post.url}
+      <a
+        href={post.url}
         aria-labelledby={titleId}
         className="absolute inset-0 z-10 rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-cyan-500/60"
       />
@@ -148,14 +148,13 @@ export function BlogPostCard({ post }: BlogPostCardProps): JSX.Element {
           {post.tags.length > 0 && (
             <div className="relative z-20 flex flex-wrap gap-2 mb-6">
               {post.tags.slice(0, 3).map((tag) => (
-                <Link
+                <a
                   key={tag}
-                  to="/blog/tag/$tag"
-                  params={{ tag }}
+                  href={toBlogArchivePath("tag", tag)}
                   className="px-3 py-1.5 text-xs bg-cyan-50 dark:bg-cyan-500/20 text-cyan-700 dark:text-cyan-300 rounded-full border border-cyan-200 dark:border-cyan-500/30 hover:bg-cyan-100 dark:hover:bg-cyan-500/30 transition-all duration-300"
                 >
                   {tag}
-                </Link>
+                </a>
               ))}
               {post.tags.length > 3 && (
                 <span className="px-3 py-1.5 text-xs bg-gray-100 dark:bg-gray-600/50 text-gray-600 dark:text-gray-300 rounded-full border border-gray-300 dark:border-gray-500/30">

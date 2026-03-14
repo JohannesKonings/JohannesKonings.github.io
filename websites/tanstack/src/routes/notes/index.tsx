@@ -1,10 +1,10 @@
 import * as React from "react";
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { allNotes } from "content-collections";
 import { BlogLayout } from "../../components/blog/BlogLayout";
 import { format } from "date-fns";
 import { createRouteHead, generateSEOTags } from "../../lib/seo";
-import { siteConfig } from "../../lib/site";
+import { siteConfig, toBlogArchivePath } from "../../lib/site";
 
 export const Route = createFileRoute("/notes/")({
   head: () =>
@@ -34,12 +34,12 @@ function NotesPage() {
           <p className="text-gray-600 dark:text-gray-400">
             {publishedNotes.length} note{publishedNotes.length !== 1 ? "s" : ""} available
           </p>
-          <Link
-            to="/search"
+          <a
+            href="/search"
             className="inline-flex items-center text-cyan-600 dark:text-cyan-400 hover:underline"
           >
             Search all posts and notes →
-          </Link>
+          </a>
         </div>
 
         {/* Notes list */}
@@ -51,7 +51,7 @@ function NotesPage() {
             >
               <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2">
                 <div className="flex-1">
-                  <Link to={note.url} className="block group">
+                  <a href={note.url} className="block group">
                     <h2 className="text-lg font-semibold text-gray-900 dark:text-white group-hover:text-cyan-600 dark:group-hover:text-cyan-400 transition-colors">
                       {note.title}
                     </h2>
@@ -60,20 +60,19 @@ function NotesPage() {
                         {note.summary || note.excerpt}
                       </p>
                     )}
-                  </Link>
+                  </a>
 
                   {/* Tags */}
                   {note.tags.length > 0 && (
                     <div className="flex flex-wrap gap-2 mt-3">
                       {note.tags.map((tag) => (
-                        <Link
+                        <a
                           key={tag}
-                          to="/blog/tag/$tag"
-                          params={{ tag }}
+                          href={toBlogArchivePath("tag", tag)}
                           className="px-2 py-0.5 text-xs bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-full hover:bg-blue-200 dark:hover:bg-blue-900/50 transition-colors"
                         >
                           {tag}
-                        </Link>
+                        </a>
                       ))}
                     </div>
                   )}

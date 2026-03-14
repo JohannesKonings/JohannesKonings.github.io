@@ -2,6 +2,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { auditTanstackBlogContent } from "./tanstackContentAudit";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.join(__dirname, "..");
@@ -86,7 +87,41 @@ function findRepresentativePostHtml() {
   });
 
   const entry = preferred ?? entries[0];
-  return path.join(blogDir, entry.name, "index.html");
+  return {
+    filePath: path.join(blogDir, entry.name, "index.html"),
+    slug: entry.name,
+  };
+}
+
+function findRepresentativeArchiveHtml(kind: "category" | "series" | "tag") {
+  const archiveDir = path.join(BUILD_PUBLIC_DIR, "blog", kind);
+  assert(fs.existsSync(archiveDir), `Found built /blog/${kind} directory`);
+
+  const entries = fs
+    .readdirSync(archiveDir, { withFileTypes: true })
+    .filter(
+      (candidate) =>
+        candidate.isDirectory() &&
+        fs.existsSync(path.join(archiveDir, candidate.name, "index.html")),
+    )
+    .sort((a, b) => a.name.localeCompare(b.name));
+
+  assert(entries.length > 0, `Found representative built blog ${kind} archive`);
+
+  const entry = entries[0];
+  return {
+    filePath: path.join(archiveDir, entry.name, "index.html"),
+    slug: entry.name,
+  };
+}
+
+function getArchiveCountsFromApp() {
+  const audit = auditTanstackBlogContent(path.join(ROOT, "websites/tanstack/src/content/blog"));
+  return {
+    categories: audit.categoryCount,
+    series: audit.seriesCount,
+    tags: audit.tagCount,
+  };
 }
 
 function getTags(html: string, tagName: string) {
@@ -235,18 +270,16 @@ function verifyBlogListing() {
 
 function verifyRepresentativePost() {
   console.log("\n📝 Representative blog post SEO/GEO");
-  const filePath = findRepresentativePostHtml();
+  const { filePath, slug } = findRepresentativePostHtml();
   const html = readFile(filePath);
 
   const canonical = getLinkHref(html, { rel: "canonical" }) ?? "";
+  const expectedCanonical = `${siteConfig.baseUrl}/blog/${slug}/`;
 
   assert((getTitle(html) ?? "").includes(siteConfig.name), "Post title includes site name");
   assert(Boolean(getMetaContent(html, { name: "description" })), "Post has a meta description");
   assert(Boolean(getMetaContent(html, { name: "keywords" })), "Post has keywords metadata");
-  assert(
-    canonical.startsWith(`${siteConfig.baseUrl}/blog/`),
-    "Post canonical points to johanneskonings.dev blog URL",
-  );
+  assert(canonical === expectedCanonical, "Post canonical uses the final trailing-slash blog URL");
   assert(
     getMetaContent(html, { property: "og:url" }) === canonical,
     "Post Open Graph URL matches canonical URL",
@@ -272,6 +305,26 @@ function verifyRepresentativePost() {
     String(jsonLd?.mainEntityOfPage && (jsonLd.mainEntityOfPage as { "@id"?: string })["@id"]) ===
       canonical,
     "BlogPosting mainEntityOfPage matches canonical URL",
+  );
+}
+
+function verifyRepresentativeArchive(kind: "category" | "series" | "tag") {
+  console.log(`\n🗂️ Representative blog ${kind} archive SEO/GEO`);
+  const { filePath, slug } = findRepresentativeArchiveHtml(kind);
+  const html = readFile(filePath);
+  const canonical = getLinkHref(html, { rel: "canonical" }) ?? "";
+
+  assert(
+    (getTitle(html) ?? "").includes(siteConfig.name),
+    `${kind} archive title includes site name`,
+  );
+  assert(
+    Boolean(getMetaContent(html, { name: "description" })),
+    `${kind} archive has a meta description`,
+  );
+  assert(
+    canonical === `${siteConfig.baseUrl}/blog/${kind}/${slug}/`,
+    `${kind} archive canonical uses the final trailing-slash blog URL`,
   );
 }
 
@@ -304,9 +357,54 @@ function verifyCrawlArtifacts() {
   assert(!rss.includes("johanneskonings.github.io"), "rss.xml no longer references github.io");
 
   const sitemap = readFile(path.join(BUILD_PUBLIC_DIR, "sitemap-index.xml"));
+  const archiveCounts = getArchiveCountsFromApp();
+  const sitemapTagUrls = [
+    ...sitemap.matchAll(/<loc>https:\/\/johanneskonings\.dev\/blog\/tag\/([^<]+)<\/loc>/g),
+  ].map((match) => match[1]);
+  const sitemapCategoryUrls = [
+    ...sitemap.matchAll(/<loc>https:\/\/johanneskonings\.dev\/blog\/category\/([^<]+)<\/loc>/g),
+  ].map((match) => match[1]);
+  const sitemapSeriesUrls = [
+    ...sitemap.matchAll(/<loc>https:\/\/johanneskonings\.dev\/blog\/series\/([^<]+)<\/loc>/g),
+  ].map((match) => match[1]);
+
   assert(
     !sitemap.includes("johanneskonings.github.io"),
     "sitemap-index.xml no longer references github.io",
+  );
+  assert(
+    sitemap.includes(`${siteConfig.baseUrl}/blog/tag/`),
+    "sitemap-index.xml includes blog tag archives",
+  );
+  assert(
+    sitemap.includes(`${siteConfig.baseUrl}/blog/category/`),
+    "sitemap-index.xml includes blog category archives",
+  );
+  assert(
+    sitemap.includes(`${siteConfig.baseUrl}/blog/series/`),
+    "sitemap-index.xml includes blog series archives",
+  );
+  assert(
+    sitemapTagUrls.length === archiveCounts.tags,
+    "sitemap-index.xml includes every published blog tag archive",
+  );
+  assert(
+    sitemapCategoryUrls.length === archiveCounts.categories,
+    "sitemap-index.xml includes every published blog category archive",
+  );
+  assert(
+    sitemapSeriesUrls.length === archiveCounts.series,
+    "sitemap-index.xml includes every published blog series archive",
+  );
+  assert(
+    !sitemapTagUrls.some((slug) => slug.startsWith("-%20")),
+    "sitemap-index.xml does not include malformed tag URLs",
+  );
+  assert(
+    !new RegExp(`<loc>${siteConfig.baseUrl}/blog/(?!tag/|category/|series/)[^<]+(?<!/)</loc>`).test(
+      sitemap,
+    ),
+    "sitemap-index.xml uses trailing-slash blog post URLs",
   );
 }
 
@@ -320,7 +418,13 @@ function main() {
   verifyHomePage();
   verifyBlogListing();
   verifyRepresentativePost();
+  verifyRepresentativeArchive("tag");
+  verifyRepresentativeArchive("category");
+  verifyRepresentativeArchive("series");
   verifyLegacyPostSocialPreview();
+  verifyRepresentativeArchive("tag");
+  verifyRepresentativeArchive("category");
+  verifyRepresentativeArchive("series");
   verifyCrawlArtifacts();
 
   console.log("\nAll SEO/GEO checks passed.\n");
