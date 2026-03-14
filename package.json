@@ -6,7 +6,7 @@
   "bugs": {
     "url": "https://github.com/JohannesKonings/JohannesKonings.github.io/issues"
   },
-  "license": "GPL-3.0-or-later",
+  "license": "MIT",
   "author": "Johannes Konings",
   "repository": {
     "type": "git",
