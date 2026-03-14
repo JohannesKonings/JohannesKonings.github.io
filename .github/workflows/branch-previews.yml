@@ -33,35 +33,51 @@ jobs:
           cache: true
           run-install: false
 
-      - name: Validate preview deployment configuration
+      - name: Detect preview deployment configuration
+        id: preview-config
         env:
           CLOUDFLARE_PAGES_PROJECT_NAME: ${{ vars.CLOUDFLARE_PAGES_PROJECT_NAME }}
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         run: |
           set -e
+          missing=()
 
           if [ -z "$CLOUDFLARE_PAGES_PROJECT_NAME" ]; then
-            echo "::error::Missing repository variable CLOUDFLARE_PAGES_PROJECT_NAME."
-            exit 1
+            missing+=("repository variable CLOUDFLARE_PAGES_PROJECT_NAME")
           fi
 
           if [ -z "$CLOUDFLARE_API_TOKEN" ]; then
-            echo "::error::Missing repository secret CLOUDFLARE_API_TOKEN."
-            exit 1
+            missing+=("repository secret CLOUDFLARE_API_TOKEN")
           fi
 
           if [ -z "$CLOUDFLARE_ACCOUNT_ID" ]; then
-            echo "::error::Missing repository secret CLOUDFLARE_ACCOUNT_ID."
-            exit 1
+            missing+=("repository secret CLOUDFLARE_ACCOUNT_ID")
           fi
 
+          if [ "${#missing[@]}" -gt 0 ]; then
+            echo "configured=false" >> "$GITHUB_OUTPUT"
+            {
+              echo "## Branch preview deployment skipped"
+              echo ""
+              echo "Missing Cloudflare Pages configuration:"
+              for item in "${missing[@]}"; do
+                echo "- ${item}"
+              done
+            } >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+
+          echo "configured=true" >> "$GITHUB_OUTPUT"
+
       - name: Install dependencies
+        if: steps.preview-config.outputs.configured == 'true'
         run: vp install --frozen-lockfile
         working-directory: ${{ env.BUILD_PATH }}
 
       - name: Resolve preview deployment context
         id: deployment-context
+        if: steps.preview-config.outputs.configured == 'true'
         run: vp exec tsx scripts/resolveDeploymentEnv.ts
         working-directory: ${{ env.BUILD_PATH }}
         env:
@@ -70,11 +86,13 @@ jobs:
           PREVIEW_SITE_BASE_DOMAIN: ${{ vars.CLOUDFLARE_PAGES_PREVIEW_BASE_DOMAIN != '' && vars.CLOUDFLARE_PAGES_PREVIEW_BASE_DOMAIN || format('{0}.pages.dev', vars.CLOUDFLARE_PAGES_PROJECT_NAME) }}
 
       - name: Build preview with TanStack
+        if: steps.preview-config.outputs.configured == 'true'
         run: NODE_ENV=production NITRO_PRESET=static vp run build:tanstack
         working-directory: ${{ env.BUILD_PATH }}
 
       - name: Deploy branch preview to Cloudflare Pages
         id: deploy
+        if: steps.preview-config.outputs.configured == 'true'
         uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
@@ -87,6 +105,7 @@ jobs:
 
       - name: Capture preview URL
         id: preview-url
+        if: steps.preview-config.outputs.configured == 'true'
         run: |
           preview_url="${{ steps.deploy.outputs.pages-deployment-alias-url || steps.deploy.outputs.deployment-alias-url || steps.deploy.outputs.deployment-url }}"
 
@@ -98,6 +117,7 @@ jobs:
           echo "preview-url=$preview_url" >> "$GITHUB_OUTPUT"
 
       - name: Publish preview summary
+        if: steps.preview-config.outputs.configured == 'true'
         run: |
           echo "## Branch preview deployment" >> "$GITHUB_STEP_SUMMARY"
           echo "" >> "$GITHUB_STEP_SUMMARY"
