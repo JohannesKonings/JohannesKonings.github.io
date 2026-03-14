@@ -11,7 +11,6 @@ const siteConfig = {
   baseUrl: "https://johanneskonings.dev",
   rssUrl: "https://johanneskonings.dev/rss.xml",
   sitemapUrl: "https://johanneskonings.dev/sitemap-index.xml",
-  defaultSocialImage: "https://johanneskonings.dev/social-preview.png",
 } as const;
 
 const colors = {
@@ -106,6 +105,8 @@ function getTitle(html: string) {
 }
 
 function getMetaContent(html: string, selector: { name?: string; property?: string }) {
+  let content: string | undefined;
+
   for (const tag of getTags(html, "meta")) {
     const matchesName = selector.name ? getAttribute(tag, "name") === selector.name : true;
     const matchesProperty = selector.property
@@ -113,11 +114,11 @@ function getMetaContent(html: string, selector: { name?: string; property?: stri
       : true;
 
     if (matchesName && matchesProperty) {
-      return getAttribute(tag, "content");
+      content = getAttribute(tag, "content");
     }
   }
 
-  return undefined;
+  return content;
 }
 
 function getLinkHref(html: string, selector: { rel: string; type?: string }) {
@@ -172,6 +173,26 @@ function assertBuiltAssetExists(assetUrl: string, label: string) {
   assert(fs.existsSync(localAssetPath), `${label} asset exists in build output`);
 }
 
+function verifyDefaultSocialImage(html: string, label: string) {
+  const ogImage = getMetaContent(html, { property: "og:image" });
+  const twitterImage = getMetaContent(html, { name: "twitter:image" });
+
+  assert(Boolean(ogImage), `${label} has an Open Graph image`);
+  assert(Boolean(twitterImage), `${label} has a Twitter image`);
+  assert(ogImage === twitterImage, `${label} Open Graph and Twitter images match`);
+  assert(
+    ogImage!.startsWith(siteConfig.baseUrl),
+    `${label} social preview uses a johanneskonings.dev absolute URL`,
+  );
+  assert(
+    !ogImage!.includes("social-preview"),
+    `${label} no longer references the removed social-preview asset`,
+  );
+  assertBuiltAssetExists(ogImage!, `${label} social preview`);
+
+  return ogImage!;
+}
+
 function verifyHomePage() {
   console.log("\n🏠 Homepage SEO");
   const html = readFile(resolveRouteHtml("/"));
@@ -182,26 +203,20 @@ function verifyHomePage() {
     stripTrailingSlash(getLinkHref(html, { rel: "canonical" }) ?? "") === siteConfig.baseUrl,
     "Homepage canonical uses johanneskonings.dev",
   );
-  assert(
-    getMetaContent(html, { property: "og:image" }) === siteConfig.defaultSocialImage,
-    "Homepage uses default Open Graph image",
-  );
-  assert(
-    getMetaContent(html, { name: "twitter:image" }) === siteConfig.defaultSocialImage,
-    "Homepage uses default Twitter image",
-  );
+  const defaultSocialImage = verifyDefaultSocialImage(html, "Homepage");
   assert(
     getMetaContent(html, { name: "twitter:card" }) === "summary_large_image",
     "Homepage uses summary_large_image Twitter card",
   );
-  assertBuiltAssetExists(siteConfig.defaultSocialImage, "Homepage social preview");
   assert(
     getLinkHref(html, { rel: "alternate", type: "application/rss+xml" }) === siteConfig.rssUrl,
     "Homepage RSS alternate link uses johanneskonings.dev",
   );
+
+  return defaultSocialImage;
 }
 
-function verifyBlogListing() {
+function verifyBlogListing(defaultSocialImage: string) {
   console.log("\n📰 Blog listing SEO/GEO");
   const html = readFile(resolveRouteHtml("/blog"));
 
@@ -216,11 +231,11 @@ function verifyBlogListing() {
     "Blog listing canonical points to /blog",
   );
   assert(
-    getMetaContent(html, { property: "og:image" }) === siteConfig.defaultSocialImage,
+    getMetaContent(html, { property: "og:image" }) === defaultSocialImage,
     "Blog listing uses default Open Graph image",
   );
   assert(
-    getMetaContent(html, { name: "twitter:image" }) === siteConfig.defaultSocialImage,
+    getMetaContent(html, { name: "twitter:image" }) === defaultSocialImage,
     "Blog listing uses default Twitter image",
   );
   assert(
@@ -310,6 +325,32 @@ function verifyCrawlArtifacts() {
   );
 }
 
+function collectBuiltTextFiles(directory: string): string[] {
+  return fs.readdirSync(directory, { withFileTypes: true }).flatMap((entry) => {
+    const fullPath = path.join(directory, entry.name);
+
+    if (entry.isDirectory()) {
+      return collectBuiltTextFiles(fullPath);
+    }
+
+    const extension = path.extname(entry.name);
+    return [".html", ".xml", ".txt"].includes(extension) ? [fullPath] : [];
+  });
+}
+
+function verifyObsoleteSocialPreviewAssetIsGone() {
+  console.log("\n🧹 Removed social preview asset");
+
+  const filesWithLegacyReferences = collectBuiltTextFiles(BUILD_PUBLIC_DIR)
+    .filter((filePath) => fs.readFileSync(filePath, "utf-8").includes("social-preview"))
+    .map((filePath) => path.relative(ROOT, filePath));
+
+  assert(
+    filesWithLegacyReferences.length === 0,
+    "Built HTML/XML/TXT output no longer references social-preview assets",
+  );
+}
+
 function main() {
   console.log("\n╔══════════════════════════════════════════════════════════════╗");
   console.log("║         TanStack SEO/GEO Build Verification                 ║");
@@ -317,11 +358,12 @@ function main() {
 
   assert(fs.existsSync(BUILD_PUBLIC_DIR), "Found TanStack build output directory");
 
-  verifyHomePage();
-  verifyBlogListing();
+  const defaultSocialImage = verifyHomePage();
+  verifyBlogListing(defaultSocialImage);
   verifyRepresentativePost();
   verifyLegacyPostSocialPreview();
   verifyCrawlArtifacts();
+  verifyObsoleteSocialPreviewAssetIsGone();
 
   console.log("\nAll SEO/GEO checks passed.\n");
 }
