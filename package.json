@@ -30,8 +30,7 @@
     "tsc:watch": "vp exec tsgo -w",
     "checks:hook": "vp check",
     "checks:pr": "vp check && vp run --filter tanstack test:all && vp run build:tanstack && vp run verify:tanstack:seo-geo && vp run verify:tanstack:lighthouse",
-    "hooks:install": "vp exec tsx scripts/installGitHooks.ts",
-    "prepare": "vp config && vp run hooks:install"
+    "prepare": "vp config"
   },
   "devDependencies": {
     "@lhci/cli": "^0.15.1",
