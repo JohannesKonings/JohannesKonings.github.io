@@ -2,26 +2,30 @@
 
 ## Cursor Cloud specific instructions
 
-This is a pnpm monorepo containing the TanStack blog website under `websites/`. All scripts are defined in the root `package.json`.
+This is a pnpm-backed monorepo managed through Vite+. The TanStack blog website lives under `websites/`, and the supported entrypoints are the root `vp` commands and `vp run` scripts.
 
 ### Services
 
-| Service       | Dev command         | Port | Notes                                      |
-| ------------- | ------------------- | ---- | ------------------------------------------ |
-| TanStack blog | `pnpm dev:tanstack` | 3000 | Primary blog; serves at `/` in development |
+| Service       | Dev command           | Port | Notes                                      |
+| ------------- | --------------------- | ---- | ------------------------------------------ |
+| TanStack blog | `vp run dev:tanstack` | 3000 | Primary blog; serves at `/` in development |
 
 ### Key commands
 
 See root `package.json` `scripts` for the full list. Highlights:
 
-- **Lint**: `pnpm run lint:check` (oxlint), `pnpm run format:check` (oxfmt)
-- **Build**: `pnpm run build:tanstack`
-- **Type check**: `pnpm run tsc:check` (tsgo preview — has known pre-existing errors, not run in CI)
+- **Install**: `vp install` or `vp install --frozen-lockfile`
+- **Checks**: `vp check`
+- **Build**: `vp run build:tanstack`
+- **Tests**: `vp run --filter tanstack test:ui`, `vp run --filter tanstack test:smoke`
+- **Verification**: `vp run verify:tanstack:seo-geo`, `vp run verify:tanstack:lighthouse`
+- **Optional type check**: `vp exec tsgo --noEmit`
 
 ### Gotchas
 
-- **pnpm 10 build scripts**: The repo originally targeted pnpm 9 (see CI). Under pnpm 10 the `pnpm.onlyBuiltDependencies` field in root `package.json` is required to allow native package builds (`esbuild`, `sharp`, `@tailwindcss/oxide`, `@parcel/watcher`). If this field is missing, `pnpm install` will skip build scripts and Tailwind/Sharp/esbuild will not work.
-- **Content sync**: The TanStack website auto-runs a sync script (`pnpm sync`) as part of its `dev`/`build` scripts. This copies markdown from root `_posts/` and `_notes/` into `websites/tanstack/src/content/`. No manual sync step is needed.
+- **pnpm 10 build scripts**: The repo now runs installs through `vp install`, but the root `pnpm.onlyBuiltDependencies` field is still required so pnpm can build native dependencies like `esbuild`, `sharp`, `@tailwindcss/oxide`, and `@parcel/watcher`.
+- **Content sync**: The TanStack website scripts auto-run content sync as part of `dev` and `build`. This copies markdown from root `_posts/` and `_notes/` into `websites/tanstack/src/content/`, so no manual sync step is needed.
+- **Git hooks**: Hook setup is Vite+-owned via `vp config`, and the repo pre-commit flow runs `vp staged`.
 
 <!--VITE PLUS START-->
 
