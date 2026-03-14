@@ -1,6 +1,6 @@
 /**
  * Generates rss.xml for the TanStack (primary) site at build time.
- * Run after sync so src/content/blog is populated.
+ * Reads directly from the authored blog content root.
  */
 import fs from "node:fs";
 import path from "node:path";
@@ -9,7 +9,7 @@ import { fileURLToPath } from "node:url";
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.join(__dirname, "..");
 const BASE_URL = "https://johanneskonings.dev";
-const CONTENT_BLOG = path.join(ROOT, "src/content/blog");
+const CONTENT_BLOG = path.join(ROOT, "_posts");
 const OUT_FILE = path.join(ROOT, "public/rss.xml");
 
 const SITE_TITLE = "Johannes Konings";

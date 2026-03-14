@@ -6,6 +6,7 @@ published: true
 summary: This post is how to trigger a Dynamodb export and create saved query to create a Athena table from the exported data
 categories: aws
 thumbnail: aws_athena
+cover_image: ./ddb-export-sfn-athena-query.png
 tags:
   - aws
   - aws athena

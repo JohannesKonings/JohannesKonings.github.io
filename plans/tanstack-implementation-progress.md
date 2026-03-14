@@ -62,9 +62,9 @@ Implementing the review plan in small steps, with tests and progress notes.
 
 **Done:**
 
-- [websites/tanstack/src/routes/blog/$postId.tsx](websites/tanstack/src/routes/blog/$postId.tsx): Before passing content to Markdown, replace `{{ site.baseurl }}` (with optional spaces) with empty string. So `{{ site.baseurl }}/img/...` becomes `/img/...` and links work without literal liquid in the output.
+- [websites/tanstack/src/routes/blog/$postId.tsx](websites/tanstack/src/routes/blog/$postId.tsx): Before passing content to Markdown, replace `{{ site.baseurl }}` (with optional spaces) with empty string so legacy liquid no longer leaks into rendered content.
 
-**Note:** Image paths are now `/img/...`. If the site does not serve `public/img/`, those images may 404 until assets are copied there (or paths normalized to `/content/blog/<slug>/...` where files exist).
+**Note:** This was later superseded by the bundled-post asset migration. Blog content now uses colocated assets and resolves them from `/content/blog/<slug>/...`, so the old root `img/` folder is no longer part of the active content pipeline.
 
 **Tests:** Lint clean. Open a post that contained baseurl (e.g. 2022-09-17-aws_example_ddb_analytics_quicksight_cdk) and confirm no "{{ site.baseurl }}" in page.
 

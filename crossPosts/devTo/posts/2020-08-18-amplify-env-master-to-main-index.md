@@ -6,10 +6,11 @@ date: 2020-08-18 08:15:18
 summary: Change of the master branch end amplfiy env to main and migration of the env data
 categories: aws
 thumbnail: null
+cover_image: https://johanneskonings.dev/content/blog/2020-08-18-amplify-env-master-to-main/amplify_console_connection_branch_to_env1.png
 tags:
   - aws
-  - AWS Amplify
-  - AWS Amplify Console
+  - aws amplify
+  - aws amplify console
 slug: aws-amplify-console-changed-master-branchenv-main
 ---
 
@@ -31,13 +32,13 @@ Run the command `amplify add env main` and `amplify push`. After that, you can c
 
 The new main branch and the new main env can now be connected in the amplify console.
 
-![Amplify Console connection branch to env](./amplify_console_connection_branch_to_env1.png)
+![Amplify Console connection branch to env](https://johanneskonings.dev/content/blog/2020-08-18-amplify-env-master-to-main/amplify_console_connection_branch_to_env1.png)
 
-![Amplify Console connection branch to env](./amplify_console_connection_branch_to_env2.png)
+![Amplify Console connection branch to env](https://johanneskonings.dev/content/blog/2020-08-18-amplify-env-master-to-main/amplify_console_connection_branch_to_env2.png)
 
 Afterwards the production branch must be changed to main.
 
-![Amplify Console production branch](./amplify_console_production_branch.png)
+![Amplify Console production branch](https://johanneskonings.dev/content/blog/2020-08-18-amplify-env-master-to-main/amplify_console_production_branch.png)
 
 # Migration
 
@@ -66,6 +67,6 @@ As described here the users can upload new profile pictures:
 
 That profile pictures can also be copied by a script [s3-migration.sh](https://github.com/JohannesKonings/fff-badminton/blob/main/AmplifyEnvMigration/s3-migration.sh). But it's necessary to rename the folder name to the new identity pool identity browser id, that the pictures will be found.
 
-![identity browser](./identity_browser.png)
+![identity browser](https://johanneskonings.dev/content/blog/2020-08-18-amplify-env-master-to-main/identity_browser.png)
 
 I fixed that manually 😊

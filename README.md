@@ -2,7 +2,7 @@
 
 This repository contains the single TanStack Start website at the repository root, plus the supporting content and distribution scripts used for the blog.
 
-The canonical authored content stays outside the app in `_posts/` and `_notes/`. The website consumes synced copies in `src/content/` during `dev`, `build`, and `start`.
+The canonical authored content lives in `_posts/` and `_notes/`. The website reads markdown directly from those authored roots, while sync/build flows mirror only non-markdown assets into `public/content/` so relative content assets continue to resolve.
 
 ## Website
 

@@ -6,7 +6,7 @@ published: true
 summary: See how this setup can help to scan all AWS SSO accounts with a mix of Prowler, docker, and aws-sso-util.
 categories: aws
 thumbnail: prowler
-cover_image: ./cover-image.png
+cover_image: https://johanneskonings.dev/content/blog/2024-11-30-aws-sso-prowler/cover-image.png
 tags:
   - aws
   - prowler
@@ -108,19 +108,19 @@ export SSO_REGION= # <your region, e.g. us-east-1>
 
 If you run the script `./scripts/create-aws-config.sh` inside the container, the tool `aws-sso-util` will ask for the SSO credentials.
 
-![create aws config](./create-aws-config.png)
+![create aws config](https://johanneskonings.dev/content/blog/2024-11-30-aws-sso-prowler/create-aws-config.png)
 
 Open the link in the browser and put in the code.
 
-![authorize request](./authorize-request.png)
+![authorize request](https://johanneskonings.dev/content/blog/2024-11-30-aws-sso-prowler/authorize-request.png)
 
 Then, allow the access.
 
-![allow sso to access data](./allow-sso-to-access-data.png)
+![allow sso to access data](https://johanneskonings.dev/content/blog/2024-11-30-aws-sso-prowler/allow-sso-to-access-data.png)
 
 After confirmation, the config file is created.
 
-![aws config created](./aws-config-created.png)
+![aws config created](https://johanneskonings.dev/content/blog/2024-11-30-aws-sso-prowler/aws-config-created.png)
 
 ## Prowler scans
 
@@ -172,11 +172,11 @@ The variable `PROWLER_COMAND` is the command to run the prowler scan.
 
 The script `./scripts/run-prowler.sh` call will look like this for every account.
 
-![prowler scan](./prowler-scan.png)
+![prowler scan](https://johanneskonings.dev/content/blog/2024-11-30-aws-sso-prowler/prowler-scan.png)
 
 If the login is expired, the script will ask for the credentials again.
 
-![prowler scan relogin](./prowler-scan-relogin.png)
+![prowler scan relogin](https://johanneskonings.dev/content/blog/2024-11-30-aws-sso-prowler/prowler-scan-relogin.png)
 
 The scan result is additionally saved in the folder `output,` which is mounted to the container.
 With this configuration, a JSON and a CSV file are created for every account.

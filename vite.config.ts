@@ -7,10 +7,19 @@ import { copyFileSync, mkdirSync, existsSync, readdirSync, rmSync, statSync } fr
 import { join, dirname, extname } from "path";
 
 function syncContentPlugin() {
+  const authoredContentRoots = [
+    { source: "_posts", destination: "public/content/blog" },
+    { source: "_notes", destination: "public/content/notes" },
+  ] as const;
+
   const isMarkdownFile = (filePath: string) =>
     [".md", ".mdx"].includes(extname(filePath).toLowerCase());
 
   const copyAssetFiles = (src: string, dest: string) => {
+    if (!existsSync(src)) {
+      return;
+    }
+
     const items = readdirSync(src);
     for (const item of items) {
       const srcPath = join(src, item);
@@ -31,18 +40,24 @@ function syncContentPlugin() {
     }
   };
 
+  const syncAuthoredAssets = () => {
+    rmSync("public/content", { recursive: true, force: true });
+
+    for (const { source, destination } of authoredContentRoots) {
+      copyAssetFiles(source, destination);
+    }
+  };
+
   return {
     name: "sync-content",
     buildStart() {
-      rmSync("public/content", { recursive: true, force: true });
-      copyAssetFiles("src/content", "public/content");
+      syncAuthoredAssets();
     },
     handleHotUpdate({ file }: { file: string }) {
-      if (file.includes("src/content")) {
+      if (file.includes("_posts") || file.includes("_notes")) {
         try {
-          rmSync("public/content", { recursive: true, force: true });
-          copyAssetFiles("src/content", "public/content");
-          console.log("Synced content assets to public directory");
+          syncAuthoredAssets();
+          console.log("Synced authored content assets to public directory");
         } catch (error) {
           console.error("Failed to sync content:", error);
         }

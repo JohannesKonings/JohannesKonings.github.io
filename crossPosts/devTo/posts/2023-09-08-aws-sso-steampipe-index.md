@@ -6,7 +6,7 @@ published: true
 summary: See how this setup can help to discover your AWS resources across all SSO accounts with a mix of Steampipe, docker, bash scripts, and AWS CLI
 categories: aws
 thumbnail: steampipe
-cover_image: ./cover-image.png
+cover_image: https://johanneskonings.dev/content/blog/2023-09-08-aws-sso-steampipe/cover-image.png
 tags:
   - aws
   - steampipe
@@ -25,7 +25,7 @@ The big plus is that Steampipe provides the ability to query more than one accou
 
 This is how the result will look like for my AWS SSO accounts.
 
-![query result](./query-result.png)
+![query result](https://johanneskonings.dev/content/blog/2023-09-08-aws-sso-steampipe/query-result.png)
 
 More about Steampipe and AWS: <https://dev.to/aws-builders/easily-query-your-cloud-inventory-with-steampipe-2af3>
 
@@ -41,17 +41,26 @@ FROM ghcr.io/turbot/steampipe
 # Setup prerequisites (as root)
 USER root:0
 RUN apt-get update -y \
- && apt-get install -y git curl unzip jq
+ && apt-get install -y git curl unzip jq python3-pip python3-venv
 
+# Install AWS CLI
 RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" \
  && unzip awscliv2.zip \
  && ./aws/install \
  && rm -rf awscliv2.zip ./aws
 
+# Install pipx
+RUN pip3 install pipx
+
+# Update steampipe to current version
+RUN /bin/sh -c "$(curl -fsSL https://steampipe.io/install/steampipe.sh)"
 
 # Install the aws and steampipe plugins for Steampipe (as steampipe user).
 USER steampipe:0
-RUN  steampipe plugin install steampipe aws
+RUN steampipe plugin install steampipe aws
+
+# Install aws-sso-util for steampipe user
+RUN pipx install aws-sso-util && pipx ensurepath
 ```
 
 The Steampipe docu is here: <https://steampipe.io/docs/managing/containers>
@@ -97,7 +106,7 @@ The command to run this query is `steampipe query queries/lambda-runtime.sql`. T
 
 ## Scripts
 
-The other mount points are scripts and the env file. The first step is to set the needed env variable values and then run the script `./scripts/create-aws-config.sh` inside the container, which creates the file ~/.aws/config with SS0 session values.
+The other mount points are scripts and the env file. The env file contains the necessary env variables for the scripts.
 
 ```plain
 SSO_START_URL= # https://<your-aws-account-id>.awsapps.com/start
@@ -105,27 +114,21 @@ SSO_SESSION_NAME= # <your session name, it's just a name>
 SSO_REGION= # <your region, e.g. us-east-1>
 ```
 
-As next step source the env file with `source .env` to get the value for the session name. Than run the login to aws sso with the command `aws sso login --sso-session $SSO_SESSION_NAME`.
+After setting the env file run the script `./scripts/create-aws-config.sh` inside the container, which creates the file ~/.aws/config with SS0 session values using the [aws-sso-util](https://github.com/benkehoe/aws-sso-util).
 
 It will look like this.
 
-![sso login](./sso-login.png)
+![sso login](https://johanneskonings.dev/content/blog/2023-09-08-aws-sso-steampipe/sso-login.png)
 
 Open the link in the browser and put in the code.
 
-![authorize request](./authorize-request.png)
+![authorize request](https://johanneskonings.dev/content/blog/2023-09-08-aws-sso-steampipe/authorize-request.png)
 
 Then, allow the access.
 
-![allow sso to access data](./allow-sso-to-access-data.png)
+![allow sso to access data](https://johanneskonings.dev/content/blog/2023-09-08-aws-sso-steampipe/allow-sso-to-access-data.png)
 
-![successfully logged in](./successfully-logged-in.png)
-
-After it's confirmed, you can create profiles with the script `./scripts/create-aws-profiles.sh` inside the container. This will create a profile for each account in the aws config file ~/.aws/config (after confirmation) with a suffix of the assigned roles for the accounts.
-
-The scipt is adapted from this gist: <https://gist.github.com/lukeplausin/3cfedc29755e184ef526b504c77ffe70>
-
-The last step for the setup is to create the connections for Steampipe with the script `./scripts/create-aws-connections.sh` inside the container. This will create a connection for each profile in the AWS config file ~/.aws/config.
+The last step for the setup is to create the connections for Steampipe with the script `./scripts/create-steampipe-aws-config.sh` inside the container. This will create a connection for each profile in the AWS config file ~/.aws/config.
 Not every role is allowed to query the data, so it's necessary to set the env variable `ALLOWED_ROLES` with the roles allowed to query the data. The roles are comma-separated. E.g.
 
 `ALLOWED_ROLES="AWSReadOnlyAccess,AWSAdministratorAccess"`
@@ -135,3 +138,7 @@ And now it's possible to run the queries with steampipe 🥳
 ## Code
 
 [https://github.com/JohannesKonings/aws-sso-steampipe](https://github.com/JohannesKonings/aws-sso-steampipe)
+
+## Sources
+
+- [aws-sso-util](https://github.com/benkehoe/aws-sso-util)

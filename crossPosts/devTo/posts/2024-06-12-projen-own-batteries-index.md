@@ -6,7 +6,7 @@ published: false
 summary: How to setup a projen project to store central decisions to apply across all own repositories
 categories: []
 thumbnail: cdk
-cover_image: null
+cover_image: https://johanneskonings.dev/content/blog/2024-06-12-projen-own-batteries/cover-image.svg
 tags:
   - projen
 type: default
@@ -15,7 +15,7 @@ slug: projen-own-batteries
 
 ## Use case
 
-As described here [Use cdk-notifier to compare changes in pull requests]({{ site.baseurl }}/aws/cdk/2023/12/16/cdk-notifier-feature-stacks.html), the cdk-notifier displays the diff between the feature branch and the main branch.
+As described here [Use cdk-notifier to compare changes in pull requests](https://johanneskonings.dev/blog/2023-12-16-cdk-notifier-feature-stacks), the cdk-notifier displays the diff between the feature branch and the main branch.
 In case of using tags in the CDK there a two ways to tag resources, which will have different consequences in the diff output of the cdk-notifier.
 
 ## Tagging with Tags.of()
@@ -66,7 +66,7 @@ The tag will then be added to all resources in the synthesized cloudformation te
 
 Because the tag is in the template, it will then be shown in the diff.
 
-![diff tag of]({{ site.baseurl }}/img/2024-04-20-cdk-notifier-and-tags/diff-tag-of.png)
+![diff tag of](https://johanneskonings.dev/content/blog/2024-06-12-projen-own-batteries/diff-tag-of.png)
 
 <https://github.com/JohannesKonings/cdk-notifier-examples/pull/5>
 
