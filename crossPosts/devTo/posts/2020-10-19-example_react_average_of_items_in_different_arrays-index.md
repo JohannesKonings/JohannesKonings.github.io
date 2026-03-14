@@ -6,6 +6,7 @@ date: "2020-10-19 08:15:18"
 summary: Example how to calculate the average of different arrays Javascript (map, reduce, concat, ...)
 categories: react
 thumbnail: react
+cover_image: https://johanneskonings.dev/content/blog/2020-10-19-example_react_average_of_items_in_different_arrays/react_frui_basket_selection.png
 tags:
   - react
   - javascript
@@ -59,7 +60,7 @@ The implementation looks as follows:
 
 The `App.js` contains the selection of the fruit baskets via a dropdown and a table for the results. The coding is [here](https://stackblitz.com/edit/example-react-average-of-items-in-different-arrays?file=src%2FApp.js).
 
-![app.js]({{ site.baseurl }}/img/2020-10-19-example_react_average_of_items_in_different_arrays/react_frui_basket_selection.png)
+![app.js](https://johanneskonings.dev/content/blog/2020-10-19-example_react_average_of_items_in_different_arrays/react_frui_basket_selection.png)
 
 ## The calculation - data.js
 
@@ -210,7 +211,7 @@ return basketAverage;
 
 # Result
 
-![result]({{ site.baseurl }}/img/2020-10-19-example_react_average_of_items_in_different_arrays/result.gif)
+![result](https://johanneskonings.dev/content/blog/2020-10-19-example_react_average_of_items_in_different_arrays/result.gif)
 
 # Coding
 

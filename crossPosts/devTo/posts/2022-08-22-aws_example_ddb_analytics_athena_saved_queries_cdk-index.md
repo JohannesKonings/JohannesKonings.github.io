@@ -6,22 +6,23 @@ published: true
 summary: This post is about how saved queries are created with CDK. This is useful to have important queries prepared for any users.
 categories: aws
 thumbnail: aws_kinesis
+cover_image: https://johanneskonings.dev/content/blog/2022-08-22-aws_example_ddb_analytics_athena_saved_queries_cdk/athena_saved_queries.png
 tags:
   - aws
   - aws athena
-  - aws cdk
+  - cdk
 ---
 
-In [this]({{ site.baseurl }}/aws/2021/08/27/aws_example_ddb_analytics/) post is a example of a Athena query to get the the current data of the DynamoDb table.
+In [this](https://johanneskonings.dev/blog/2021-08-27-aws_example_ddb_analytics) post is a example of a Athena query to get the the current data of the DynamoDb table.
 
 This post explains how to provide this query with CDK as a saved query in Athena to have the query stored "nearby" the editor and that the query fits to the current deployment regarding the naming of the DB and table.
 Another advantage is to have the query under source control.
 
-This is a extension of [this]({{ site.baseurl }}/aws/2021/10/26/aws_example_ddb_analytics_cdk/) post.
+This is a extension of [this](https://johanneskonings.dev/blog/2021-10-26-aws_example_ddb_analytics_cdk) post.
 
 The saved queries are stored here in the console:
 
-![athena save queries]({{ site.baseurl }}/img/2022-08-22-aws_example_ddb_analytics_athena_saved_queries_cdk/athena_saved_queries.png)
+![athena save queries](https://johanneskonings.dev/content/blog/2022-08-22-aws_example_ddb_analytics_athena_saved_queries_cdk/athena_saved_queries.png)
 
 # The SQL command
 
@@ -124,9 +125,9 @@ savedQueries.node.addDependency(athenaWorkgroup);
 
 After the deployment, the new query is listed here and can be chosen for query in the editor.
 
-![athena save query deployed]({{ site.baseurl }}/img/2022-08-22-aws_example_ddb_analytics_athena_saved_queries_cdk/athena_saved_query_deployed.png)
+![athena save query deployed](https://johanneskonings.dev/content/blog/2022-08-22-aws_example_ddb_analytics_athena_saved_queries_cdk/athena_saved_query_deployed.png)
 
-![athena save queries]({{ site.baseurl }}/img/2022-08-22-aws_example_ddb_analytics_athena_saved_queries_cdk/athena_saved_query_editor.png)
+![athena save queries](https://johanneskonings.dev/content/blog/2022-08-22-aws_example_ddb_analytics_athena_saved_queries_cdk/athena_saved_query_editor.png)
 
 # Code
 

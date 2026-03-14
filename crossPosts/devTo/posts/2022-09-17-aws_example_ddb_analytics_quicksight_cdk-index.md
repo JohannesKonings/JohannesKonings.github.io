@@ -6,36 +6,37 @@ published: true
 summary: This post is how to visualize the streamed data changes of a DynamoDb table via Kinesis Data Stream and Kinesis Firehose to S3. Build with CDK.
 categories: aws
 thumbnail: aws_quicksight
+cover_image: https://johanneskonings.dev/content/blog/2022-09-17-aws_example_ddb_analytics_quicksight_cdk/quicksight-dataset-analysis.png
 tags:
   - aws
   - aws kinesis
   - aws athena
-  - aws cdk
+  - cdk
   - aws quicksight
 ---
 
-This post is about how to visualize the DynamoDb data changes with Quicksight. It's an extension of [this]({{ site.baseurl }}/aws/2021/08/27/aws_example_ddb_analytics_cdk/) post, which describes how to analyze the data with Athena.
+This post is about how to visualize the DynamoDb data changes with Quicksight. It's an extension of [this](https://johanneskonings.dev/blog/2021-10-26-aws_example_ddb_analytics_cdk) post, which describes how to analyze the data with Athena.
 The setting for creating the DynamoDb table and putting the data changes to a S3 bucket is the same. Instead of creating an Athena table of the data in the S3 bucket, this data is linked to a data source in Quicksight.
 
 ## Quicksight activation and costs
 
 Quicksight needs to be activated before using. It's enough to use the standard edition for this scenario. The first 30 days are [free](https://docs.aws.amazon.com/quicksight/latest/user/signing-up.html). Costs are listed [here](https://aws.amazon.com/quicksight/pricing/).
 
-![quicksight open service]({{ site.baseurl }}/img/2022-09-17-aws_example_ddb_analytics_quicksight_cdk/quicksight-open-service.png)
+![quicksight open service](https://johanneskonings.dev/content/blog/2022-09-17-aws_example_ddb_analytics_quicksight_cdk/quicksight-open-service.png)
 
-![quicksight sign up]({{ site.baseurl }}/img/2022-09-17-aws_example_ddb_analytics_quicksight_cdk/quicksight-sign-up.png)
+![quicksight sign up](https://johanneskonings.dev/content/blog/2022-09-17-aws_example_ddb_analytics_quicksight_cdk/quicksight-sign-up.png)
 
-![quicksight choose standard]({{ site.baseurl }}/img/2022-09-17-aws_example_ddb_analytics_quicksight_cdk/quicksight-choose-standard.png)
+![quicksight choose standard](https://johanneskonings.dev/content/blog/2022-09-17-aws_example_ddb_analytics_quicksight_cdk/quicksight-choose-standard.png)
 
 Enter a name and an email address
 
-![quicksight create standard]({{ site.baseurl }}/img/2022-09-17-aws_example_ddb_analytics_quicksight_cdk/quicksight-create-standard.png)
+![quicksight create standard](https://johanneskonings.dev/content/blog/2022-09-17-aws_example_ddb_analytics_quicksight_cdk/quicksight-create-standard.png)
 
 ## Quicksight role
 
 In the [standard edition](https://docs.aws.amazon.com/quicksight/latest/user/security_iam_service-with-iam.html#security-create-iam-role), Quicksight uses a standard role that could be configured via the Quicksight console.
 
-![quicksight permission access to aws services]({{ site.baseurl }}/img/2022-09-17-aws_example_ddb_analytics_quicksight_cdk/quicksight-permission-access-to-aws-services.png)
+![quicksight permission access to aws services](https://johanneskonings.dev/content/blog/2022-09-17-aws_example_ddb_analytics_quicksight_cdk/quicksight-permission-access-to-aws-services.png)
 
 Unfortunately, it is not possible to allow for specific KMS keys. For that, we need to add a policy to the role aws-quicksight-service-role-v0.
 
@@ -84,7 +85,7 @@ In Quicksight a data source is the connection to the data and the data set is us
 
 Quicksight has a lot of different data sources. We want to use the data from S3.
 
-![quicksight datasource kinds]({{ site.baseurl }}/img/2022-09-17-aws_example_ddb_analytics_quicksight_cdk/quicksight-datasource-kinds.png)
+![quicksight datasource kinds](https://johanneskonings.dev/content/blog/2022-09-17-aws_example_ddb_analytics_quicksight_cdk/quicksight-datasource-kinds.png)
 
 Currently, there is no L2 CDK construct for data sources so we need to use the L1 cloud formation.
 
@@ -271,7 +272,7 @@ const permissionsDataset = [
 
 You can find the Quicksight username here
 
-![quicksight username]({{ site.baseurl }}/img/2022-09-17-aws_example_ddb_analytics_quicksight_cdk/quicksight-username.png)
+![quicksight username](https://johanneskonings.dev/content/blog/2022-09-17-aws_example_ddb_analytics_quicksight_cdk/quicksight-username.png)
 
 ### Deployment and refresh of the dataset
 
@@ -323,21 +324,21 @@ customResourceDeleteObject.node.addDependency(dataset);
 
 After there is some data in the dynamodb you have to refresh the dataset. This is how it looks like if you create 5 new entries and then modify 1 and refresh again and use this data in an analysis.
 
-![quicksight refresh dataset]({{ site.baseurl }}/img/2022-09-17-aws_example_ddb_analytics_quicksight_cdk/quicksight-refresh-dataset.png)
+![quicksight refresh dataset](https://johanneskonings.dev/content/blog/2022-09-17-aws_example_ddb_analytics_quicksight_cdk/quicksight-refresh-dataset.png)
 
-![quicksight dataset imported rows]({{ site.baseurl }}/img/2022-09-17-aws_example_ddb_analytics_quicksight_cdk/quicksight-dataset-imported-rows.png)
+![quicksight dataset imported rows](https://johanneskonings.dev/content/blog/2022-09-17-aws_example_ddb_analytics_quicksight_cdk/quicksight-dataset-imported-rows.png)
 
-![quicksight dataset analysis]({{ site.baseurl }}/img/2022-09-17-aws_example_ddb_analytics_quicksight_cdk/quicksight-dataset-analysis.png)
+![quicksight dataset analysis](https://johanneskonings.dev/content/blog/2022-09-17-aws_example_ddb_analytics_quicksight_cdk/quicksight-dataset-analysis.png)
 
-![quicksight analysis inserts]({{ site.baseurl }}/img/2022-09-17-aws_example_ddb_analytics_quicksight_cdk/quicksight-analysis-inserts.png)
+![quicksight analysis inserts](https://johanneskonings.dev/content/blog/2022-09-17-aws_example_ddb_analytics_quicksight_cdk/quicksight-analysis-inserts.png)
 
-![quicksight analysis modify]({{ site.baseurl }}/img/2022-09-17-aws_example_ddb_analytics_quicksight_cdk/quicksight-analysis-modify.png)
+![quicksight analysis modify](https://johanneskonings.dev/content/blog/2022-09-17-aws_example_ddb_analytics_quicksight_cdk/quicksight-analysis-modify.png)
 
 # Cost Alert 💰
 
 ⚠️ Don't forget to delete the Quicksight account after testing.
 
-![quicksight delete account]({{ site.baseurl }}/img/2022-09-17-aws_example_ddb_analytics_quicksight_cdk/quicksight-delete-account.png)
+![quicksight delete account](https://johanneskonings.dev/content/blog/2022-09-17-aws_example_ddb_analytics_quicksight_cdk/quicksight-delete-account.png)
 
 # Code
 

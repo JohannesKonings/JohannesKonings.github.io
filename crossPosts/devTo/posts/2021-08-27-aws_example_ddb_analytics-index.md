@@ -6,6 +6,7 @@ published: true
 summary: This post is how stream data changes of a DynamoDb table via Kinesis Data Stream and Kinesis Firehose to S3, and analyze the data with Athena
 categories: aws
 thumbnail: aws_kinesis
+cover_image: https://johanneskonings.dev/content/blog/2021-08-27-aws_example_ddb_analytics/athena_ddb.png
 tags:
   - aws
   - aws kinesis
@@ -84,9 +85,9 @@ resource "aws_dynamodb_kinesis_streaming_destination" "aws_dynamodb_kinesis_stre
 
 That adds to the DynamoDb, a Kinesis Data Stream, and connects it to the DynamoDb.
 
-![kinesis data stream]({{ site.baseurl }}/img/2021-08-27-aws_example_ddb_analytics/kinesis_data_stream.png)
+![kinesis data stream](https://johanneskonings.dev/content/blog/2021-08-27-aws_example_ddb_analytics/kinesis_data_stream.png)
 
-![kinesis data stream ddb]({{ site.baseurl }}/img/2021-08-27-aws_example_ddb_analytics/kinesis_data_stream_ddb.png)
+![kinesis data stream ddb](https://johanneskonings.dev/content/blog/2021-08-27-aws_example_ddb_analytics/kinesis_data_stream_ddb.png)
 
 # Kinesis Data Firehose and S3 Bucket
 
@@ -138,7 +139,7 @@ Details are [here](https://github.com/JohannesKonings/test-aws-dynamodb-athena-t
 
 The delivery of the data to the S3 bucket is buffered. Here are the default values.
 
-![firehose-buffer]({{ site.baseurl }}/img/2021-08-27-aws_example_ddb_analytics/firehose_buffer.png)
+![firehose-buffer](https://johanneskonings.dev/content/blog/2021-08-27-aws_example_ddb_analytics/firehose_buffer.png)
 
 # Glue crawler
 
@@ -169,11 +170,11 @@ Details [here](https://github.com/JohannesKonings/test-aws-dynamodb-athena-tf/bl
 
 For test purposes, it's enough to run the crawler before any analysis. Scheduling is also possible.
 
-![glue-run-crawler]({{ site.baseurl }}/img/2021-08-27-aws_example_ddb_analytics/glue_run_crawler.png)
+![glue-run-crawler](https://johanneskonings.dev/content/blog/2021-08-27-aws_example_ddb_analytics/glue_run_crawler.png)
 
 That creates this table, which is accessible by Athena.
 
-![glue-table]({{ site.baseurl }}/img/2021-08-27-aws_example_ddb_analytics/glue_table.png)
+![glue-table](https://johanneskonings.dev/content/blog/2021-08-27-aws_example_ddb_analytics/glue_table.png)
 
 # Athena
 
@@ -227,11 +228,11 @@ Details [here](https://github.com/JohannesKonings/test-aws-dynamodb-athena-tf/bl
 
 First select the new workgroup.
 
-![athena-workgroup]({{ site.baseurl }}/img/2021-08-27-aws_example_ddb_analytics/athena_workgroup.png)
+![athena-workgroup](https://johanneskonings.dev/content/blog/2021-08-27-aws_example_ddb_analytics/athena_workgroup.png)
 
 And than the new Database.
 
-![athena-database]({{ site.baseurl }}/img/2021-08-27-aws_example_ddb_analytics/athena_database.png)
+![athena-database](https://johanneskonings.dev/content/blog/2021-08-27-aws_example_ddb_analytics/athena_database.png)
 
 ### Query example
 
@@ -253,7 +254,7 @@ WHERE (eventname = 'INSERT'
     WHERE persons2.dynamodb.newimage.pk.s = persons1.dynamodb.newimage.pk.s);
 ```
 
-![athena-ddb]({{ site.baseurl }}/img/2021-08-27-aws_example_ddb_analytics/athena_ddb.png)
+![athena-ddb](https://johanneskonings.dev/content/blog/2021-08-27-aws_example_ddb_analytics/athena_ddb.png)
 
 # Cost Alert 💰
 

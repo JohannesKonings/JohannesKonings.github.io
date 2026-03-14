@@ -5,10 +5,11 @@ date: 2020-12-06 08:15:18
 summary: Description of the change from a self sign up to user management from an admin
 categories: aws
 thumbnail: amplify
+cover_image: https://johanneskonings.dev/content/blog/2020-12-06-amplify_admin_ui_user_management/enabled_admin_ui.png
 tags:
   - aws
-  - AWS Amplify
-  - AWS Amplify Admin UI
+  - aws amplify
+  - aws amplify admin ui
 published: true
 ---
 
@@ -25,7 +26,7 @@ This [post](https://dev.to/aws-builders/aws-amplify-admin-ui-45bm) also gives an
 
 At first, I had to hide the signup link to avoid that everyone can signup.
 
-![signin with signup]({{ site.baseurl }}/img/2020-12-06-amplify_admin_ui_user_management/signin_with_signup.png)
+![signin with signup](https://johanneskonings.dev/content/blog/2020-12-06-amplify_admin_ui_user_management/signin_with_signup.png)
 
 To hide the signup link is just one line.
 
@@ -39,48 +40,48 @@ More options are described in the [docs](https://docs.amplify.aws/ui/auth/authen
 
 Then it looks like that.
 
-![signin without signup]({{ site.baseurl }}/img/2020-12-06-amplify_admin_ui_user_management/signin_without_signup.png)
+![signin without signup](https://johanneskonings.dev/content/blog/2020-12-06-amplify_admin_ui_user_management/signin_without_signup.png)
 
 # Create a new user via Amplify Admin UI
 
 If a new user is needed, you can create on via the Amplify Admin UI.
 That you can use the Admin UI, it is just a click in the Amplify [Console](https://console.aws.amazon.com/amplify/home).
 
-![enabled admin ui]({{ site.baseurl }}/img/2020-12-06-amplify_admin_ui_user_management/enabled_admin_ui.png)
+![enabled admin ui](https://johanneskonings.dev/content/blog/2020-12-06-amplify_admin_ui_user_management/enabled_admin_ui.png)
 
 In the Admin UI, it's in the section user management. Click on "create user".
 
-![user management create user]({{ site.baseurl }}/img/2020-12-06-amplify_admin_ui_user_management/user_management_create_user.png)
+![user management create user](https://johanneskonings.dev/content/blog/2020-12-06-amplify_admin_ui_user_management/user_management_create_user.png)
 
 Type in the user data. The user will get an email with the username and temporary password.
 
-![user management user data]({{ site.baseurl }}/img/2020-12-06-amplify_admin_ui_user_management/user_management_user_data.png)
+![user management user data](https://johanneskonings.dev/content/blog/2020-12-06-amplify_admin_ui_user_management/user_management_user_data.png)
 
 # User sign in process
 
 Then the user can log in with his username and temporary password.
 
-![user signin tempory password]({{ site.baseurl }}/img/2020-12-06-amplify_admin_ui_user_management/user_signin_tempory_password.png)
+![user signin tempory password](https://johanneskonings.dev/content/blog/2020-12-06-amplify_admin_ui_user_management/user_signin_tempory_password.png)
 
 At the next screen, the user has to create a new password.
 
-![user signin new password]({{ site.baseurl }}/img/2020-12-06-amplify_admin_ui_user_management/user_signin_new_password.png)
+![user signin new password](https://johanneskonings.dev/content/blog/2020-12-06-amplify_admin_ui_user_management/user_signin_new_password.png)
 
 Two screens are left. One for the email verification...
 
-![user signin verify]({{ site.baseurl }}/img/2020-12-06-amplify_admin_ui_user_management/user_signin_verify.png)
+![user signin verify](https://johanneskonings.dev/content/blog/2020-12-06-amplify_admin_ui_user_management/user_signin_verify.png)
 
 ...and the last one for the verification code.
 
-![user signin verification code]({{ site.baseurl }}/img/2020-12-06-amplify_admin_ui_user_management/user_signin_verification_code.png)
+![user signin verification code](https://johanneskonings.dev/content/blog/2020-12-06-amplify_admin_ui_user_management/user_signin_verification_code.png)
 
 The last step is not necessary if the admin marks the email as verified.
 
-![admin verify email]({{ site.baseurl }}/img/2020-12-06-amplify_admin_ui_user_management/admin_verify_email.png)
+![admin verify email](https://johanneskonings.dev/content/blog/2020-12-06-amplify_admin_ui_user_management/admin_verify_email.png)
 
 That's it 🎉
 
-![user after signin]({{ site.baseurl }}/img/2020-12-06-amplify_admin_ui_user_management/user_after_signin.png)
+![user after signin](https://johanneskonings.dev/content/blog/2020-12-06-amplify_admin_ui_user_management/user_after_signin.png)
 
 # Invite User to the Admin UI
 

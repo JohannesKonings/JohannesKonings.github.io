@@ -6,14 +6,15 @@ published: true
 summary: This post is how stream data changes of a DynamoDb table via Kinesis Data Stream and Kinesis Firehose to S3, and analyze the data with Athena. Build with CDK.
 categories: aws
 thumbnail: aws_kinesis
+cover_image: https://johanneskonings.dev/content/blog/2021-10-26-aws_example_ddb_analytics_cdk/kinesis_data_stream.png
 tags:
   - aws
   - aws kinesis
   - aws athena
-  - aws cdk
+  - cdk
 ---
 
-This is the same like described [here]({{ site.baseurl }}/aws/2021/08/27/aws_example_ddb_analytics/), but instead of terraform it's build with [CDK](https://aws.amazon.com/cdk/).
+This is the same like described [here](https://johanneskonings.dev/blog/2021-08-27-aws_example_ddb_analytics), but instead of terraform it's build with [CDK](https://aws.amazon.com/cdk/).
 
 To bootstrap the project run this command: `cdk init app --language typescript`
 Further information are [here](https://docs.aws.amazon.com/cdk/latest/guide/hello_world.html)
@@ -60,9 +61,9 @@ const table = new dynamodb.Table(this, "Table", {
 
 That adds to the DynamoDb, a Kinesis Data Stream, and connects it to the DynamoDb.
 
-![kinesis data stream]({{ site.baseurl }}/img/2021-10-26-aws_example_ddb_analytics_cdk/kinesis_data_stream.png)
+![kinesis data stream](https://johanneskonings.dev/content/blog/2021-10-26-aws_example_ddb_analytics_cdk/kinesis_data_stream.png)
 
-![kinesis data stream ddb]({{ site.baseurl }}/img/2021-10-26-aws_example_ddb_analytics_cdk/kinesis_data_stream_ddb.png)
+![kinesis data stream ddb](https://johanneskonings.dev/content/blog/2021-10-26-aws_example_ddb_analytics_cdk/kinesis_data_stream_ddb.png)
 
 ## Kinesis Data Firehose and S3 Bucket
 
@@ -112,7 +113,7 @@ const firehoseDeliveryStream = new firehose.DeliveryStream(this, "Delivery Strea
 
 The delivery of the data to the S3 bucket is buffered. Here are the default values.
 
-![firehose-buffer]({{ site.baseurl }}/img/2021-10-26-aws_example_ddb_analytics_cdk/firehose_buffer.png)
+![firehose-buffer](https://johanneskonings.dev/content/blog/2021-10-26-aws_example_ddb_analytics_cdk/firehose_buffer.png)
 
 ## Glue crawler
 
@@ -191,11 +192,11 @@ roleCrawler.addToPolicy(
 
 For test purposes, it's enough to run the crawler before any analysis. Scheduling is also possible.
 
-![glue-run-crawler]({{ site.baseurl }}/img/2021-10-26-aws_example_ddb_analytics_cdk/glue_run_crawler.png)
+![glue-run-crawler](https://johanneskonings.dev/content/blog/2021-10-26-aws_example_ddb_analytics_cdk/glue_run_crawler.png)
 
 That creates this table, which is accessible by Athena.
 
-![glue-table]({{ site.baseurl }}/img/2021-10-26-aws_example_ddb_analytics_cdk/glue_table.png)
+![glue-table](https://johanneskonings.dev/content/blog/2021-10-26-aws_example_ddb_analytics_cdk/glue_table.png)
 
 ## Athena
 
@@ -221,7 +222,7 @@ new athena.CfnWorkGroup(this, "analytics-athena-workgroup", {
 });
 ```
 
-How to anylyze the data see also [here]({{ site.baseurl }}/aws/2021/08/27/aws_example_ddb_analytics/)
+How to anylyze the data see also [here](https://johanneskonings.dev/blog/2021-08-27-aws_example_ddb_analytics)
 
 ## Cost Alert 💰
 

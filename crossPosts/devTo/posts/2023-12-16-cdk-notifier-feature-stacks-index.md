@@ -6,7 +6,7 @@ published: true
 summary: See how cdk-notifier can help to compare which cdk changes will be applied after merging a pull request
 categories: aws
 thumbnail: cdk
-cover_image: ./cover-image.png
+cover_image: https://johanneskonings.dev/content/blog/2023-12-16-cdk-notifier-feature-stacks/cover-image.png
 tags:
   - aws
   - cdk
@@ -31,7 +31,7 @@ See here for more information about the cdk-notifier:
 
 This setting has a deployed stack from the main branch, for the feature development a new branch `feat1` is created and deployed as a new stack.
 
-![stack-overview](./stack-overview.png)
+![stack-overview](https://johanneskonings.dev/content/blog/2023-12-16-cdk-notifier-feature-stacks/stack-overview.png)
 
 In the pull request the cdk-notifier action is added to the workflow and create a diff from the `feat1` branch files with the BRANCH_NAME env variable for `main` to run the diff agianst the `main` stack.
 The diff output will be added to the pull request as a comment via the cdk-notifier.
@@ -60,11 +60,11 @@ The diff output will be added to the pull request as a comment via the cdk-notif
 
 [https://github.com/JohannesKonings/cdk-notifier-examples/blob/main/.github/workflows/cdk-diff.yml](https://github.com/JohannesKonings/cdk-notifier-examples/blob/main/.github/workflows/cdk-diff.yml)
 
-![pipeline in pull request](./pipeline-in-pull-request.png)
+![pipeline in pull request](https://johanneskonings.dev/content/blog/2023-12-16-cdk-notifier-feature-stacks/pipeline-in-pull-request.png)
 
 The comment looks like this:
 
-![PR comment](./pr-comment.png)
+![PR comment](https://johanneskonings.dev/content/blog/2023-12-16-cdk-notifier-feature-stacks/pr-comment.png)
 [https://github.com/JohannesKonings/cdk-notifier-examples/pull/4#issuecomment-1858909147](https://github.com/JohannesKonings/cdk-notifier-examples/pull/4#issuecomment-1858909147)
 
 The extended template parameter of the cdk-notifier displays in this setting also a warning that the dynamodb requires a replacement.
@@ -73,8 +73,12 @@ That is a nice feature besides the overview of the changes, which is itself help
 
 After the merge, the feature stack will be destroyed, and the main stack will be updated.
 
-![pipeline after merge](./pipeline-after-merge.png)
+![pipeline after merge](https://johanneskonings.dev/content/blog/2023-12-16-cdk-notifier-feature-stacks/pipeline-after-merge.png)
 
 ## Code
 
 [https://github.com/JohannesKonings/cdk-notifier-examples](https://github.com/JohannesKonings/cdk-notifier-examples)
+
+## Follow-up Post
+
+For an extended example that adds CloudFormation change set validation alongside `cdk diff`, see: [cdk-notifier with CloudFormation change sets](https://johanneskonings.dev/blog/2025-12-06-cdk-notifier-feature-stacks-change-set)

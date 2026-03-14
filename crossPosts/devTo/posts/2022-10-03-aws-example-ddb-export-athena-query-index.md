@@ -6,20 +6,21 @@ published: true
 summary: This post is how to trigger a Dynamodb export and create saved query to create a Athena table from the exported data
 categories: aws
 thumbnail: aws_athena
+cover_image: https://johanneskonings.dev/content/blog/2022-10-03-aws-example-ddb-export-athena-query/ddb-export-sfn-athena-query.png
 tags:
   - aws
   - aws athena
-  - aws cdk
+  - cdk
   - aws dynamodb
 ---
 
-In [this]({{ site.baseurl }}/aws/2021/08/27/aws_example_ddb_analytics_cdk/) post is described how to get the data to analyze the changes in the dynamodb data. This post describes how to (semi) automate the export of the dynamodb table data and analyze it with Athena. [This](https://aws.amazon.com/de/blogs/aws/new-export-amazon-dynamodb-table-data-to-data-lake-amazon-s3/) post describes how you can do that manually.
+In [this](https://johanneskonings.dev/blog/2021-10-26-aws_example_ddb_analytics_cdk) post is described how to get the data to analyze the changes in the dynamodb data. This post describes how to (semi) automate the export of the dynamodb table data and analyze it with Athena. [This](https://aws.amazon.com/de/blogs/aws/new-export-amazon-dynamodb-table-data-to-data-lake-amazon-s3/) post describes how you can do that manually.
 
 One approach is with a lambda and another approach is with step functions. Both approaches implement the steps for triggering the export to a S3 bucket, create an athena table for that exported data and prepare a namend query for analyzing.
 
 The data for this example looks like this.
 
-![ddb export ddb data](./ddb-export-ddb-data.png)
+![ddb export ddb data](https://johanneskonings.dev/content/blog/2022-10-03-aws-example-ddb-export-athena-query/ddb-export-ddb-data.png)
 
 ## With lambda
 
@@ -66,27 +67,27 @@ A more orchestrated approach is with step function. That's better for waiting fo
 
 This are the steps, which are orchestrated by the step function.
 
-![ddb export sfn](./ddb-export-sfn.png)
+![ddb export sfn](https://johanneskonings.dev/content/blog/2022-10-03-aws-example-ddb-export-athena-query/ddb-export-sfn.png)
 
 It's definend [here](https://github.com/JohannesKonings/test-aws-dynamodb-athena-cdk/blob/main/cdk/lib/ddb-export/ddb-export-step-function.ts)
 
 The step function could be startet with the default values.
 
-![ddb export sfn start 1](./ddb-export-sfn-start-1.png)
+![ddb export sfn start 1](https://johanneskonings.dev/content/blog/2022-10-03-aws-example-ddb-export-athena-query/ddb-export-sfn-start-1.png)
 
-![ddb export sfn start 2](./ddb-export-sfn-start-2.png)
+![ddb export sfn start 2](https://johanneskonings.dev/content/blog/2022-10-03-aws-example-ddb-export-athena-query/ddb-export-sfn-start-2.png)
 
 It takes some minutes to complete.
 
-![ddb export sfn run](./ddb-export-sfn-run.png)
+![ddb export sfn run](https://johanneskonings.dev/content/blog/2022-10-03-aws-example-ddb-export-athena-query/ddb-export-sfn-run.png)
 
 The "recent queries" section list the steps for dropping the old table and create the new one.
 
-![ddb export sfn athena recent queries](./ddb-export-sfn-recent-queries.png)
+![ddb export sfn athena recent queries](https://johanneskonings.dev/content/blog/2022-10-03-aws-example-ddb-export-athena-query/ddb-export-sfn-recent-queries.png)
 
 After it's finished you can choose the saved query with the name `sfn-ddb-export-read-table`. It can be used to query all the data from the dynamodb table and could be adapted to more "complex" queries.
 
-![ddb export sfn athena query](./ddb-export-sfn-athena-query.png)
+![ddb export sfn athena query](https://johanneskonings.dev/content/blog/2022-10-03-aws-example-ddb-export-athena-query/ddb-export-sfn-athena-query.png)
 
 ## Code
 
