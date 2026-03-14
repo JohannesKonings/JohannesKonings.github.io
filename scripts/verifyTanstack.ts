@@ -44,6 +44,7 @@ interface ContentItem {
   filePath: string;
   title?: string;
   published: boolean;
+  coverImage?: string;
   hasErrors: boolean;
   errors: string[];
 }
@@ -53,6 +54,7 @@ function parseFrontmatter(content: string): {
   published?: boolean;
   date?: string;
   summary?: string;
+  coverImage?: string;
 } {
   const match = content.match(/^---\s*([\s\S]*?)\s*---/);
   if (!match) return {};
@@ -64,8 +66,9 @@ function parseFrontmatter(content: string): {
   const date = block.match(/^date:\s*([^\n]+)/m)?.[1]?.trim();
   const summaryMatch = block.match(/^summary:\s*["']?([^"'\n]+)["']?/m);
   const summary = summaryMatch ? summaryMatch[1].trim() : undefined;
+  const coverImage = block.match(/^cover_image:\s*([^\n]+)/m)?.[1]?.trim();
 
-  return { title, published, date, summary };
+  return { title, published, date, summary, coverImage };
 }
 
 function isValidSlug(slug: string): boolean {
@@ -85,17 +88,36 @@ function collectPosts(): ContentItem[] {
       // Directory-based post
       const dirPath = path.join(CONTENT_BLOG, ent.name);
       const files = fs.readdirSync(dirPath);
-      const mdFile =
-        files.find((f) => f.endsWith(".md") && (f === "index.md" || f === ent.name + ".md")) ??
-        files.find((f) => f.endsWith(".md"));
-      if (!mdFile) continue;
+      if (!files.includes("index.md")) {
+        items.push({
+          type: "post",
+          slug: ent.name,
+          filePath: dirPath,
+          published: false,
+          hasErrors: true,
+          errors: ['Missing required "index.md" bundle entrypoint'],
+        });
+        continue;
+      }
 
-      const filePath = path.join(dirPath, mdFile);
+      const filePath = path.join(dirPath, "index.md");
       const content = fs.readFileSync(filePath, "utf-8");
-      const { title, published } = parseFrontmatter(content);
+      const { title, published, coverImage } = parseFrontmatter(content);
 
       const errors: string[] = [];
       if (!title) errors.push("Missing title in frontmatter");
+      if (!coverImage) {
+        errors.push("Missing cover_image in frontmatter");
+      } else {
+        if (!coverImage.startsWith("./")) {
+          errors.push('cover_image must be a local relative asset path starting with "./"');
+        }
+
+        const resolvedCoverPath = path.join(dirPath, coverImage.replace(/^\.\//, ""));
+        if (!fs.existsSync(resolvedCoverPath)) {
+          errors.push(`cover_image file does not exist: ${coverImage}`);
+        }
+      }
 
       items.push({
         type: "post",
@@ -103,27 +125,19 @@ function collectPosts(): ContentItem[] {
         filePath,
         title,
         published: published !== false,
+        coverImage,
         hasErrors: errors.length > 0,
         errors,
       });
     } else if (ent.isFile() && ent.name.endsWith(".md")) {
-      // Flat .md file
-      const filePath = path.join(CONTENT_BLOG, ent.name);
-      const content = fs.readFileSync(filePath, "utf-8");
-      const { title, published } = parseFrontmatter(content);
-
-      const errors: string[] = [];
-      if (!title) errors.push("Missing title in frontmatter");
-
       const slug = ent.name.replace(/\.md$/i, "");
       items.push({
         type: "post",
         slug,
-        filePath,
-        title,
-        published: published !== false,
-        hasErrors: errors.length > 0,
-        errors,
+        filePath: path.join(CONTENT_BLOG, ent.name),
+        published: false,
+        hasErrors: true,
+        errors: ['Flat blog markdown files are not allowed; use "<slug>/index.md" bundles'],
       });
     }
   }

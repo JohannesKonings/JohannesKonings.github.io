@@ -11,6 +11,7 @@ const siteConfig = {
   baseUrl: "https://johanneskonings.dev",
   rssUrl: "https://johanneskonings.dev/rss.xml",
   sitemapUrl: "https://johanneskonings.dev/sitemap-index.xml",
+  defaultSocialImage: "https://johanneskonings.dev/social-preview.png",
 } as const;
 
 const colors = {
@@ -151,6 +152,26 @@ function getJsonLdObjects(html: string) {
   return objects;
 }
 
+function getBuiltAssetPathFromAbsoluteUrl(assetUrl: string) {
+  if (!assetUrl.startsWith(siteConfig.baseUrl)) {
+    return undefined;
+  }
+
+  const pathname = new URL(assetUrl).pathname.replace(/^\/+/, "");
+  return path.join(BUILD_PUBLIC_DIR, pathname);
+}
+
+function assertBuiltAssetExists(assetUrl: string, label: string) {
+  const localAssetPath = getBuiltAssetPathFromAbsoluteUrl(assetUrl);
+
+  if (!localAssetPath) {
+    success(`${label} uses an external asset URL`);
+    return;
+  }
+
+  assert(fs.existsSync(localAssetPath), `${label} asset exists in build output`);
+}
+
 function verifyHomePage() {
   console.log("\n🏠 Homepage SEO");
   const html = readFile(resolveRouteHtml("/"));
@@ -161,6 +182,19 @@ function verifyHomePage() {
     stripTrailingSlash(getLinkHref(html, { rel: "canonical" }) ?? "") === siteConfig.baseUrl,
     "Homepage canonical uses johanneskonings.dev",
   );
+  assert(
+    getMetaContent(html, { property: "og:image" }) === siteConfig.defaultSocialImage,
+    "Homepage uses default Open Graph image",
+  );
+  assert(
+    getMetaContent(html, { name: "twitter:image" }) === siteConfig.defaultSocialImage,
+    "Homepage uses default Twitter image",
+  );
+  assert(
+    getMetaContent(html, { name: "twitter:card" }) === "summary_large_image",
+    "Homepage uses summary_large_image Twitter card",
+  );
+  assertBuiltAssetExists(siteConfig.defaultSocialImage, "Homepage social preview");
   assert(
     getLinkHref(html, { rel: "alternate", type: "application/rss+xml" }) === siteConfig.rssUrl,
     "Homepage RSS alternate link uses johanneskonings.dev",
@@ -180,6 +214,18 @@ function verifyBlogListing() {
     stripTrailingSlash(getLinkHref(html, { rel: "canonical" }) ?? "") ===
       `${siteConfig.baseUrl}/blog`,
     "Blog listing canonical points to /blog",
+  );
+  assert(
+    getMetaContent(html, { property: "og:image" }) === siteConfig.defaultSocialImage,
+    "Blog listing uses default Open Graph image",
+  );
+  assert(
+    getMetaContent(html, { name: "twitter:image" }) === siteConfig.defaultSocialImage,
+    "Blog listing uses default Twitter image",
+  );
+  assert(
+    getMetaContent(html, { name: "twitter:card" }) === "summary_large_image",
+    "Blog listing uses summary_large_image Twitter card",
   );
 
   const jsonLd = getJsonLdObjects(html).find((item) => item["@type"] === "Blog");
@@ -209,8 +255,15 @@ function verifyRepresentativePost() {
     getMetaContent(html, { property: "og:type" }) === "article",
     "Post Open Graph type is article",
   );
-  assert(Boolean(getMetaContent(html, { property: "og:image" })), "Post has an Open Graph image");
-  assert(Boolean(getMetaContent(html, { name: "twitter:image" })), "Post has a Twitter image");
+  const ogImage = getMetaContent(html, { property: "og:image" });
+  const twitterImage = getMetaContent(html, { name: "twitter:image" });
+  assert(Boolean(ogImage), "Post has an Open Graph image");
+  assert(Boolean(twitterImage), "Post has a Twitter image");
+  assert(
+    getMetaContent(html, { name: "twitter:card" }) === "summary_large_image",
+    "Post uses summary_large_image Twitter card",
+  );
+  assertBuiltAssetExists(ogImage!, "Representative post social preview");
 
   const jsonLd = getJsonLdObjects(html).find((item) => item["@type"] === "BlogPosting");
   assert(Boolean(jsonLd), "Post includes BlogPosting JSON-LD");
@@ -220,6 +273,22 @@ function verifyRepresentativePost() {
       canonical,
     "BlogPosting mainEntityOfPage matches canonical URL",
   );
+}
+
+function verifyLegacyPostSocialPreview() {
+  console.log("\n🧾 Legacy blog post social preview");
+  const legacyRoute = "/blog/2020-10-19-example_react_average_of_items_in_different_arrays";
+  const html = readFile(resolveRouteHtml(legacyRoute));
+  const legacyOgImage = getMetaContent(html, { property: "og:image" });
+  const legacyTwitterImage = getMetaContent(html, { name: "twitter:image" });
+
+  assert(Boolean(legacyOgImage), "Legacy post has an Open Graph image");
+  assert(Boolean(legacyTwitterImage), "Legacy post has a Twitter image");
+  assert(
+    legacyOgImage !== `${siteConfig.baseUrl}/img/react.png`,
+    "Legacy post no longer points to missing generic thumbnail image",
+  );
+  assertBuiltAssetExists(legacyOgImage!, "Legacy post social preview");
 }
 
 function verifyCrawlArtifacts() {
@@ -251,6 +320,7 @@ function main() {
   verifyHomePage();
   verifyBlogListing();
   verifyRepresentativePost();
+  verifyLegacyPostSocialPreview();
   verifyCrawlArtifacts();
 
   console.log("\nAll SEO/GEO checks passed.\n");

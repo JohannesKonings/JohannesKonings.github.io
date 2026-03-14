@@ -6,6 +6,7 @@ import { isValidElement } from "react";
 import { BlogLayout } from "../../components/blog/BlogLayout";
 import { CodeBlock } from "../../components/blog/CodeBlock";
 import { createRouteHead, generateSEOTags } from "../../lib/seo";
+import { siteConfig } from "../../lib/site";
 
 function getTextContent(value: unknown): string {
   if (typeof value === "string") return value;
@@ -32,6 +33,8 @@ export const Route = createFileRoute("/notes/$noteId")({
         title: note.title,
         description: note.summary || note.excerpt || `${note.title} note`,
         url: note.url,
+        image: siteConfig.defaultSocialImage,
+        imageAlt: note.title,
         type: "article",
         publishedTime: note.date.toISOString(),
         modifiedTime: note.date.toISOString(),
