@@ -4,6 +4,21 @@
 
 **TanStack is the site** served at the deployment root (e.g. `https://johanneskonings.github.io`). All canonicals, sitemaps, and SEO point to the root; ads.txt and robots.txt are at the root.
 
+### Deployment targets
+
+- **Production**: `main` deploys to `https://johanneskonings.dev`.
+- **Branch previews**: non-`main` branches deploy through the preview workflow and use a sanitized branch label as the preview subdomain.
+- **Preview indexing**: preview and localhost builds must remain non-indexable and must not load production analytics/ads.
+
+### Demo requirement
+
+Any demo script or walkthrough for the TanStack site must:
+
+- support localhost usage
+- support deployed-preview usage
+- accept an overridable `BASE_URL`
+- document both invocation styles
+
 ## Copilot Usage Policy
 
 **All Copilot requests and code changes MUST strictly adhere to the requirements and decisions documented in this specification.**

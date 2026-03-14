@@ -23,6 +23,7 @@ concurrency:
 env:
   BUILD_PATH: "." # default value when not using subfolders
   WEBSITE_TANSTACK_PATH: websites/tanstack
+  PRODUCTION_SITE_URL: "https://johanneskonings.dev"
 
 jobs:
   build:
@@ -43,6 +44,13 @@ jobs:
       - name: Install dependencies
         run: vp install --frozen-lockfile
         working-directory: ${{ env.BUILD_PATH }}
+      - name: Resolve production deployment context
+        id: deployment-context
+        run: vp exec tsx scripts/resolveDeploymentEnv.ts
+        working-directory: ${{ env.BUILD_PATH }}
+        env:
+          DEPLOYMENT_KIND: production
+          SITE_URL: ${{ env.PRODUCTION_SITE_URL }}
       - name: Build with Tanstack
         run: NODE_ENV=production NITRO_PRESET=static vp run build:tanstack
         working-directory: ${{ env.BUILD_PATH }}

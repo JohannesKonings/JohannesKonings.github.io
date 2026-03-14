@@ -21,11 +21,30 @@ See root `package.json` `scripts` for the full list. Highlights:
 - **Verification**: `vp run verify:tanstack:seo-geo`, `vp run verify:tanstack:lighthouse`
 - **Optional type check**: `vp exec tsgo --noEmit`
 
+### Deployments
+
+- **Production**: `main` continues to deploy to GitHub Pages at `https://johanneskonings.dev`.
+- **Branch previews**: non-`main` branches deploy through `.github/workflows/branch-previews.yml` to Cloudflare Pages previews.
+- **Preview URL shape**: branch previews use a sanitized branch label as the preview subdomain, for example `feature-x.<preview-base-domain>`.
+- **Required preview configuration**:
+  - repository variable `CLOUDFLARE_PAGES_PROJECT_NAME`
+  - optional repository variable `CLOUDFLARE_PAGES_PREVIEW_BASE_DOMAIN` (defaults to `<project>.pages.dev`)
+  - repository secrets `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID`
+
+### Demo rule
+
+- Every demo script or walkthrough must support **both**:
+  - localhost usage
+  - deployed-site usage
+- Demo scripts should accept an overridable `BASE_URL`.
+- Demo documentation should show both invocation styles.
+
 ### Gotchas
 
 - **pnpm 10 build scripts**: The repo now runs installs through `vp install`, but the root `pnpm.onlyBuiltDependencies` field is still required so pnpm can build native dependencies like `esbuild`, `sharp`, `@tailwindcss/oxide`, and `@parcel/watcher`.
 - **Content sync**: The TanStack website scripts auto-run content sync as part of `dev` and `build`. This copies markdown from root `_posts/` and `_notes/` into `websites/tanstack/src/content/`, so no manual sync step is needed.
 - **Git hooks**: Hook setup is Vite+-owned via `vp config`, and the repo pre-commit flow runs `vp staged`.
+- **Preview SEO**: preview and localhost builds intentionally emit non-indexable metadata and disable production analytics/ads. Only production builds should be indexable.
 
 <!--VITE PLUS START-->
 
