@@ -5,6 +5,7 @@ import { format } from "date-fns";
 import { isValidElement } from "react";
 import { BlogLayout } from "../../components/blog/BlogLayout";
 import { CodeBlock } from "../../components/blog/CodeBlock";
+import { Giscus } from "../../components/Giscus";
 import { createRouteHead, generateSEOTags } from "../../lib/seo";
 import { siteConfig } from "../../lib/site";
 
@@ -196,6 +197,8 @@ function NoteDetailPage() {
               ))}
             </div>
           )}
+
+          <Giscus category="notes" />
         </footer>
       </article>
     </BlogLayout>

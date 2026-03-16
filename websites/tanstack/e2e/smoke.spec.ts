@@ -59,6 +59,18 @@ test.describe("tanstack smoke", () => {
     await expect(page).toHaveURL(/\/$/);
   });
 
+  test("note detail pages render the comments section", async ({ page }) => {
+    await page.goto("/notes");
+
+    const firstNote = page.locator('main article a[href^="/notes/"]').first();
+
+    await expect(firstNote).toBeVisible();
+    await firstNote.click();
+
+    await expect(page).toHaveURL(/\/notes\/[^/]+$/);
+    await expect(page.locator("section.giscus")).toBeVisible();
+  });
+
   test("search modal opens and closes", async ({ page }) => {
     await page.goto("/");
 
