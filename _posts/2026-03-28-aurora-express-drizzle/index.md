@@ -15,15 +15,13 @@ series: aurora-drizzle
 
 ## Introduction
 
-This post documents a working setup for Aurora PostgreSQL **express configuration** with:
+This post documents a setup for Aurora PostgreSQL **express configuration** with:
 
 - AWS CDK deployment
 - an AWS SDK-based custom resource (because CloudFormation support is not available yet)
 - Drizzle Kit and Drizzle Studio for schema and data verification
 
-The goal is to show concrete implementation details and the behavior observed during deployment and teardown.
-
-![Aurora PostgreSQL Express post cover](./cover-image.png)
+The setup is not production-ready, but it can be used as a starting point for further development.
 
 AWS launch post:
 [Announcing Amazon Aurora PostgreSQL Serverless database creation in seconds](https://aws.amazon.com/blogs/aws/announcing-amazon-aurora-postgresql-serverless-database-creation-in-seconds/)
@@ -222,22 +220,37 @@ From Aurora PostgreSQL express configuration documentation and deployment output
 - The cluster is created without VPC association.
 - Internet access gateway is enabled for connectivity.
 - IAM authentication is required for gateway-based access.
-- Encryption uses an AWS/RDS managed key (no customer-managed KMS key selection at create time).
-- Data API is disabled by default at create time; it can be enabled later, with authentication constraints documented by AWS.
+- Encryption uses an AWS/RDS managed key (a customer-managed KMS key cannot be selected at create time in this flow).
+- Data API is disabled by default at create time; it can be enabled later, with authentication constraints documented by AWS ([Express configuration settings](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/CHAP_GettingStartedAurora.AuroraPostgreSQL.ExpressConfig.html#CHAP_GettingStartedAurora.AuroraPostgreSQL.ExpressConfig.Settings), [enabling](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/data-api.enabling.html), [usage and auth model](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/data-api.html)). I have not managed to get Data API working with this express setup yet.
 
 ![Aurora cluster deployed with express configuration](./deployed-aurora.png)
 
 ## Teardown behavior
 
-The custom resource includes explicit delete calls for both cluster and instance identifiers. During stack deletion, the cluster and instance cleanup sequence is visible in the AWS console.
+The custom resource includes explicit delete calls for both cluster and instance identifiers. During stack deletion, the cluster and instance cleanup sequence is visible in the AWS console. This is useful for ephemeral feature stacks where database infrastructure should be created and removed per branch or short-lived environment.
 
 ![Aurora cluster deletion state](./deleting-aurora.png)
 
 ## Drizzle integration
 
-Drizzle is used for schema push, local studio inspection, and a simple seed script.
+Drizzle is used for schema push, local studio inspection, and a simple seed script. Environment variables in this setup are managed with Varlock.
+
+[Varlock documentation](https://varlock.dev/)
 
 [Drizzle ORM documentation](https://orm.drizzle.team/)
+
+This setup was tested with the Drizzle beta track, which is expected to become v1 soon.
+
+### Required packages
+
+Install these npm packages before running the examples:
+
+- Runtime dependencies:
+  `vp add @aws-sdk/rds-signer drizzle-orm pg varlock`
+- Dev/tooling dependencies:
+  `vp add -D drizzle-kit @types/pg`
+
+Note: this repository uses Vite+, so commands in this post use `vp` wrappers (such as `vp add`, `vp exec`, and `vp run`) instead of direct `npm` or `pnpm` commands.
 
 ### Configuration (`drizzle-kit`)
 
@@ -362,12 +375,13 @@ console.log(insertResult);
 
 Aurora PostgreSQL express configuration can be integrated into a CDK workflow today by using AWS SDK custom resources for create/delete operations. Drizzle works with this setup when authentication tokens are generated through the RDS signer and passed to Drizzle tooling/runtime.
 
-Main limitation to account for in architecture decisions: express configuration is not VPC-backed and follows internet access gateway + IAM-auth constraints.
-
 ## Sources and References
 
 - **AWS announcement**: [Announcing Amazon Aurora PostgreSQL Serverless database creation in seconds](https://aws.amazon.com/blogs/aws/announcing-amazon-aurora-postgresql-serverless-database-creation-in-seconds/)
 - **Aurora Express configuration docs**: [Creating and connecting to an Aurora PostgreSQL cluster with express configuration](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/CHAP_GettingStartedAurora.AuroraPostgreSQL.ExpressConfig.html)
+- **RDS Data API enablement**: [Enabling the Amazon RDS Data API](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/data-api.enabling.html)
+- **RDS Data API usage/auth**: [Using the Amazon RDS Data API](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/data-api.html)
 - **RDS API (SDK v3)**: [CreateDBClusterCommand](https://docs.aws.amazon.com/AWSJavaScriptSDK/v3/latest/client/rds/command/CreateDBClusterCommand/)
+- **Varlock**: [varlock.dev](https://varlock.dev/)
 - **Drizzle ORM**: [orm.drizzle.team](https://orm.drizzle.team/)
 - **Drizzle Kit**: [orm.drizzle.team/docs/drizzle-kit-overview](https://orm.drizzle.team/docs/drizzle-kit-overview)
