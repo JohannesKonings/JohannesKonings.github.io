@@ -1,6 +1,8 @@
 import { createRouter as createTanStackRouter } from "@tanstack/react-router";
 import { routeTree } from "./routeTree.gen";
 
+let routerInstance: ReturnType<typeof createRouter> | undefined;
+
 function DefaultNotFound() {
   return (
     <div className="min-h-[60vh] flex items-center justify-center px-4">
@@ -23,10 +25,16 @@ export function createRouter() {
     basepath: undefined,
     routeTree,
     scrollRestoration: true,
+    trailingSlash: "always",
     defaultNotFoundComponent: DefaultNotFound,
   });
 
   return router;
+}
+
+export async function getRouter() {
+  routerInstance ??= createRouter();
+  return routerInstance;
 }
 
 declare module "@tanstack/react-router" {

@@ -1,11 +1,14 @@
-import { allPosts } from "content-collections";
+import { allNotes, allPosts } from "content-collections";
 
-// Get all unique tags from published posts
+// Tags used on blog posts and on notes (notes link to `/blog/tag/$tag` for shared labels).
 export function getAllTags(): string[] {
   const tags = new Set<string>();
   allPosts
     .filter((post) => post.published)
     .forEach((post) => post.tags.forEach((tag) => tags.add(tag)));
+  allNotes
+    .filter((note) => note.published)
+    .forEach((note) => note.tags.forEach((tag) => tags.add(tag)));
   return Array.from(tags).sort();
 }
 
