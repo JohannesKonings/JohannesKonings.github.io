@@ -2,9 +2,9 @@ packages:
   # all packages in direct subdirs of packages/
   - "websites/*"
 catalog:
-  vite: npm:@voidzero-dev/vite-plus-core@latest
-  vite-plus: ^0.1.8
-  vitest: npm:@voidzero-dev/vite-plus-test@latest
+  vite: npm:@voidzero-dev/vite-plus-core@^0.1.14
+  vite-plus: ^0.1.14
+  vitest: npm:@voidzero-dev/vite-plus-test@^0.1.14
 overrides:
   vite: "catalog:"
   vitest: "catalog:"
