@@ -1,8 +1,8 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 
 import avatar from "../images/avatar.png";
-import { Fa6BrandsBluesky, MdiGithub, SimpleIconsDevdotto } from "../icons";
-import { Mail, Linkedin } from "lucide-react";
+import { Fa6BrandsBluesky, MdiGithub, MdiLinkedin, SimpleIconsDevdotto } from "../icons";
+import { Mail } from "lucide-react";
 import { getRecentPosts } from "../lib/content-utils";
 import { BlogPostCard } from "../components/blog/BlogPostCard";
 import { createRouteHead, generateSEOTags } from "../lib/seo";
@@ -18,7 +18,7 @@ const SOCIALS = [
   {
     href: "https://www.linkedin.com/in/JohannesKonings/",
     label: "LinkedIn",
-    Icon: Linkedin,
+    Icon: MdiLinkedin,
   },
   {
     href: "https://bsky.app/profile/johanneskonings.dev",
