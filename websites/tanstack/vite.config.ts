@@ -106,6 +106,19 @@ export default defineConfig(({ mode }) => ({
         crawlLinks: true,
         autoSubfolderIndex: true,
         failOnError: true,
+        // Avoid deadlocks when multiple SSR requests hit the preview server at once (seen after dep updates).
+        concurrency: 1,
+        filter: (page) => {
+          const pathname = (page.path.split(/[?#]/)[0] ?? "").replace(/\/+$/, "") || "/";
+          if (pathname.startsWith("./") || pathname.startsWith("../")) return false;
+          if (pathname.endsWith(".md") || pathname.endsWith(".html")) return false;
+          if (pathname === "/") return true;
+          if (pathname.startsWith("/blog")) return true;
+          if (pathname.startsWith("/notes")) return true;
+          if (pathname.startsWith("/search")) return true;
+          if (pathname === "/rss.xml" || pathname.startsWith("/sitemap")) return true;
+          return false;
+        },
       },
       pages: [
         { path: "/", prerender: { enabled: true, outputPath: "/index.html" } },

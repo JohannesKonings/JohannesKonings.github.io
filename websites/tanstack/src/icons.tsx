@@ -33,6 +33,19 @@ export function MdiGithub(props: SVGProps<SVGSVGElement>): JSX.Element {
   );
 }
 
+// https://icon-sets.iconify.design/mdi/linkedin/
+export function MdiLinkedin(props: SVGProps<SVGSVGElement>): JSX.Element {
+  return (
+    <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" {...props}>
+      <title>LinkedIn Icon</title>
+      <path
+        fill="currentColor"
+        d="M19 3A2 2 0 0 1 21 5v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2zm-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.32 1.3v-1.11H9.77v8.37h3.13v-4.93c0-.83.67-1.5 1.5-1.5s1.5.67 1.5 1.5v4.93zM6.88 8.56a1.88 1.88 0 1 0 0-3.75a1.88 1.88 0 0 0 0 3.75m1.56 9.94V10.13H5.31v8.37z"
+      />
+    </svg>
+  );
+}
+
 // https://icon-sets.iconify.design/simple-icons/devdotto/
 export function SimpleIconsDevdotto(props: SVGProps<SVGSVGElement>): JSX.Element {
   return (

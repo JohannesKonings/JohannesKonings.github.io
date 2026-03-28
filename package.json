@@ -34,12 +34,12 @@
   },
   "devDependencies": {
     "@lhci/cli": "^0.15.1",
-    "@types/node": "24.12.0",
-    "@typescript/native-preview": "7.0.0-dev.20260219.1",
+    "@types/node": "25.5.0",
+    "@typescript/native-preview": "7.0.0-dev.20260328.1",
     "execa": "9.6.1",
-    "knip": "5.86.0",
+    "knip": "6.1.0",
     "tsx": "4.21.0",
-    "typescript": "5.9.3",
+    "typescript": "6.0.2",
     "vite-plus": "catalog:"
   },
   "packageManager": "pnpm@10.32.1",
