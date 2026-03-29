@@ -28,6 +28,9 @@ jobs:
       - name: Run repo checks
         run: vp check
 
+      - name: Run script regression tests
+        run: vp run test:scripts
+
   tanstack-tests:
     name: TanStack tests
     runs-on: ubuntu-latest

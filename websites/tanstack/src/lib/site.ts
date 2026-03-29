@@ -1,6 +1,7 @@
 import avatar from "../images/avatar.png";
 
 const SITE_URL = "https://johanneskonings.dev";
+const BLOG_PREFIX = "/blog/";
 
 export const siteConfig = {
   name: "Johannes Konings",
@@ -15,16 +16,51 @@ export const siteConfig = {
 
 const ABSOLUTE_URL_PATTERN = /^[a-z][a-z\d+\-.]*:/i;
 
+function normalizeSitePath(path = "/"): string {
+  if (path === "/") {
+    return path;
+  }
+
+  const normalizedPath = path.startsWith("/") ? path : `/${path}`;
+  return normalizedPath.replace(/\/{2,}/g, "/");
+}
+
+export function withTrailingSlash(path: string): string {
+  return path.endsWith("/") ? path : `${path}/`;
+}
+
+export function toBlogPostPath(slug: string): string {
+  return withTrailingSlash(`/blog/${slug}`);
+}
+
+export function toBlogArchivePath(
+  archiveType: "category" | "series" | "tag",
+  slug: string,
+): string {
+  return withTrailingSlash(`/blog/${archiveType}/${encodeURIComponent(slug)}`);
+}
+
+export function normalizeCanonicalPath(path = "/"): string {
+  const normalizedPath = normalizeSitePath(path);
+
+  if (normalizedPath !== "/blog" && normalizedPath.startsWith(BLOG_PREFIX)) {
+    return withTrailingSlash(normalizedPath);
+  }
+
+  return normalizedPath;
+}
+
 export function toAbsoluteUrl(path = "/"): string {
   if (ABSOLUTE_URL_PATTERN.test(path)) {
     return path;
   }
 
-  if (path === "/") {
+  const normalizedPath = normalizeCanonicalPath(path);
+
+  if (normalizedPath === "/") {
     return siteConfig.baseUrl;
   }
 
-  const normalizedPath = path.startsWith("/") ? path : `/${path}`;
   return `${siteConfig.baseUrl}${normalizedPath}`;
 }
 

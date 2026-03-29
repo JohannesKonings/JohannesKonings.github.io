@@ -1,6 +1,7 @@
 import { defineCollection, defineConfig } from "@content-collections/core";
 import { z } from "zod";
 import readingTime from "reading-time";
+import { toBlogPostPath } from "./src/lib/site";
 
 // Utility functions for content transformation
 function calculateReadingTime(content: string) {
@@ -81,7 +82,7 @@ const posts = defineCollection({
       slug,
       readingTime: readingStats,
       excerpt,
-      url: `/blog/${slug}`,
+      url: toBlogPostPath(slug),
       cover_image: processedCoverImage,
     };
   },

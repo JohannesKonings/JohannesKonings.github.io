@@ -5,10 +5,10 @@
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { toAbsoluteUrl, toBlogPostPath } from "../websites/tanstack/src/lib/site";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.join(__dirname, "..");
-const BASE_URL = "https://johanneskonings.dev";
 const CONTENT_BLOG = path.join(ROOT, "websites/tanstack/src/content/blog");
 const OUT_FILE = path.join(ROOT, "websites/tanstack/public/rss.xml");
 
@@ -85,19 +85,19 @@ function main() {
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>${escapeXml(SITE_TITLE)}</title>
-    <link>${BASE_URL}/</link>
+    <link>${toAbsoluteUrl("/")}</link>
     <description>${escapeXml(SITE_DESCRIPTION)}</description>
     <language>en</language>
     <lastBuildDate>${lastBuildDate}</lastBuildDate>
-    <atom:link href="${BASE_URL}/rss.xml" rel="self" type="application/rss+xml"/>
+    <atom:link href="${toAbsoluteUrl("/rss.xml")}" rel="self" type="application/rss+xml"/>
 ${items
   .map(
     (item) => `    <item>
       <title>${escapeXml(item.title)}</title>
-      <link>${BASE_URL}/blog/${item.slug}</link>
+      <link>${toAbsoluteUrl(toBlogPostPath(item.slug))}</link>
       <description>${escapeXml(item.summary)}</description>
       <pubDate>${item.date.toUTCString()}</pubDate>
-      <guid isPermaLink="true">${BASE_URL}/blog/${item.slug}</guid>
+      <guid isPermaLink="true">${toAbsoluteUrl(toBlogPostPath(item.slug))}</guid>
     </item>`,
   )
   .join("\n")}

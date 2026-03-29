@@ -8,7 +8,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.join(__dirname, "..");
 const configPath = path.join(ROOT, ".lighthouserc.json");
 
-test("LHCI collect config keeps Chrome flags under settings", () => {
+void test("LHCI collect config keeps Chrome flags under settings", () => {
   const config = JSON.parse(fs.readFileSync(configPath, "utf8"));
 
   assert.equal(config.ci.collect.chromeFlags, undefined);

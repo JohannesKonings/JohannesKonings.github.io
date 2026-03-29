@@ -1,6 +1,29 @@
 import { expect, test } from "@playwright/test";
 
 test.describe("tanstack smoke", () => {
+  test("blog and notes routes do not emit route-match warnings during navigation", async ({
+    page,
+  }) => {
+    const routeWarnings = [];
+
+    page.on("console", (message) => {
+      if (
+        message.type() === "warning" &&
+        message.text().includes("Could not find match for from:")
+      ) {
+        routeWarnings.push(message.text());
+      }
+    });
+
+    await page.goto("/blog");
+    await expect(page.getByRole("heading", { name: "Blog" })).toBeVisible();
+
+    await page.goto("/notes");
+    await expect(page.getByRole("heading", { name: "Notes" })).toBeVisible();
+
+    expect(routeWarnings).toEqual([]);
+  });
+
   test("blog preview card opens the post from image/card clicks", async ({ page }) => {
     await page.goto("/");
 
@@ -8,16 +31,18 @@ test.describe("tanstack smoke", () => {
       .locator("article")
       .filter({ has: page.locator("h2") })
       .first();
+    const cardOverlayLink = firstPreviewCard.locator("a[aria-labelledby]").first();
 
     await expect(firstPreviewCard).toBeVisible();
+    await expect(cardOverlayLink).toBeVisible();
     await expect
       .poll(async () => firstPreviewCard.evaluate((element) => getComputedStyle(element).cursor))
       .toBe("pointer");
 
     const previewTitle = (await firstPreviewCard.locator("h2").textContent())?.trim();
+    await cardOverlayLink.click({ position: { x: 32, y: 32 } });
 
-    await firstPreviewCard.click({ position: { x: 32, y: 32 } });
-    await expect(page).toHaveURL(/\/blog\/[^/]+$/);
+    await expect(page).toHaveURL(/\/blog\/[^/]+\/?$/);
 
     const headerCoverImage = page.locator("article header img").first();
     await expect(headerCoverImage).toBeVisible();
@@ -43,7 +68,7 @@ test.describe("tanstack smoke", () => {
 
     await expect(firstTag).toBeVisible();
     await firstTag.click();
-    await expect(page).toHaveURL(/\/blog\/tag\/[^/]+$/);
+    await expect(page).toHaveURL(/\/blog\/tag\/[^/]+\/$/);
   });
 
   test("desktop navigation click path works", async ({ page }) => {

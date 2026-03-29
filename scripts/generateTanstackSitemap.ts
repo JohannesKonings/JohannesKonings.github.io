@@ -1,125 +1,229 @@
 /**
  * Generates sitemap-index.xml for the TanStack (primary) site at build time.
- * Run after sync so src/content/blog is populated. Writes to websites/tanstack/public/sitemap-index.xml.
- * Handles both directory-based posts and flat .md files.
+ * Run after sync so the synced markdown content exists under websites/tanstack/src/content.
+ * Writes to websites/tanstack/public/sitemap-index.xml.
  */
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { toAbsoluteUrl, toBlogArchivePath } from "../websites/tanstack/src/lib/site";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.join(__dirname, "..");
-
-// Use environment variable or default to production domain
-const BASE_URL = process.env.SITE_URL || "https://johanneskonings.dev";
-
 const CONTENT_BLOG = path.join(ROOT, "websites/tanstack/src/content/blog");
 const CONTENT_NOTES = path.join(ROOT, "websites/tanstack/src/content/notes");
 const OUT_FILE = path.join(ROOT, "websites/tanstack/public/sitemap-index.xml");
 
-function parseFrontmatter(content: string): {
-  title?: string;
-  published?: boolean;
-} {
-  const match = content.match(/^---\s*([\s\S]*?)\s*---/);
-  if (!match) return {};
-  const block = match[1];
-  const title = block.match(/^title:\s*["']?([^"'\n]+)["']?/m)?.[1]?.trim();
-  const publishedMatch = block.match(/^published:\s*(true|false)/m);
-  const published = publishedMatch ? publishedMatch[1] === "true" : true;
-  return { title, published };
+interface SitemapEntry {
+  loc: string;
+  lastmod: string;
 }
 
-/**
- * Get URLs for blog posts from both directory-based and flat .md structures
- */
-function getPostUrls(): string[] {
-  const urls: string[] = [];
-  if (!fs.existsSync(CONTENT_BLOG)) return urls;
+interface ParsedFrontmatter {
+  categories: string[];
+  date?: Date;
+  published: boolean;
+  series?: string;
+  tags: string[];
+}
 
-  const entries = fs.readdirSync(CONTENT_BLOG, { withFileTypes: true });
+interface ParsedContentEntry {
+  categories: string[];
+  date: Date;
+  path: string;
+  series?: string;
+  tags: string[];
+}
 
-  for (const ent of entries) {
-    if (ent.isDirectory()) {
-      // Directory-based post (e.g., 2026-02-02-tanstack-ai-bedrock-simple/index.md)
-      const dirPath = path.join(CONTENT_BLOG, ent.name);
-      const files = fs.readdirSync(dirPath);
-      const mdFile =
-        files.find((f) => f.endsWith(".md") && (f === "index.md" || f === ent.name + ".md")) ??
-        files.find((f) => f.endsWith(".md"));
-      if (!mdFile) continue;
+function toLastmod(date: Date) {
+  return date.toISOString().split("T")[0];
+}
 
-      const content = fs.readFileSync(path.join(dirPath, mdFile), "utf-8");
-      const { published } = parseFrontmatter(content);
-      if (published === false) continue;
+function getFrontmatterBlock(content: string) {
+  return content.match(/^---\s*([\s\S]*?)\s*---/)?.[1] ?? "";
+}
 
-      const slug = ent.name;
-      urls.push(`${BASE_URL}/blog/${slug}`);
-    } else if (ent.isFile() && ent.name.endsWith(".md")) {
-      // Flat .md file (e.g., 2022-09-17-aws_example_ddb_analytics_quicksight_cdk.md)
-      // Skip if it's in a directory (handled above)
-      const content = fs.readFileSync(path.join(CONTENT_BLOG, ent.name), "utf-8");
-      const { published } = parseFrontmatter(content);
-      if (published === false) continue;
+function parseScalarField(block: string, field: string) {
+  for (const line of block.split("\n")) {
+    const trimmedLine = line.trim();
+    if (!trimmedLine.startsWith(`${field}:`)) {
+      continue;
+    }
 
-      // Slug is the filename without .md extension
-      const slug = ent.name.replace(/\.md$/i, "");
-      urls.push(`${BASE_URL}/blog/${slug}`);
+    const value = trimmedLine.slice(field.length + 1).trim();
+    if (!value.length) {
+      return undefined;
+    }
+
+    return value.replace(/^['"]|['"]$/g, "");
+  }
+
+  return undefined;
+}
+
+function parseListField(block: string, field: string): string[] {
+  const inlineMatch = block.match(new RegExp(`^${field}:\\s*\\[(.*)\\]\\s*$`, "m"))?.[1];
+  if (inlineMatch !== undefined) {
+    return inlineMatch
+      .split(",")
+      .map((item) => item.trim().replace(/^['"]|['"]$/g, ""))
+      .filter(Boolean);
+  }
+
+  const scalarValue = parseScalarField(block, field);
+  if (scalarValue && !scalarValue.startsWith("[")) {
+    return [scalarValue];
+  }
+
+  const listMatch = block.match(new RegExp(`^${field}:\\s*$\\n((?:\\s+-\\s*.+\\n?)*)`, "m"))?.[1];
+  if (!listMatch) {
+    return [];
+  }
+
+  return listMatch
+    .split("\n")
+    .map((line) => line.match(/^\s*-\s*(.+)$/)?.[1]?.trim())
+    .filter((value): value is string => Boolean(value))
+    .map((value) => value.replace(/^['"]|['"]$/g, ""));
+}
+
+function parseFrontmatter(content: string): ParsedFrontmatter {
+  const block = getFrontmatterBlock(content);
+  const published = block.match(/^published:\s*(true|false)\s*$/m)?.[1] === "true";
+  const rawDate = parseScalarField(block, "date");
+  const date = rawDate ? new Date(rawDate) : undefined;
+
+  return {
+    categories: parseListField(block, "categories"),
+    date: date && !Number.isNaN(date.getTime()) ? date : undefined,
+    published,
+    series: parseScalarField(block, "series"),
+    tags: parseListField(block, "tags"),
+  };
+}
+
+function collectPublishedContent(
+  directory: string,
+  createPath: (slug: string) => string,
+  options?: { directoriesOnly?: boolean },
+) {
+  const entries: ParsedContentEntry[] = [];
+  if (!fs.existsSync(directory)) {
+    return entries;
+  }
+
+  for (const entry of fs.readdirSync(directory, { withFileTypes: true })) {
+    if (options?.directoriesOnly && !entry.isDirectory()) {
+      continue;
+    }
+
+    if (entry.isFile() && !entry.name.endsWith(".md")) {
+      continue;
+    }
+
+    if (!entry.isDirectory() && !entry.isFile()) {
+      continue;
+    }
+
+    const slug = entry.isDirectory() ? entry.name : entry.name.replace(/\.md$/i, "");
+    const sourcePath = entry.isDirectory()
+      ? path.join(directory, entry.name, "index.md")
+      : path.join(directory, entry.name);
+
+    if (!fs.existsSync(sourcePath)) {
+      continue;
+    }
+
+    const content = fs.readFileSync(sourcePath, "utf-8");
+    const frontmatter = parseFrontmatter(content);
+    if (!frontmatter.published) {
+      continue;
+    }
+
+    entries.push({
+      categories: frontmatter.categories,
+      date: frontmatter.date ?? fs.statSync(sourcePath).mtime,
+      path: createPath(slug),
+      series: frontmatter.series,
+      tags: frontmatter.tags,
+    });
+  }
+
+  return entries.sort((a, b) => b.date.getTime() - a.date.getTime());
+}
+
+function toSitemapEntry(loc: string, lastmod: string): SitemapEntry {
+  return { loc, lastmod };
+}
+
+async function main() {
+  const publishedPosts = collectPublishedContent(CONTENT_BLOG, (slug) => `/blog/${slug}/`);
+  const publishedNotes = collectPublishedContent(CONTENT_NOTES, (slug) => `/notes/${slug}`);
+  const tags = new Set<string>();
+  const categories = new Set<string>();
+  const series = new Set<string>();
+
+  for (const post of publishedPosts) {
+    post.tags.forEach((tag) => tags.add(tag));
+    post.categories.forEach((category) => categories.add(category));
+    if (post.series) {
+      series.add(post.series);
     }
   }
 
-  return urls;
-}
-
-/**
- * Get URLs for notes (flat .md files only)
- */
-function getNoteUrls(): string[] {
-  const urls: string[] = [];
-  if (!fs.existsSync(CONTENT_NOTES)) return urls;
-
-  const files = fs.readdirSync(CONTENT_NOTES, { withFileTypes: true });
-
-  for (const file of files) {
-    if (!file.isFile() || !file.name.endsWith(".md")) continue;
-
-    const content = fs.readFileSync(path.join(CONTENT_NOTES, file.name), "utf-8");
-    const { published } = parseFrontmatter(content);
-    if (published === false) continue;
-
-    // Slug is the filename without .md extension
-    const slug = file.name.replace(/\.md$/i, "");
-    urls.push(`${BASE_URL}/notes/${slug}`);
-  }
-
-  return urls;
-}
-
-function main() {
-  // Static URLs
-  const staticUrls = [
-    `${BASE_URL}/`,
-    `${BASE_URL}/blog`,
-    `${BASE_URL}/notes`,
-    `${BASE_URL}/search`,
+  const staticEntries = [
+    toSitemapEntry(toAbsoluteUrl("/"), toLastmod(new Date())),
+    toSitemapEntry(toAbsoluteUrl("/blog"), toLastmod(new Date())),
+    toSitemapEntry(toAbsoluteUrl("/notes"), toLastmod(new Date())),
+    toSitemapEntry(toAbsoluteUrl("/search"), toLastmod(new Date())),
   ];
 
-  // Content URLs
-  const postUrls = getPostUrls();
-  const noteUrls = getNoteUrls();
+  const postEntries = publishedPosts.map((post) =>
+    toSitemapEntry(toAbsoluteUrl(post.path), toLastmod(post.date)),
+  );
+  const noteEntries = publishedNotes.map((note) =>
+    toSitemapEntry(toAbsoluteUrl(note.path), toLastmod(note.date)),
+  );
+  const archiveEntries = [
+    ...Array.from(tags)
+      .sort()
+      .map((tag) =>
+        toSitemapEntry(toAbsoluteUrl(toBlogArchivePath("tag", tag)), toLastmod(new Date())),
+      ),
+    ...Array.from(categories)
+      .sort()
+      .map((category) =>
+        toSitemapEntry(
+          toAbsoluteUrl(toBlogArchivePath("category", category)),
+          toLastmod(new Date()),
+        ),
+      ),
+    ...Array.from(series)
+      .sort()
+      .map((seriesSlug) =>
+        toSitemapEntry(
+          toAbsoluteUrl(toBlogArchivePath("series", seriesSlug)),
+          toLastmod(new Date()),
+        ),
+      ),
+  ];
 
-  const allUrls = [...staticUrls, ...postUrls, ...noteUrls];
-
-  // Generate sitemap XML with lastmod support
-  const today = new Date().toISOString().split("T")[0];
+  const allEntries = Array.from(
+    new Map(
+      [...staticEntries, ...postEntries, ...archiveEntries, ...noteEntries].map((entry) => [
+        entry.loc,
+        entry,
+      ]),
+    ).values(),
+  );
 
   const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-${allUrls
+${allEntries
   .map(
-    (loc) => `  <url>
-    <loc>${loc}</loc>
-    <lastmod>${today}</lastmod>
+    (entry) => `  <url>
+    <loc>${entry.loc}</loc>
+    <lastmod>${entry.lastmod}</lastmod>
   </url>`,
   )
   .join("\n")}
@@ -129,10 +233,11 @@ ${allUrls
   const dir = path.dirname(OUT_FILE);
   if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
   fs.writeFileSync(OUT_FILE, sitemap);
-  console.log("Generated sitemap-index.xml with", allUrls.length, "URLs");
-  console.log("  - Static pages:", staticUrls.length);
-  console.log("  - Blog posts:", postUrls.length);
-  console.log("  - Notes:", noteUrls.length);
+  console.log("Generated sitemap-index.xml with", allEntries.length, "URLs");
+  console.log("  - Static pages:", staticEntries.length);
+  console.log("  - Blog posts:", postEntries.length);
+  console.log("  - Blog archives:", archiveEntries.length);
+  console.log("  - Notes:", noteEntries.length);
 }
 
-main();
+await main();
