@@ -142,7 +142,7 @@ export function BlogPostCard({ post }: BlogPostCardProps): JSX.Element {
           </h2>
 
           <p className="text-gray-600 dark:text-gray-300 mb-4 line-clamp-3 leading-relaxed">
-            {post.excerpt}
+            {post.summary || post.excerpt}
           </p>
 
           {post.tags.length > 0 && (
