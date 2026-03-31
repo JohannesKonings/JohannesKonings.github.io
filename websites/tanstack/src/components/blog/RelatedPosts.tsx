@@ -1,6 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { format } from "date-fns";
-import type { allPosts } from "content-collections";
+import type { allPosts } from "../../lib/content-collections";
 
 interface RelatedPostsProps {
   posts: (typeof allPosts)[number][];

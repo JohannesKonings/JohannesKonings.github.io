@@ -1,6 +1,6 @@
 import * as React from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { allNotes } from "content-collections";
+import { allNotes } from "../../lib/content-collections";
 import { BlogLayout } from "../../components/blog/BlogLayout";
 import { format } from "date-fns";
 import { createRouteHead, generateSEOTags } from "../../lib/seo";

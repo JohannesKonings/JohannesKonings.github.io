@@ -1,4 +1,4 @@
-import type { allPosts } from "content-collections";
+import type { allPosts } from "./content-collections";
 import { siteConfig, toAbsoluteAssetUrl, toAbsoluteUrl } from "./site";
 
 interface SEOProps {
