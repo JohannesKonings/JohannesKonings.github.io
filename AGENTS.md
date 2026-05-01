@@ -103,3 +103,17 @@ These commands map to their corresponding tools. For example, `vp dev --port 300
 - [ ] Run `vp install` after pulling remote changes and before getting started.
 - [ ] Run `vp check` and `vp test` to validate changes.
 <!--VITE PLUS END-->
+
+## Agent skills
+
+### Issue tracker
+
+Issues and PRDs are tracked in GitHub Issues for this repository. See `docs/agents/issue-tracker.md`.
+
+### Triage labels
+
+Triage uses the default canonical label names (`needs-triage`, `needs-info`, `ready-for-agent`, `ready-for-human`, `wontfix`). See `docs/agents/triage-labels.md`.
+
+### Domain docs
+
+Domain docs are configured as single-context (root `CONTEXT.md` + `docs/adr/` when present). See `docs/agents/domain.md`.
