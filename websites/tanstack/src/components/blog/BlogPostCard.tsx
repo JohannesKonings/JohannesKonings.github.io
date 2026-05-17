@@ -1,4 +1,4 @@
-import type { allPosts } from "content-collections";
+import type { allPosts } from "../../lib/content-collections";
 import { format } from "date-fns";
 import { Link } from "@tanstack/react-router";
 import type { JSX } from "react";

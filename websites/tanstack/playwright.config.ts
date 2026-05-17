@@ -22,9 +22,9 @@ export default defineConfig({
     },
   ],
   webServer: {
-    command: `vp run sync && vp dev --host 127.0.0.1 --port ${PORT} --strictPort`,
+    command: `python3 -m http.server ${PORT} --directory .output/public`,
     url: `http://127.0.0.1:${PORT}`,
-    reuseExistingServer: !process.env.CI,
-    timeout: 120_000,
+    reuseExistingServer: false,
+    timeout: 180_000,
   },
 });

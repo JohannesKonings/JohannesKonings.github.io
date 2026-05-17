@@ -1,5 +1,5 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
-import { allNotes } from "content-collections";
+import { allNotes } from "../../lib/content-collections";
 import Markdown from "markdown-to-jsx";
 import { format } from "date-fns";
 import { isValidElement } from "react";

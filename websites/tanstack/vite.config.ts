@@ -1,29 +1,44 @@
 import { defineConfig } from "vite-plus";
 import tsConfigPaths from "vite-tsconfig-paths";
 import tailwindcss from "@tailwindcss/vite";
+import viteReact from "@vitejs/plugin-react";
+import { nitro } from "nitro/vite";
 import { tanstackStart } from "@tanstack/react-start/plugin/vite";
 
 import contentCollections from "@content-collections/vite";
-import { cpSync, mkdirSync, rmSync } from "fs";
-import { dirname } from "path";
+import { copyFileSync, existsSync, mkdirSync, readdirSync, statSync } from "fs";
+import { dirname, join, resolve } from "path";
 
 // Plugin to sync src/content to public/content
 function syncContentPlugin() {
-  const mirrorDirectory = (src: string, dest: string) => {
-    rmSync(dest, { recursive: true, force: true });
-    mkdirSync(dirname(dest), { recursive: true });
-    cpSync(src, dest, { recursive: true });
+  const copyDirectory = (src: string, dest: string) => {
+    if (!existsSync(dest)) {
+      mkdirSync(dest, { recursive: true });
+    }
+
+    const items = readdirSync(src);
+    for (const item of items) {
+      const srcPath = join(src, item);
+      const destPath = join(dest, item);
+
+      if (statSync(srcPath).isDirectory()) {
+        copyDirectory(srcPath, destPath);
+      } else if (!existsSync(destPath) || statSync(srcPath).mtime > statSync(destPath).mtime) {
+        mkdirSync(dirname(destPath), { recursive: true });
+        copyFileSync(srcPath, destPath);
+      }
+    }
   };
 
   return {
     name: "sync-content",
     buildStart() {
-      mirrorDirectory("src/content", "public/content");
+      copyDirectory("src/content", "public/content");
     },
     handleHotUpdate({ file }: { file: string }) {
       if (file.includes("src/content")) {
         try {
-          mirrorDirectory("src/content", "public/content");
+          copyDirectory("src/content", "public/content");
           console.log("✅ Synced content to public directory");
         } catch (error) {
           console.error("❌ Failed to sync content:", error);
@@ -33,8 +48,48 @@ function syncContentPlugin() {
   };
 }
 
+function syncStartManifestPlugin() {
+  return {
+    name: "sync-start-manifest",
+    closeBundle(this: { environment?: { name?: string } }) {
+      if (this.environment?.name !== "nitro") {
+        return;
+      }
+
+      const ssrAssetsDir = resolve("node_modules/.nitro/vite/services/ssr/assets");
+      if (!existsSync(ssrAssetsDir)) {
+        return;
+      }
+
+      const manifestFile = readdirSync(ssrAssetsDir).find(
+        (file) => file.startsWith("_tanstack-start-manifest_v-") && file.endsWith(".js"),
+      );
+
+      if (!manifestFile) {
+        return;
+      }
+
+      const outputManifestPath = resolve(".output/server/_tanstack-start-manifest_v.mjs");
+      mkdirSync(dirname(outputManifestPath), { recursive: true });
+      copyFileSync(join(ssrAssetsDir, manifestFile), outputManifestPath);
+    },
+  };
+}
+
 export default defineConfig(({ mode }) => ({
   base: "/",
+  resolve: {
+    alias: {
+      "content-collections": resolve("src/lib/content-collections.ts"),
+    },
+  },
+  environments: {
+    nitro: {
+      build: {
+        ssr: "./src/server.ts",
+      },
+    },
+  },
   server: {
     port: 3000,
     fs: {
@@ -98,12 +153,15 @@ export default defineConfig(({ mode }) => ({
   plugins: [
     tailwindcss(),
     syncContentPlugin(),
+    syncStartManifestPlugin(),
     contentCollections(),
-    // TanStack Start includes its own React plugin — no separate @vitejs/plugin-react needed
+    tsConfigPaths(),
     tanstackStart({
+      srcDirectory: "src",
       prerender: {
         enabled: true,
-        crawlLinks: true,
+        autoStaticPathsDiscovery: false,
+        crawlLinks: false,
         autoSubfolderIndex: true,
         failOnError: true,
       },
@@ -123,6 +181,7 @@ export default defineConfig(({ mode }) => ({
         },
       ],
     }),
-    tsConfigPaths(),
+    nitro({ preset: "static" }),
+    viteReact(),
   ],
 }));

@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { allPosts, allNotes } from "content-collections";
+import { allPosts, allNotes } from "../lib/content-collections";
 import { BlogLayout } from "../components/blog/BlogLayout";
 import { Search as SearchComponent } from "../components/search/Search";
 import { createRouteHead, generateSEOTags } from "../lib/seo";

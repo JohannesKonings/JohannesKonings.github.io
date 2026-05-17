@@ -70,8 +70,8 @@ export interface FileRoutesByFullPath {
   '/search': typeof SearchRoute
   '/blog/$postId': typeof BlogPostIdRoute
   '/notes/$noteId': typeof NotesNoteIdRoute
-  '/blog': typeof BlogIndexRoute
-  '/notes': typeof NotesIndexRoute
+  '/blog/': typeof BlogIndexRoute
+  '/notes/': typeof NotesIndexRoute
   '/blog/category/$category': typeof BlogCategoryCategoryRoute
   '/blog/series/$seriesSlug': typeof BlogSeriesSeriesSlugRoute
   '/blog/tag/$tag': typeof BlogTagTagRoute
@@ -106,8 +106,8 @@ export interface FileRouteTypes {
     | '/search'
     | '/blog/$postId'
     | '/notes/$noteId'
-    | '/blog'
-    | '/notes'
+    | '/blog/'
+    | '/notes/'
     | '/blog/category/$category'
     | '/blog/series/$seriesSlug'
     | '/blog/tag/$tag'
@@ -166,14 +166,14 @@ declare module '@tanstack/react-router' {
     '/notes/': {
       id: '/notes/'
       path: '/notes'
-      fullPath: '/notes'
+      fullPath: '/notes/'
       preLoaderRoute: typeof NotesIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/blog/': {
       id: '/blog/'
       path: '/blog'
-      fullPath: '/blog'
+      fullPath: '/blog/'
       preLoaderRoute: typeof BlogIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
@@ -229,3 +229,12 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { createStart } from '@tanstack/react-start'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+  }
+}

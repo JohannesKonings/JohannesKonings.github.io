@@ -44,7 +44,7 @@ jobs:
         run: vp install --frozen-lockfile
         working-directory: ${{ env.BUILD_PATH }}
       - name: Build with Tanstack
-        run: NODE_ENV=production NITRO_PRESET=static vp run build:tanstack
+        run: NODE_ENV=production vp run build:tanstack
         working-directory: ${{ env.BUILD_PATH }}
       - name: Prepare deployment artifact
         run: |

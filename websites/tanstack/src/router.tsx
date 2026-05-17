@@ -18,7 +18,7 @@ function DefaultNotFound() {
   );
 }
 
-export function createRouter() {
+export function getRouter() {
   const router = createTanStackRouter({
     basepath: undefined,
     routeTree,
@@ -29,8 +29,10 @@ export function createRouter() {
   return router;
 }
 
+export const createRouter = getRouter;
+
 declare module "@tanstack/react-router" {
   interface Register {
-    router: ReturnType<typeof createRouter>;
+    router: Awaited<ReturnType<typeof getRouter>>;
   }
 }
