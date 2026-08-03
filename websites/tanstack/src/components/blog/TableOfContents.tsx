@@ -1,36 +1,13 @@
-import { useMemo } from "react";
-
-interface TocItem {
-  id: string;
-  text: string;
-  level: number;
-}
+import type { MarkdownHeading } from "@tanstack/markdown";
 
 interface TableOfContentsProps {
-  content: string;
+  headings: MarkdownHeading[];
 }
 
-export function TableOfContents({ content }: TableOfContentsProps) {
-  const headings = useMemo(() => {
-    const items: TocItem[] = [];
-    const regex = /^(#{2,3})\s+(.+)$/gm;
-    let match;
-    while ((match = regex.exec(content)) !== null) {
-      const level = match[1].length;
-      const text = match[2]
-        .replace(/\*\*([^*]+)\*\*/g, "$1")
-        .replace(/`([^`]+)`/g, "$1")
-        .trim();
-      const id = text
-        .toLowerCase()
-        .replace(/[^a-z0-9]+/g, "-")
-        .replace(/^-|-$/g, "");
-      items.push({ id, text, level });
-    }
-    return items;
-  }, [content]);
+export function TableOfContents({ headings }: TableOfContentsProps) {
+  const items = headings.filter((heading) => heading.level === 2 || heading.level === 3);
 
-  if (headings.length < 3) return null;
+  if (items.length < 3) return null;
 
   return (
     <nav className="mb-8 p-4 rounded-lg bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700">
@@ -38,7 +15,7 @@ export function TableOfContents({ content }: TableOfContentsProps) {
         Table of Contents
       </h2>
       <ul className="space-y-1.5 text-sm">
-        {headings.map((h) => (
+        {items.map((h) => (
           <li key={h.id} style={{ paddingLeft: `${(h.level - 2) * 1}rem` }}>
             <a
               href={`#${h.id}`}

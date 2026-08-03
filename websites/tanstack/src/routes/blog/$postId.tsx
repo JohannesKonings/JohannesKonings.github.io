@@ -1,46 +1,22 @@
 import { createFileRoute, notFound } from "@tanstack/react-router";
 import { Link } from "@tanstack/react-router";
 import { allPosts } from "content-collections";
-import Markdown from "markdown-to-jsx";
 import { format } from "date-fns";
-import { isValidElement } from "react";
+import { useMemo } from "react";
 import { BlogLayout } from "../../components/blog/BlogLayout";
-import { CodeBlock } from "../../components/blog/CodeBlock";
+import { BlogMarkdown } from "../../components/blog/BlogMarkdown";
 import { Giscus } from "../../components/Giscus";
 import { TableOfContents } from "../../components/blog/TableOfContents";
 import { RelatedPosts } from "../../components/blog/RelatedPosts";
 import { ReadingProgressBar } from "../../components/blog/ReadingProgressBar";
 import { ShareButtons } from "../../components/blog/ShareButtons";
+import {
+  parseBlogMarkdown,
+  stripSiteBaseurl,
+  tocHeadingsFromDocument,
+} from "../../lib/blog-markdown";
 import { getSeriesContext, getRelatedPosts } from "../../lib/content-utils";
 import { createRouteHead, generatePostSEO, generatePostStructuredData } from "../../lib/seo";
-
-const ABSOLUTE_URL_PATTERN = /^[a-z][a-z\d+\-.]*:/i;
-
-function resolveBlogImageSrc(src: string | undefined, postSlug: string): string | undefined {
-  if (!src) return src;
-
-  if (
-    src.startsWith("/") ||
-    src.startsWith("data:") ||
-    src.startsWith("blob:") ||
-    ABSOLUTE_URL_PATTERN.test(src)
-  ) {
-    return src;
-  }
-
-  const normalizedSrc = src.replace(/^\.\//, "");
-  return `/content/blog/${postSlug}/${normalizedSrc}`;
-}
-
-function getTextContent(value: unknown): string {
-  if (typeof value === "string") return value;
-  if (typeof value === "number" || typeof value === "bigint") return value.toString();
-  if (Array.isArray(value)) return value.map((item) => getTextContent(item)).join("");
-  if (isValidElement<{ children?: unknown }>(value)) {
-    return getTextContent(value.props.children);
-  }
-  return "";
-}
 
 export const Route = createFileRoute("/blog/$postId")({
   head: ({ params }) => {
@@ -82,14 +58,11 @@ export const Route = createFileRoute("/blog/$postId")({
 function RouteComponent() {
   const { post } = Route.useRouteContext();
 
-  const processedContent = post.content.replace(/\{\{\s*site\.baseurl\s*\}\}/g, "");
+  const document = useMemo(() => parseBlogMarkdown(stripSiteBaseurl(post.content)), [post.content]);
+  const headings = tocHeadingsFromDocument(document);
 
   const seriesContext = getSeriesContext(post);
   const relatedPosts = getRelatedPosts(post, 3);
-  const getLanguage = (className?: string) => {
-    const langMatch = (className ?? "").match(/language-([\w-]+)/);
-    return langMatch ? langMatch[1] : "typescript";
-  };
 
   return (
     <>
@@ -184,94 +157,11 @@ function RouteComponent() {
             )}
           </header>
 
-          <TableOfContents content={processedContent} />
+          <TableOfContents headings={headings} />
 
           {/* Article content */}
           <div className="markdown-content max-w-none">
-            <Markdown
-              options={{
-                overrides: {
-                  h2: {
-                    component: ({ children, ...props }) => {
-                      const text = getTextContent(children);
-                      const id = text
-                        .toLowerCase()
-                        .replace(/[^a-z0-9]+/g, "-")
-                        .replace(/^-|-$/g, "");
-                      return (
-                        <h2 {...props} id={id}>
-                          {children}
-                        </h2>
-                      );
-                    },
-                  },
-                  h3: {
-                    component: ({ children, ...props }) => {
-                      const text = getTextContent(children);
-                      const id = text
-                        .toLowerCase()
-                        .replace(/[^a-z0-9]+/g, "-")
-                        .replace(/^-|-$/g, "");
-                      return (
-                        <h3 {...props} id={id}>
-                          {children}
-                        </h3>
-                      );
-                    },
-                  },
-                  pre: {
-                    component: ({ children, ...props }) => {
-                      const child = Array.isArray(children) ? children[0] : children;
-                      if (child && typeof child === "object" && "props" in child) {
-                        const codeProps = (
-                          child as {
-                            props?: { className?: string; children?: unknown };
-                          }
-                        ).props;
-                        const language = getLanguage(codeProps?.className);
-                        const code = getTextContent(codeProps?.children);
-                        return <CodeBlock code={code} language={language} />;
-                      }
-                      const preProps = props as { className?: string };
-                      const language = getLanguage(preProps.className);
-                      const code = getTextContent(children);
-                      return <CodeBlock code={code} language={language} />;
-                    },
-                  },
-                  code: {
-                    component: ({ children, className, ...props }) => {
-                      if (className?.includes("language-")) {
-                        const language = getLanguage(className);
-                        const code = getTextContent(children);
-                        return <CodeBlock code={code} language={language} />;
-                      }
-
-                      return (
-                        <code
-                          {...props}
-                          className="bg-gray-100 dark:bg-gray-800 px-1 py-0.5 rounded text-sm"
-                        >
-                          {children}
-                        </code>
-                      );
-                    },
-                  },
-                  img: {
-                    component: ({ src, alt, ...props }) => (
-                      <img
-                        {...props}
-                        src={resolveBlogImageSrc(src, post.slug)}
-                        alt={alt}
-                        className="max-w-full h-auto rounded-lg shadow-md mx-auto"
-                        loading="lazy"
-                      />
-                    ),
-                  },
-                },
-              }}
-            >
-              {processedContent}
-            </Markdown>
+            <BlogMarkdown document={document} imageSlug={post.slug} />
           </div>
 
           {/* Article footer */}
