@@ -1,8 +1,6 @@
 import { useState, useCallback } from "react";
-import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import * as styles from "react-syntax-highlighter/dist/cjs/styles/prism";
-
-const oneDark = styles.oneDark || {};
+import { createHighlightedCodeBlockProps } from "@tanstack/highlight/react";
+import { highlighter, normalizeHighlightLang } from "../../lib/highlight";
 
 const FEEDBACK_MS = 2500;
 
@@ -13,19 +11,24 @@ interface CodeBlockProps {
 
 export function CodeBlock({ code, language = "typescript" }: CodeBlockProps) {
   const [copied, setCopied] = useState(false);
+  const { copyText, htmlMarkup } = createHighlightedCodeBlockProps({
+    highlighter,
+    code,
+    lang: normalizeHighlightLang(language),
+  });
 
   const handleCopy = useCallback(async () => {
     try {
-      await navigator.clipboard.writeText(code);
+      await navigator.clipboard.writeText(copyText);
       setCopied(true);
       setTimeout(() => setCopied(false), FEEDBACK_MS);
     } catch {
       // ignore
     }
-  }, [code]);
+  }, [copyText]);
 
   return (
-    <div className="relative group my-4 rounded-lg overflow-hidden bg-gray-100 dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
+    <div className="relative group my-4 rounded-lg overflow-hidden border border-gray-200 dark:border-gray-700">
       <div className="absolute top-2 right-2 z-10">
         <button
           type="button"
@@ -36,24 +39,11 @@ export function CodeBlock({ code, language = "typescript" }: CodeBlockProps) {
           {copied ? "Copied!" : "Copy"}
         </button>
       </div>
-      <SyntaxHighlighter
-        language={language}
-        style={oneDark}
-        showLineNumbers={false}
-        PreTag="div"
-        customStyle={{
-          margin: 0,
-          padding: "1rem 1rem 1rem 0.75rem",
-          fontSize: "0.875rem",
-          background: "transparent",
-          fontFamily: "CascadiaMonoNF, Cascadia Code, monospace",
-        }}
-        codeTagProps={{
-          style: { fontFamily: "CascadiaMonoNF, Cascadia Code, monospace" },
-        }}
-      >
-        {code}
-      </SyntaxHighlighter>
+      <div
+        className="text-sm [&_pre]:m-0 [&_pre]:rounded-none [&_pre]:p-4 [&_pre]:pr-16 [&_pre]:font-[CascadiaMonoNF,Cascadia_Code,monospace]"
+        // htmlMarkup is escaped token HTML from TanStack Highlight only.
+        dangerouslySetInnerHTML={{ __html: htmlMarkup }}
+      />
     </div>
   );
 }

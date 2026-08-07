@@ -10,6 +10,7 @@ import globalCss from "@/src/styles/global.css?url";
 import { Navigation } from "../components/Navigation";
 import { BackToTop } from "../components/BackToTop";
 import { ThemeProvider } from "../contexts/ThemeContext";
+import { highlightThemeCss } from "../lib/highlight-theme";
 import { siteConfig } from "../lib/site";
 
 const TanStackRouterDevtools =
@@ -93,6 +94,10 @@ function RootDocument({ children }: Readonly<{ children: ReactNode }>) {
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
+        <style
+          // TanStack Highlight theme variables + base token styles (light/dark).
+          dangerouslySetInnerHTML={{ __html: highlightThemeCss }}
+        />
         <script
           defer
           src="https://cloud.umami.is/script.js"

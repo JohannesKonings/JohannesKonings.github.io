@@ -1,35 +1,10 @@
-import { useMemo } from "react";
-
-interface TocItem {
-  id: string;
-  text: string;
-  level: number;
-}
+import type { MarkdownHeading } from "@tanstack/markdown";
 
 interface TableOfContentsProps {
-  content: string;
+  headings: MarkdownHeading[];
 }
 
-export function TableOfContents({ content }: TableOfContentsProps) {
-  const headings = useMemo(() => {
-    const items: TocItem[] = [];
-    const regex = /^(#{2,3})\s+(.+)$/gm;
-    let match;
-    while ((match = regex.exec(content)) !== null) {
-      const level = match[1].length;
-      const text = match[2]
-        .replace(/\*\*([^*]+)\*\*/g, "$1")
-        .replace(/`([^`]+)`/g, "$1")
-        .trim();
-      const id = text
-        .toLowerCase()
-        .replace(/[^a-z0-9]+/g, "-")
-        .replace(/^-|-$/g, "");
-      items.push({ id, text, level });
-    }
-    return items;
-  }, [content]);
-
+export function TableOfContents({ headings }: TableOfContentsProps) {
   if (headings.length < 3) return null;
 
   return (

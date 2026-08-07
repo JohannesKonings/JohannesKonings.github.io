@@ -1,23 +1,13 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { allNotes } from "content-collections";
-import Markdown from "markdown-to-jsx";
 import { format } from "date-fns";
-import { isValidElement } from "react";
+import { useMemo } from "react";
 import { BlogLayout } from "../../components/blog/BlogLayout";
-import { CodeBlock } from "../../components/blog/CodeBlock";
+import { BlogMarkdown } from "../../components/blog/BlogMarkdown";
 import { Giscus } from "../../components/Giscus";
+import { parseBlogMarkdown } from "../../lib/blog-markdown";
 import { createRouteHead, generateSEOTags } from "../../lib/seo";
 import { siteConfig } from "../../lib/site";
-
-function getTextContent(value: unknown): string {
-  if (typeof value === "string") return value;
-  if (typeof value === "number" || typeof value === "bigint") return value.toString();
-  if (Array.isArray(value)) return value.map((item) => getTextContent(item)).join("");
-  if (isValidElement<{ children?: unknown }>(value)) {
-    return getTextContent(value.props.children);
-  }
-  return "";
-}
 
 export const Route = createFileRoute("/notes/$noteId")({
   head: ({ params }) => {
@@ -69,10 +59,7 @@ export const Route = createFileRoute("/notes/$noteId")({
 
 function NoteDetailPage() {
   const { note } = Route.useRouteContext();
-  const getLanguage = (className?: string) => {
-    const langMatch = (className ?? "").match(/language-([\w-]+)/);
-    return langMatch ? langMatch[1] : "typescript";
-  };
+  const document = useMemo(() => parseBlogMarkdown(note.content), [note.content]);
 
   return (
     <BlogLayout>
@@ -114,64 +101,7 @@ function NoteDetailPage() {
 
         {/* Note content */}
         <div className="markdown-content max-w-none">
-          <Markdown
-            options={{
-              overrides: {
-                pre: {
-                  component: ({ children, ...props }) => {
-                    const child = Array.isArray(children) ? children[0] : children;
-                    if (child && typeof child === "object" && "props" in child) {
-                      const codeProps = (
-                        child as {
-                          props?: { className?: string; children?: unknown };
-                        }
-                      ).props;
-                      const language = getLanguage(codeProps?.className);
-                      const code = getTextContent(codeProps?.children);
-                      return <CodeBlock code={code} language={language} />;
-                    }
-                    const preProps = props as { className?: string };
-                    const language = getLanguage(preProps.className);
-                    const code = getTextContent(children);
-                    return <CodeBlock code={code} language={language} />;
-                  },
-                },
-                // Custom styling for inline code
-                code: {
-                  component: ({ children, className, ...props }) => {
-                    if (className?.includes("language-")) {
-                      const language = getLanguage(className);
-                      const code = getTextContent(children);
-                      return <CodeBlock code={code} language={language} />;
-                    }
-
-                    return (
-                      <code
-                        {...props}
-                        className="bg-gray-100 dark:bg-gray-800 px-1 py-0.5 rounded text-sm"
-                      >
-                        {children}
-                      </code>
-                    );
-                  },
-                },
-                // Custom styling for images
-                img: {
-                  component: ({ src, alt, ...props }) => (
-                    <img
-                      {...props}
-                      src={src}
-                      alt={alt}
-                      className="max-w-full h-auto rounded-lg shadow-md mx-auto"
-                      loading="lazy"
-                    />
-                  ),
-                },
-              },
-            }}
-          >
-            {note.content}
-          </Markdown>
+          <BlogMarkdown document={document} />
         </div>
 
         {/* Note footer */}
