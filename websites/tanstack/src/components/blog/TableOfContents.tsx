@@ -5,9 +5,7 @@ interface TableOfContentsProps {
 }
 
 export function TableOfContents({ headings }: TableOfContentsProps) {
-  const items = headings.filter((heading) => heading.level === 2 || heading.level === 3);
-
-  if (items.length < 3) return null;
+  if (headings.length < 3) return null;
 
   return (
     <nav className="mb-8 p-4 rounded-lg bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700">
@@ -15,7 +13,7 @@ export function TableOfContents({ headings }: TableOfContentsProps) {
         Table of Contents
       </h2>
       <ul className="space-y-1.5 text-sm">
-        {items.map((h) => (
+        {headings.map((h) => (
           <li key={h.id} style={{ paddingLeft: `${(h.level - 2) * 1}rem` }}>
             <a
               href={`#${h.id}`}

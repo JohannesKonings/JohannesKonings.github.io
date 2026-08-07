@@ -1,4 +1,4 @@
-import { docsMarkdownExtensions } from "@tanstack/markdown/extensions/docs";
+import { headingCollectionExtension } from "@tanstack/markdown/extensions/headings";
 import { parseMarkdown } from "@tanstack/markdown/parser";
 import type { MarkdownDocument, MarkdownHeading, ParseOptions } from "@tanstack/markdown";
 import { detailsExtension } from "./details-extension";
@@ -7,7 +7,9 @@ const ABSOLUTE_URL_PATTERN = /^[a-z][a-z\d+\-.]*:/i;
 
 export const blogMarkdownParseOptions: ParseOptions = {
   allowHtml: true,
-  extensions: [detailsExtension, ...docsMarkdownExtensions()],
+  // Headings for TOC IDs only — skip docsMarkdownExtensions (callouts/tabs) to keep
+  // GitHub-style `> [!NOTE]` as ordinary blockquotes, matching prior markdown-to-jsx.
+  extensions: [detailsExtension, headingCollectionExtension()],
 };
 
 /** Strip legacy Jekyll `{{ site.baseurl }}` tokens still present in older posts. */

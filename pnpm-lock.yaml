@@ -60,10 +60,10 @@ importers:
         specifier: 1.2.4
         version: 1.2.4
       '@tanstack/highlight':
-        specifier: ^0.0.9
+        specifier: 0.0.9
         version: 0.0.9
       '@tanstack/markdown':
-        specifier: ^0.0.12
+        specifier: 0.0.12
         version: 0.0.12(react@19.2.4)
       '@tanstack/react-router':
         specifier: 1.124.0

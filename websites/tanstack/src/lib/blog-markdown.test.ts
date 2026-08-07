@@ -83,4 +83,16 @@ const x = 1
       },
     ]);
   });
+
+  it("keeps GitHub-style alert markers as blockquotes (no docs callouts)", () => {
+    const document = parseBlogMarkdown(`> [!NOTE]
+> Keep this as a blockquote.
+`);
+    expect(document.children).toEqual([
+      expect.objectContaining({
+        type: "blockquote",
+      }),
+    ]);
+    expect(document.children.some((node) => node.type === "component")).toBe(false);
+  });
 });
