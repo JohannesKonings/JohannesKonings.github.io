@@ -295,7 +295,7 @@ importers:
         version: 5.0.1(vitest@5.0.1)
       autoprefixer:
         specifier: 10.4.27
-        version: 10.4.27(postcss@8.5.8)
+        version: 10.4.27(postcss@8.5.23)
       date-fns:
         specifier: 4.1.0
         version: 4.1.0
@@ -306,8 +306,8 @@ importers:
         specifier: ^1.58.2
         version: 1.63.0
       postcss:
-        specifier: 8.5.8
-        version: 8.5.8
+        specifier: 8.5.23
+        version: 8.5.23
       reading-time:
         specifier: 1.5.0
         version: 1.5.0
@@ -4989,6 +4989,10 @@ packages:
   postcss-value-parser@4.2.0:
     resolution: {integrity: sha512-1NNCs6uurfkVbeXG4S8JFT9t19m45ICnif8zWLd5oPSZ50QnwMfK+H3jv408d4jw/7Bttv5axS5IiHoLaVNHeQ==}
 
+  postcss@8.5.23:
+    resolution: {integrity: sha512-g50586zr4bZmwFiTlflMu8E0bDTb5I5gertgwAKmsdUlTQIhZtunzUlD1WSzwcVWPoAVpsrA6vlfCD7oXvRwgg==}
+    engines: {node: ^10 || ^12 || >=14}
+
   postcss@8.5.8:
     resolution: {integrity: sha512-OW/rX8O/jXnm82Ey1k44pObPtdblfiuWnrd8X7GJ7emImCOstunGbXUpp7HdBrFQX6rJzn3sPT397Wp5aCwCHg==}
     engines: {node: ^10 || ^12 || >=14}
@@ -8494,13 +8498,13 @@ snapshots:
 
   async@3.2.6: {}
 
-  autoprefixer@10.4.27(postcss@8.5.8):
+  autoprefixer@10.4.27(postcss@8.5.23):
     dependencies:
       browserslist: 4.29.3
       caniuse-lite: 1.0.30001814
       fraction.js: 5.3.4
       picocolors: 1.1.1
-      postcss: 8.5.8
+      postcss: 8.5.23
       postcss-value-parser: 4.2.0
 
   axe-core@4.13.0: {}
@@ -10682,6 +10686,12 @@ snapshots:
   pngjs@7.0.0: {}
 
   postcss-value-parser@4.2.0: {}
+
+  postcss@8.5.23:
+    dependencies:
+      nanoid: 3.3.19
+      picocolors: 1.1.1
+      source-map-js: 1.2.2
 
   postcss@8.5.8:
     dependencies:
