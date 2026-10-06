@@ -1,6 +1,10 @@
 minimumReleaseAge: 2880
 minimumReleaseAgeStrict: true
+minimumReleaseAgeExclude:
+  - "@jaykingson/vite-plus-base"
 
+# minimumReleaseAge: 2880
+# minimumReleaseAgeStrict: true
 packages:
   # all packages in direct subdirs of packages/
   - "websites/*"

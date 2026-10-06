@@ -33,7 +33,7 @@
     "prepare": "vp config"
   },
   "devDependencies": {
-    "@jaykingson/vite-plus-base": "0.0.2",
+    "@jaykingson/vite-plus-base": "0.0.3",
     "@lhci/cli": "^0.15.1",
     "@types/node": "24.12.0",
     "dependency-cruiser": "^18.5.0",
