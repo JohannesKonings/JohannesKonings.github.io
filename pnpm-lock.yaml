@@ -236,8 +236,8 @@ importers:
         specifier: 0.0.9
         version: 0.0.9
       '@tanstack/markdown':
-        specifier: 0.0.12
-        version: 0.0.12(react@19.2.4)
+        specifier: 0.0.16
+        version: 0.0.16(react@19.2.4)
       '@tanstack/react-router':
         specifier: 1.124.0
         version: 1.124.0(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
@@ -2076,8 +2076,8 @@ packages:
     resolution: {integrity: sha512-utTS5L2OkeYUzXGohL1Z8sefu1GLNOJcxe8Hd6iIdc/Xo1K1nDB2JEp4iSFhvYh33xKC9V91TxrS8qfrpoKobQ==}
     engines: {node: '>=20.19'}
 
-  '@tanstack/markdown@0.0.12':
-    resolution: {integrity: sha512-xQdEIMzbMe5Bl4Wy+CE67nCkeoBUdMkUGa9iYDySV+6TvFBbZZEZmXwL/2JK2ZAJGpuC/XxVtNvRz5Ysdgf+Ww==}
+  '@tanstack/markdown@0.0.16':
+    resolution: {integrity: sha512-2fGZd4VMBwV85lH5AA+Iad9DXU4/Cz+sb/P3honzrh/zqqoSYV/rXuJrG4cC7XJcpofhjbOWBL74AHf4WZrqTw==}
     peerDependencies:
       octane: '>=0.1.12'
       react: '>=18'
@@ -7586,7 +7586,7 @@ snapshots:
 
   '@tanstack/history@1.162.4': {}
 
-  '@tanstack/markdown@0.0.12(react@19.2.4)':
+  '@tanstack/markdown@0.0.16(react@19.2.4)':
     optionalDependencies:
       react: 19.2.4
 
