@@ -25,6 +25,9 @@ jobs:
       - name: Install dependencies
         run: vp install --frozen-lockfile
 
+      - name: Prepare generated content for type checking
+        run: vp run prepare:check
+
       - name: Run repo checks
         run: vp check
 

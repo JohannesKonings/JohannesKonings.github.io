@@ -28,8 +28,9 @@
     "tsc": "vp exec tsgo",
     "tsc:check": "vp exec tsgo --noEmit",
     "tsc:watch": "vp exec tsgo -w",
+    "prepare:check": "vp run --filter tanstack sync && vp run --filter tanstack generate:content-collections",
     "checks:hook": "vp check",
-    "checks:pr": "vp check && vp run --filter tanstack test:all && vp run build:tanstack && vp run verify:tanstack:seo-geo && vp run verify:tanstack:lighthouse",
+    "checks:pr": "vp run prepare:check && vp check && vp run --filter tanstack test:all && vp run build:tanstack && vp run verify:tanstack:seo-geo && vp run verify:tanstack:lighthouse",
     "prepare": "vp config"
   },
   "devDependencies": {

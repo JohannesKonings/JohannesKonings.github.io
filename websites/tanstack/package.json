@@ -8,6 +8,7 @@
   "type": "module",
   "scripts": {
     "sync": "pnpm tsx ./../../scripts/syncWebsites.ts tanstack",
+    "generate:content-collections": "pnpm tsx ./scripts/generateContentCollections.ts",
     "sync-content": "cp -r src/content public/",
     "dev": "pnpm sync && vp dev",
     "build": "pnpm sync && pnpm tsx ../../scripts/generateTanstackSitemap.ts && pnpm tsx ../../scripts/generateTanstackRss.ts && vp build",
