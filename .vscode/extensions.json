@@ -1,4 +1,8 @@
 {
-  "recommendations": ["TypeScriptTeam.native-preview", "unifiedjs.vscode-mdx"],
-  "unwantedRecommendations": []
+  "recommendations": [
+    "TypeScriptTeam.native-preview",
+    "VoidZero.vite-plus-extension-pack",
+    "typescriptteam.native-preview",
+    "unifiedjs.vscode-mdx"
+  ]
 }
