@@ -34,7 +34,7 @@ export const Route = createFileRoute("/blog/$postId")({
     });
   },
   component: RouteComponent,
-  beforeLoad: ({ params }) => {
+  loader: ({ params }) => {
     const { postId } = params;
 
     if (
@@ -50,13 +50,19 @@ export const Route = createFileRoute("/blog/$postId")({
     if (!post || !post.published) {
       throw notFound();
     }
-
-    return { post };
   },
 });
 
 function RouteComponent() {
-  const { post } = Route.useRouteContext();
+  const { postId } = Route.useParams();
+  const post = useMemo(() => {
+    const found = allPosts.find((candidate) => candidate.slug === postId);
+    if (!found || !found.published) {
+      throw notFound();
+    }
+
+    return found;
+  }, [postId]);
 
   const document = useMemo(() => parseBlogMarkdown(stripSiteBaseurl(post.content)), [post.content]);
   const headings = tocHeadingsFromDocument(document);

@@ -1,4 +1,4 @@
-import { defineConfig } from "vite-plus";
+import { defineVitePlusConfig } from "@jaykingson/vite-plus-base";
 import tsConfigPaths from "vite-tsconfig-paths";
 import tailwindcss from "@tailwindcss/vite";
 import { tanstackStart } from "@tanstack/react-start/plugin/vite";
@@ -33,7 +33,7 @@ function syncContentPlugin() {
   };
 }
 
-export default defineConfig(({ mode }) => ({
+export default defineVitePlusConfig(({ mode }) => ({
   base: "/",
   server: {
     port: 3000,
@@ -90,6 +90,11 @@ export default defineConfig(({ mode }) => ({
     // }
   },
   test: {
+    // Vitest v4 compatibility: preserve mock call history.
+    // Remove after tests no longer rely on calls from setup or earlier tests.
+    // https://viteplus.dev/guide/vitest-v5#remove-unneeded-compatibility-settings
+    // https://vitest.dev/guide/migration/#clearmocks-is-enabled-by-default
+    clearMocks: false,
     environment: "jsdom",
     setupFiles: ["./src/test/setup.ts"],
     include: ["src/**/*.test.ts", "src/**/*.test.tsx"],

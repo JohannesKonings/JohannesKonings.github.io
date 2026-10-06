@@ -1,4 +1,5 @@
 import { createFileRoute, notFound } from "@tanstack/react-router";
+import { useMemo } from "react";
 import { getPostsByTag, getAllTags } from "../../../lib/content-utils";
 import { BlogLayout } from "../../../components/blog/BlogLayout";
 import { BlogPostList } from "../../../components/blog/BlogPostList";
@@ -17,21 +18,19 @@ export const Route = createFileRoute("/blog/tag/$tag")({
       }),
     }),
   component: RouteComponent,
-  beforeLoad: ({ params }) => {
+  loader: ({ params }) => {
     const { tag } = params;
     const allTags = getAllTags();
 
     if (!allTags.includes(tag)) {
       throw notFound();
     }
-
-    const posts = getPostsByTag(tag);
-    return { posts, tag };
   },
 });
 
 function RouteComponent() {
-  const { posts, tag } = Route.useRouteContext();
+  const { tag } = Route.useParams();
+  const posts = useMemo(() => getPostsByTag(tag), [tag]);
 
   return (
     <BlogLayout

@@ -1,4 +1,5 @@
 import { createFileRoute, notFound } from "@tanstack/react-router";
+import { useMemo } from "react";
 import { getPostsByCategory, getAllCategories } from "../../../lib/content-utils";
 import { BlogLayout } from "../../../components/blog/BlogLayout";
 import { BlogPostList } from "../../../components/blog/BlogPostList";
@@ -17,21 +18,19 @@ export const Route = createFileRoute("/blog/category/$category")({
       }),
     }),
   component: RouteComponent,
-  beforeLoad: ({ params }) => {
+  loader: ({ params }) => {
     const { category } = params;
     const allCategories = getAllCategories();
 
     if (!allCategories.includes(category)) {
       throw notFound();
     }
-
-    const posts = getPostsByCategory(category);
-    return { posts, category };
   },
 });
 
 function RouteComponent() {
-  const { posts, category } = Route.useRouteContext();
+  const { category } = Route.useParams();
+  const posts = useMemo(() => getPostsByCategory(category), [category]);
 
   return (
     <BlogLayout

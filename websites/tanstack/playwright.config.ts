@@ -22,7 +22,9 @@ export default defineConfig({
     },
   ],
   webServer: {
-    command: `vp run sync && vp dev --host 127.0.0.1 --port ${PORT} --strictPort`,
+    // Nested `vp run` (how CI launches these tests) fails to spawn this script
+    // while task caching is enabled. `--no-cache` skips that tracker.
+    command: `vp run --no-cache sync && vp dev --host 127.0.0.1 --port ${PORT} --strictPort`,
     url: `http://127.0.0.1:${PORT}`,
     reuseExistingServer: !process.env.CI,
     timeout: 120_000,
