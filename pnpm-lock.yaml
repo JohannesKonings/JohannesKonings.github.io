@@ -230,8 +230,8 @@ importers:
   websites/tanstack:
     dependencies:
       '@orama/orama':
-        specifier: 1.2.4
-        version: 1.2.4
+        specifier: 1.2.11
+        version: 1.2.11
       '@tanstack/highlight':
         specifier: 0.0.9
         version: 0.0.9
@@ -1283,8 +1283,8 @@ packages:
     resolution: {integrity: sha512-T8TbSnGsxo6TDBJx/Sgv/BlVJL3tshxZP7Aq5R1mSnM5OcHY2dQaxLMu2+E8u3gN0MLOzdjurqN4ZRVuzQycOQ==}
     engines: {node: '>=8.0'}
 
-  '@orama/orama@1.2.4':
-    resolution: {integrity: sha512-uErUVnH5tRzixinitpl0Zkn7Vo2b9cH9UpKbYk6FmYaQghx2NH7GY6bcZ1oAZj/Cvty0cE7+b1x2PZbTa80f9g==}
+  '@orama/orama@1.2.11':
+    resolution: {integrity: sha512-0yDcWgxOX0je18Z5dR64r4L3Jzm6bDNIpqM7qSu7H+9qhf6EsnlJbICrjt/oJ+WYnwiog4T0OXduVfLwAX+NVA==}
     engines: {node: '>= 16.0.0'}
 
   '@oxc-project/runtime@0.151.0':
@@ -7070,7 +7070,7 @@ snapshots:
 
   '@oozcitak/util@8.3.8': {}
 
-  '@orama/orama@1.2.4': {}
+  '@orama/orama@1.2.11': {}
 
   '@oxc-project/runtime@0.151.0': {}
 
