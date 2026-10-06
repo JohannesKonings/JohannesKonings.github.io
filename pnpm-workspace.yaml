@@ -15,11 +15,14 @@ catalog:
   "@vitest/ui": 5.0.1
 overrides:
   "@isaacs/brace-expansion@^5.0.0": 5.0.1
+  "@napi-rs/wasm-runtime": 1.2.4
+  acorn@^8: 8.18.0
   magic-string: 1.4.2
   js-yaml@^3.13.1: 3.14.2
   minimatch@^10.1.1: 10.2.3
   minimatch@^5.1.0: 5.1.8
   minimatch@^9.0.4: 9.0.7
+  nanoid@^3: 3.3.19
   rollup: 4.59.0
   tar@^7.4.0: 7.5.10
   vite@*: "catalog:"
