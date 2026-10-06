@@ -24,7 +24,9 @@ test.describe("tanstack smoke", () => {
     await expect(headerCoverImage).toHaveAttribute("src", /\/content\/blog\/.+/);
     await expect
       .poll(async () =>
-        headerCoverImage.evaluate((image) => image.complete && image.naturalWidth > 0),
+        headerCoverImage.evaluate(
+          (image) => image instanceof HTMLImageElement && image.complete && image.naturalWidth > 0,
+        ),
       )
       .toBe(true);
 

@@ -20,8 +20,7 @@ export default defineWorkspaceConfig({
   lint: {
     options: {
       typeAware: true,
-      // typeCheck: true,
-      typeCheck: false,
+      typeCheck: true,
     },
     env: {
       browser: true,

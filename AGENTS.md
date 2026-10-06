@@ -23,7 +23,7 @@ See root `package.json` `scripts` for the full list. Highlights:
 
 ### Gotchas
 
-- **pnpm 10 build scripts**: The repo now runs installs through `vp install`, but the root `pnpm.onlyBuiltDependencies` field is still required so pnpm can build native dependencies like `esbuild`, `sharp`, `@tailwindcss/oxide`, and `@parcel/watcher`.
+- **pnpm build scripts**: Installs run through `vp install`. pnpm 12 does not build dependency scripts unless they are listed under `allowBuilds` in `pnpm-workspace.yaml`. That list currently allows `esbuild`, `sharp`, `@tailwindcss/oxide`, and `@parcel/watcher`.
 - **Content sync**: The TanStack website scripts auto-run content sync as part of `dev` and `build`. This copies markdown from root `_posts/` and `_notes/` into `websites/tanstack/src/content/`, so no manual sync step is needed.
 - **Git hooks**: Hook setup is Vite+-owned via `vp config`, and the repo pre-commit flow runs `vp staged`.
 

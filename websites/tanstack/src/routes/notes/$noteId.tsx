@@ -34,7 +34,7 @@ export const Route = createFileRoute("/notes/$noteId")({
     });
   },
   component: NoteDetailPage,
-  beforeLoad: ({ params }) => {
+  loader: ({ params }) => {
     const { noteId } = params;
 
     // Ignore image requests
@@ -47,18 +47,23 @@ export const Route = createFileRoute("/notes/$noteId")({
       throw notFound();
     }
 
-    // Find the note by slug
     const note = allNotes.find((n) => n.slug === noteId);
     if (!note || !note.published) {
       throw notFound();
     }
-
-    return { note };
   },
 });
 
 function NoteDetailPage() {
-  const { note } = Route.useRouteContext();
+  const { noteId } = Route.useParams();
+  const note = useMemo(() => {
+    const found = allNotes.find((candidate) => candidate.slug === noteId);
+    if (!found || !found.published) {
+      throw notFound();
+    }
+
+    return found;
+  }, [noteId]);
   const document = useMemo(() => parseBlogMarkdown(note.content), [note.content]);
 
   return (

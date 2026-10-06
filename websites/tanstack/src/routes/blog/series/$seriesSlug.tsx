@@ -1,5 +1,5 @@
-import { createFileRoute, notFound } from "@tanstack/react-router";
-import { Link } from "@tanstack/react-router";
+import { createFileRoute, Link, notFound } from "@tanstack/react-router";
+import { useMemo } from "react";
 import { getPostsBySeries, getAllSeries } from "../../../lib/content-utils";
 import { BlogLayout } from "../../../components/blog/BlogLayout";
 import { BlogPostList } from "../../../components/blog/BlogPostList";
@@ -20,15 +20,12 @@ export const Route = createFileRoute("/blog/series/$seriesSlug")({
     });
   },
   component: SeriesPage,
-  beforeLoad: ({ params }) => {
+  loader: ({ params }) => {
     const { seriesSlug } = params;
     const allSeries = getAllSeries();
     if (!allSeries.includes(seriesSlug)) {
       throw notFound();
     }
-    const posts = getPostsBySeries(seriesSlug);
-    const seriesTitle = formatSeriesTitle(seriesSlug);
-    return { posts, seriesSlug, seriesTitle };
   },
 });
 
@@ -40,7 +37,9 @@ function formatSeriesTitle(slug: string): string {
 }
 
 function SeriesPage() {
-  const { posts, seriesTitle } = Route.useRouteContext();
+  const { seriesSlug } = Route.useParams();
+  const posts = useMemo(() => getPostsBySeries(seriesSlug), [seriesSlug]);
+  const seriesTitle = useMemo(() => formatSeriesTitle(seriesSlug), [seriesSlug]);
 
   return (
     <BlogLayout
