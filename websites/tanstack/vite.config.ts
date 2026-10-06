@@ -1,4 +1,4 @@
-import { defineConfig } from "vite-plus";
+import { defineVitePlusConfig } from "@jaykingson/vite-plus-base";
 import tsConfigPaths from "vite-tsconfig-paths";
 import tailwindcss from "@tailwindcss/vite";
 import { tanstackStart } from "@tanstack/react-start/plugin/vite";
@@ -33,7 +33,7 @@ function syncContentPlugin() {
   };
 }
 
-export default defineConfig(({ mode }) => ({
+export default defineVitePlusConfig(({ mode }) => ({
   base: "/",
   server: {
     port: 3000,

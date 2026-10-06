@@ -67,4 +67,4 @@ Triage uses the default canonical label names (`needs-triage`, `needs-info`, `re
 
 ### Domain docs
 
-Domain docs are configured as single-context (root `CONTEXT.md` + `docs/adr/` when present). See `docs/agents/domain.md`.
+Domain docs are configured as multi-context. See `GLOSSARY-MAP.md` for per-context glossaries and `docs/agents/domain.md`.
