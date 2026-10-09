@@ -197,8 +197,8 @@ importers:
   .:
     devDependencies:
       '@jaykingson/vite-plus-base':
-        specifier: 0.0.3
-        version: 0.0.3(bingo-fs@0.6.0)(bingo-systems@0.7.0)(vite-plus@1.0.0(@types/node@24.12.0)(@vitest/ui@5.0.1)(esbuild@0.28.2)(jiti@2.7.0)(jsdom@28.1.0(supports-color@10.2.2))(terser@5.51.2)(tsx@4.21.0)(typescript@7.0.2)(yaml@2.9.1))
+        specifier: 0.0.5
+        version: 0.0.5(bingo-fs@0.6.0)(bingo-systems@0.7.0)(vite-plus@1.0.0(@types/node@24.12.0)(@vitest/ui@5.0.1)(esbuild@0.28.2)(jiti@2.7.0)(jsdom@28.1.0(supports-color@10.2.2))(terser@5.51.2)(tsx@4.21.0)(typescript@7.0.2)(yaml@2.9.1))
       '@lhci/cli':
         specifier: ^0.15.1
         version: 0.15.1(supports-color@10.2.2)
@@ -1086,8 +1086,8 @@ packages:
     resolution: {integrity: sha512-wgm9Ehl2jpeqP3zw/7mo3kRHFp5MEDhqAdwy1fTGkHAwnkGOVsgpvQhL8B5n1qlb01jV3n/bI0ZfZp5lWA1k4w==}
     engines: {node: '>=18.0.0'}
 
-  '@jaykingson/vite-plus-base@0.0.3':
-    resolution: {integrity: sha512-3XFyPbWWUBq1XUHe7kd2xxmnMZqmIOEGlhCTOlZ9wA033Rc8U7MS0iyVwCCElc0PQaDWi3EzZ4yACKLx1FzwzQ==}
+  '@jaykingson/vite-plus-base@0.0.5':
+    resolution: {integrity: sha512-IOPR5iuwIWwsxL9ASPNPmGsSzbTzKpBmAgsGsCaFLzPYqjLPKuvbHbQfOnAZQ2dwzf0v5ED2bfG0gxdaF1EHXQ==}
     hasBin: true
     peerDependencies:
       vite-plus: '>=1.0.0'
@@ -6780,7 +6780,7 @@ snapshots:
     dependencies:
       minipass: 7.1.3
 
-  '@jaykingson/vite-plus-base@0.0.3(bingo-fs@0.6.0)(bingo-systems@0.7.0)(vite-plus@1.0.0(@types/node@24.12.0)(@vitest/ui@5.0.1)(esbuild@0.28.2)(jiti@2.7.0)(jsdom@28.1.0(supports-color@10.2.2))(terser@5.51.2)(tsx@4.21.0)(typescript@7.0.2)(yaml@2.9.1))':
+  '@jaykingson/vite-plus-base@0.0.5(bingo-fs@0.6.0)(bingo-systems@0.7.0)(vite-plus@1.0.0(@types/node@24.12.0)(@vitest/ui@5.0.1)(esbuild@0.28.2)(jiti@2.7.0)(jsdom@28.1.0(supports-color@10.2.2))(terser@5.51.2)(tsx@4.21.0)(typescript@7.0.2)(yaml@2.9.1))':
     dependencies:
       bingo: 0.9.3
       bingo-stratum: 0.7.1(bingo-fs@0.6.0)(bingo-systems@0.7.0)(bingo@0.9.3)(zod@3.25.76)
