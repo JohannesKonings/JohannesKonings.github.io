@@ -181,7 +181,7 @@ overrides:
   '@isaacs/brace-expansion@^5.0.0': 5.0.1
   '@napi-rs/wasm-runtime': 1.2.4
   acorn@^8: 8.18.0
-  magic-string: 1.4.2
+  magic-string: 1.4.3
   js-yaml@^3.13.1: 3.14.2
   minimatch@^10.1.1: 10.2.3
   minimatch@^5.1.0: 5.1.8
@@ -4419,8 +4419,8 @@ packages:
     resolution: {integrity: sha512-h5bgJWpxJNswbU7qCrV0tIKQCaS3blPDrqKWx+QxzuzL1zGUzij9XCWLrSLsJPu5t+eWA/ycetzYAO5IOMcWAQ==}
     hasBin: true
 
-  magic-string@1.4.2:
-    resolution: {integrity: sha512-vG+rjFRj1PqdIBozIxAGMjPlOhaVe+GXpbttY/iSK7rGcJRMlwNJO7dcUwmUqkymsFLJiNGI06t4D7Fr7yRC9g==}
+  magic-string@1.4.3:
+    resolution: {integrity: sha512-z12OxmaPGE0F4xlpGdjuAUckipLpQlTAuAmyGhNoD7ODpYUzvDfvtxUbjM/jwznyP178oju/KDdyi220wNJ0RQ==}
 
   magicast@0.5.5:
     resolution: {integrity: sha512-UicdXN8zQ3JHlxVq+28afMXPr1z7WNY6+7EJnzTdQWkTAlMLF5fNCCKxJHBQwGaNGR11581EiQmQzx73+MvszA==}
@@ -7330,7 +7330,7 @@ snapshots:
       estree-walker: 2.0.2
       fdir: 6.5.0(picomatch@4.0.7)
       is-reference: 1.2.1
-      magic-string: 1.4.2
+      magic-string: 1.4.3
       picomatch: 4.0.7
     optionalDependencies:
       rollup: 4.59.0
@@ -7339,7 +7339,7 @@ snapshots:
     dependencies:
       '@rollup/pluginutils': 5.4.0(rollup@4.59.0)
       estree-walker: 2.0.2
-      magic-string: 1.4.2
+      magic-string: 1.4.3
     optionalDependencies:
       rollup: 4.59.0
 
@@ -7362,7 +7362,7 @@ snapshots:
   '@rollup/plugin-replace@6.0.3(rollup@4.59.0)':
     dependencies:
       '@rollup/pluginutils': 5.4.0(rollup@4.59.0)
-      magic-string: 1.4.2
+      magic-string: 1.4.3
     optionalDependencies:
       rollup: 4.59.0
 
@@ -7505,7 +7505,7 @@ snapshots:
       enhanced-resolve: 5.26.0
       jiti: 2.7.0
       lightningcss: 1.31.1
-      magic-string: 1.4.2
+      magic-string: 1.4.3
       source-map-js: 1.2.2
       tailwindcss: 4.2.1
 
@@ -8169,7 +8169,7 @@ snapshots:
       '@vitest/mocker': 5.0.1(@types/node@24.12.0)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(tsx@4.21.0)(typescript@7.0.2)(yaml@2.9.1)
       '@vitest/ui': 5.0.1(vitest@5.0.1)
       '@vitest/utils': 5.0.1
-      magic-string: 1.4.2
+      magic-string: 1.4.3
       pngjs: 7.0.0
       sirv: 3.0.2
       tinyrainbow: 3.2.0
@@ -8202,7 +8202,7 @@ snapshots:
       '@jridgewell/trace-mapping': 0.3.31
       '@vitest/spy': 5.0.1
       estree-walker: 3.0.3
-      magic-string: 1.4.2
+      magic-string: 1.4.3
       vite: '@voidzero-dev/vite-plus-core@1.0.0(@types/node@24.12.0)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(tsx@4.21.0)(typescript@7.0.2)(yaml@2.9.1)'
     transitivePeerDependencies:
       - '@arethetypeswrong/core'
@@ -8231,7 +8231,7 @@ snapshots:
     dependencies:
       '@vitest/pretty-format': 5.0.1
       '@vitest/utils': 5.0.1
-      magic-string: 1.4.2
+      magic-string: 1.4.3
       pathe: 2.0.3
 
   '@vitest/spy@5.0.1': {}
@@ -10136,7 +10136,7 @@ snapshots:
 
   lz-string@1.5.0: {}
 
-  magic-string@1.4.2:
+  magic-string@1.4.3:
     dependencies:
       '@jridgewell/sourcemap-codec': 1.6.0
 
@@ -10291,7 +10291,7 @@ snapshots:
       klona: 2.0.6
       knitwork: 1.3.0
       listhen: 1.10.1
-      magic-string: 1.4.2
+      magic-string: 1.4.3
       magicast: 0.5.5
       mime: 4.1.0
       mlly: 1.8.2
@@ -11467,7 +11467,7 @@ snapshots:
     dependencies:
       acorn: 8.18.0
       estree-walker: 3.0.3
-      magic-string: 1.4.2
+      magic-string: 1.4.3
       unplugin: 2.3.11
 
   undici-types@7.16.0: {}
@@ -11496,7 +11496,7 @@ snapshots:
       escape-string-regexp: 5.0.0
       estree-walker: 3.0.3
       local-pkg: 1.2.1
-      magic-string: 1.4.2
+      magic-string: 1.4.3
       mlly: 1.8.2
       pathe: 2.0.3
       picomatch: 4.0.7
@@ -11577,7 +11577,7 @@ snapshots:
     dependencies:
       exsolve: 1.1.3
       knitwork: 1.3.0
-      magic-string: 1.4.2
+      magic-string: 1.4.3
       mlly: 1.8.2
       pathe: 2.0.3
       pkg-types: 2.3.3
@@ -11679,7 +11679,7 @@ snapshots:
       chai: 6.3.0
       es-module-lexer: 2.3.2
       expect-type: 1.4.0
-      magic-string: 1.4.2
+      magic-string: 1.4.3
       obug: 2.2.1
       picomatch: 4.0.7
       std-env: 4.3.0
