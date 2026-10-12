@@ -11,7 +11,6 @@ tags:
   - aurora
   - aurora data api
   - cdk
-series: tanstack-aws
 ---
 
 ## Introduction
