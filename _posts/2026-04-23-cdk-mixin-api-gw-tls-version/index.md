@@ -1,6 +1,6 @@
 ---
 title: CDK Mixin for setting recommended TLS version for API Gateway and endpoint access mode
-date: "2026-03-30 08:15:18"
+date: "2026-04-23 08:15:18"
 published: true
 summary: "Use a type-safe CDK mixin to enforce modern API Gateway TLS policy and endpoint access mode across REST APIs, instead of brittle one-off L1 overrides."
 categories: aws
