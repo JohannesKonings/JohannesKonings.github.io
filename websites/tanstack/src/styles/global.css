@@ -131,6 +131,49 @@ h3 {
   color: rgb(156 163 175);
 }
 
+.markdown-content {
+  overflow-x: auto;
+}
+
+.markdown-content :where(table) {
+  width: 100%;
+  margin: 1.5rem 0;
+  border-collapse: collapse;
+  line-height: 1.6;
+}
+
+.markdown-content :where(th),
+.markdown-content :where(td) {
+  padding: 0.75rem 1rem;
+  vertical-align: top;
+  text-align: left;
+  border-bottom: 1px solid rgb(229 231 235);
+}
+
+.markdown-content :where(th) {
+  font-weight: 700;
+  color: rgb(17 24 39);
+  background: rgb(249 250 251);
+  border-bottom-color: rgb(209 213 219);
+}
+
+.markdown-content :where(th:first-child),
+.markdown-content :where(td:first-child) {
+  width: 1%;
+  white-space: nowrap;
+}
+
+.dark .markdown-content :where(th),
+.dark .markdown-content :where(td) {
+  border-bottom-color: rgb(55 65 81);
+}
+
+.dark .markdown-content :where(th) {
+  color: rgb(243 244 246);
+  background: rgb(31 41 55);
+  border-bottom-color: rgb(75 85 99);
+}
+
 @keyframes fade {
   0% {
     background-position: 0% 50%;
