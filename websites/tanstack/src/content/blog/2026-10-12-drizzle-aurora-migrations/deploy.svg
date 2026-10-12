@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 460" role="img" aria-labelledby="title desc">
+  <title id="title">Stage database lifecycle on deploy</title>
+  <desc id="desc">Create or Update creates the stage database on tanstackaws and applies pending migrations. Delete of an ephemeral stage drops that database. Delete of a permanent stage leaves the database in place.</desc>
+  <rect width="880" height="460" rx="16" fill="#f6f4ef"/>
+  <rect x="16" y="16" width="848" height="428" rx="14" fill="#ffffff" stroke="#e4dfd6"/>
+  <text x="40" y="52" fill="#bf4520" font-family="ui-sans-serif, system-ui, sans-serif" font-size="12" font-weight="650" letter-spacing="1.6">DEPLOY</text>
+  <text x="40" y="82" fill="#2d3142" font-family="ui-sans-serif, system-ui, sans-serif" font-size="22" font-weight="650">What the custom resource does</text>
+  <rect x="40" y="104" width="800" height="44" rx="10" fill="#f6f4ef"/>
+  <text x="56" y="132" fill="#2d3142" font-family="ui-sans-serif, system-ui, sans-serif" font-size="14">Workload stack -> StageDatabaseLifecycle -> stage-database-lifecycle.ts</text>
+  <g font-family="ui-sans-serif, system-ui, sans-serif">
+    <rect x="40" y="168" width="250" height="248" rx="12" fill="#ffffff" stroke="#2d3142"/>
+    <text x="56" y="198" fill="#2d3142" font-size="13" font-weight="650">Create or Update</text>
+    <text x="56" y="232" fill="#4f5d75" font-size="13">1. CREATE DATABASE</text>
+    <text x="72" y="252" fill="#4f5d75" font-size="13">on tanstackaws</text>
+    <text x="56" y="284" fill="#4f5d75" font-size="13">2. Apply pending</text>
+    <text x="72" y="304" fill="#4f5d75" font-size="13">migration.sql</text>
+    <text x="56" y="348" fill="#2d3142" font-size="13">An existing database</text>
+    <text x="56" y="368" fill="#2d3142" font-size="13">stays, then migrates.</text>
+    <rect x="314" y="168" width="250" height="248" rx="12" fill="#fff8f5" stroke="#bf4520"/>
+    <text x="330" y="198" fill="#bf4520" font-size="13" font-weight="650">Delete, ephemeral</text>
+    <text x="330" y="232" fill="#2d3142" font-size="13">DROP DATABASE</text>
+    <text x="330" y="252" fill="#4f5d75" font-size="13">on tanstackaws</text>
+    <text x="330" y="292" fill="#4f5d75" font-size="13">feature_checkout</text>
+    <text x="330" y="312" fill="#4f5d75" font-size="13">goes away</text>
+    <text x="330" y="356" fill="#2d3142" font-size="13">Migrations do not run</text>
+    <text x="330" y="376" fill="#2d3142" font-size="13">on delete.</text>
+    <rect x="588" y="168" width="252" height="248" rx="12" fill="#ffffff" stroke="#e4dfd6"/>
+    <text x="604" y="198" fill="#2d3142" font-size="13" font-weight="650">Delete, permanent</text>
+    <text x="604" y="232" fill="#2d3142" font-size="13">No SQL</text>
+    <text x="604" y="272" fill="#4f5d75" font-size="13">The handler returns.</text>
+    <text x="604" y="304" fill="#4f5d75" font-size="13">The stage database</text>
+    <text x="604" y="324" fill="#4f5d75" font-size="13">stays on the cluster.</text>
+    <text x="604" y="368" fill="#2d3142" font-size="13">CloudFormation deletes</text>
+    <text x="604" y="388" fill="#2d3142" font-size="13">the stack resource only.</text>
+  </g>
+</svg>
