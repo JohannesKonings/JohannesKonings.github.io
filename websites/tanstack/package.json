@@ -22,7 +22,7 @@
     "type-check": "tsgo --noEmit"
   },
   "dependencies": {
-    "@orama/orama": "1.2.4",
+    "@orama/orama": "1.2.11",
     "@tanstack/highlight": "0.0.9",
     "@tanstack/markdown": "0.0.12",
     "@tanstack/react-router": "1.124.0",
