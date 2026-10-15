@@ -2,6 +2,8 @@ minimumReleaseAge: 2880
 minimumReleaseAgeStrict: true
 minimumReleaseAgeExclude:
   - "@jaykingson/vite-plus-base"
+  # Renovate security update: postcss@8.5.23
+  - postcss@8.5.23
 
 # minimumReleaseAge: 2880
 # minimumReleaseAgeStrict: true
