@@ -24,7 +24,7 @@ overrides:
   minimatch@^9.0.4: 9.0.7
   nanoid@^3: 3.3.19
   rollup: 4.59.0
-  tar@^7.4.0: 7.5.10
+  tar@^7.4.0: 7.5.22
   vite@*: "catalog:"
   vitest@*: "catalog:"
 peerDependencyRules:
