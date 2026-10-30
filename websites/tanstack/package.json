@@ -49,7 +49,7 @@
     "date-fns": "4.1.0",
     "jsdom": "^28.1.0",
     "playwright": "^1.58.2",
-    "postcss": "8.5.8",
+    "postcss": "8.5.23",
     "reading-time": "1.5.0",
     "tailwindcss": "4.2.1",
     "vite": "catalog:",
