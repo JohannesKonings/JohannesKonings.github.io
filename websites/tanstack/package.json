@@ -32,7 +32,7 @@
     "react-dom": "19.2.4"
   },
   "devDependencies": {
-    "@content-collections/core": "0.14.2",
+    "@content-collections/core": "0.15.3",
     "@content-collections/vite": "0.2.9",
     "@playwright/test": "^1.58.2",
     "@tailwindcss/vite": "4.2.1",
