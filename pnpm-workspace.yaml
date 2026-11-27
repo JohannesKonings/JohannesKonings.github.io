@@ -2,6 +2,8 @@ minimumReleaseAge: 2880
 minimumReleaseAgeStrict: true
 minimumReleaseAgeExclude:
   - "@jaykingson/vite-plus-base"
+  # Renovate security update: @vitest/ui@5.0.5
+  - "@vitest/ui@5.0.5"
 
 # minimumReleaseAge: 2880
 # minimumReleaseAgeStrict: true
@@ -12,7 +14,7 @@ catalog:
   vite: npm:@voidzero-dev/vite-plus-core@1.0.0
   vite-plus: 1.0.0
   vitest: 5.0.1
-  "@vitest/ui": 5.0.1
+  "@vitest/ui": 5.0.5
 overrides:
   "@isaacs/brace-expansion@^5.0.0": 5.0.1
   "@napi-rs/wasm-runtime": 1.2.4
