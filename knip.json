@@ -8,7 +8,9 @@
         "scripts/generateTanstackRss.ts",
         "scripts/syncCrossPosts.ts",
         "scripts/checkCrossPostAssets.ts",
-        "scripts/checkCrossPostAssets.test.ts"
+        "scripts/checkCrossPostAssets.test.ts",
+        "scripts/checkSeo.ts",
+        "scripts/checkSeo.test.ts"
       ],
       "project": ["scripts/**/*.{ts,mjs}"]
     },
