@@ -54,7 +54,7 @@ function getPostUrls(): string[] {
       if (published === false) continue;
 
       const slug = ent.name;
-      urls.push(`${BASE_URL}/blog/${slug}`);
+      urls.push(`${BASE_URL}/blog/${slug}/`);
     } else if (ent.isFile() && ent.name.endsWith(".md")) {
       // Flat .md file (e.g., 2022-09-17-aws_example_ddb_analytics_quicksight_cdk.md)
       // Skip if it's in a directory (handled above)
@@ -64,7 +64,7 @@ function getPostUrls(): string[] {
 
       // Slug is the filename without .md extension
       const slug = ent.name.replace(/\.md$/i, "");
-      urls.push(`${BASE_URL}/blog/${slug}`);
+      urls.push(`${BASE_URL}/blog/${slug}/`);
     }
   }
 
@@ -89,14 +89,17 @@ function getNoteUrls(): string[] {
 
     // Slug is the filename without .md extension
     const slug = file.name.replace(/\.md$/i, "");
-    urls.push(`${BASE_URL}/notes/${slug}`);
+    urls.push(`${BASE_URL}/notes/${slug}/`);
   }
 
   return urls;
 }
 
 function main() {
-  // Static URLs
+  // Static URLs. These routes are prerendered to `<name>.html` files (see the `pages` list in
+  // websites/tanstack/vite.config.ts), which GitHub Pages serves without a trailing slash.
+  // Content pages below use `autoSubfolderIndex` (`<path>/index.html`) and must carry a
+  // trailing slash to match the non-redirecting URL.
   const staticUrls = [
     `${BASE_URL}/`,
     `${BASE_URL}/blog`,
