@@ -14,6 +14,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Setup Vite+
         uses: voidzero-dev/setup-vp@v1.21.1
@@ -30,6 +32,26 @@ jobs:
 
       - name: Run repo checks
         run: vp check
+
+      # Non-blocking: reports SEO warnings for posts changed in this PR but never
+      # fails the job. See docs/pre-publish-seo.md.
+      - name: SEO check for changed posts
+        continue-on-error: true
+        run: |
+          git fetch --no-tags origin "${{ github.base_ref }}"
+          slugs=$(git diff --name-only "origin/${{ github.base_ref }}...HEAD" -- '_posts/*/index.md' \
+            | sed -E 's#^_posts/([^/]+)/index.md#\1#' | sort -u)
+          if [ -z "$slugs" ]; then
+            echo "No changed posts under _posts/."
+            exit 0
+          fi
+          echo "Changed posts:"
+          echo "$slugs"
+          status=0
+          for slug in $slugs; do
+            vp exec tsx scripts/checkSeo.ts "$slug" || status=1
+          done
+          exit $status
 
   tanstack-tests:
     name: TanStack tests

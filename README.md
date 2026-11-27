@@ -8,6 +8,15 @@ This repository contains the TanStack-based website and the supporting content/d
 - production build: `pnpm build:tanstack`
 - content verification: `pnpm verify:tanstack`
 
+## pre-publish SEO check
+
+Before publishing a post, run the SEO check and fix what it reports (weak titles
+and descriptions, body `<h1>`s, broken heading hierarchy, missing internal links,
+images without alt text). The checklist and thresholds are in
+[docs/pre-publish-seo.md](docs/pre-publish-seo.md).
+
+`vp exec tsx scripts/checkSeo.ts <slug>` (or `--all` for every post)
+
 ## blog post distribution
 
 - build process for dev.to, hashnode and medium incl. image optimization
