@@ -23,6 +23,8 @@
     "demo:theme": "node websites/tanstack/scripts/theme-toggle-demo.mjs",
     "build:tanstack": "vp run --filter tanstack build",
     "verify:tanstack": "vp exec tsx scripts/verifyTanstack.ts",
+    "check:cross-post-assets": "vp exec tsx scripts/checkCrossPostAssets.ts",
+    "test": "vp exec tsx --test scripts/checkCrossPostAssets.test.ts",
     "verify:tanstack:seo-geo": "vp exec tsx scripts/verifyTanstackSeoGeo.ts",
     "verify:tanstack:lighthouse": "vp exec tsx scripts/runTanstackLighthouse.ts",
     "tsc": "vp exec tsgo",

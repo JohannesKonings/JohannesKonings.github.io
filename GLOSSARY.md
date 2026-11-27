@@ -23,3 +23,7 @@ _Avoid_: Import, mirror, publish
 **Cross-post**:
 A derivative markdown export in `crossPosts/` for external platforms such as dev.to.
 _Avoid_: Syndication, republish, mirror
+
+**Cross-post asset**:
+A file in a post directory, published at `/content/blog/<slug>/<file>`, that dev.to or AWS Builder Center can load. Includes the dev.to cover, the Builder Center cover, and a PNG fallback beside each SVG. The blog markdown can keep referencing the SVG.
+_Avoid_: Social image, attachment, og image

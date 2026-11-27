@@ -14,6 +14,10 @@ This repository contains the TanStack-based website and the supporting content/d
 
 `nlx tsx ./scripts/syncCrossPosts.ts`
 
+Cross-post assets (PNG fallbacks for SVG, and the Builder Center cover) live in the post directory next to the markdown. The convention is in [crossPosts/README.md](crossPosts/README.md). Check one post with:
+
+`vp exec tsx scripts/checkCrossPostAssets.ts <slug>`
+
 ## rss feed
 
 ...
