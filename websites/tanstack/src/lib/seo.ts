@@ -1,5 +1,5 @@
 import type { allPosts } from "content-collections";
-import { siteConfig, toAbsoluteAssetUrl, toAbsoluteUrl } from "./site";
+import { siteConfig, toAbsoluteAssetUrl, toCanonicalUrl } from "./site";
 
 interface SEOProps {
   title: string;
@@ -38,7 +38,7 @@ export function generateSEOTags({
   modifiedTime,
   tags,
 }: SEOProps) {
-  const fullUrl = url ? toAbsoluteUrl(url) : siteConfig.baseUrl;
+  const fullUrl = url ? toCanonicalUrl(url) : siteConfig.baseUrl;
   const fullTitle = getFullTitle(title);
   const imageUrl = toAbsoluteAssetUrl(image);
   const resolvedImageAlt = imageAlt ?? siteConfig.defaultSocialImageAlt;
@@ -133,7 +133,7 @@ export function generatePostSEO(post: (typeof allPosts)[0]) {
 
 // Generate structured data for a blog post
 export function generatePostStructuredData(post: (typeof allPosts)[0]) {
-  const postUrl = toAbsoluteUrl(post.url);
+  const postUrl = toCanonicalUrl(post.url);
   const imageUrl = toAbsoluteAssetUrl(getPostImage(post));
 
   return {
@@ -179,7 +179,7 @@ export function generateBlogListingStructuredData() {
     "@type": "Blog",
     name: `${siteConfig.name} Blog`,
     description: "Posts on AWS and TanStack.",
-    url: toAbsoluteUrl("/blog"),
+    url: toCanonicalUrl("/blog"),
     ...(imageUrl && { image: imageUrl }),
     author: {
       "@type": "Person",
