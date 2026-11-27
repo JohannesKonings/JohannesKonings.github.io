@@ -6,7 +6,9 @@
         "scripts/syncWebsites.ts",
         "scripts/generateTanstackSitemap.ts",
         "scripts/generateTanstackRss.ts",
-        "scripts/syncCrossPosts.ts"
+        "scripts/syncCrossPosts.ts",
+        "scripts/checkCrossPostAssets.ts",
+        "scripts/checkCrossPostAssets.test.ts"
       ],
       "project": ["scripts/**/*.{ts,mjs}"]
     },
